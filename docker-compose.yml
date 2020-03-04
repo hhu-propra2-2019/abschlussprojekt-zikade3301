@@ -1,11 +1,14 @@
 version: "3.1"
 services:
   database:
-    image: mysql:5.7
+    image: postgres
     volumes:
-      - ./mysql/db/entrypoint:/docker-entrypoint-initdb.d/
+      - database-data:/var/lib/postgresql/data/
     ports:
-      - "3301:3306"
+      - "3301:5432"
     environment:
-      - "MYSQL_ROOT_PASSWORD=zikade3301"
-      - "MYSQL_DATABASE=Modulhandbuch"
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=zikade3301
+      - POSTGRES_DB=Modulhandbuch
+volumes:
+  database-data:
