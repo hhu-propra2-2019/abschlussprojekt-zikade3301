@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 @WebMvcTest
 public class IndexControllerTest {
 
-    @Test
-    void contextLoads() {
-    }
+//    @Test
+//    void contextLoads() {
+//    }
 
 
 

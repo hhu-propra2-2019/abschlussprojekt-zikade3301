@@ -9,5 +9,4 @@ class ModuleApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }
