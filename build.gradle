@@ -73,7 +73,7 @@ dependencies {
     }
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation 'mops:styleguide:2.0.0'
+    implementation 'mops:styleguide:2.1.0'
 }
 
 test {
