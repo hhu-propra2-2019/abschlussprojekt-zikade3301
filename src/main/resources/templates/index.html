@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Index</title>
     <th:block th:fragment="headcontent">
+
         <!-- Links, Skripts, Styles hier einfügen! -->
     </th:block>
 </head>
@@ -29,6 +30,20 @@
             background: whitesmoke;
         }
     </style>
+
+    <nav class="navbar navbar-light  " style="background-color: whitesmoke;">
+        <div class="container">
+            <a class="navbar-brand" >Übersicht </a>
+
+            <select id="Semester">
+                <option value="Wintersemester">WS19/20</option>
+                <option value="Sommersemester">SoSe20</option>
+            </select>
+
+        </div>
+    </nav>
+
+    <br>
     <div style="width: 100%">
         <script>
             function myFunction(dots, moreText, btnText) {
