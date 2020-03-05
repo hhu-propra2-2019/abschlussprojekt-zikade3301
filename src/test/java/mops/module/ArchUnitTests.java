@@ -2,7 +2,6 @@ package mops.module;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -18,24 +17,27 @@ public class ArchUnitTests {
     @ArchTest
     static final ArchRule controllerIsAnnotatedWithRequestMapping =
             classes().that().haveNameMatching(".*Controller")
-                    .should().beAnnotatedWith(RequestMapping.class).andShould(new rule("/module", "Request-Mapping incorrect!"));
+                    .should().beAnnotatedWith(RequestMapping.class)
+                    .andShould(new Rule("/module", "Request-Mapping incorrect!"));
 
-    public static class rule extends ArchCondition<JavaClass> {
+    public static class Rule extends ArchCondition<JavaClass> {
 
-        String correctValue;
+        private final transient String correctValue;
 
-        public rule(String correctValue, String description, Object... args) {
+        public Rule(String correctValue, String description, Object... args) {
             super(description, args);
             this.correctValue = correctValue;
         }
 
         @Override
         public void check(JavaClass item, ConditionEvents events) {
-            // This will never be null, as we check for an annotation of type RequestMapping beforehand.
+            // This will never be null,
+            // as we check for an annotation of type RequestMapping beforehand.
             RequestMapping annotation = item.getAnnotationOfType(RequestMapping.class);
 
             if (annotation.value().length == 0 || !annotation.value()[0].equals(correctValue)) {
-                events.add(SimpleConditionEvent.violated(item, "Request-Mapping annotation doesn't contain the required parameter."));
+                events.add(SimpleConditionEvent.violated(item,
+                        "Request-Mapping annotation doesn't contain the required parameter."));
             }
         }
     }
