@@ -9,13 +9,24 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Semester {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  private String semestertype;
+    private SemesterType semestertype;
 
-  @ManyToMany
-  private List<Modul> module;
+    private int year;
+
+    @ManyToMany
+    private List<Modul> module;
+
+    @Override
+    public String toString() {
+        if (semestertype == SemesterType.SOMMER) {
+            return "SoSe" + year;
+        } else {
+            return "WiSe" + year + "/" + (year + 1);
+        }
+    }
 
 }

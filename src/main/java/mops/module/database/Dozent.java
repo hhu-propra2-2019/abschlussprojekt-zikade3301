@@ -7,15 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Docent {
+public class Dozent {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  private String name;
+    private String name;
 
-  @ManyToMany
-  private List<Modul> module;
+    @ManyToMany
+    private List<Modul> module;
 
 }

@@ -6,15 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Courses {
+public class Kurs {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  private String name;
+    private String name;
 
-  @ManyToOne
-  private Modul modul;
+    @ManyToOne
+    private Modul modul;
 
 }
