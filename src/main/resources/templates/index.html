@@ -22,7 +22,50 @@
 </header>
 <main th:fragment="bodycontent">
     <!-- Restlichen Inhalt hier einfügen! -->
-    <h1>Das dürfen alle sehen</h1>
+    <style>
+        .module {
+            padding: 10px;
+            box-shadow: 5px 7px #888888;
+            background: whitesmoke;
+        }
+    </style>
+    <div style="width: 100%">
+        <script>
+            function myFunction(dots, moreText, btnText) {
+
+                if (dots.style.display === "none") {
+                    dots.style.display = "inline";
+                    btnText.innerHTML = "mehr...";
+                    moreText.style.display = "none";
+                } else {
+                    dots.style.display = "none";
+                    btnText.innerHTML = "weniger";
+                    moreText.style.display = "inline";
+                }
+            }
+        </script>
+        <div class="module">
+            <strong>Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)</strong>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum,
+                nisi
+                lorem egestas vitae scel<span id="dots0">...</span><span id="more0" style="display: none">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span>
+            </p>
+            <button onclick=
+                            "myFunction(dots0, more0, myBtn0)" id="myBtn0">mehr
+            </button>
+        </div>
+        <br>
+        <div class="module">
+            <strong>Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)</strong>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum,
+                nisi
+                lorem egestas vitae scel<span id="dots1">...</span><span id="more1" style="display: none">erisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span>
+            </p>
+            <button onclick=
+                            "myFunction(dots1, more1, myBtn1)" id="myBtn1">mehr
+            </button>
+        </div>
+    </div>
 </main>
 </body>
 </html>
