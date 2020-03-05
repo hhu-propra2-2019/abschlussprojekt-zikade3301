@@ -1,15 +1,28 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Index</title>
+    <th:block th:fragment="headcontent">
+        <!-- Links, Skripts, Styles hier einfügen! -->
+    </th:block>
 </head>
 <body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
+        <ul>
+            <li>
+                <a th:href="@{/module/studi}">Hier gehts zur Studentenansicht</a>
+            </li>
+        </ul>
 
-<h1>Das dürfen alle sehen</h1>
-
-<a th:href="@{/module/studi}">Hier gehts zur Studentenansicht</a>
-
+    </nav>
+</header>
+<main th:fragment="bodycontent">
+    <!-- Restlichen Inhalt hier einfügen! -->
+    <h1>Das dürfen alle sehen</h1>
+</main>
 </body>
 </html>
