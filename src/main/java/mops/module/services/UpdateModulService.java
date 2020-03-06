@@ -1,16 +1,34 @@
 package mops.module.services;
 
-import mops.module.database.Modulbeschreibung;
+import mops.module.database.Modul;
+import mops.module.database.Veranstaltung;
+import mops.module.repositories.AntragRepository;
+import mops.module.repositories.ModulRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UpdateModulService {
 
     AntragRepository antragRepo;
+    ModulRepository modulRepo;
 
-    public UpdateModulService(AntragRepository antragRepo) {
+    public UpdateModulService(AntragRepository antragRepo, ModulRepository modulRepo) {
         this.antragRepo = antragRepo;
+        this.modulRepo = modulRepo;
     }
 
-    Antrag check(Modul modul) {
+    public boolean updateModul(Modul modul) {
+        if (check(modul)) {
+            //OK
+
+            Antrag antrag = modulRepo.getCorrespondingAntrag(modul);
+            antragRepo.updateModul(antrag);
+        } else {
+            //Not OK
+        }
+    }
+
+    private boolean check(Modul modul) {
         checkMeta(modul.meta);
         checkBeschreibung(modul.beschreibung);
     }
