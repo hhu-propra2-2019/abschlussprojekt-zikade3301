@@ -1,0 +1,18 @@
+== Dienstag, 03.03.20
+
+- Spring-Projekt initialisiert
+- SpotBugs, CheckStyle, PMD in gradle-build hinzugefgügt
+- XML-Datei mit google-Style checkstyle hinzugefügt
+- Dokumentation angelegt
+
+== Mittwoch, 04.03.20
+
+- GitHub Actions konfiguriert
+- CheckStyle in allen IDEs eingerichtet
+
+== Donnerstag, 05.03.20
+
+- ArchUnit Tests hinzugefügt
+- Data-Objekte modelliert
+
+== Freitag, 06.03.20
