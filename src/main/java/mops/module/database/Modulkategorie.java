@@ -1,0 +1,6 @@
+package mops.module.database;
+
+public enum Modulkategorie {
+    PFLICHT_INFO, PFLICHT_MATHE, NEBENFACH, PRAXIS, WAHLPFLICHT_BA, WAHLPFLICHT_MA,
+    BACHELORARBEIT, PROJEKTARBEIT, MASTERARBEIT
+}

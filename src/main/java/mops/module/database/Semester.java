@@ -23,7 +23,7 @@ public class Semester implements Comparable<Semester> {
     private int year;
 
     @ManyToMany
-    private List<Modul> module;
+    private List<Veranstaltung> veranstaltungen;
 
     @Override
     public String toString() {
@@ -50,7 +50,8 @@ public class Semester implements Comparable<Semester> {
         if (semester.semestertype == this.semestertype) {
             return 0;
         }
-        if (semester.semestertype == SemesterType.SOMMER && this.semestertype == SemesterType.WINTER) {
+        if (semester.semestertype == SemesterType.SOMMER
+                && this.semestertype == SemesterType.WINTER) {
             return 1;
         }
         return -1;

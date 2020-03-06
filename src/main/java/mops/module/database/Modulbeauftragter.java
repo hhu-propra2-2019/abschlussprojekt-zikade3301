@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Dozent {
+public class Modulbeauftragter {
 
     @Id
     @GeneratedValue
