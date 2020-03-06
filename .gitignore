@@ -34,8 +34,5 @@ out/
 
 ### Further ###
 *.class
-*gradlew
-*.bat
 .gradle
 build/
-gradle
