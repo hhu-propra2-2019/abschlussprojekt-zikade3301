@@ -3,18 +3,18 @@
 == Problemstatement
 
 Das aktuelle Modulhandbuch ist ein großes Word-Dokument.
-Das komplette Dokument muss angepackt werden um z.B ein Datum zu ändern.
-Die Darstellung der Modulle ist unübersichtig.
-Es gibt keine Suchfunktion was den oberen Punkt schwerer wiegen lässt.
-In einem Semster kann man sehen welche Module angeboten werden, aber nicht
+Das komplette Dokument muss angepackt werden, um z.B ein Datum zu ändern.
+Die Darstellung der Module ist unübersichtig.
+Es gibt keine Suchfunktion, was den oberen Punkt schwerer wiegen lässt.
+In einem Semster kann man sehen, welche Module angeboten werden, aber nicht,
 ob alle Teile des Moduls in dem Semster verfügbar sind.
 
 == Ziele und Lösungen
 
 Dozenten können Module erstellen oder einzelne Aspekte des Moduls ändern.
 Die Textfelder
-Der Admin bekommt diese Anträge und kann diese bestaetigen oder abändern und dann bestaetigen.
-Erst nachdem der Admin den Antrag reviewt hat wird das Modul für die Nutzer angezeigt.
+Der Admin bekommt diese Anträge und kann diese bestätigen oder abändern und dann bestätigen.
+Erst nachdem der Admin den Antrag reviewt hat, wird das Modul für die Nutzer angezeigt.
 Der Nutzer kann mit einer Volltextsuche und Filterfunktion seine Module finden und auswählen, damit er sie später
 als PDF herunterladen kann.
 
