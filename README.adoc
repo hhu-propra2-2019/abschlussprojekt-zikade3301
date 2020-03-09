@@ -4,7 +4,7 @@
 
 Das aktuelle Modulhandbuch ist ein großes Word-Dokument.
 Das komplette Dokument muss angepackt werden, um z.B ein Datum zu ändern.
-Die Darstellung der Module ist unübersichtig.
+Die Darstellung der Module ist unübersichtlich.
 Es gibt keine Suchfunktion, was den oberen Punkt schwerer wiegen lässt.
 In einem Semster kann man sehen, welche Module angeboten werden, aber nicht,
 ob alle Teile des Moduls in dem Semster verfügbar sind.
