@@ -27,13 +27,13 @@ public class Modul {
     @ManyToMany(mappedBy = "module")
     private List<Modulbeauftragter> modulbeauftragte;
 
-    private double creditPoints;
+    private String creditPoints;
 
     private String studiengang;
 
     private Modulkategorie modulkategorie;
 
-    private boolean istAktiv;
+    private boolean sichtbar;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumErstellung;

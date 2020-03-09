@@ -22,4 +22,6 @@ public class Veranstaltungsbeschreibung {
 
     private String haufigkeit;
 
+    private String sprache;
+
 }
