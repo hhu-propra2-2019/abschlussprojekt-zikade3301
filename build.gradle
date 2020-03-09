@@ -65,6 +65,7 @@ dependencies {
     implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
     implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
     compileOnly 'org.projectlombok:lombok'
+    testCompile 'com.tngtech.archunit:archunit-junit5:0.13.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation('org.postgresql:postgresql')
     annotationProcessor 'org.projectlombok:lombok'
@@ -73,7 +74,7 @@ dependencies {
     }
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation 'mops:styleguide:2.0.0'
+    implementation 'mops:styleguide:2.1.0'
 }
 
 test {
