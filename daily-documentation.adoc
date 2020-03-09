@@ -9,10 +9,22 @@
 
 - GitHub Actions konfiguriert
 - CheckStyle in allen IDEs eingerichtet
+- KeyCloak eingebunden und mit Test-Seite ausprobiert
+- Prometheus eingebunden
+- Event Sourcing als Idee für Verwaltung von Änderungen
+- Wechsel von MySQL als Datenbank auf Postgres
 
 == Donnerstag, 05.03.20
 
 - ArchUnit Tests hinzugefügt
-- Data-Objekte modelliert
+- Daten-Objekte für Geschäftslogik modelliert
+- HTML-File für Index-Seite geschrieben
 
 == Freitag, 06.03.20
+
+- mehr Modellierung der Daten-Objekte
+- Struktur der Anwendung an der Tafel ausgearbeitet
+- Service zum Ändern der Module hinzugefügt
+- Repository-Klassen für CRUD-Operationen hinzugefügt
+
+== Montag, 09.03.10
