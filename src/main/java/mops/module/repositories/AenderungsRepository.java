@@ -2,5 +2,5 @@ package mops.module.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface AntragRepository extends CrudRepository<Antrag, Long> {
+public interface AenderungsRepository extends CrudRepository<Aenderung, Long> {
 }
