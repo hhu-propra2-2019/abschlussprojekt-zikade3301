@@ -1,6 +1,7 @@
 package mops.module.database;
 
 import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Veranstaltung {
@@ -21,18 +23,21 @@ public class Veranstaltung {
 
     private String titel;
 
-    //    private List<String> lehrende;
+    @ElementCollection
+    private List<String> lehrende;
 
     private double creditPoints;
 
-    private String sprache; //TODO: als Kategorie?
+    private String sprache;
 
-    //    private List<String> veranstaltungsform;
+    @ElementCollection
+    private List<String> veranstaltungsform;
 
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
 
-    //    private List<Veranstaltung> voraussetzungenTeilnahme;
+    @OneToMany
+    private List<Veranstaltung> voraussetzungenTeilnahme;
 
     @ManyToMany(mappedBy = "veranstaltungen")
     private List<Semester> semester;

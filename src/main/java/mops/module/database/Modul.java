@@ -29,7 +29,7 @@ public class Modul {
 
     private double creditPoints;
 
-    private String studiengang; //TODO: als String? mehrere möglich?
+    private String studiengang;
 
     private Modulkategorie modulkategorie;
 

@@ -1,5 +1,5 @@
 package mops.module.database;
 
-public enum SemesterType {
+public enum Semestertyp {
     SOMMER, WINTER
 }
