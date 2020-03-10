@@ -28,7 +28,7 @@ public class Veranstaltung {
     private String creditPoints;
 
     @ElementCollection
-    private List<String> veranstaltungsform;
+    private List<String> veranstaltungsformen;
 
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;

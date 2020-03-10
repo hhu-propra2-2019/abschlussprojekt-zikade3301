@@ -1,6 +1,17 @@
 package mops.module.database;
 
 public enum Modulkategorie {
-    PFLICHT_INFO, PFLICHT_MATHE, NEBENFACH, PRAXIS, WAHLPFLICHT_BA, WAHLPFLICHT_MA,
-    BACHELORARBEIT, PROJEKTARBEIT, MASTERARBEIT
+    PFLICHT_INFO(1), PFLICHT_MATHE(2), NEBENFACH(3), PRAXIS(4),
+    WAHLPFLICHT_BA(5), WAHLPFLICHT_MA(6), BACHELORARBEIT(7),
+    PROJEKTARBEIT(8), MASTERARBEIT(9);
+
+    private final int value;
+
+    Modulkategorie(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

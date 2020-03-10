@@ -68,6 +68,7 @@ dependencies {
     testCompile 'com.tngtech.archunit:archunit-junit5:0.13.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation('org.postgresql:postgresql')
+    implementation 'com.google.code.gson:gson:2.8.6'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

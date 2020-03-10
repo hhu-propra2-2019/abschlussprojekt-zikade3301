@@ -27,7 +27,7 @@ public class Modul {
     @ManyToMany(mappedBy = "module")
     private List<Modulbeauftragter> modulbeauftragte;
 
-    private String creditPoints;
+    private String gesamtCreditPoints;
 
     private String studiengang;
 
@@ -40,5 +40,8 @@ public class Modul {
 
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumAenderung;
+
+    @OneToMany(mappedBy = "modul")
+    private List<Zusatzfeld> zusatzfelder;
 
 }
