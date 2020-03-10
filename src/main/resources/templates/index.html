@@ -20,7 +20,7 @@
         <ul>
             <li class="active">
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" style="background: transparent; color: dimgray; border: none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" style="width: 100%; border-radius: 0; text-align: left;background: transparent; color: dimgray; border: none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Semesterauswahl
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -44,7 +44,6 @@
     </nav>
 </header>
 <main th:fragment="bodycontent">
-    <!-- Restlichen Inhalt hier einfügen! -->
 
     <form method="POST" class="form-group">
         <input class="form-control" placeholder="Suche" type="search">
@@ -61,11 +60,11 @@
         </div>-->
 
     <p>
-        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <a class="btn btn-primary" style="font-weight: bold; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#Programmierung" role="button" aria-expanded="false" aria-controls="Programmierung">
             Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
         </a>
     </p>
-    <div class="collapse" id="collapseExample">
+    <div class="collapse" id="Programmierung">
         <div class="card card-body">
             <span style="width: min-content" class="badge badge-dark">10 CP</span>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
@@ -80,7 +79,7 @@
     </div>
 
     <p>
-        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#Rechnerarchitektur" role="button" aria-expanded="false" aria-controls="Rechnerarchitektur">
+        <a class="btn btn-primary" style="font-weight: bold; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#Rechnerarchitektur" role="button" aria-expanded="false" aria-controls="Rechnerarchitektur">
             Rechnerarchitektur
         </a>
     </p>
@@ -99,7 +98,7 @@
     </div>
 
     <p>
-        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#TheoretischeInformatik" role="button" aria-expanded="false" aria-controls="TheoretischeInformatik">
+        <a class="btn btn-primary" style="font-weight: bold; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#TheoretischeInformatik" role="button" aria-expanded="false" aria-controls="TheoretischeInformatik">
             Theoretische Informatik
         </a>
     </p>
