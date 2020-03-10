@@ -1,6 +1,5 @@
 package mops.module;
 
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,19 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import static mops.module.KeycloakAccount.createAccountFromPrincipal;
+
 @Controller
 @RequestMapping("/module")
 public class IndexController {
-
-
-    private Account createAccountFromPrincipal(KeycloakAuthenticationToken token) {
-        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        return new Account(
-                principal.getName(),
-                principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-                null,
-                token.getAccount().getRoles());
-    }
 
     /**
      * Index string.
@@ -32,7 +23,7 @@ public class IndexController {
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
-            model.addAttribute("account", createAccountFromPrincipal(token));
+            model.addAttribute("account",createAccountFromPrincipal(token));
         }
         return "index";
     }
