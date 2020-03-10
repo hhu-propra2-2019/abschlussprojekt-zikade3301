@@ -1,7 +1,5 @@
 package mops.module;
 
-
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -9,20 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static mops.module.KeycloakAccount.createAccountFromPrincipal;
+
 @Controller
 @RequestMapping("/module")
 public class ModuleController {
-
-    private Account createAccountFromPrincipal(KeycloakAuthenticationToken token) {
-        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        return new Account(
-                principal.getName(),
-                principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-                null,
-                token.getAccount().getRoles());
-    }
-
-
 
     @GetMapping("/meineModule")
     @Secured("ROLE_orga")
