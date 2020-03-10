@@ -8,6 +8,9 @@
 
         <!-- Links, Skripts, Styles hier einfügen! -->
         <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </th:block>
 </head>
 <body>
@@ -16,13 +19,16 @@
         <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
         <ul>
             <li class="active">
-                <form action="" method="GET">
-                    <select class="browser-default custom-select" name="semester" onchange="this.form.submit()">
-                        <option value="WS/SS" name="WS/SS">WS/SS</option>
-                        <option value="WS" name="WS">WS</option>
-                        <option value="SS" name="SS">SS</option>
-                    </select>
-                </form>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" style="background: transparent; color: dimgray; border: none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Semesterauswahl
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
+                    </div>
+                </div>
             </li>
             <li>
                 <a href="#">Übersicht</a>
@@ -53,66 +59,61 @@
                 </div>
             </div>
         </div>-->
-    <div>
-        <div>
-            <div>
-                <input type="checkbox" class="read-more-state" id="post-1">
-                <a href="#" style="font-weight: bold;">
-                    Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
-                </a>
-                <p class="read-more-wrap">
-                    <span class="read-more-target">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-                    interdum,
-                    nisi
-                    lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-                    eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-                    ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-                    vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-                    pulvinar nibh tempor porta.
-                    </span></p>
-                <label for="post-1" class="read-more-trigger"></label>
-            </div>
+
+    <p>
+        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
+        </a>
+    </p>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <span style="width: min-content" class="badge badge-dark">10 CP</span>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+            interdum,
+            nisi
+            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
+            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
+            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
+            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
+            pulvinar nibh tempor porta.
         </div>
-        <div>
-            <div>
-                <input type="checkbox" class="read-more-state" id="post-2">
-                <a href="#" style="font-weight: bold;">
-                    Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
-                </a>
-                <p class="read-more-wrap">
-                    <span class="read-more-target">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-                    interdum,
-                    nisi
-                    lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-                    eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-                    ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-                    vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-                    pulvinar nibh tempor porta.
-                    </span></p>
-                <label for="post-2" class="read-more-trigger"></label>
-            </div>
+    </div>
+
+    <p>
+        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#Rechnerarchitektur" role="button" aria-expanded="false" aria-controls="Rechnerarchitektur">
+            Rechnerarchitektur
+        </a>
+    </p>
+    <div class="collapse" id="Rechnerarchitektur">
+        <div class="card card-body">
+            <span style="width: min-content" class="badge badge-dark">9 CP</span>
+            22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+            interdum,
+            nisi
+            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
+            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
+            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
+            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
+            pulvinar nibh tempor porta.
         </div>
-        <div>
-            <div class="border">
-                <input type="checkbox" class="read-more-state" id="post-3"/>
-                <a href="#" style="font-weight: bold;">
-                    Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
-                </a>
-                <p class="read-more-wrap">
-                    <span class="read-more-target">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-                    interdum,
-                    nisi
-                    lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-                    eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-                    ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-                    vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-                    pulvinar nibh tempor porta.
-                    </span></p>
-                <label for="post-3" class="read-more-trigger"></label>
-            </div>
+    </div>
+
+    <p>
+        <a class="btn btn-primary" style="font-weight: bold; text-decoration: none; border:none; background-color: transparent; color: dodgerblue" data-toggle="collapse" href="#TheoretischeInformatik" role="button" aria-expanded="false" aria-controls="TheoretischeInformatik">
+            Theoretische Informatik
+        </a>
+    </p>
+    <div class="collapse" id="TheoretischeInformatik">
+        <div class="card card-body">
+            <span style="width: min-content" class="badge badge-dark">10 CP</span>
+            22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
+            interdum,
+            nisi
+            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
+            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
+            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
+            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
+            pulvinar nibh tempor porta.
         </div>
     </div>
 </main>
