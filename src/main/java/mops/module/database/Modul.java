@@ -45,5 +45,4 @@ public class Modul {
 
     @OneToMany(mappedBy = "modul")
     private List<Zusatzfeld> zusatzfelder;
-
 }

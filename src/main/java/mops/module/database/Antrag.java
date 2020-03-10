@@ -17,6 +17,8 @@ public class Antrag {
 
     private String modul;
 
+    private long modulid;
+
     @LastModifiedDate
     private LocalDateTime createDate;
 
