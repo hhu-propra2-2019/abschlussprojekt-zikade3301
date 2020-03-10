@@ -3,6 +3,7 @@ package mops.module.database;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Data;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,10 +12,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Data
 public class Antrag {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private Modul modul;
+    private String modul;
 
     @LastModifiedDate
     private LocalDateTime createDate;
