@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@Data
 public class Modul {
 
     @Id

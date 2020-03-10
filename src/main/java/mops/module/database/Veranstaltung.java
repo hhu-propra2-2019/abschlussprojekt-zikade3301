@@ -9,8 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import lombok.Data;
 
 @Entity
+@Data
 public class Veranstaltung {
 
     @Id
