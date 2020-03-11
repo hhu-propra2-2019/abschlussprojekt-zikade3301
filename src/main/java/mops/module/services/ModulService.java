@@ -2,6 +2,7 @@ package mops.module.services;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -20,17 +21,17 @@ public class ModulService {
     /**
      * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert
      * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert
-     * unf
      *
      * @param newModul
      * @param approveDate
      */
     public void addModul(Modul newModul, LocalDateTime approveDate) {
-        Modul modul = modulSnapshotRepository.findById(newModul.getId()).get();
-        if (modul != null) {
-            modul = calculateModulDiffs(modul, newModul);
+        Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
+        Modul diffModul = newModul;
+        if (optionalModul.isPresent()) {
+            diffModul = calculateModulDiffs(optionalModul.get(), newModul);
         }
-        Antrag antrag = toAntrag(modul, approveDate);
+        Antrag antrag = toAntrag(diffModul, approveDate);
         antragsRepository.save(antrag);
         return;
 
