@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ModuleControllerTest {
+class ModulbeauftragterControllerTest {
 
     @Autowired
     private WebApplicationContext context;
@@ -33,8 +33,8 @@ class ModuleControllerTest {
     void module() throws Exception{
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
 
-        mvc.perform(get("/module/meineModule"))
-                .andExpect(view().name("module"))
+        mvc.perform(get("/module/modulbeauftragter"))
+                .andExpect(view().name("modulbeauftragter"))
                 .andExpect(status().isOk())
         ;
     }

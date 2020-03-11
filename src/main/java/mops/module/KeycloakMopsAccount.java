@@ -3,7 +3,7 @@ package mops.module;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 
-public class KeycloakAccount {
+public class KeycloakMopsAccount {
 
     /**
      * KeycloakAccount.

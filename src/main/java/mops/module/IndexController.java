@@ -1,6 +1,6 @@
 package mops.module;
 
-import static mops.module.KeycloakAccount.createAccountFromPrincipal;
+import static mops.module.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;

@@ -1,6 +1,6 @@
 package mops.module;
 
-import static mops.module.KeycloakAccount.createAccountFromPrincipal;
+import static mops.module.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/module")
-public class ModuleController {
+public class ModulbeauftragterController {
 
-    @GetMapping("/meineModule")
+    @GetMapping("/modulbeauftragter")
     @Secured("ROLE_orga")
     public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        return "module";
+        return "modulbeauftragter";
     }
 }
