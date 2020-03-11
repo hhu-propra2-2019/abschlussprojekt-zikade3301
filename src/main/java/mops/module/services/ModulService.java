@@ -23,14 +23,14 @@ public class ModulService {
      * unf
      *
      * @param newModul
-     * @param localDateTime
+     * @param approveDate
      */
-    public void addModul(Modul newModul, LocalDateTime localDateTime) {
+    public void addModul(Modul newModul, LocalDateTime approveDate) {
         Modul modul = modulSnapshotRepository.findById(newModul.getId()).get();
         if (modul != null) {
             modul = calculateModulDiffs(modul, newModul);
         }
-        Antrag antrag = toAntrag(modul, localDateTime);
+        Antrag antrag = toAntrag(modul, approveDate);
         antragsRepository.save(antrag);
         return;
 
