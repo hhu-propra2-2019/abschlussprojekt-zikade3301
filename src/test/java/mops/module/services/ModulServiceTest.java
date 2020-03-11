@@ -1,8 +1,6 @@
 package mops.module.services;
 
-import static mops.module.services.JSONServiceTest.jsonService;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 
@@ -12,6 +10,7 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragsRepository;
+import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +21,9 @@ public class ModulServiceTest {
     @BeforeAll
     static void init() {
         AntragsRepository antragsRepository = mock(AntragsRepository.class);
+        ModulSnapshotRepository modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         jsonService = new JSONService();
-        modulService = new ModulService(antragsRepository, jsonService);
+        modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
     }
 
     @Test
@@ -31,29 +31,24 @@ public class ModulServiceTest {
         Modul modul1 = new Modul();
         modul1.setModulkategorie(Modulkategorie.MASTERARBEIT);
         Veranstaltung veranstaltung1 = new Veranstaltung();
-        veranstaltung1.setId((long)3);
+        veranstaltung1.setId((long) 3);
         List<Veranstaltung> veranstaltungList1 = new ArrayList<Veranstaltung>();
         veranstaltungList1.add(veranstaltung1);
         modul1.setVeranstaltungen(veranstaltungList1);
-        modul1.setId((long)5);
+        modul1.setId((long) 5);
 
         Modul modul2 = new Modul();
         modul2.setModulkategorie(Modulkategorie.BACHELORARBEIT);
         Veranstaltung veranstaltung2 = new Veranstaltung();
-        veranstaltung2.setId((long)3);
+        veranstaltung2.setId((long) 3);
         List<Veranstaltung> veranstaltungList2 = new ArrayList<Veranstaltung>();
         veranstaltungList2.add(veranstaltung2);
         modul2.setVeranstaltungen(veranstaltungList2);
-        modul2.setId((long)5);
+        modul2.setId((long) 5);
 
-        try {
-            Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
-            assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
-            assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
-        }
-        catch(IllegalAccessException e) {
-            fail("Exception!");
-        }
+        Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
+        assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
+        assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
     }
 
     @Test
@@ -62,7 +57,7 @@ public class ModulServiceTest {
         modul1.setModulkategorie(Modulkategorie.MASTERARBEIT);
 
         Veranstaltung veranstaltung1 = new Veranstaltung();
-        veranstaltung1.setId((long)3);
+        veranstaltung1.setId((long) 3);
         Veranstaltung veranstaltung3 = new Veranstaltung();
         List<Veranstaltung> veranstaltungsVoraussetzungen = new ArrayList<Veranstaltung>();
         veranstaltungsVoraussetzungen.add(veranstaltung3);
@@ -71,13 +66,13 @@ public class ModulServiceTest {
         veranstaltungList1.add(veranstaltung1);
         modul1.setVeranstaltungen(veranstaltungList1);
 
-        modul1.setId((long)5);
+        modul1.setId((long) 5);
 
         Modul modul2 = new Modul();
         modul2.setModulkategorie(Modulkategorie.BACHELORARBEIT);
 
         Veranstaltung veranstaltung2 = new Veranstaltung();
-        veranstaltung2.setId((long)3);
+        veranstaltung2.setId((long) 3);
         Veranstaltung veranstaltung4 = new Veranstaltung();
         List<Veranstaltung> veranstaltungsVoraussetzungen2 = new ArrayList<Veranstaltung>();
         veranstaltungsVoraussetzungen2.add(veranstaltung4);
@@ -86,15 +81,10 @@ public class ModulServiceTest {
         veranstaltungList2.add(veranstaltung2);
         modul2.setVeranstaltungen(veranstaltungList2);
 
-        modul2.setId((long)5);
+        modul2.setId((long) 5);
 
-        try {
-            Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
-            assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
-            assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
-        }
-        catch(IllegalAccessException e) {
-            fail("Exception!");
-        }
+        Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
+        assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
+        assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
     }
 }
