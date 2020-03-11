@@ -1,7 +1,6 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
-import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
@@ -16,15 +15,15 @@ public class ModulService {
 
     private final AntragsRepository antragsRepository;
     private final ModulSnapshotRepository modulSnapshotRepository;
-    private final JSONService jsonService;
+    private final JsonService jsonService;
 
     /**
-     * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert
-     * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert
-     * unf
+     * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert.
+     * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert.
      *
-     * @param newModul
-     * @param approveDate
+     *
+     * @param newModul Neues Modul
+     * @param approveDate Datum der Annahme
      */
     public void addModul(Modul newModul, LocalDateTime approveDate) {
         Modul modul = modulSnapshotRepository.findById(newModul.getId()).get();
@@ -39,19 +38,26 @@ public class ModulService {
     }
 
     /**
-     * Erstellt aus einem Modul ein Antrag
+     * Erstellt aus einem Modul ein Antrag.
      *
-     * @param modul
+     * @param modul Modul auf welches der Antrag angewendet wird
      * @return
      */
     Antrag toAntrag(Modul modul, LocalDateTime localDateTime) {
-        String jsonObject = jsonService.modulToJSONObject(modul);
+        String jsonObject = jsonService.modulToJsonObject(modul);
         Antrag antrag = new Antrag();
         antrag.setModul(jsonObject);
         return antrag;
 
     }
 
+    /**
+     * Berechnet die Differenzen zwischen zwei Modulen.
+     *
+     * @param altesmodul Altes Modul
+     * @param neuesmodul Neues Modul
+     * @return
+     */
     public Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) {
         Modul aenderungen = new Modul();
         boolean foundDiffs = false;

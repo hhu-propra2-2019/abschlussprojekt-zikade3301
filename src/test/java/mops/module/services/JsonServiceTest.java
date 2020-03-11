@@ -11,12 +11,12 @@ import mops.module.database.Veranstaltung;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class JSONServiceTest {
-    static JSONService jsonService;
+public class JsonServiceTest {
+    static JsonService jsonService;
 
     @BeforeAll
     static void initJSONService() {
-        jsonService = new JSONService();
+        jsonService = new JsonService();
     }
 
     @Test
