@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
@@ -55,13 +56,13 @@ public class ModulService {
         Modul aenderungen = new Modul();
         boolean foundDiffs = false;
 
+        if (altesmodul == null || neuesmodul == null) {
+            throw new IllegalArgumentException("Ein Modul ist null!");
+        }
+
         aenderungen.setId(neuesmodul.getId());
 
         for (Field field : neuesmodul.getClass().getDeclaredFields()) {
-            if (field == null) {
-                continue;
-            }
-
             field.setAccessible(true);
 
             if ("datumAenderung".equals((String) field.getName())) {
@@ -88,6 +89,25 @@ public class ModulService {
             return null;
         }
         return aenderungen;
+    }
+
+    void applyAntragOnModul(Modul modul, Antrag antrag) {
+        Modul modulaenderungen = jsonService.jsonObjectToModul(antrag.getModul());
+
+        for (Field field : modul.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+
+            try {
+                if (field.get(modulaenderungen) == null) {
+                    continue;
+                }
+                if (!field.get(modulaenderungen).equals(field.get(modul))) {
+                    field.set(modul, field.get(modulaenderungen));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //Modul buildModulUntil(List<Antrag> antraege, LocalDateTime when)
