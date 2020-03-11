@@ -25,7 +25,7 @@ public class ModulService {
      * @param localDateTime
      */
     public void addModul(Modul newModul, LocalDateTime localDateTime) {
-        Modul modul = modulSnapshotRepository.findById(newModul.getId();
+        Modul modul = modulSnapshotRepository.findById(newModul.getId()).get();
         if (modul != null) {
             modul = calculateModulDiffs(modul, newModul);
         }
