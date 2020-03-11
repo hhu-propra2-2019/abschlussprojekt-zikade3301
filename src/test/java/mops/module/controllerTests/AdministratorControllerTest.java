@@ -29,9 +29,10 @@ class AdministratorControllerTest {
         mvc = MockMvcBuilders.webAppContextSetup(context).alwaysDo(print()).apply(springSecurity()).build();
     }
 
+    final String expect = "administrator";
+
     @Test
     void testAdministratorViewName() throws Exception {
-        final String expect = "administrator";
         mvc.perform(get("/module/administrator"))
                 .andExpect(view().name(expect));
     }
