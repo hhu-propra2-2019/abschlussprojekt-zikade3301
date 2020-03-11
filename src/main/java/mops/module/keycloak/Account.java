@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.keycloak;
 
 import java.util.Set;
 import lombok.AllArgsConstructor;

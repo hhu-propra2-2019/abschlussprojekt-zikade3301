@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.keycloak;
 
 import javax.servlet.http.HttpServletRequest;
 import org.keycloak.KeycloakPrincipal;
