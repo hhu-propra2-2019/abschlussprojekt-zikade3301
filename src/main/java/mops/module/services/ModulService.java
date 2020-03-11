@@ -53,6 +53,8 @@ public class ModulService {
 
     public Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) {
         Modul aenderungen = new Modul();
+        boolean foundDiffs = false;
+
         aenderungen.setId(neuesmodul.getId());
 
         for (Field field : neuesmodul.getClass().getDeclaredFields()) {
@@ -68,15 +70,22 @@ public class ModulService {
 
             try {
                 if (field.get(altesmodul) == null) {
-                    field.set(aenderungen, field.get(neuesmodul));
+                    if (field.get(neuesmodul) != null) {
+                        field.set(aenderungen, field.get(neuesmodul));
+                        foundDiffs = true;
+                    }
                     continue;
                 }
                 if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
                     field.set(aenderungen, field.get(neuesmodul));
+                    foundDiffs = true;
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+        if (!foundDiffs) {
+            return null;
         }
         return aenderungen;
     }

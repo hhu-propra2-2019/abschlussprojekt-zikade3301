@@ -74,6 +74,7 @@ public class ModulServiceTest {
         Veranstaltung veranstaltung2 = new Veranstaltung();
         veranstaltung2.setId((long) 3);
         Veranstaltung veranstaltung4 = new Veranstaltung();
+        veranstaltung4.setTitel("test");
         List<Veranstaltung> veranstaltungsVoraussetzungen2 = new ArrayList<Veranstaltung>();
         veranstaltungsVoraussetzungen2.add(veranstaltung4);
         veranstaltung2.setVoraussetzungenTeilnahme(veranstaltungsVoraussetzungen2);
@@ -85,6 +86,18 @@ public class ModulServiceTest {
 
         Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
         assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
-        assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
+        assertThat(diffs.getVeranstaltungen()).isNotNull();
+    }
+
+    @Test
+    public void calculateModulDiffsNullTest() {
+        Modul modul1 = new Modul();
+        modul1.setModulkategorie(Modulkategorie.MASTERARBEIT);
+
+        Modul modul2 = new Modul();
+        modul2.setModulkategorie(Modulkategorie.MASTERARBEIT);
+
+        Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
+        assertThat(diffs).isNull();
     }
 }
