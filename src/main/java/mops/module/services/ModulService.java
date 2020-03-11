@@ -19,7 +19,8 @@ public class ModulService {
 
     /**
      * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert
-     * Wenn das Modul doch existiert, wird es mit den existierend
+     * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert
+     * unf
      *
      * @param newModul
      * @param localDateTime
