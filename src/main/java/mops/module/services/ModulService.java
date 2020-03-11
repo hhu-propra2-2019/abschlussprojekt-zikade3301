@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.repositories.AntragsRepository;
+import mops.module.repositories.ModulSnapshotRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,27 @@ import org.springframework.stereotype.Service;
 public class ModulService {
 
     private final AntragsRepository antragsRepository;
+    private final ModulSnapshotRepository modulSnapshotRepository;
     private final JSONService jsonService;
+
+    /**
+     * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert
+     * Wenn das Modul doch existiert, wird es mit den existierend
+     *
+     * @param newModul
+     * @param localDateTime
+     */
+    public void addModul(Modul newModul, LocalDateTime localDateTime) {
+        Modul modul = modulSnapshotRepository.findById(newModul.getId();
+        if (modul != null) {
+            modul = calculateModulDiffs(modul, newModul);
+        }
+        Antrag antrag = toAntrag(modul, localDateTime);
+        antragsRepository.save(antrag);
+        return;
+
+
+    }
 
     /**
      * Erstellt aus einem Modul ein Antrag
