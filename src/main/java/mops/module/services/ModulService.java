@@ -50,7 +50,7 @@ public class ModulService {
 
     }
 
-    public Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) throws IllegalAccessException {
+    public Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) {
         Modul aenderungen = new Modul();
         aenderungen.setId(neuesmodul.getId());
 
@@ -65,14 +65,16 @@ public class ModulService {
                 continue;
             }
 
-            if (field.get(altesmodul) == null) {
-                field.set(aenderungen, field.get(neuesmodul));
-                continue;
-            }
-
-
-            if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
-                field.set(aenderungen, field.get(neuesmodul));
+            try {
+                if (field.get(altesmodul) == null) {
+                    field.set(aenderungen, field.get(neuesmodul));
+                    continue;
+                }
+                if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
+                    field.set(aenderungen, field.get(neuesmodul));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
         return aenderungen;
