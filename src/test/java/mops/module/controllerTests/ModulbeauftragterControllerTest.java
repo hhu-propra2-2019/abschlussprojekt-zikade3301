@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static mops.module.controllerTests.AuthenticationTokenGenerator.generateAuthenticationToken;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.hamcrest.CoreMatchers.not;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +31,11 @@ class ModulbeauftragterControllerTest {
         mvc = MockMvcBuilders.webAppContextSetup(context).alwaysDo(print()).apply(springSecurity()).build();
     }
 
+    final String expect = "modulbeauftragter";
+
     @Test
     void testModulbeauftragterViewName() throws Exception{
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
-        final String expect = "modulbeauftragter";
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(view().name(expect));
@@ -46,16 +49,21 @@ class ModulbeauftragterControllerTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void testModulbeauftragterNoAccessIfNotLoggedIn() throws Exception {
-//        mvc.perform(get("/module/modulbeauftragter"))
-//                .andExpect();
-//    }
+    @Test
+    void testModulbeauftragterNoAccessIfNotLoggedIn() throws Exception {
+        assertThrows(java.lang.AssertionError.class,
+                ()->{
+                    mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
+                });
+    }
 
-//        @Test
+
+
+
+//    @Test
 //    void testModulbeauftragterNoAccessForStudents() throws Exception {
 //    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
-
+//
 //        mvc.perform(get("/module/modulbeauftragter"))
 //                .andExpect();
 //    }
