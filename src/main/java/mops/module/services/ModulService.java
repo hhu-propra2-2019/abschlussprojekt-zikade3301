@@ -44,10 +44,11 @@ public class ModulService {
      * @param modul
      * @return
      */
-    Antrag toAntrag(Modul modul, LocalDateTime localDateTime) {
+    Antrag toAntrag(Modul modul, LocalDateTime approveDate) {
         String jsonObject = jsonService.modulToJSONObject(modul);
         Antrag antrag = new Antrag();
         antrag.setModul(jsonObject);
+        antrag.setApproveDate(approveDate);
         return antrag;
 
     }
