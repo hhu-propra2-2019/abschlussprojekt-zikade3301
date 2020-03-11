@@ -5,6 +5,13 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 
 public class KeycloakAccount {
 
+    /**
+     * KeycloakAccount.
+     *
+     * @param token the token of keycloak for permissions.
+     * @return new Account for Keycloak
+     */
+
     public static Account createAccountFromPrincipal(KeycloakAuthenticationToken token) {
         KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
         return new Account(
