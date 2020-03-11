@@ -1,22 +1,30 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
+import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragsRepository;
 import mops.module.repositories.ModulSnapshotRepository;
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 public class ModulServiceTest {
     private static ModulService modulService;
     private static JSONService jsonService;
+
+    private static String modul1, modul2, modul3, modul4, diffs1, diffs2;
 
     @BeforeAll
     static void init() {
@@ -24,69 +32,43 @@ public class ModulServiceTest {
         ModulSnapshotRepository modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         jsonService = new JSONService();
         modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
+
+        modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
+                "\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
+                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
+                "\"voraussetzungenTeilnahme\":[{}]}],\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
+                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
+                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs1 = "{\"id\":5," +
+                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
+                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
+                "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
 
     @Test
     public void calculateModulDiffsTest1() {
-        Modul modul1 = new Modul();
-        modul1.setModulkategorie(Modulkategorie.MASTERARBEIT);
-        Veranstaltung veranstaltung1 = new Veranstaltung();
-        veranstaltung1.setId((long) 3);
-        List<Veranstaltung> veranstaltungList1 = new ArrayList<Veranstaltung>();
-        veranstaltungList1.add(veranstaltung1);
-        modul1.setVeranstaltungen(veranstaltungList1);
-        modul1.setId((long) 5);
-
-        Modul modul2 = new Modul();
-        modul2.setModulkategorie(Modulkategorie.BACHELORARBEIT);
-        Veranstaltung veranstaltung2 = new Veranstaltung();
-        veranstaltung2.setId((long) 3);
-        List<Veranstaltung> veranstaltungList2 = new ArrayList<Veranstaltung>();
-        veranstaltungList2.add(veranstaltung2);
-        modul2.setVeranstaltungen(veranstaltungList2);
-        modul2.setId((long) 5);
-
-        Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
-        assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
-        assertThat(diffs.getVeranstaltungen()).isEqualTo(null);
+        Modul diffs = modulService.calculateModulDiffs(jsonService.jsonObjectToModul(modul1),
+                jsonService.jsonObjectToModul(modul2));
+        try {
+            JSONAssert.assertEquals(jsonService.modulToJSONObject(diffs), diffs1, false);
+        } catch (JSONException e) {
+            fail(e.toString());
+        }
     }
 
     @Test
     public void calculateModulDiffsTest2() {
-        Modul modul1 = new Modul();
-        modul1.setModulkategorie(Modulkategorie.MASTERARBEIT);
-
-        Veranstaltung veranstaltung1 = new Veranstaltung();
-        veranstaltung1.setId((long) 3);
-        Veranstaltung veranstaltung3 = new Veranstaltung();
-        List<Veranstaltung> veranstaltungsVoraussetzungen = new ArrayList<Veranstaltung>();
-        veranstaltungsVoraussetzungen.add(veranstaltung3);
-        veranstaltung1.setVoraussetzungenTeilnahme(veranstaltungsVoraussetzungen);
-        List<Veranstaltung> veranstaltungList1 = new ArrayList<Veranstaltung>();
-        veranstaltungList1.add(veranstaltung1);
-        modul1.setVeranstaltungen(veranstaltungList1);
-
-        modul1.setId((long) 5);
-
-        Modul modul2 = new Modul();
-        modul2.setModulkategorie(Modulkategorie.BACHELORARBEIT);
-
-        Veranstaltung veranstaltung2 = new Veranstaltung();
-        veranstaltung2.setId((long) 3);
-        Veranstaltung veranstaltung4 = new Veranstaltung();
-        veranstaltung4.setTitel("test");
-        List<Veranstaltung> veranstaltungsVoraussetzungen2 = new ArrayList<Veranstaltung>();
-        veranstaltungsVoraussetzungen2.add(veranstaltung4);
-        veranstaltung2.setVoraussetzungenTeilnahme(veranstaltungsVoraussetzungen2);
-        List<Veranstaltung> veranstaltungList2 = new ArrayList<Veranstaltung>();
-        veranstaltungList2.add(veranstaltung2);
-        modul2.setVeranstaltungen(veranstaltungList2);
-
-        modul2.setId((long) 5);
-
-        Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
-        assertThat(diffs.getModulkategorie()).isEqualTo(Modulkategorie.BACHELORARBEIT);
-        assertThat(diffs.getVeranstaltungen()).isNotNull();
+        Modul diffs = modulService.calculateModulDiffs(jsonService.jsonObjectToModul(modul3),
+                jsonService.jsonObjectToModul(modul4));
+        try {
+            JSONAssert.assertEquals(jsonService.modulToJSONObject(diffs), diffs2, false);
+        } catch (JSONException e) {
+            fail(e.toString());
+        }
     }
 
     @Test
@@ -99,5 +81,19 @@ public class ModulServiceTest {
 
         Modul diffs = modulService.calculateModulDiffs(modul1, modul2);
         assertThat(diffs).isNull();
+    }
+
+    @Test
+    public void applyAntragOnModulTest() {
+        Modul modul = jsonService.jsonObjectToModul(modul1);
+        Antrag antrag = new Antrag();
+        antrag.setModul(diffs1);
+        modulService.applyAntragOnModul(modul, antrag);
+
+        try {
+            JSONAssert.assertEquals(jsonService.modulToJSONObject(modul), modul2, false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
