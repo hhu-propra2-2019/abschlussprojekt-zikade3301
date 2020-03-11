@@ -30,21 +30,41 @@ class ModulbeauftragterControllerTest {
     }
 
     @Test
-    void module() throws Exception{
+    void testModulbeauftragterViewName() throws Exception{
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
-        final String expect = "index";
+        final String expect = "modulbeauftragter";
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(view().name(expect));
     }
 
     @Test
-    void testIndexStatus() throws Exception {
+    void testModulbeauftragterStatusLoggedIn() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(status().isOk());
     }
 
-    // TODO not OK when not logged in
+//    @Test
+//    void testModulbeauftragterNoAccessIfNotLoggedIn() throws Exception {
+//        mvc.perform(get("/module/modulbeauftragter"))
+//                .andExpect();
+//    }
+
+//        @Test
+//    void testModulbeauftragterNoAccessForStudents() throws Exception {
+//    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
+
+//        mvc.perform(get("/module/modulbeauftragter"))
+//                .andExpect();
+//    }
+
+    //    @Test
+//    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
+//    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
+
+//        mvc.perform(get("/module/modulbeauftragter"))
+//                .andExpect();
+//    }
 }

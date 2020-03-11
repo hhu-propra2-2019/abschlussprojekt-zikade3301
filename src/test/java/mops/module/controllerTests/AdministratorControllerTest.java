@@ -42,6 +42,6 @@ class AdministratorControllerTest {
                 .andExpect(status().isOk());
     }
 
-    // TODO write Test for keycloak
-    // TODO not OK when not logged in
+    // TODO write Test for keycloak if new role on keycloak available
+    // TODO not OK when not logged in if new role on keycloak available
 }
