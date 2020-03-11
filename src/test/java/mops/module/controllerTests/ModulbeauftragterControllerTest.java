@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static mops.module.controllerTests.AuthenticationTokenGenerator.generateAuthenticationToken;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.hamcrest.CoreMatchers.not;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,22 +56,25 @@ class ModulbeauftragterControllerTest {
                 });
     }
 
+    @Test
+    void testModulbeauftragterNoAccessForStudents() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
+
+        assertThrows(java.lang.AssertionError.class,
+                ()->{
+                    mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
+                });
+    }
 
 
-
+//    TODO enable test if Christian Meter created a role for admins
 //    @Test
-//    void testModulbeauftragterNoAccessForStudents() throws Exception {
-//    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
-//
-//        mvc.perform(get("/module/modulbeauftragter"))
-//                .andExpect();
-//    }
-
-    //    @Test
 //    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
-//    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "studentin"));
+//    SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "administrator"));
 
-//        mvc.perform(get("/module/modulbeauftragter"))
-//                .andExpect();
+//    assertThrows(java.lang.AssertionError.class,
+//                ()->{
+//        mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
+//    });
 //    }
 }
