@@ -16,8 +16,4 @@ public class JSONService {
     public Modul jsonObjectToModul(String json) {
         return gson.fromJson(json, Modul.class);
     }
-
-    //public String calculateModulDiffs(Modul modul1, Modul modul2)
-
-    //ModulID in Antrag
 }

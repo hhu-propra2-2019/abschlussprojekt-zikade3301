@@ -35,7 +35,7 @@ public class Modul {
 
     private Modulkategorie modulkategorie;
 
-    private boolean sichtbar;
+    private Boolean sichtbar;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumErstellung;

@@ -13,11 +13,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 public class Antrag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String modul;
 
-    private long modulid;
+    private Long modulid;
 
     @LastModifiedDate
     private LocalDateTime createDate;
