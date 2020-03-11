@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.keycloak;
 
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
