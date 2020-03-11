@@ -32,12 +32,19 @@ class ModulbeauftragterControllerTest {
     @Test
     void module() throws Exception{
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
+        final String expect = "index";
 
         mvc.perform(get("/module/modulbeauftragter"))
-                .andExpect(view().name("modulbeauftragter"))
-                .andExpect(status().isOk())
-        ;
+                .andExpect(view().name(expect));
     }
 
-    // TODO write Test for keycloak
+    @Test
+    void testIndexStatus() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
+
+        mvc.perform(get("/module/modulbeauftragter"))
+                .andExpect(status().isOk());
+    }
+
+    // TODO not OK when not logged in
 }
