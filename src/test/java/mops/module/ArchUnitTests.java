@@ -10,15 +10,18 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.annotation.SessionScope;
 
 @AnalyzeClasses(packages = "mops.module")
 public class ArchUnitTests {
 
     @ArchTest
-    static final ArchRule controllerIsAnnotatedWithRequestMapping =
-            classes().that().haveNameMatching(".*Controller")
-                    .should().beAnnotatedWith(RequestMapping.class)
-                    .andShould(new Rule("/module", "Request-Mapping incorrect!"));
+    static final ArchRule controllerIsAnnotatedWithRequestMapping = classes()
+            .that()
+            .haveNameMatching(".*Controller")
+            .should()
+            .beAnnotatedWith(RequestMapping.class)
+            .andShould(new Rule("/module", "Request-Mapping incorrect!"));
 
     public static class Rule extends ArchCondition<JavaClass> {
 
@@ -42,4 +45,10 @@ public class ArchUnitTests {
         }
     }
 
+    @ArchTest
+    static final ArchRule controllerIsAnnotatedWithSessionScope = classes()
+            .that()
+            .haveNameMatching(".*Controller")
+            .should()
+            .beAnnotatedWith(SessionScope.class);
 }

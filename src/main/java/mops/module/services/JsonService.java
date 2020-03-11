@@ -5,11 +5,11 @@ import mops.module.database.Modul;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JSONService {
+public class JsonService {
 
     private final Gson gson = new Gson();
 
-    public String modulToJSONObject(Modul modul) {
+    public String modulToJsonObject(Modul modul) {
         return gson.toJson(modul);
     }
 

@@ -16,14 +16,14 @@ public class ModulService {
 
     private final AntragsRepository antragsRepository;
     private final ModulSnapshotRepository modulSnapshotRepository;
-    private final JSONService jsonService;
+    private final JsonService jsonService;
 
     /**
-     * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert
-     * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert
+     * Wenn das Modul nicht existiert, wird es direkt als Antrag gespeichert.
+     * Wenn das Modul doch existiert, wird die difference als Antrag gespeichert.
      *
-     * @param newModul
-     * @param approveDate
+     * @param newModul    Neues Modul
+     * @param approveDate Datum der Annahme
      */
     public void addModul(Modul newModul, LocalDateTime approveDate) {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
@@ -39,13 +39,13 @@ public class ModulService {
     }
 
     /**
-     * Erstellt aus einem Modul ein Antrag
+     * Erstellt aus einem Modul ein Antrag.
      *
-     * @param modul
+     * @param modul Modul auf welches der Antrag angewendet wird
      * @return
      */
     Antrag toAntrag(Modul modul, LocalDateTime approveDate) {
-        String jsonObject = jsonService.modulToJSONObject(modul);
+        String jsonObject = jsonService.modulToJsonObject(modul);
         Antrag antrag = new Antrag();
         antrag.setModul(jsonObject);
         antrag.setApproveDate(approveDate);
@@ -53,15 +53,24 @@ public class ModulService {
 
     }
 
+    /**
+     * Berechnet die Differenzen zwischen zwei Modulen.
+     *
+     * @param altesmodul Altes Modul
+     * @param neuesmodul Neues Modul
+     * @return
+     */
     public Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) {
         Modul aenderungen = new Modul();
+        boolean foundDiffs = false;
+
+        if (altesmodul == null || neuesmodul == null) {
+            throw new IllegalArgumentException("Ein Modul ist null!");
+        }
+
         aenderungen.setId(neuesmodul.getId());
 
         for (Field field : neuesmodul.getClass().getDeclaredFields()) {
-            if (field == null) {
-                continue;
-            }
-
             field.setAccessible(true);
 
             if ("datumAenderung".equals((String) field.getName())) {
@@ -70,17 +79,43 @@ public class ModulService {
 
             try {
                 if (field.get(altesmodul) == null) {
-                    field.set(aenderungen, field.get(neuesmodul));
+                    if (field.get(neuesmodul) != null) {
+                        field.set(aenderungen, field.get(neuesmodul));
+                        foundDiffs = true;
+                    }
                     continue;
                 }
                 if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
                     field.set(aenderungen, field.get(neuesmodul));
+                    foundDiffs = true;
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+        if (!foundDiffs) {
+            return null;
+        }
         return aenderungen;
+    }
+
+    void applyAntragOnModul(Modul modul, Antrag antrag) {
+        Modul modulaenderungen = jsonService.jsonObjectToModul(antrag.getModul());
+
+        for (Field field : modul.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+
+            try {
+                if (field.get(modulaenderungen) == null) {
+                    continue;
+                }
+                if (!field.get(modulaenderungen).equals(field.get(modul))) {
+                    field.set(modul, field.get(modulaenderungen));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //Modul buildModulUntil(List<Antrag> antraege, LocalDateTime when)
