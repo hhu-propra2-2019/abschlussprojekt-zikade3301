@@ -16,7 +16,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import static mops.module.controllerTests.SecurityContextMock.setupSecurityContextMock;
+import static mops.module.controllerTests.AuthenticationTokenGenerator.generateAuthenticationToken;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +33,7 @@ class ModuleControllerTest {
 
     @Test
     void module() throws Exception{
-        setupSecurityContextMock(SecurityContextHolder.getContext(), "orga");
+        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken( "orga"));
 
         mvc.perform(get("/module/meineModule"))
                 .andExpect(view().name("module"))
