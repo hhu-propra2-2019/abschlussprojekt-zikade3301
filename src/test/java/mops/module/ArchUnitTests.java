@@ -16,10 +16,12 @@ import org.springframework.web.context.annotation.SessionScope;
 public class ArchUnitTests {
 
     @ArchTest
-    static final ArchRule controllerIsAnnotatedWithRequestMapping =
-            classes().that().haveNameMatching(".*Controller")
-                    .should().beAnnotatedWith(RequestMapping.class)
-                    .andShould(new Rule("/module", "Request-Mapping incorrect!"));
+    static final ArchRule controllerIsAnnotatedWithRequestMapping = classes()
+            .that()
+            .haveNameMatching(".*Controller")
+            .should()
+            .beAnnotatedWith(RequestMapping.class)
+            .andShould(new Rule("/module", "Request-Mapping incorrect!"));
 
     public static class Rule extends ArchCondition<JavaClass> {
 
@@ -44,7 +46,9 @@ public class ArchUnitTests {
     }
 
     @ArchTest
-    static final ArchRule controllerIsAnnotatedWithSessionScope =
-            classes().that().haveNameMatching(".*Controller")
-                    .should().beAnnotatedWith(SessionScope.class);
+    static final ArchRule controllerIsAnnotatedWithSessionScope = classes()
+            .that()
+            .haveNameMatching(".*Controller")
+            .should()
+            .beAnnotatedWith(SessionScope.class);
 }
