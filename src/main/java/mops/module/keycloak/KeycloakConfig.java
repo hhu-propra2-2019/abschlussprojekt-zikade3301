@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.keycloak;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.context.annotation.Bean;
