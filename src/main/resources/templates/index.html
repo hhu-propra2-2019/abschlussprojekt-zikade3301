@@ -47,7 +47,8 @@
                 <a href="/module/modulbeauftragter">Meine Module</a>
             </li>
             <li>
-                <a href="/module/administrator">Anträge</a>
+<!--                TODO activate as soon as the new role "administrator" is available-->
+<!--                <a href="/module/administrator">Anträge</a>-->
             </li>
         </ul>
 
@@ -89,13 +90,13 @@
     </p>
     <div class="collapse" id="Pflichtmodule">
         <div class="card card-body pt-0" style="border: none">
-            <ou style="font-size: large; list-style-type: none">
+            <ul style="font-size: large; list-style-type: none">
                 <li>
                     <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
 <!--                    TODO hier "id" (aktuell fest auf 1) entsprechend der echten id anpassen-->
                     <a th:href="@{/module/moduldetails(id=${1})}">Programmierung</a>
                 </li>
-            </ou>
+            </ul>
         </div>
     </div>
 
@@ -116,16 +117,6 @@
     </p>
     <div class="collapse" id="Wahlpflichtmodule_BA">
         <div class="card card-body pt-0" style="border: none">
-            <ul style="font-size: large">
-                <li>
-                    <span>Rechnernetze</span>
-                    <span style="width: min-content" class="badge badge-dark">10 CP</span>
-                </li>
-                <li>
-                    <span>Datenbanken</span>
-                    <span style="width: min-content" class="badge badge-dark">10 CP</span>
-                </li>
-            </ul>
         </div>
     </div>
 </main>
