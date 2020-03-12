@@ -1,4 +1,4 @@
-package mops.module.controllerTests;
+package mops.module.controllertests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

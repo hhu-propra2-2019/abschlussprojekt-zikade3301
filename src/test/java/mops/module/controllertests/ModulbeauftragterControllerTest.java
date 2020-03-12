@@ -1,10 +1,10 @@
-package mops.module.controllerTests;
+package mops.module.controllertests;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static mops.module.controllerTests.AuthenticationTokenGenerator.generateAuthenticationToken;
+import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;

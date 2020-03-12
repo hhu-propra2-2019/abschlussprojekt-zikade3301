@@ -1,4 +1,4 @@
-package mops.module.controllerTests;
+package mops.module.controllertests;
 
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
