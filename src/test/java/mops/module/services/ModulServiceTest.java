@@ -14,17 +14,21 @@ import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class ModulServiceTest {
     private ModulService modulService;
     private JsonService jsonService;
+    @Autowired
     private AntragsRepository antragsRepository;
     private ModulSnapshotRepository modulSnapshotRepository;
     private String modul1, modul2, modul3, modul4, diffs1, diffs2;
 
     @BeforeEach
     public void init() {
-        antragsRepository = mock(AntragsRepository.class);
+        //antragsRepository = mock(AntragsRepository.class);
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         jsonService = new JsonService();
         modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
@@ -90,6 +94,14 @@ public class ModulServiceTest {
             JSONAssert.assertEquals(jsonService.modulToJsonObject(modul), modul2, false);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void addModulModificationAntragTest() {
+        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+        if(antragsRepository.count() != 1) {
+            fail("Falsche Anzahl der Datenbank-Objekte!");
         }
     }
 }
