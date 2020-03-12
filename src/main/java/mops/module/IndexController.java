@@ -39,15 +39,15 @@ public class IndexController {
      * @param model   the model of keycloak for permissions.
      * @return the string "moduldetails" for the selected module.
      */
-    // TODO Parameter des konkreten Moduls soll in der view übergeben werden.
     @RequestMapping("/moduldetails")
     public String moduldetails(
-            @RequestParam("id") String modulId,
+            @RequestParam("modulId") String modulId,
             KeycloakAuthenticationToken token,
             Model model) {
         if (token != null) {
             model.addAttribute("account",createAccountFromPrincipal(token));
         }
+        model.addAttribute("modulId",modulId);
         return "moduldetails";
     }
 

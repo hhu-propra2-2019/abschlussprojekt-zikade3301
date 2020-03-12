@@ -1,6 +1,8 @@
 package mops.module.controllertests;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -29,4 +31,12 @@ class IndexControllerTest {
         mvc.perform(get("/module/"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void testModuldetails() throws Exception {
+        mvc.perform(get("/module/moduldetails")
+            .param("modulId","1")
+        ).andExpect(model().attribute("modulId",equalTo("1")));
+    }
+
 }
