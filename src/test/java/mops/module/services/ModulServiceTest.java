@@ -17,7 +17,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 public class ModulServiceTest {
     private ModulService modulService;
     private JsonService jsonService;
@@ -97,11 +96,4 @@ public class ModulServiceTest {
         }
     }
 
-    @Test
-    public void addModulModificationAntragTest() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
-        if(antragsRepository.count() != 1) {
-            fail("Falsche Anzahl der Datenbank-Objekte!");
-        }
-    }
 }

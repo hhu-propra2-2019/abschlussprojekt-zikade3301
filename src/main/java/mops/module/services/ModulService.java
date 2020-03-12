@@ -66,7 +66,7 @@ public class ModulService {
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = jsonService.jsonObjectToModul(antrag.getModul());
 
-        neuesmodul = modulSnapshotRepository.save(neuesmodul);
+        modulSnapshotRepository.save(neuesmodul);
 
         antrag.setApproveDate(LocalDateTime.now());
         antrag.setModulid(neuesmodul.getId());
@@ -142,6 +142,11 @@ public class ModulService {
 
     public List<Modul> getAlleSichtbarenModule() {
         return getAlleModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
+    }
+
+    List<Antrag> getAlleAntraege() {
+        return StreamSupport.stream(antragsRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     /*Modul getModulUntil(Long modulid, LocalDateTime when) {
