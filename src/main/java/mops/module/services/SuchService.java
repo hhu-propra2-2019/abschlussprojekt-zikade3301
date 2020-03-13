@@ -17,8 +17,8 @@ public class SuchService {
             Connection conn = DriverManager.getConnection(url, "root", "zikade3301");
             Connection conn2 = DriverManager.getConnection(url, "root", "zikade3301");
             Statement stmt = conn.createStatement();
-
-            PreparedStatement stmt2 = conn2.prepareStatement("select * From Tabelle WHERE first like '%\"+searchinput+\"%'");
+            PreparedStatement stmt2 = conn2.prepareStatement("select * From Tabelle WHERE first like ? ");
+            stmt2.setString(1, "%" + searchinput + "%");//1 specifies the first parameter in the query i.e. name
 
             //ZUR NOT NEUE TABLE ZU IMPLEMENTIERUNGSZWECKEN
             String sql = "DROP TABLE IF EXISTS Tabelle";
@@ -26,7 +26,7 @@ public class SuchService {
             stmt.executeUpdate(sql);
 
             String sql1 = "CREATE TABLE Tabelle " +
-                    "(id INTEGER not NULL, " +
+                    "(id INTEGER NOT NULL, " +
                     " first VARCHAR(255), " +
                     " PRIMARY KEY ( id ))";
             stmt.executeUpdate(sql1);
@@ -35,7 +35,7 @@ public class SuchService {
             String sql3 = "INSERT INTO Tabelle (id, first) VALUES (2, 'Roman')";
             String sql4 = "INSERT INTO Tabelle (id, first) VALUES (3, 'Ein ICE fährt schnell')";
             stmt.executeUpdate(sql4);
-            String sql5 = "INSERT INTO Tabelle (id, first) VALUES (4, 'IVEN')";
+            String sql5 = "INSERT INTO Tabelle (id, first) VALUES (4, 'IVEN searchinput')";
             stmt.executeUpdate(sql5);
 
             //PreparedStatement stmt=conn.prepareStatement("select * From Tabelle WHERE first like '%\"+searchinput+\"%'");
