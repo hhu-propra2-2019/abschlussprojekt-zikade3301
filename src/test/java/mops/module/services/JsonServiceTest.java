@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
@@ -31,7 +33,8 @@ public class JsonServiceTest {
         veranstaltung.setId((long) 3);
         List<Veranstaltung> veranstaltungList = new ArrayList<Veranstaltung>();
         veranstaltungList.add(veranstaltung);
-        vergleichsmodul.setVeranstaltungen(veranstaltungList);
+        Set<Veranstaltung> veranstaltungsSet = (Set<Veranstaltung>) veranstaltungList;
+        vergleichsmodul.setVeranstaltungen(veranstaltungsSet);
         vergleichsmodul.setId((long) 5);
 
         assertThat(vergleichsmodul.getModulkategorie()).isEqualTo(testmodul.getModulkategorie());

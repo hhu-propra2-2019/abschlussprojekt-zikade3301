@@ -1,6 +1,8 @@
 package mops.module.database;
 
+import com.google.gson.annotations.Expose;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,15 +12,20 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import mops.module.services.Exclude;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Veranstaltung {
 
     @Id
     @GeneratedValue
     private Long id;
 
+    @Exclude
     @ManyToOne
     private Modul modul;
 
@@ -36,9 +43,9 @@ public class Veranstaltung {
     private Veranstaltungsbeschreibung beschreibung;
 
     @OneToMany
-    private List<Veranstaltung> voraussetzungenTeilnahme;
+    private Set<Veranstaltung> voraussetzungenTeilnahme;
 
     @ManyToMany(mappedBy = "veranstaltungen")
-    private List<Semester> semester;
+    private Set<Semester> semester;
 
 }

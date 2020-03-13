@@ -4,8 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
+import mops.module.database.Modulkategorie;
+import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragsRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -18,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 public class ModulServiceDatabaseTest {
     private ModulService modulService;
     private JsonService jsonService;
@@ -32,8 +39,8 @@ public class ModulServiceDatabaseTest {
 
     @AfterEach
     public void clear() {
-        antragsRepository.deleteAll();
-        modulSnapshotRepository.deleteAll();
+        //antragsRepository.deleteAll();
+        //modulSnapshotRepository.deleteAll();
     }
 
     @BeforeEach
@@ -88,25 +95,59 @@ public class ModulServiceDatabaseTest {
         assertThat(antrag.getModulid()).isEqualTo(modul.getId());
     }
 
-//    @Test
-//    public void approveModulModificationAntragTest() {
-//        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
-//        modulService.approveModulCreationAntrag(modulService.getAlleAntraege().get(0));
-//        Modul modul = modulService.getAlleModule().get(0);
-//
-//        Modul aenderungen = jsonService.jsonObjectToModul(diffs1);
-//        modulService.addModulModificationAntrag(aenderungen);
-//        Antrag antrag = modulService.getAlleAntraege().get(1);
-//        modulService.approveModulModificationAntrag(antrag);
-//
-//        Modul geaendertesModul = modulService.getAlleModule().get(0);
-//
-//        try {
-//            JSONAssert.assertEquals(jsonService.modulToJsonObject(geaendertesModul), modul2, false);
-//        } catch (JSONException e) {
-//            fail(e.toString());
-//        }
-//
-//    }
+    @Test
+    public void jpatest() {
+        Modul vergleichsmodul = new Modul();
+        vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);
+        Veranstaltung veranstaltung = new Veranstaltung();
+        veranstaltung.setId((long) 3);
+        Set<Veranstaltung> veranstaltungsSet = new HashSet<Veranstaltung>();
+        veranstaltungsSet.add(veranstaltung);
+        vergleichsmodul.setVeranstaltungen(veranstaltungsSet);
+        System.out.println(jsonService.modulToJsonObject(vergleichsmodul));
+
+        modulService.addModulCreationAntrag(vergleichsmodul);
+        List<Antrag> antraege = modulService.getAlleAntraege();
+        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1 ));
+    }
+
+    @Test
+    public void approveModulModificationAntragTest() {
+        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+
+        List<Antrag> antraege = modulService.getAlleAntraege();
+        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1 ));
+
+        List<Modul> module = modulService.getAlleModule();
+        Modul modul = module.get(module.size() - 1);
+
+        System.out.println(jsonService.modulToJsonObject(modul));
+
+        Modul aenderungen = jsonService.jsonObjectToModul(diffs1);
+        aenderungen.setId(modul.getId());
+        modulService.addModulModificationAntrag(aenderungen);
+
+        antraege = modulService.getAlleAntraege();
+        Antrag antrag = antraege.get(antraege.size() - 1 );
+
+        modulService.approveModulModificationAntrag(antrag);
+
+        module = modulService.getAlleModule();
+        Modul geaendertesModul = module.get(module.size() - 1);
+
+        Modul assertmodul = jsonService.jsonObjectToModul(modul2);
+        assertmodul.setId(geaendertesModul.getId());
+
+        System.out.println(jsonService.modulToJsonObject(geaendertesModul));
+        System.out.println(jsonService.modulToJsonObject(assertmodul));
+
+        try {
+            JSONAssert.assertEquals(jsonService.modulToJsonObject(geaendertesModul),
+                    jsonService.modulToJsonObject(assertmodul), false);
+        } catch (JSONException e) {
+            fail(e.toString());
+        }
+
+    }
 
 }

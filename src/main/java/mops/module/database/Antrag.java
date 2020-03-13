@@ -6,10 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Antrag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +23,7 @@ public class Antrag {
 
     private Long modulid;
 
-    @LastModifiedDate
+    @CreatedDate
     private LocalDateTime createDate;
 
     private LocalDateTime approveDate;
