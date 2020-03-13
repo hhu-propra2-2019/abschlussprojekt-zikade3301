@@ -19,9 +19,10 @@ class IndexControllerTest {
     @Autowired
     MockMvc mvc;
 
+    final String expect = "index";
+
     @Test
     void testIndexViewName() throws Exception {
-        final String expect = "index";
         mvc.perform(get("/module/"))
                 .andExpect(view().name(expect));
     }
@@ -37,6 +38,13 @@ class IndexControllerTest {
         mvc.perform(get("/module/moduldetails")
             .param("modulId","1")
         ).andExpect(model().attribute("modulId",equalTo("1")));
+    }
+
+    @Test
+    void testSearchRouting() throws Exception {
+        mvc.perform(get("/module/search")
+             .param("searchField","someSearch")
+        ).andExpect(view().name(expect));
     }
 
 }
