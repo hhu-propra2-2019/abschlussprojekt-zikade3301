@@ -30,14 +30,24 @@
 == Montag, 09.03.10
 
 - Dokumentation für Woche 1 vervollständigt
--
+- README abgeändert
+- Services und Repositories aus Database-Branch entfernt (in eigenen Branch), damit dieser in den Master gemerget werden kann
+- Test für IndexController
+    * PMD entfernt, da es einen Haufen "unsinnige" Fehlermeldungen geliefert hat (zB Konstruktor für Testklasse erforderlich)
+    Nutzen nun nur noch Checkstyle und SpotBugs
+- Spring Profiles: application-dev.properties erstellt
+
 
 == Dienstag, 10.03.10
 
 - Dokumentation zu Postgres-eigener Volltextsuche durchgearbeitet, klingt vielversprechend
+- index.html überarbeitet
+- Klasse für Keycloak-Accounts hinzugefügt
+- Controller und html-Datei für Ansicht von Modulbeauftragten hinzugefügt
 
 == Mittwoch, 11.03.10
 
+- Modulhandbuch sollte nun im MultiUser-Betrieb funktionieren
 - Versuch, Postgres-eigene Volltextsuche einzubinden. Unbefriedigend, da Suche nach Substrings keine Ergebnisse liefert.
 (Bsp: "Osterhase" als Feld, Suchanfrage "Oster" liefert keine Ergebnisse.) Liegt an der Art, wie Tokens für die Suche generiert
 werden: Dictionary für zusammengesetzte Worte müsste anscheinend selbst erstellt werden und auch dann würden Suchanfragen wie
