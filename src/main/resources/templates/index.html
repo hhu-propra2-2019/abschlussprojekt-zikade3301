@@ -62,6 +62,10 @@
         <input name="searchField" class="form-control" placeholder="Suche" type="search" id="searchField">
         <button type="submit" class="btn btn-primary">Suchen</button>
     </form>
+    
+    <ul th:each="result: ${searchResults}">
+        <li th:text="${result}"></li>
+    </ul>
     <!--    <div th:remove="all-but-first">
             <div th:each="module : ${modules}" th:object="${module}">
                 <div th:each="category : *{categorys}" th:object="${category}">
