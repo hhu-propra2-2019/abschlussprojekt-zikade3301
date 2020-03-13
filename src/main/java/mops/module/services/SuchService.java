@@ -10,13 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class SuchService {
 
-    // "Tabelle" durch Tabellennamen ersetzen
+    /**
+     * Search for module.
+     *
+     * @param searchinput the given string to search
+     */
+    // TODO "Tabelle" durch Tabellennamen ersetzen
     public void searchForModule(String searchinput) {
         try {
             String url = "jdbc:postgresql://localhost:3301/Modulhandbuch";
             Connection conn = DriverManager.getConnection(url, "root", "zikade3301");
 
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tabelle WHERE first LIKE ? ");
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT * FROM Tabelle WHERE first LIKE ? "
+            );
             stmt.setString(1, "%" + searchinput + "%");
 
             ResultSet searchResult = stmt.executeQuery();
