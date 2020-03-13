@@ -43,11 +43,14 @@
             <li>
                 <a href="/module/">Übersicht</a>
             </li>
-            <li>
-                <a href="/module/modulbeauftragter">Meine Module</a>
-            </li>
-            <li>
-                <a href="/module/administrator">Anträge</a>
+            <li th:if="${account}">
+                <div th:each="role: ${account.getRoles()}">
+                    <div th:switch="${role}">
+                        <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
+                        <!--                TODO activate as soon as the new role "administrator" is available-->
+                        <!--                <a th:case="'administrator'" href="/module/administrator">Anträge</a>-->
+                    </div>
+                </div>
             </li>
         </ul>
 
@@ -69,87 +72,53 @@
             </div>
         </div>-->
 
+
+
+
     <p>
         <a class="btn btn-primary"
            style="font-weight: bold;
+           font-size: larger;
            border:none;
            background-color: transparent;
            color: dodgerblue"
            data-toggle="collapse"
-           href="#Programmierung"
+           href="#Pflichtmodule"
            role="button"
            aria-expanded="false"
-           aria-controls="Programmierung">
-            Programmierung (früher: Grundlagen der Softwareentwicklung und Programmierung)
+           aria-controls="Pflichtmodule">
+            Pflichtmodule
         </a>
     </p>
-    <div class="collapse" id="Programmierung">
-        <div class="card card-body">
-            <span style="width: min-content" class="badge badge-dark">10 CP</span>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-            interdum,
-            nisi
-            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-            pulvinar nibh tempor porta.
+    <div class="collapse" id="Pflichtmodule">
+        <div class="card card-body pt-0" style="border: none">
+            <ul style="font-size: large; list-style-type: none">
+                <li>
+                    <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
+<!--                    TODO hier "id" (aktuell fest auf 1) entsprechend der echten id anpassen-->
+                    <a th:href="@{/module/moduldetails(modulId=${1})}">Programmierung</a>
+                </li>
+            </ul>
         </div>
     </div>
 
     <p>
         <a class="btn btn-primary"
            style="font-weight: bold;
+           font-size: larger;
            border:none;
            background-color: transparent;
            color: dodgerblue"
            data-toggle="collapse"
-           href="#Rechnerarchitektur"
+           href="#Wahlpflichtmodule_BA"
            role="button"
            aria-expanded="false"
-           aria-controls="Rechnerarchitektur">
-            Rechnerarchitektur
+           aria-controls="Wahlpflichtmodule_BA">
+            Wahlpflichtmodule (B.Sc.)
         </a>
     </p>
-    <div class="collapse" id="Rechnerarchitektur">
-        <div class="card card-body">
-            <span style="width: min-content" class="badge badge-dark">9 CP</span>
-            22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-            interdum,
-            nisi
-            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-            pulvinar nibh tempor porta.
-        </div>
-    </div>
-
-    <p>
-        <a class="btn btn-primary"
-           style="font-weight: bold;
-           border:none;
-           background-color: transparent;
-           color: dodgerblue"
-           data-toggle="collapse"
-           href="#TheoretischeInformatik"
-           role="button"
-           aria-expanded="false"
-           aria-controls="TheoretischeInformatik">
-            Theoretische Informatik
-        </a>
-    </p>
-    <div class="collapse" id="TheoretischeInformatik">
-        <div class="card card-body">
-            <span style="width: min-content" class="badge badge-dark">10 CP</span>
-            22 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum
-            interdum,
-            nisi
-            lorem egestas vitae scelerisque enim ligula venenatis dolor. Maecenas nisl est, ultrices nec congue
-            eget, auctor vitae massa. Fusce luctus vestibulum augue ut aliquet. Nunc sagittis dictum nisi, sed
-            ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis imperdiet sed ornare turpis. Donec
-            vitae dui eget tellus gravida venenatis. Integer fringilla congue eros non fermentum. Sed dapibus
-            pulvinar nibh tempor porta.
+    <div class="collapse" id="Wahlpflichtmodule_BA">
+        <div class="card card-body pt-0" style="border: none">
         </div>
     </div>
 </main>
