@@ -17,7 +17,7 @@ public class SuchService {
             Connection conn = DriverManager.getConnection(url, "root", "zikade3301");
 
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Tabelle WHERE first LIKE ? ");
-            stmt.setString(1, "%" + searchinput + "%");//1 specifies the first parameter in the query i.e. name
+            stmt.setString(1, "%" + searchinput + "%");
 
             ResultSet searchResult = stmt.executeQuery();
 
