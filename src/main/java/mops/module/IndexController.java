@@ -37,15 +37,6 @@ public class IndexController {
         return "index";
     }
 
-    //TODO: move to own Controller
-    @GetMapping("/search")
-    public String searchMethodTmp(@RequestParam String searchField) {
-        suchService.searchForModule(searchField);
-        //TODO: return resultpage
-        return "index";
-    }
-
-
     /**
      * Moduldetails string.
      *
@@ -66,4 +57,10 @@ public class IndexController {
         return "moduldetails";
     }
 
+    @GetMapping("/search")
+    public String searchMethodTmp(@RequestParam String searchField) {
+        suchService.searchForModule(searchField);
+        //TODO: new request for modules only including the testresults
+        return "index";
+    }
 }
