@@ -1,0 +1,17 @@
+[[section-runtime-view]]
+== Laufzeitsicht
+
+
+
+=== _<Bezeichnung Laufzeitszenario 1>_
+
+*  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
+*  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
+
+=== _<Bezeichnung Laufzeitszenario 2>_
+
+...
+
+=== _<Bezeichnung Laufzeitszenario n>_
+
+...

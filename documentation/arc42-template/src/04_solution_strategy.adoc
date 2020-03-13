@@ -1,0 +1,4 @@
+[[section-solution-strategy]]
+== Lösungsstrategie
+
+
