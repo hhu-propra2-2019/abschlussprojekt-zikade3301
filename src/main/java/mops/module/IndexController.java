@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 
@@ -28,6 +29,13 @@ public class IndexController {
         if (token != null) {
             model.addAttribute("account",createAccountFromPrincipal(token));
         }
+        return "index";
+    }
+
+    @GetMapping("/search")
+    public String searchMethodTmp(@RequestParam String searchField) {
+        // Hier Suche implementieren
+        System.out.println(searchField);
         return "index";
     }
 

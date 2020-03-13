@@ -55,8 +55,9 @@
 </header>
 <main th:fragment="bodycontent">
 
-    <form method="POST" class="form-group">
-        <input class="form-control" placeholder="Suche" type="search">
+    <form method=GET action="/module/search" class="form-group">
+        <input name="searchField" class="form-control" placeholder="Suche" type="search" id="searchField">
+        <button type="submit" class="btn btn-primary">Suchen</button>
     </form>
     <!--    <div th:remove="all-but-first">
             <div th:each="module : ${modules}" th:object="${module}">
