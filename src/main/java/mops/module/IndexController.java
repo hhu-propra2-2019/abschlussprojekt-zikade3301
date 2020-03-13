@@ -28,7 +28,6 @@ public class IndexController {
      * @param model the model of keycloak for permissions.
      * @return the string "index" which is the unsecured page for every user.
      */
-
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
@@ -80,4 +79,25 @@ public class IndexController {
             System.err.println(e.getMessage());
         }
     }
+
+    /**
+     * Moduldetails string.
+     *
+     * @param modulId the modul id
+     * @param token   the token of keycloak for permissions.
+     * @param model   the model of keycloak for permissions.
+     * @return the string "moduldetails" for the selected module.
+     */
+    @RequestMapping("/moduldetails")
+    public String moduldetails(
+            @RequestParam("modulId") String modulId,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account",createAccountFromPrincipal(token));
+        }
+        model.addAttribute("modulId",modulId);
+        return "moduldetails";
+    }
+
 }
