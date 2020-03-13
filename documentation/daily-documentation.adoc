@@ -24,7 +24,31 @@
 
 - mehr Modellierung der Daten-Objekte
 - Struktur der Anwendung an der Tafel ausgearbeitet
-- Service zum Ändern der Module hinzugefügt
-- Repository-Klassen für CRUD-Operationen hinzugefügt
+- Service zum Ändern der Module hinzugefügt (auf Feature-Branch)
+- Repository-Klassen für CRUD-Operationen hinzugefügt (auf Feature-Branch)
 
 == Montag, 09.03.10
+
+- Dokumentation für Woche 1 vervollständigt
+-
+
+== Dienstag, 10.03.10
+
+- Dokumentation zu Postgres-eigener Volltextsuche durchgearbeitet, klingt vielversprechend
+
+== Mittwoch, 11.03.10
+
+- Versuch, Postgres-eigene Volltextsuche einzubinden. Unbefriedigend, da Suche nach Substrings keine Ergebnisse liefert.
+(Bsp: "Osterhase" als Feld, Suchanfrage "Oster" liefert keine Ergebnisse.) Liegt an der Art, wie Tokens für die Suche generiert
+werden: Dictionary für zusammengesetzte Worte müsste anscheinend selbst erstellt werden und auch dann würden Suchanfragen wie
+"Algo" oder "Alg" keine Ergebinsse liefern, auch wenn ein Feld "Algorithmen" enthält. Suchen daher nach anderer Möglichkeit
+(Stichwort: Lucene)
+
+== Donnerstag, 12.03.10
+
+- Versuch, HibernateSearch mit Lucene für die Volltextsuche zu integrieren
+
+== Freitag, 13.03.10
+
+- einfache SQL-Query für Suche eingefügt - benötigt fertige Datenstruktur, um sie sinnvoll zu implementieren
+- Suche in der index.html und im indexController eingepflegt
