@@ -51,7 +51,7 @@ public class IndexController {
             Statement stmt = conn.createStatement();
             ResultSet searchResult;
 
-            // ZUR NOT NEUE TABLE ZU IMPLEMENTIERUNGSZWECKEN
+// ZUR NOT NEUE TABLE ZU IMPLEMENTIERUNGSZWECKEN
 //            String sql1 = "CREATE TABLE Tabelle " +
 //                    "(id INTEGER not NULL, " +
 //                    " first VARCHAR(255), " +
