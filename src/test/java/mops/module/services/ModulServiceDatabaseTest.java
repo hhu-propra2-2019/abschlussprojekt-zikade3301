@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
+import mops.module.database.Veranstaltungsbeschreibung;
 import mops.module.repositories.AntragsRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -23,6 +25,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 //@ActiveProfiles("dev")
@@ -50,18 +53,18 @@ public class ModulServiceDatabaseTest {
         jsonService = new JsonService();
         modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
 
-        modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
+        modul1 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}]," +
                 "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
+        modul2 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}]," +
                 "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{}]}],\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
+        modul3 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"," +
+                "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}]," +
+                "\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul4 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"," +
+                "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}]," +
                 "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs1 = "{\"id\":5," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
+        diffs1 = "{\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs2 = "{\"veranstaltungen\":[{\"id\":3," +
                 "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
                 "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
@@ -100,46 +103,53 @@ public class ModulServiceDatabaseTest {
         Modul vergleichsmodul = new Modul();
         vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);
         Veranstaltung veranstaltung = new Veranstaltung();
-        veranstaltung.setId((long) 3);
-        Set<Veranstaltung> veranstaltungsSet = new HashSet<Veranstaltung>();
-        veranstaltungsSet.add(veranstaltung);
-        vergleichsmodul.setVeranstaltungen(veranstaltungsSet);
-        System.out.println(jsonService.modulToJsonObject(vergleichsmodul));
+        veranstaltung.setCreditPoints("5CP");
+        Veranstaltungsbeschreibung veranstaltungsbeschreibung = new Veranstaltungsbeschreibung();
+        veranstaltungsbeschreibung.setInhalte("Hier sind Inhalte");
+        veranstaltung.setBeschreibung(veranstaltungsbeschreibung);
+        vergleichsmodul.addVeranstaltung(veranstaltung);
 
         modulService.addModulCreationAntrag(vergleichsmodul);
         List<Antrag> antraege = modulService.getAlleAntraege();
-        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1 ));
+        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
+
+        List<Modul> module = modulService.getAlleModule();
+        Modul modul = module.get(module.size() - 1);
+        vergleichsmodul.setId(modul.getId());
+
+        try {
+            JSONAssert.assertEquals(jsonService.modulToJsonObject(modul),
+                    jsonService.modulToJsonObject(vergleichsmodul), false);
+        } catch (JSONException e) {
+            fail(e.toString());
+        }
     }
 
     @Test
     public void approveModulModificationAntragTest() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul3));
 
         List<Antrag> antraege = modulService.getAlleAntraege();
-        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1 ));
+        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
         List<Modul> module = modulService.getAlleModule();
         Modul modul = module.get(module.size() - 1);
 
-        System.out.println(jsonService.modulToJsonObject(modul));
+        Modul aenderungen = jsonService.jsonObjectToModul(modul4);
 
-        Modul aenderungen = jsonService.jsonObjectToModul(diffs1);
         aenderungen.setId(modul.getId());
         modulService.addModulModificationAntrag(aenderungen);
 
         antraege = modulService.getAlleAntraege();
-        Antrag antrag = antraege.get(antraege.size() - 1 );
+        Antrag antrag = antraege.get(antraege.size() - 1);
 
         modulService.approveModulModificationAntrag(antrag);
 
         module = modulService.getAlleModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
-        Modul assertmodul = jsonService.jsonObjectToModul(modul2);
+        Modul assertmodul = jsonService.jsonObjectToModul(modul4);
         assertmodul.setId(geaendertesModul.getId());
-
-        System.out.println(jsonService.modulToJsonObject(geaendertesModul));
-        System.out.println(jsonService.modulToJsonObject(assertmodul));
 
         try {
             JSONAssert.assertEquals(jsonService.modulToJsonObject(geaendertesModul),

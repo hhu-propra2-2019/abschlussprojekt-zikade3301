@@ -31,10 +31,7 @@ public class JsonServiceTest {
         vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);
         Veranstaltung veranstaltung = new Veranstaltung();
         veranstaltung.setId((long) 3);
-        List<Veranstaltung> veranstaltungList = new ArrayList<Veranstaltung>();
-        veranstaltungList.add(veranstaltung);
-        Set<Veranstaltung> veranstaltungsSet = (Set<Veranstaltung>) veranstaltungList;
-        vergleichsmodul.setVeranstaltungen(veranstaltungsSet);
+        vergleichsmodul.addVeranstaltung(veranstaltung);
         vergleichsmodul.setId((long) 5);
 
         assertThat(vergleichsmodul.getModulkategorie()).isEqualTo(testmodul.getModulkategorie());
