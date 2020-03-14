@@ -60,6 +60,8 @@ public class ModulService {
                     "Modul konnte in der Datenbank nicht gefunden werden!");
         }
         applyAntragOnModul(altesmodul, antrag);
+        altesmodul.refreshLinks();
+        modulSnapshotRepository.deleteById(altesmodul.getId());
         modulSnapshotRepository.save(altesmodul);
 
         antrag.setApproveDate(LocalDateTime.now());
@@ -69,9 +71,7 @@ public class ModulService {
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = jsonService.jsonObjectToModul(antrag.getModul());
 
-        neuesmodul.setVeranstaltungen(neuesmodul.getVeranstaltungen());
-        neuesmodul.setModulbeauftragte(neuesmodul.getModulbeauftragte());
-        neuesmodul.setZusatzfelder(neuesmodul.getZusatzfelder());
+        neuesmodul.refreshLinks();
 
         modulSnapshotRepository.save(neuesmodul);
 
