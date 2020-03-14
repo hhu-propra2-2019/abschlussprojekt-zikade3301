@@ -1,17 +1,19 @@
 package mops.module.database;
 
-import com.google.gson.annotations.Expose;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import mops.module.services.Exclude;
+import mops.module.services.JsonExclude;
 
 @Entity
 public class Modulbeauftragter {
+
+    public Modulbeauftragter() {
+        module = new HashSet<>();
+    }
 
     @Id
     @GeneratedValue
@@ -19,7 +21,7 @@ public class Modulbeauftragter {
 
     private String name;
 
-    @Exclude
+    @JsonExclude
     @ManyToMany
     private Set<Modul> module;
 

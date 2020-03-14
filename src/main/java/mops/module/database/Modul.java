@@ -1,6 +1,8 @@
 package mops.module.database;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -34,7 +36,7 @@ public class Modul {
 
     private String titelEnglisch;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "modul")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Veranstaltung> veranstaltungen;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "module")
@@ -58,6 +60,20 @@ public class Modul {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Zusatzfeld> zusatzfelder;
+
+    public void refreshLinks() {
+        this.setVeranstaltungen(this.getVeranstaltungen());
+        this.setModulbeauftragte(this.getModulbeauftragte());
+        this.setZusatzfelder(this.getZusatzfelder());
+    }
+
+    public void addVeranstaltung(Veranstaltung veranstaltung) {
+        if (veranstaltungen == null) {
+            veranstaltungen = new HashSet<>();
+        }
+        veranstaltungen.add(veranstaltung);
+        veranstaltung.setModul(this);
+    }
 
     public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
         if (veranstaltungen == null) {

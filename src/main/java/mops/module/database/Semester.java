@@ -1,6 +1,6 @@
 package mops.module.database;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +9,24 @@ import javax.persistence.ManyToMany;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import mops.module.services.Exclude;
+import mops.module.services.JsonExclude;
 
-@NoArgsConstructor
-@RequiredArgsConstructor
+//@NoArgsConstructor
+//@RequiredArgsConstructor
 @Entity
 public class Semester implements Comparable<Semester> {
 
+    public Semester() {
+        veranstaltungen = new HashSet<>();
+    }
+
+    public Semester(Semestertyp semestertyp, int jahr) {
+        this.semestertyp = semestertyp;
+        this.jahr = jahr;
+        this.veranstaltungen = new HashSet<>();
+    }
+
+    @JsonExclude
     @Id
     @GeneratedValue
     private Long id;
@@ -26,7 +37,7 @@ public class Semester implements Comparable<Semester> {
     @NonNull
     private int jahr;
 
-    @Exclude
+    @JsonExclude
     @ManyToMany
     private Set<Veranstaltung> veranstaltungen;
 
