@@ -1,51 +1,63 @@
 package mops.module.database;
 
-import com.google.gson.annotations.Expose;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import mops.module.services.Exclude;
+import lombok.EqualsAndHashCode;
+import mops.module.services.JsonExclude;
 
 @Entity
-@Getter
+/*@Getter
 @Setter
+@EqualsAndHashCode*/
+@Data
 public class Veranstaltung {
 
+    public Veranstaltung() {
+        lehrende = new HashSet<>();
+        veranstaltungsformen = new HashSet<>();
+        voraussetzungenTeilnahme = new HashSet<>();
+        semester = new HashSet<>();
+    }
+
+    @JsonExclude
+    @EqualsAndHashCode.Exclude
     @Id
     @GeneratedValue
     private Long id;
 
-    @Exclude
+    @JsonExclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
+    @JoinColumn(name = "modul_id")
     private Modul modul;
 
     private String titel;
 
-    @ElementCollection
-    private List<String> lehrende;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> lehrende;
 
     private String creditPoints;
 
-    @ElementCollection
-    private List<String> veranstaltungsformen;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> veranstaltungsformen;
 
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Veranstaltung> voraussetzungenTeilnahme;
 
-    @ManyToMany(mappedBy = "veranstaltungen")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "veranstaltungen")
     private Set<Semester> semester;
-
 }
