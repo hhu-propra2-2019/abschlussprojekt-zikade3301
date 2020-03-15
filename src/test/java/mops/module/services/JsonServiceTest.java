@@ -2,11 +2,6 @@ package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
@@ -17,15 +12,15 @@ public class JsonServiceTest {
     static JsonService jsonService;
 
     @BeforeAll
-    static void initJSONService() {
+    static void initJsonService() {
         jsonService = new JsonService();
     }
 
     @Test
     public void jsonToModulTest() {
-        String testjson = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
-                "\"modulkategorie\":\"MASTERARBEIT\",\"sichtbar\":false}";
-        Modul testmodul = jsonService.jsonObjectToModul(testjson);
+        final String testjson = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
+                + "\"modulkategorie\":\"MASTERARBEIT\",\"sichtbar\":false}";
+        final Modul testmodul = jsonService.jsonObjectToModul(testjson);
 
         Modul vergleichsmodul = new Modul();
         vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);

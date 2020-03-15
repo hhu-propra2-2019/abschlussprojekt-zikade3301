@@ -1,9 +1,7 @@
 package mops.module.database;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,12 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -96,8 +90,9 @@ public class Modul {
     }
 
     public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
-        if(zusatzfelder == null)
+        if (zusatzfelder == null) {
             return;
+        }
         for (Zusatzfeld zusatzfeld : zusatzfelder) {
             zusatzfeld.setModul(this);
         }

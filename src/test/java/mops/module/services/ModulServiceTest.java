@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
-
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -14,38 +13,42 @@ import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 public class ModulServiceTest {
     private ModulService modulService;
     private JsonService jsonService;
-    @Autowired
+
     private AntragsRepository antragsRepository;
     private ModulSnapshotRepository modulSnapshotRepository;
-    private String modul1, modul2, modul3, modul4, diffs1, diffs2;
+
+    private String modul1;
+    private String modul2;
+    private String modul3;
+    private String modul4;
+    private String diffs1;
+    private String diffs2;
 
     @BeforeEach
     public void init() {
-        //antragsRepository = mock(AntragsRepository.class);
+        antragsRepository = mock(AntragsRepository.class);
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         jsonService = new JsonService();
         modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
 
-        modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
-                "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{}]}],\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs1 = "{\"id\":5," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
+                + "\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
+                + "\"voraussetzungenTeilnahme\":[{}]}],\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
+                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs1 = "{\"id\":5,"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
+                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
 
     @Test

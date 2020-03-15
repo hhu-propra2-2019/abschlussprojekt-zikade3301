@@ -2,18 +2,12 @@ package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.mock;
 
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
-import mops.module.database.Modulbeauftragter;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
@@ -21,14 +15,12 @@ import mops.module.database.Zusatzfeld;
 import mops.module.repositories.AntragsRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("dev")
@@ -42,7 +34,12 @@ public class ModulServiceDatabaseTest {
     @Autowired
     private ModulSnapshotRepository modulSnapshotRepository;
 
-    private String modul1, modul2, modul3, modul4, diffs1, diffs2;
+    private String modul1;
+    private String modul2;
+    private String modul3;
+    private String modul4;
+    private String diffs1;
+    private String diffs2;
 
     @BeforeEach
     public void init() {
@@ -52,20 +49,20 @@ public class ModulServiceDatabaseTest {
         antragsRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
 
-        modul1 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}]," +
-                "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul2 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        modul3 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"," +
-                "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}]," +
-                "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul4 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"," +
-                "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul1 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}],"
+                + "\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul2 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul3 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\","
+                + "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}],"
+                + "\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul4 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\","
+                + "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         diffs1 = "{\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs2 = "{\"veranstaltungen\":[{\"id\":3," +
-                "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}]," +
-                "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        diffs2 = "{\"veranstaltungen\":[{\"id\":3,"
+                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
+                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
 
     @Test
