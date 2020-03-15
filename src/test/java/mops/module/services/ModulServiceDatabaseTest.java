@@ -31,7 +31,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
-//@ActiveProfiles("dev")
+@ActiveProfiles("dev")
 public class ModulServiceDatabaseTest {
     private ModulService modulService;
     private JsonService jsonService;

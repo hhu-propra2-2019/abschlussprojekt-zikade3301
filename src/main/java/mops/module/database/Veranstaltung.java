@@ -39,7 +39,9 @@ public class Veranstaltung {
 
     @JsonExclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    // War zeitweise notwendig:
+    // @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
@@ -57,10 +59,12 @@ public class Veranstaltung {
     private Veranstaltungsbeschreibung beschreibung;
 
     // ToDo: Cascade checken
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
     private Set<Veranstaltung> voraussetzungenTeilnahme;
 
     // ToDo: Cascade checken
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltungen")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+            fetch = FetchType.EAGER, mappedBy = "veranstaltungen")
     private Set<Semester> semester;
 }
