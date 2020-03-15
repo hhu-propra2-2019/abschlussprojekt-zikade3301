@@ -7,14 +7,17 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
+import mops.module.database.Modulbeauftragter;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
+import mops.module.database.Zusatzfeld;
 import mops.module.repositories.AntragsRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -38,20 +41,16 @@ public class ModulServiceDatabaseTest {
 
     @Autowired
     private ModulSnapshotRepository modulSnapshotRepository;
-    private String modul1, modul2, modul3, modul4, diffs1, diffs2;
 
-    @AfterEach
-    public void clear() {
-        //antragsRepository.deleteAll();
-        //modulSnapshotRepository.deleteAll();
-    }
+    private String modul1, modul2, modul3, modul4, diffs1, diffs2;
 
     @BeforeEach
     public void init() {
-        //antragsRepository = mock(AntragsRepository.class);
-        //modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         jsonService = new JsonService();
         modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
+
+        antragsRepository.deleteAll();
+        modulSnapshotRepository.deleteAll();
 
         modul1 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}]," +
                 "\"modulkategorie\":\"MASTERARBEIT\"}";
@@ -75,11 +74,13 @@ public class ModulServiceDatabaseTest {
         assertThat(antragsRepository.count()).isEqualTo(1);
     }
 
-    @Test
+    /*@Test
     public void addModulModificationAntragTestCreateOne() {
-        modulService.addModulModificationAntrag(jsonService.jsonObjectToModul(modul1));
+        Modul testmodul = jsonService.jsonObjectToModul(modul1);
+        testmodul.setId(20L);
+        modulService.addModulModificationAntrag(testmodul);
         assertThat(antragsRepository.count()).isEqualTo(1);
-    }
+    }*/
 
     @Test
     public void approveModulCreationAntragTestAntragCreated() {
@@ -99,7 +100,7 @@ public class ModulServiceDatabaseTest {
     }
 
     @Test
-    public void jpatest() {
+    public void approveModulCreationAntragTestFullRoutine() {
         Modul vergleichsmodul = new Modul();
         vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);
         Veranstaltung veranstaltung = new Veranstaltung();
@@ -158,6 +159,64 @@ public class ModulServiceDatabaseTest {
             fail(e.toString());
         }
 
+    }
+
+    @Test
+    public void completeAddModulRoutineTest() {
+        Modul modul = new Modul();
+        modul.setGesamtCreditPoints("10CP");
+        modul.setModulkategorie(Modulkategorie.WAHLPFLICHT_BA);
+        modul.setStudiengang("Informatik");
+        modul.setTitelDeutsch("Betriebssysteme");
+        modul.setTitelEnglisch("Operating systems");
+
+        Veranstaltung veranstaltung = new Veranstaltung();
+        veranstaltung.setCreditPoints("10CP");
+        veranstaltung.setTitel("Vorlesung Betriebssysteme");
+
+        Veranstaltungsbeschreibung veranstaltungsbeschreibung = new Veranstaltungsbeschreibung();
+        veranstaltungsbeschreibung.setInhalte("Inhalte");
+        veranstaltungsbeschreibung.setHaufigkeit("Alle 2 Semester");
+        veranstaltungsbeschreibung.setLernergebnisse("Synchronisierung");
+        veranstaltungsbeschreibung.setSprache("Deutsch");
+        veranstaltungsbeschreibung.setLiteratur(
+                new HashSet<>(Arrays.asList("Alter Schinken")));
+        veranstaltungsbeschreibung.setVerwendbarkeit(
+                new HashSet<>(Arrays.asList("Überall verwendbar")));
+        veranstaltungsbeschreibung.setVoraussetzungenBestehen(
+                new HashSet<>(Arrays.asList("50% der Punkte in der Klausur")));
+        veranstaltung.setBeschreibung(veranstaltungsbeschreibung);
+
+        veranstaltung.setLehrende(
+                new HashSet<>(Arrays.asList("Michael Schöttner")));
+        veranstaltung.setVeranstaltungsformen(
+                new HashSet<>(Arrays.asList("Vorlesung", "Praktische Übung")));
+
+        Veranstaltung voraussetzungen = new Veranstaltung();
+        voraussetzungen.setTitel("Informatik I");
+        voraussetzungen.setCreditPoints("10CP");
+        veranstaltung.setVoraussetzungenTeilnahme(
+                new HashSet<>(Arrays.asList(voraussetzungen)));
+
+        modul.setVeranstaltungen(
+                new HashSet<>(Arrays.asList(veranstaltung)));
+
+        Zusatzfeld feld1 = new Zusatzfeld();
+        feld1.setInhalt("Dies hier ist das erste Zusatzfeld!");
+        feld1.setTitel("Feld1");
+
+        Zusatzfeld feld2 = new Zusatzfeld();
+        feld2.setInhalt("Numero dos");
+        feld2.setTitel("Feld2");
+
+        modul.setZusatzfelder(new HashSet<>(Arrays.asList(feld1, feld2)));
+
+        System.out.println(jsonService.modulToJsonObject(modul));
+
+        modulService.addModulCreationAntrag(modul);
+
+        List<Antrag> antraege = modulService.getAlleAntraege();
+        modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
     }
 
 }
