@@ -2,6 +2,7 @@ package mops.module.database;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -38,7 +39,7 @@ public class Veranstaltung {
 
     @JsonExclude
     @EqualsAndHashCode.Exclude
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
@@ -55,9 +56,11 @@ public class Veranstaltung {
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    // ToDo: Cascade checken
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Veranstaltung> voraussetzungenTeilnahme;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "veranstaltungen")
+    // ToDo: Cascade checken
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltungen")
     private Set<Semester> semester;
 }

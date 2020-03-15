@@ -1,6 +1,7 @@
 package mops.module.database;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Antrag {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(columnDefinition = "text")
     private String modul;
 
     private Long modulid;

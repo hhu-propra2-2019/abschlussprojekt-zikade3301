@@ -58,7 +58,7 @@ public class Modul {
     @LastModifiedDate
     private LocalDateTime datumAenderung;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "modul")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Zusatzfeld> zusatzfelder;
 
     public void refreshLinks() {
