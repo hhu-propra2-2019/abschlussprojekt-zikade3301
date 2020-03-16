@@ -1,12 +1,19 @@
 package mops.module.controllertests;
 
+import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -27,24 +34,58 @@ class AdministratorControllerTest {
                 .build();
     }
 
-    /*
-    final String expect = "administrator";
+    private final String expect = "administrator";
 
-       TODO enmable tests if new role on keycloak available
-      @Test
-      void testAdministratorViewName() throws Exception {
-          mvc.perform(get("/module/administrator"))
-                  .andExpect(view().name(expect));
-     }
+    @Test
+    void testAdministratorViewName() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-      @Test
-      void testAdministratorStatus() throws Exception {
-          mvc.perform(get("/module/administrator"))
-                  .andExpect(status().isOk());
-      }
+        mvc.perform(get("/module/administrator"))
+                .andExpect(view().name(expect));
+    }
 
-     */
+    @Test
+    void testAdministratorStatusLoggedIn() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-    // TODO write Test for keycloak if new role on keycloak available
-    // TODO not OK when not logged in if new role on keycloak available
+        mvc.perform(get("/module/administrator"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testAdministratorNoAccessIfNotLoggedIn() throws Exception {
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
+                });
+    }
+
+    @Test
+    void testAdministratorNoAccessForStudents() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("studentin"));
+
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
+                });
+    }
+
+    @Test
+    void testAdministratorNoAccessForOrganisator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
+                });
+    }
+
 }
