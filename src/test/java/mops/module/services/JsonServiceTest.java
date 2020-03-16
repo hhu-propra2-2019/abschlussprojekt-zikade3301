@@ -9,18 +9,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class JsonServiceTest {
-    static JsonService jsonService;
-
-    @BeforeAll
-    static void initJsonService() {
-        jsonService = new JsonService();
-    }
 
     @Test
     public void jsonToModulTest() {
         final String testjson = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"MASTERARBEIT\",\"sichtbar\":false}";
-        final Modul testmodul = jsonService.jsonObjectToModul(testjson);
+        final Modul testmodul = JsonService.jsonObjectToModul(testjson);
 
         Modul vergleichsmodul = new Modul();
         vergleichsmodul.setModulkategorie(Modulkategorie.MASTERARBEIT);

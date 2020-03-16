@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Getter
@@ -23,7 +22,8 @@ public class Antrag {
 
     private Long modulid;
 
-    @CreatedDate
+    private String antragsteller;
+
     private LocalDateTime createDate;
 
     private LocalDateTime approveDate;

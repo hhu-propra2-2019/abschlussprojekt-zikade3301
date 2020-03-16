@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsonService {
 
-    ExclusionStrategy strategy = new ExclusionStrategy() {
+    static ExclusionStrategy strategy = new ExclusionStrategy() {
         @Override
         public boolean shouldSkipClass(Class<?> clazz) {
             return false;
@@ -22,14 +22,14 @@ public class JsonService {
             return field.getAnnotation(JsonExclude.class) != null;
         }
     };
-    private final Gson gson = new GsonBuilder().setExclusionStrategies(strategy)
+    private final static Gson gson = new GsonBuilder().setExclusionStrategies(strategy)
             .registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter()).create();
 
-    public String modulToJsonObject(Modul modul) {
+    public static String modulToJsonObject(Modul modul) {
         return gson.toJson(modul);
     }
 
-    public Modul jsonObjectToModul(String json) {
+    public static Modul jsonObjectToModul(String json) {
         return gson.fromJson(json, Modul.class);
     }
 }

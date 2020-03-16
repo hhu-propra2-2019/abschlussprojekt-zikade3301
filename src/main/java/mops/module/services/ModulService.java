@@ -19,7 +19,6 @@ public class ModulService {
 
     private final AntragsRepository antragsRepository;
     private final ModulSnapshotRepository modulSnapshotRepository;
-    private final JsonService jsonService;
 
     /**
      * Antrag für eine Moduländerung abschicken.
@@ -30,7 +29,10 @@ public class ModulService {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
         if (optionalModul.isPresent()) {
             Modul diffModul = calculateModulDiffs(optionalModul.get(), newModul);
+            diffModul.setDatumAenderung(LocalDateTime.now());
             Antrag antrag = toAntrag(diffModul);
+            antrag.setCreateDate(LocalDateTime.now());
+            antrag.setAntragsteller("Anonym");
             antragsRepository.save(antrag);
         } else {
             throw new IllegalArgumentException("Fehlerhaftes Modul!");
@@ -45,8 +47,12 @@ public class ModulService {
      */
     public void addModulCreationAntrag(Modul newModul) {
         newModul.setId(null);
+        newModul.setDatumErstellung(LocalDateTime.now());
+        newModul.setDatumAenderung(LocalDateTime.now());
 
         Antrag antrag = toAntrag(newModul);
+        antrag.setCreateDate(LocalDateTime.now());
+        antrag.setAntragsteller("Anonym");
         antragsRepository.save(antrag);
     }
 
@@ -58,7 +64,7 @@ public class ModulService {
         }
         applyAntragOnModul(altesmodul, antrag);
         altesmodul.refreshLinks();
-        modulSnapshotRepository.deleteById(altesmodul.getId());
+        //modulSnapshotRepository.deleteById(altesmodul.getId());
         modulSnapshotRepository.save(altesmodul);
 
         antrag.setApproveDate(LocalDateTime.now());
@@ -66,7 +72,7 @@ public class ModulService {
     }
 
     public void approveModulCreationAntrag(Antrag antrag) {
-        Modul neuesmodul = jsonService.jsonObjectToModul(antrag.getModul());
+        Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getModul());
 
         neuesmodul.refreshLinks();
 
@@ -84,11 +90,10 @@ public class ModulService {
      * @return
      */
     Antrag toAntrag(Modul modul) {
-        String jsonObject = jsonService.modulToJsonObject(modul);
+        String jsonObject = JsonService.modulToJsonObject(modul);
         Antrag antrag = new Antrag();
         antrag.setModul(jsonObject);
         antrag.setModulid(modul.getId());
-        //antrag.setApproveDate(approveDate);
         return antrag;
 
     }
@@ -139,7 +144,7 @@ public class ModulService {
         return aenderungen;
     }
 
-    List<Modul> getAlleModule() {
+    public List<Modul> getAlleModule() {
         return StreamSupport.stream(modulSnapshotRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
@@ -148,7 +153,7 @@ public class ModulService {
         return getAlleModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
     }
 
-    List<Antrag> getAlleAntraege() {
+    public List<Antrag> getAlleAntraege() {
         return StreamSupport.stream(antragsRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
@@ -193,7 +198,7 @@ public class ModulService {
     }*/
 
     void applyAntragOnModul(Modul modul, Antrag antrag) {
-        Modul modulaenderungen = jsonService.jsonObjectToModul(antrag.getModul());
+        Modul modulaenderungen = JsonService.jsonObjectToModul(antrag.getModul());
 
         for (Field field : modul.getClass().getDeclaredFields()) {
             field.setAccessible(true);
