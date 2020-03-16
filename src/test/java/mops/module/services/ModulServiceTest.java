@@ -7,7 +7,7 @@ import static org.mockito.Mockito.mock;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
-import mops.module.repositories.AntragsRepository;
+import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class ModulServiceTest {
     private ModulService modulService;
 
-    private AntragsRepository antragsRepository;
+    private AntragRepository antragRepository;
     private ModulSnapshotRepository modulSnapshotRepository;
 
     private String modul1;
@@ -27,11 +27,14 @@ public class ModulServiceTest {
     private String diffs1;
     private String diffs2;
 
+    /**
+     *
+     */
     @BeforeEach
     public void init() {
-        antragsRepository = mock(AntragsRepository.class);
+        antragRepository = mock(AntragRepository.class);
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
-        modulService = new ModulService(antragsRepository, modulSnapshotRepository);
+        modulService = new ModulService(antragRepository, modulSnapshotRepository);
 
         modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"MASTERARBEIT\"}";
@@ -87,7 +90,7 @@ public class ModulServiceTest {
     public void applyAntragOnModulTest() {
         Modul modul = JsonService.jsonObjectToModul(modul1);
         Antrag antrag = new Antrag();
-        antrag.setModul(diffs1);
+        antrag.setJsonModulAenderung(diffs1);
         modulService.applyAntragOnModul(modul, antrag);
 
         try {

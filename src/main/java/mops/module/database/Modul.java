@@ -35,7 +35,7 @@ public class Modul {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> modulbeauftragte;
 
-    private String gesamtCreditPoints;
+    private String gesamtLeistungspunkte;
 
     private String studiengang;
 
@@ -58,6 +58,10 @@ public class Modul {
         this.setZusatzfelder(this.getZusatzfelder());
     }
 
+    /**
+     *
+     * @param veranstaltung
+     */
     public void addVeranstaltung(Veranstaltung veranstaltung) {
         if (veranstaltungen == null) {
             veranstaltungen = new HashSet<>();

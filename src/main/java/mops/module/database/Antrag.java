@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
@@ -18,13 +19,15 @@ public class Antrag {
     private Long id;
 
     @Column(columnDefinition = "text")
-    private String modul;
+    private String jsonModulAenderung;
 
-    private Long modulid;
+    private Long modulId;
 
     private String antragsteller;
 
-    private LocalDateTime createDate;
+    @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
+    private LocalDateTime datumErstellung;
 
-    private LocalDateTime approveDate;
+    @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
+    private LocalDateTime datumGenehmigung;
 }

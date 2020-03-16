@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class JsonServiceTest {

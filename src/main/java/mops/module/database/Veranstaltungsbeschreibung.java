@@ -11,6 +11,9 @@ import lombok.Data;
 @Data
 public class Veranstaltungsbeschreibung {
 
+    /**
+     *
+     */
     public Veranstaltungsbeschreibung() {
         literatur = new HashSet<>();
         verwendbarkeit = new HashSet<>();
@@ -30,7 +33,7 @@ public class Veranstaltungsbeschreibung {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> voraussetzungenBestehen;
 
-    private String haufigkeit;
+    private String haeufigkeit;
 
     private String sprache;
 

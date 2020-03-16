@@ -13,7 +13,7 @@ public class JsonService {
 
     static ExclusionStrategy strategy = new ExclusionStrategy() {
         @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
+        public boolean shouldSkipClass(Class<?> skipClass) {
             return false;
         }
 
@@ -22,7 +22,7 @@ public class JsonService {
             return field.getAnnotation(JsonExclude.class) != null;
         }
     };
-    private final static Gson gson = new GsonBuilder().setExclusionStrategies(strategy)
+    private static final Gson gson = new GsonBuilder().setExclusionStrategies(strategy)
             .registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter()).create();
 
     public static String modulToJsonObject(Modul modul) {
