@@ -9,10 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @AllArgsConstructor
+@Getter
+@Setter
 public class Modul {
 
     @Id
@@ -46,4 +50,5 @@ public class Modul {
 
     public Modul() {
     }
+
 }
