@@ -16,10 +16,10 @@ import org.springframework.web.context.annotation.SessionScope;
 @RequestMapping("/module")
 public class AdministratorController {
 
-      @GetMapping("/administrator")
-      @Secured("ROLE_sekretariat")
-      public String administrator(KeycloakAuthenticationToken token, Model model) {
-          model.addAttribute("account", createAccountFromPrincipal(token));
-          return "administrator";
-      }
+    @GetMapping("/administrator")
+    @Secured("ROLE_sekretariat")
+    public String administrator(KeycloakAuthenticationToken token, Model model) {
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        return "administrator";
+    }
 }
