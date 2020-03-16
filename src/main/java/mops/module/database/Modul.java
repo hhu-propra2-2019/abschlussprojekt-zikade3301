@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@AllArgsConstructor
 public class Modul {
 
     @Id
@@ -41,4 +43,7 @@ public class Modul {
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumAenderung;
 
+
+    public Modul() {
+    }
 }

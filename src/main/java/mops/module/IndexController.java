@@ -2,8 +2,11 @@ package mops.module;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+import mops.module.database.Modul;
 import mops.module.services.SuchService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +62,9 @@ public class IndexController {
     }
 
     @GetMapping("/search")
-    public String searchMethodTmp(@RequestParam String searchField, Model model) {
-        List<String> searchResults = suchService.searchForModule(searchField);
+    public String searchMethodTmp(@RequestParam String searchField, Model model) throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:3301/Modulhandbuch", "root", "zikade3301");
+        List<Modul> searchResults = suchService.searchForModuleByTitle(searchField, conn);
         model.addAttribute("searchResults", searchResults);
         //TODO: new request for modules only including the testresults
         return "index";
