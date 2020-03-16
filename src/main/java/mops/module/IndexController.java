@@ -2,6 +2,8 @@ package mops.module;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+
+import java.util.List;
 import mops.module.services.SuchService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,6 @@ public class IndexController {
         if (token != null) {
             model.addAttribute("account",createAccountFromPrincipal(token));
         }
-        //TODO: request for modules to display
         return "index";
     }
 
@@ -57,16 +58,11 @@ public class IndexController {
         return "moduldetails";
     }
 
-    /**
-     * Search method string.
-     *
-     * @param searchField the given input for searching.
-     * @return the string index to stay on the page.
-     */
     @GetMapping("/search")
-    public String searchMethod(@RequestParam String searchField) {
-        suchService.searchForModule(searchField);
-        //TODO: new request for modules only including the searchresults
+    public String searchMethodTmp(@RequestParam String searchField, Model model) {
+        List<String> searchResults = suchService.searchForModule(searchField);
+        model.addAttribute("searchResults", searchResults);
+        //TODO: new request for modules only including the testresults
         return "index";
     }
 }
