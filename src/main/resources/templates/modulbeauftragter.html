@@ -64,6 +64,7 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h3 class="modal-title">Neues Modul erstellen</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -72,17 +73,69 @@
 
                     <form method='post' action='/'>
 
-                        <!-- TODO: add inputfields-->
+                        <div class="mt-3 mb-3">
+                            <label for="title">Titel</label>
+                            <input type="text"
+                                   style="float: right"
+                                   name="title"
+                                   class="form-control col-md-8 col-sm-8"
+                                   id="title"
+                                   placeholder="Titel der Veranstaltung" required>
+                        </div>
 
-                        <p>Titel</p>
-                        <p>Titel (Englisch)</p>
-                        <p>Zugehörige Veranstaltungen</p>
-                        <p>Modulbeauftragter</p>
-                        <p>CP</p>
-                        <p>Studiengang</p>
-                        <p>Modulkategorie</p>
+                        <div class="mt-3 mb-3">
+                            <label for="title">Titel (Englisch)</label>
+                            <input type="text"
+                                   style="float: right"
+                                   name="titleEnglish"
+                                   class="form-control col-md-8 col-sm-8"
+                                   id="titleEnglish"
+                                   placeholder="Englischer Titel der Veranstaltung" required>
+                        </div>
 
-                        <div style="float: right">
+                        <div class="mt-3 mb-3">
+                            <label for="organizer">Modulbeauftragter</label>
+                            <input type="text"
+                                   style="float: right"
+                                   name="organizer"
+                                   class="form-control col-md-8 col-sm-8"
+                                   id="organizer"
+                                   placeholder="Modulbeauftragter der Veranstaltung" required>
+                        </div>
+
+                        <div class="mt-3 mb-3">
+                            <label for="title">Creditpoints</label>
+                            <input type="number"
+                                   style="float: right"
+                                   name="cp"
+                                   class="form-control col-md-8 col-sm-8"
+                                   id="cp"
+                                   placeholder="CP der Veranstaltung" required>
+                        </div>
+
+                        <div class="mt-3 mb-3">
+                            <label for="modulcategory">Modulkategorie</label>
+                            <select name="modulcategory"
+                                    style="float: right"
+                                    class="form-control col-md-8 col-sm-8"
+                                    id="modulcategory" required>
+                                <option value="PFLICHT_INFO">Pflichtmodul der Informatik</option>
+                                <option value="PFLICHT_MATHE">Pflichtmodul der Mathematik</option>
+                                <option value="NEBENFACH">Nebenfachmodul</option>
+                                <option value="PRAXIS">Praxis- und Berufsorientierung</option>
+                                <option value="WAHLPFLICHT_BA">Wahlpflichtmodul (B.Sc.)</option>
+                                <option value="WAHLPFLICHT_MA">Wahlpflichtmodul (M.Sc.)</option>
+                                <option value="BACHELORARBEIT">Bachelorarbeit</option>
+                                <option value="PROJEKTARBEIT">Projektarbeit</option>
+                                <option value="MASTERARBEIT">Masterarbeit</option>
+                            </select>
+                        </div>
+
+                        <!-- TODO: add inputfields for these categories-->
+<!--                        <p>Zugehörige Veranstaltungen</p>-->
+<!--                        <p>Studiengang</p>-->
+
+                        <div style="float: right" class="mt-3">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
                             <button type="submit" class="btn btn-primary">Modul anlegen</button>
                         </div>
