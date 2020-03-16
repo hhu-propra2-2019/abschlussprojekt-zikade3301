@@ -8,8 +8,6 @@ import javax.persistence.FetchType;
 import lombok.Data;
 
 @Embeddable
-/*@Getter
-@Setter*/
 @Data
 public class Veranstaltungsbeschreibung {
 

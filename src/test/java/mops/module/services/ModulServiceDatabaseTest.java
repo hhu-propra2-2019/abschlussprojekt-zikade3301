@@ -23,10 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 public class ModulServiceDatabaseTest {
     private ModulService modulService;
-    private JsonService jsonService;
 
     @Autowired
     private AntragsRepository antragsRepository;
@@ -43,8 +42,7 @@ public class ModulServiceDatabaseTest {
 
     @BeforeEach
     public void init() {
-        jsonService = new JsonService();
-        modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
+        modulService = new ModulService(antragsRepository, modulSnapshotRepository);
 
         antragsRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
@@ -67,7 +65,7 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void addModulCreationAntragTestCreateOne() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+        modulService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
         assertThat(antragsRepository.count()).isEqualTo(1);
     }
 
@@ -81,7 +79,7 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulCreationAntragTestAntragCreated() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+        modulService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
         Antrag antrag = modulService.getAlleAntraege().get(0);
         modulService.approveModulCreationAntrag(antrag);
         assertThat(modulSnapshotRepository.count()).isEqualTo(1);
@@ -89,7 +87,7 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulCreationAntragTestModulIdIsAddedToAntrag() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul1));
+        modulService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
         Antrag antrag = modulService.getAlleAntraege().get(0);
         modulService.approveModulCreationAntrag(antrag);
         Modul modul = modulService.getAlleModule().get(0);
@@ -116,8 +114,8 @@ public class ModulServiceDatabaseTest {
         vergleichsmodul.setId(modul.getId());
 
         try {
-            JSONAssert.assertEquals(jsonService.modulToJsonObject(modul),
-                    jsonService.modulToJsonObject(vergleichsmodul), false);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(vergleichsmodul),
+                    JsonService.modulToJsonObject(modul), false);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -125,7 +123,7 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulModificationAntragTest() {
-        modulService.addModulCreationAntrag(jsonService.jsonObjectToModul(modul3));
+        modulService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul3));
 
         List<Antrag> antraege = modulService.getAlleAntraege();
         modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
@@ -133,7 +131,7 @@ public class ModulServiceDatabaseTest {
         List<Modul> module = modulService.getAlleModule();
         Modul modul = module.get(module.size() - 1);
 
-        Modul aenderungen = jsonService.jsonObjectToModul(modul4);
+        Modul aenderungen = JsonService.jsonObjectToModul(modul4);
 
         aenderungen.setId(modul.getId());
         modulService.addModulModificationAntrag(aenderungen);
@@ -146,12 +144,12 @@ public class ModulServiceDatabaseTest {
         module = modulService.getAlleModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
-        Modul assertmodul = jsonService.jsonObjectToModul(modul4);
+        Modul assertmodul = JsonService.jsonObjectToModul(modul4);
         assertmodul.setId(geaendertesModul.getId());
 
         try {
-            JSONAssert.assertEquals(jsonService.modulToJsonObject(geaendertesModul),
-                    jsonService.modulToJsonObject(assertmodul), false);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(assertmodul),
+                    JsonService.modulToJsonObject(geaendertesModul), false);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -189,11 +187,8 @@ public class ModulServiceDatabaseTest {
         veranstaltung.setVeranstaltungsformen(
                 new HashSet<>(Arrays.asList("Vorlesung", "Praktische Übung")));
 
-        Veranstaltung voraussetzungen = new Veranstaltung();
-        voraussetzungen.setTitel("Informatik I");
-        voraussetzungen.setCreditPoints("10CP");
         veranstaltung.setVoraussetzungenTeilnahme(
-                new HashSet<>(Arrays.asList(voraussetzungen)));
+                new HashSet<>(Arrays.asList("Informatik I")));
 
         modul.setVeranstaltungen(
                 new HashSet<>(Arrays.asList(veranstaltung)));
@@ -208,12 +203,24 @@ public class ModulServiceDatabaseTest {
 
         modul.setZusatzfelder(new HashSet<>(Arrays.asList(feld1, feld2)));
 
-        System.out.println(jsonService.modulToJsonObject(modul));
+        System.out.println(JsonService.modulToJsonObject(modul));
 
         modulService.addModulCreationAntrag(modul);
 
         List<Antrag> antraege = modulService.getAlleAntraege();
         modulService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
+
+        List<Modul> module = modulService.getAlleModule();
+        Modul dbmodul = module.get(module.size() - 1);
+
+        for(Veranstaltung v : dbmodul.getVeranstaltungen()) {
+            v.setLehrende(new HashSet<>(Arrays.asList("Stefan Harmeling")));
+        }
+
+        modulService.addModulModificationAntrag(dbmodul);
+
+        antraege = modulService.getAlleAntraege();
+        modulService.approveModulModificationAntrag(antraege.get(antraege.size() - 1));
     }
 
 }

@@ -16,7 +16,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 public class ModulServiceTest {
     private ModulService modulService;
-    private JsonService jsonService;
 
     private AntragsRepository antragsRepository;
     private ModulSnapshotRepository modulSnapshotRepository;
@@ -32,31 +31,30 @@ public class ModulServiceTest {
     public void init() {
         antragsRepository = mock(AntragsRepository.class);
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
-        jsonService = new JsonService();
-        modulService = new ModulService(antragsRepository, modulSnapshotRepository, jsonService);
+        modulService = new ModulService(antragsRepository, modulSnapshotRepository);
 
         modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"MASTERARBEIT\"}";
         modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[{}]}],\"modulkategorie\":\"MASTERARBEIT\"}";
+                + "\"voraussetzungenTeilnahme\":[]}],\"modulkategorie\":\"MASTERARBEIT\"}";
         modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
+                + "\"voraussetzungenTeilnahme\":[\"Informatik I\"]}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         diffs1 = "{\"id\":5,"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
+                + "\"voraussetzungenTeilnahme\":[\"Informatik I\"]}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
 
     @Test
     public void calculateModulDiffsTest1() {
-        Modul diffs = modulService.calculateModulDiffs(jsonService.jsonObjectToModul(modul1),
-                jsonService.jsonObjectToModul(modul2));
+        Modul diffs = modulService.calculateModulDiffs(JsonService.jsonObjectToModul(modul1),
+                JsonService.jsonObjectToModul(modul2));
         try {
-            JSONAssert.assertEquals(jsonService.modulToJsonObject(diffs), diffs1, false);
+            JSONAssert.assertEquals(diffs1, JsonService.modulToJsonObject(diffs), false);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -64,10 +62,10 @@ public class ModulServiceTest {
 
     @Test
     public void calculateModulDiffsTest2() {
-        Modul diffs = modulService.calculateModulDiffs(jsonService.jsonObjectToModul(modul3),
-                jsonService.jsonObjectToModul(modul4));
+        Modul diffs = modulService.calculateModulDiffs(JsonService.jsonObjectToModul(modul3),
+                JsonService.jsonObjectToModul(modul4));
         try {
-            JSONAssert.assertEquals(jsonService.modulToJsonObject(diffs), diffs2, false);
+            JSONAssert.assertEquals(diffs2, JsonService.modulToJsonObject(diffs), false);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -87,13 +85,13 @@ public class ModulServiceTest {
 
     @Test
     public void applyAntragOnModulTest() {
-        Modul modul = jsonService.jsonObjectToModul(modul1);
+        Modul modul = JsonService.jsonObjectToModul(modul1);
         Antrag antrag = new Antrag();
         antrag.setModul(diffs1);
         modulService.applyAntragOnModul(modul, antrag);
 
         try {
-            JSONAssert.assertEquals(jsonService.modulToJsonObject(modul), modul2, false);
+            JSONAssert.assertEquals(modul2, JsonService.modulToJsonObject(modul), false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
