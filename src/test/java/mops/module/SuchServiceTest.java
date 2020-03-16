@@ -28,6 +28,7 @@ public class SuchServiceTest {
     ModulSnapshotRepository modulRepo;
 
     Connection conn;
+    Modul modul;
 
     @BeforeEach
     public void init() {
@@ -36,6 +37,11 @@ public class SuchServiceTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        String title = "Programmierung";
+        modul = new Modul();
+        modul.setTitelDeutsch(title);
+        modul.setTitelEnglisch("english blabla");
     }
 
     @AfterEach
@@ -46,14 +52,10 @@ public class SuchServiceTest {
     @Test
     void searchReturnsModulObject() throws SQLException {
         List<Modul> results = new ArrayList<>();
-        String title = "Programmierung";
-        Modul modul = new Modul();
-        modul.setTitelDeutsch(title);
-        modul.setTitelEnglisch("english blabla");
 
         try {
             modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle(title, conn);
+            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
 
         } catch (Exception e) {
             System.err.println("Got an exception! ");
@@ -64,21 +66,32 @@ public class SuchServiceTest {
 
     @Test
     void searchReturnsCorrectResultSize() throws SQLException {
-        String title = "Programmierung";
-        Modul modul = new Modul();
-        modul.setTitelDeutsch(title);
-        modul.setTitelEnglisch("english blabla");
         List<Modul> results = new ArrayList<>();
 
         try {
             modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle(title, conn);
+            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
 
         } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
         assertThat(results.size() == 1);
+    }
+
+    @Test
+    void returnedModulContainsSearchterm() throws SQLException {
+        List<Modul> results = new ArrayList<>();
+
+        try {
+            modulRepo.save(modul);
+            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
 }
