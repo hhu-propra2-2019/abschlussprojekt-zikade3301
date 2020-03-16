@@ -31,8 +31,8 @@ public class SuchService {
 
             while (searchResult.next()) {
                 Long id = searchResult.getLong("id");
-                String titelDeutsch = searchResult.getString("titelDeutsch");
-                String titelEnglisch = searchResult.getString("titelEnglisch");
+                String titelDeutsch = searchResult.getString("titel_Deutsch");
+                String titelEnglisch = searchResult.getString("titel_Englisch");
                 Modul modul = new Modul(id, titelDeutsch, titelEnglisch, null, null, null, null, null, true, null, null);
                 result.add(modul);
             }

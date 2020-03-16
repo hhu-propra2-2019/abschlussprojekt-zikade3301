@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModulSnapshotRepository extends CrudRepository<Modul, Long> {
+
+
+
 }
