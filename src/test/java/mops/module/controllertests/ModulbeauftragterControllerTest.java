@@ -34,7 +34,7 @@ class ModulbeauftragterControllerTest {
                 .build();
     }
 
-    final String expect = "modulbeauftragter";
+    private final String expect = "modulbeauftragter";
 
     @Test
     void testModulbeauftragterViewName() throws Exception {
@@ -72,19 +72,15 @@ class ModulbeauftragterControllerTest {
                 });
     }
 
-    /*
-      TODO enable test if Christian Meter created a role for admins
     @Test
     void testModulbeauftragterNoAccessForAdministrator() throws Exception {
         SecurityContextHolder
-            .getContext()
-            .setAuthentication(generateAuthenticationToken( "administrator"));
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         assertThrows(java.lang.AssertionError.class,
-                  ()->{
-          mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
-      });
-      }
-
-    */
+                () -> {
+                    mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
+                });
+    }
 }
