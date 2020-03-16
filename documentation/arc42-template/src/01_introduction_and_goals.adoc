@@ -1,0 +1,30 @@
+[[section-introduction-and-goals]]
+==	Einführung und Ziele
+
+- MOPS.module ist ein dynamisches Modulhandbuch
+- Das Modulhandbuch ist integriert in MOPS
+- Es ermöglicht eine einfache Suche und Filterung der angebotenen Module
+- Das Einfügen, Ändern und Löschen von Modulen ist einfach gestaltet
+- Die Modulübersicht ist als PDF-Datei exportierbar
+- Auch kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
+- Ziel ist nicht ein vollständiges Belegungssystem, sondern es werden aktuelle Informationen zu den angebotenen Modulen dargestellt
+
+
+=== Aufgabenstellung
+
+
+
+=== Qualitätsziele
+
+
+
+=== Stakeholder
+
+
+
+[cols="1,1,2" options="header"]
+|===
+|Rolle |Kontakt |Erwartungshaltung
+| _<Rolle-1>_ | _<Kontakt-1>_ | _<Erwartung-1>_
+| _<Rolle-2>_ | _<Kontakt-2>_ | _<Erwartung-2>_ 
+|===
