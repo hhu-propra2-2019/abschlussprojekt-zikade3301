@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>index</title>
+    <th:block th:fragment="headcontent">
+
+        <!-- Links, Skripts, Styles hier einfügen! -->
+        <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </th:block>
+</head>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <ul>
+            <li class="active">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle"
+                            style="width: 100%;
+                            border-radius: 0;
+                            text-align: left;
+                            background: transparent;
+                            color: dimgray;
+                            border: none"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Semesterauswahl
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="/module/">Übersicht</a>
+            </li>
+            <li th:if="${account}">
+                <div th:each="role: ${account.getRoles()}">
+                    <div th:switch="${role}">
+                        <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
+                        <!--                TODO activate as soon as the new role "administrator" is available-->
+                        <!--                <a th:case="'administrator'" href="/module/administrator">Anträge</a>-->
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </nav>
+</header>
+<main th:fragment="bodycontent">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/module/">Überblick</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Programmierung</li>
+        </ol>
+    </nav>
+
+    <div class="card card-body">
+        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue">
+            Programmierung
+        </p>
+        <hr class="my-4" style="background-color: white">
+        <div>
+            <div class="mt-2 col-lg-3 col-md-3 col-sm-12" style="float: left">
+                <span style="font-weight: bold">Leistungspunkte:</span><br>
+                <span style="width: min-content" class="badge badge-dark">10 CP</span>
+            </div>
+            <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                <span style="font-weight: bold; padding-left: 1rem">Modulbeauftragte:</span>
+                <ul>
+                    <li>
+                        <span>Prof. Dr. Stefan Harmeling</span>
+                    </li>
+                    <li>
+                        <span>Prof. Dr. Michael Schöttner</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="mt-2 col-lg-5 col-md-5 col-sm-12" style="float: right">
+                <span style="font-weight: bold; padding-left: 1rem">Lehrveranstaltungen:</span>
+                <ul>
+                    <li>
+                        <span>Vorlesung „Programmierung“</span>
+                        <span style="width: min-content; float: right" class="badge badge-secondary">4 SWS</span>
+                    </li>
+                    <li>
+                        <span>Übung</span>
+                        <span style="width: min-content; float: right" class="badge badge-secondary">2 SWS</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4" style="background-color: white">
+        <div class="mt-2 pl-2">
+            <span style="font-weight: bold">Inhalte:</span>
+            <br>
+            <span>
+                Dieses Modul vermittelt grundlegende Programmierkenntnisse in einer objektorientierten
+                Programmiersprache. Darüber hinaus werden einführend Aspekte von Algorithmen und Datenstrukturen
+                behandelt. Es wird keine Programmiererfahrung vorausgesetzt.
+            </span>
+        </div>
+        <div class="mt-3 mb-3 pl-2">
+            <span style="font-weight: bold">Lernergebnisse/Kompetenzen:</span>
+            <br>
+            <span>
+                <span>Studierende sollen nach Absolvierung der Lehrveranstaltungen in der Lage sein,</span>
+                <ul>
+                    <li>
+                        Begriffe der Informatik und der Programmierung zu nennen und zu erläutern
+                    </li>
+                    <li>
+                        einfache Algorithmen (iterativ und rekursiv) zu verstehen, deren Ablauf zu
+                        beschreiben, sowie selbst zu erstellen
+                    </li>
+                    <li>
+                        eigene Datentypen zu konzipieren und anzuwenden
+                    </li>
+                    <li>
+                        einfache objektorientierte Programme mit Polymorphie, Vererbung und Schnittstellen zu entwickeln
+                    </li>
+                    <li>
+                        die behandelten dynamischen Datenstrukturen anzuwenden
+                    </li>
+                </ul>
+            </span>
+        </div>
+    </div>
+</main>
+</body>
+</html>
