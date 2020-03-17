@@ -12,7 +12,23 @@
 
 === Aufgabenstellung
 
+Im Modulhandbuch werden die Beschreibungen für Veranstaltungen angegeben.
+Die Beschreibungen werden von den Dozierenden angelegt und werden von einer Verantwortlichen geprüft und dann freigeschaltet.
 
+IMPORTANT: Für die automatische Bearbeitung von Klausurzulassungen muss sichergestellt werden, dass Änderungen an den Veranstaltungen nachvollziehbar bleiben.
+Wenn wir uns zum Beispiel entscheiden, die Veranstaltung "Foobar" in "Barfoo" umzubenennen, aber im Wesentlichen die Veranstaltung dieselbe ist, dann muss in der neuen Veranstaltung die Information erhalten bleiben, dass alle Zulassungen der alten Veranstaltungen in der neuen Veranstaltung gültig bleiben.
+
+Beschreibungen sollten wie im aktuellen Modulhandbuch strukturiert sein, aber auch zusätzliche Informationen darstellen können.
+Die einzelnen Informationsblöcke sollen separat befüllt werden und in der REST Schnittstelle (siehe unten) auch separat zugreifbar sein.
+Es soll Markdown als Textformat für Freitexte verwendet werden.
+
+Das Modulhandbuch muss als PDF Dokument exportiert werden können.
+
+Für jedes Semester sollen Teile des Handbuchs auswählbar sein, die in dem Semester stattfinden.
+
+Eine HTML Variante des Modulhandbuchs soll zusammen mit der Information, welche Veranstaltungen in welchem Semester stattfinden eine Planungsmöglichkeit für Studierende mit einer Volltext-Such/Filterfunktion liefern.
+
+Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, über die die Veranstaltungs-Stammdaten abgerufen werden können.
 
 === Qualitätsziele
 
