@@ -3,6 +3,7 @@ package mops.module.database;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import lombok.Data;
@@ -13,9 +14,8 @@ import mops.module.services.JsonExclude;
 @Data
 public class Zusatzfeld {
 
-    //@JsonExclude
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String titel;

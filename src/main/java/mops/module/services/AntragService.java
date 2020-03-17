@@ -20,7 +20,7 @@ public class AntragService {
     private final ModulSnapshotRepository modulSnapshotRepository;
 
     /**
-     * Erstellt aus einem Modul ein Antrag.
+     * Erstellt einen Eintrag aus einem Modul.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
      * @return
@@ -36,13 +36,20 @@ public class AntragService {
 
     /**
      * Antrag für eine Moduländerung abschicken.
+     * Falls das Modul nicht verändert wurde, oder ein nicht existierendes Modul übergeben wurde,
+     * wird eine Exception geworfen.
      *
-     * @param newModul Neues Modul
+     * @param newModul Neues Modul mit korrekter ID!
      */
-    public void addModulModificationAntrag(Modul newModul) {
+    public void addModulModificationAntrag(Modul newModul) throws IllegalArgumentException {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
         if (optionalModul.isPresent()) {
             Modul diffModul = ModulService.calculateModulDiffs(optionalModul.get(), newModul);
+
+            if (diffModul == null) {
+                throw new IllegalArgumentException("Das Modul wurde nicht verändert!");
+            }
+
             diffModul.setDatumAenderung(LocalDateTime.now());
             Antrag antrag = modulToAntrag(diffModul);
             antrag.setDatumErstellung(LocalDateTime.now());
@@ -71,8 +78,9 @@ public class AntragService {
     }
 
     /**
+     * Genehmigt den Änderungsantrag.
      *
-     * @param antrag
+     * @param antrag Muss ein Modul beinhalten, das schon existiert
      */
     public void approveModulModificationAntrag(Antrag antrag) {
         Modul altesmodul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
@@ -82,13 +90,16 @@ public class AntragService {
         }
         ModulService.applyAntragOnModul(altesmodul, antrag);
         altesmodul.refreshLinks();
-        //modulSnapshotRepository.deleteById(altesmodul.getId());
         modulSnapshotRepository.save(altesmodul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
         antragRepository.save(antrag);
     }
 
+    /**
+     * Fügt einen Antrag zur Erstellung eines neuen Moduls hinzu.
+     * @param antrag Antrag mit neuem Modul, indem die Modul id null ist
+     */
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 

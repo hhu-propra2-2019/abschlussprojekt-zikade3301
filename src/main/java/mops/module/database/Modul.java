@@ -21,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Modul {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String titelDeutsch;
@@ -53,14 +53,18 @@ public class Modul {
             orphanRemoval = true)
     private Set<Zusatzfeld> zusatzfelder;
 
+    /**
+     * Ruft setVeranstaltungen & setZusatzfelder auf, um die Links zu erneuern.
+     */
     public void refreshLinks() {
         this.setVeranstaltungen(this.getVeranstaltungen());
         this.setZusatzfelder(this.getZusatzfelder());
     }
 
     /**
+     * Fügt eine Veranstaltung zum Modul hinzu.
      *
-     * @param veranstaltung
+     * @param veranstaltung Neue Veranstaltung
      */
     public void addVeranstaltung(Veranstaltung veranstaltung) {
         if (veranstaltungen == null) {
@@ -70,6 +74,11 @@ public class Modul {
         veranstaltung.setModul(this);
     }
 
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Veranstaltungen.
+     *
+     * @param veranstaltungen Schon vorhandenes von Veranstaltungen
+     */
     public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
         if (veranstaltungen == null) {
             return;
@@ -80,6 +89,11 @@ public class Modul {
         this.veranstaltungen = veranstaltungen;
     }
 
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Zusatzfelder.
+     *
+     * @param zusatzfelder Schon vorhandenes Set von Zusatzfelder
+     */
     public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
         if (zusatzfelder == null) {
             return;
