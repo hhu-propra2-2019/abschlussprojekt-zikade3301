@@ -36,27 +36,27 @@ public class ModulbeauftragterController {
     }
 
     // TODO Erstellung in Kooperation mit DB-Team
-    @RequestMapping(path = "/", method = RequestMethod.POST)
-    public String result(
-            @RequestParam(name = "title", required = true)
-                    String titelDeutsch,
-            @RequestParam(name = "titleEnglish", required = true)
-                    String titelEnglisch,
-            //            @RequestParam(name = "lessons", required = true)
-            //                    String veranstaltungen,
-            @RequestParam(name = "organizer", required = true)
-                    String modulbeauftragter,
-            @RequestParam(name = "cp", required = true)
-                    String creditPoints,
-            //            @RequestParam(name = "subject", required = true)
-            //                    String studiengang,
-            @RequestParam(name = "modulcategory", required = true)
-                    String modulkategorie,
-            //          sichtbarkeit
-            //          timeStamp
-            //          timeStamp
-            Model model) {
-        return "modulbeauftragter";
+//    @RequestMapping(path = "/", method = RequestMethod.POST)
+//    public String result(
+//            @RequestParam(name = "title", required = true)
+//                    String titelDeutsch,
+//            @RequestParam(name = "titleEnglish", required = true)
+//                    String titelEnglisch,
+//            //            @RequestParam(name = "lessons", required = true)
+//            //                    String veranstaltungen,
+//            @RequestParam(name = "organizer", required = true)
+//                    String modulbeauftragter,
+//            @RequestParam(name = "cp", required = true)
+//                    String creditPoints,
+//            //            @RequestParam(name = "subject", required = true)
+//            //                    String studiengang,
+//            @RequestParam(name = "modulcategory", required = true)
+//                    String modulkategorie,
+//            //          sichtbarkeit
+//            //          timeStamp
+//            //          timeStamp
+//            Model model) {
+//        return "modulbeauftragter";
     }
 
 
