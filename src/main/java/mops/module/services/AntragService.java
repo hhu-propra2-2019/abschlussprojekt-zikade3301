@@ -36,13 +36,20 @@ public class AntragService {
 
     /**
      * Antrag für eine Moduländerung abschicken.
+     * Falls Modul nicht verändert wurde oder nicht existierendes Modul übergeben wurde,
+     * wird eine Exception geworfen.
      *
-     * @param newModul Neues Modul
+     * @param newModul Neues Modul mit korrekter ID!
      */
-    public void addModulModificationAntrag(Modul newModul) {
+    public void addModulModificationAntrag(Modul newModul) throws IllegalArgumentException {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
         if (optionalModul.isPresent()) {
             Modul diffModul = ModulService.calculateModulDiffs(optionalModul.get(), newModul);
+
+            if (diffModul == null) {
+                throw new IllegalArgumentException("Das Modul wurde nicht verändert!");
+            }
+
             diffModul.setDatumAenderung(LocalDateTime.now());
             Antrag antrag = modulToAntrag(diffModul);
             antrag.setDatumErstellung(LocalDateTime.now());
@@ -71,7 +78,6 @@ public class AntragService {
     }
 
     /**
-     *
      * @param antrag
      */
     public void approveModulModificationAntrag(Antrag antrag) {
@@ -82,7 +88,6 @@ public class AntragService {
         }
         ModulService.applyAntragOnModul(altesmodul, antrag);
         altesmodul.refreshLinks();
-        //modulSnapshotRepository.deleteById(altesmodul.getId());
         modulSnapshotRepository.save(altesmodul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());

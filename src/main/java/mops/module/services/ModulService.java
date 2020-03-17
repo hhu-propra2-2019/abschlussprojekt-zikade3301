@@ -94,43 +94,4 @@ public class ModulService {
         return getAlleModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
     }
 
-    /*Modul getModulUntil(Long modulid, LocalDateTime when) {
-        List<Antrag> antraege = getAntraegeForModulUntil(modulid, when);
-        return buildModulFromAntraege(antraege);
-    }
-
-    List<Antrag> getAntraegeForModulUntil(Long modulid, LocalDateTime when) {
-        List<Antrag> antraege = antragRepository.findByModulid(modulid);
-        if (antraege == null || antraege.isEmpty()) {
-            return null;
-        }
-        return filterAntraegeUntil(antraege, when);
-    }
-
-    List<Antrag> filterAntraegeUntil(List<Antrag> antraege, LocalDateTime when) {
-        List<Antrag> filteredantraege = new ArrayList<Antrag>();
-
-        for (Antrag antrag : antraege) {
-            if (antrag.getApproveDate().isBefore(when)) {
-                filteredantraege.add(antrag);
-            }
-        }
-
-        return filteredantraege;
-    }
-
-    Modul buildModulFromAntraege(List<Antrag> antraege) {
-        if (antraege == null || antraege.isEmpty()) {
-            return null;
-        }
-
-        Modul modul = new Modul();
-
-        Long modulid = antraege.get(0).getModulid();
-        for (Antrag antrag : antraege) {
-            applyAntragOnModul(modul, antrag);
-        }
-        return modul;
-    }*/
-
 }
