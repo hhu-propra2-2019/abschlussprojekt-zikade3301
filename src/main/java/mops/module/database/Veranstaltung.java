@@ -20,7 +20,7 @@ import mops.module.services.JsonExclude;
 public class Veranstaltung {
 
     /**
-     *  Konstruktor stellt sicher das die Sets nicht null sind.
+     *  Konstruktor stellt sicher, dass die Sets nicht null sind.
      */
     public Veranstaltung() {
         veranstaltungsformen = new HashSet<>();

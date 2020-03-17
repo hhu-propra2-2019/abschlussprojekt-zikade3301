@@ -54,7 +54,7 @@ public class Modul {
     private Set<Zusatzfeld> zusatzfelder;
 
     /**
-     * Ruft setVeranstaltungen & setZusatzfelder um die Links zu erneuern.
+     * Ruft setVeranstaltungen & setZusatzfelder auf, um die Links zu erneuern.
      */
     public void refreshLinks() {
         this.setVeranstaltungen(this.getVeranstaltungen());
@@ -62,7 +62,7 @@ public class Modul {
     }
 
     /**
-     * Fügt eine Veranstaltung zum Modul zu.
+     * Fügt eine Veranstaltung zum Modul hinzu.
      *
      * @param veranstaltung Neue Veranstaltung
      */
@@ -91,6 +91,7 @@ public class Modul {
 
     /**
      * Überschreibt die Setter & erneuert die Links für die Zusatzfelder.
+     *
      * @param zusatzfelder Schon vorhandenes Set von Zusatzfelder
      */
     public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
