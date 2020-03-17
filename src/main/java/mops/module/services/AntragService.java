@@ -20,7 +20,7 @@ public class AntragService {
     private final ModulSnapshotRepository modulSnapshotRepository;
 
     /**
-     * Erstellt aus einem Modul ein Antrag.
+     * Erstellt einen Eintrag aus einem Modul
      *
      * @param modul Modul auf welches der Antrag angewendet wird
      * @return
@@ -36,7 +36,7 @@ public class AntragService {
 
     /**
      * Antrag für eine Moduländerung abschicken.
-     * Falls Modul nicht verändert wurde oder nicht existierendes Modul übergeben wurde,
+     * Falls das Modul nicht verändert wurde, oder ein nicht existierendes Modul übergeben wurde,
      * wird eine Exception geworfen.
      *
      * @param newModul Neues Modul mit korrekter ID!
