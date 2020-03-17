@@ -62,3 +62,14 @@ werden: Dictionary für zusammengesetzte Worte müsste anscheinend selbst erstel
 
 - einfache SQL-Query für Suche eingefügt - benötigt fertige Datenstruktur, um sie sinnvoll zu implementieren
 - Suche in der index.html und im indexController eingepflegt
+
+== Montag, 16.03.10
+
+- Einrichtung von Keycloak mit Client ID und Secret, anschließend implementieren der neuen Rolle "sekretariat" und
+überarbeiten aller betrofenen Klassen.
+- Bearbeitung der Organisator View für die Anlegung und Bearbeitung von Modulen
+
+== Dienstag, 17.03.10
+
+- reviewen des Branches mops_services mit dem Großteil der Datenbank Logik
+- anschließend gemeinsames refactorn
