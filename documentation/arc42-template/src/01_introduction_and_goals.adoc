@@ -41,6 +41,9 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 [cols="1,1,2" options="header"]
 |===
 |Rolle |Kontakt |Erwartungshaltung
-| _<Rolle-1>_ | _<Kontakt-1>_ | _<Erwartung-1>_
-| _<Rolle-2>_ | _<Kontakt-2>_ | _<Erwartung-2>_ 
+| _Studierende_ | _Teammitglieder_ | _Übersichtliche Darstellung von Modulen, Such- und Filterfunktion_
+| _Modulbeauftragte_ | _Jens Bendiposto_ | _Haben einfaches Formular zur Erstellung und Änderung von Modulen_
+| _Sekretariat_ | _Fr Rennwanz_ | _Übersichtliche Ansicht der Änderungen, Änderungen an Modulen bleiben nachvollziehbar,
+insbesondere kann eingesehen werden, ob Klausurzulassungen für alte Module für ein aktuelles Modul gültig sind_
+| _Belegungsteam für MOPS_ | _--_ | _Können Moduldaten über REST-API auslesen_
 |===
