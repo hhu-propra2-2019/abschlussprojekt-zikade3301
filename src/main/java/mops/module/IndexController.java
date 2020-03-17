@@ -2,6 +2,8 @@ package mops.module;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import lombok.RequiredArgsConstructor;
+import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 
+
 @Controller
 @SessionScope
+@RequiredArgsConstructor
 @RequestMapping("/module")
 public class IndexController {
+
+    private final ModulService modulService;
+
 
     /**
      * Index string.
@@ -26,7 +33,8 @@ public class IndexController {
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
-            model.addAttribute("account",createAccountFromPrincipal(token));
+            model.addAttribute("account", createAccountFromPrincipal(token));
+            model.addAttribute("allModules", modulService.getAlleModule());
         }
         return "index";
     }
