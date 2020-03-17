@@ -53,13 +53,16 @@ public class Modul {
             orphanRemoval = true)
     private Set<Zusatzfeld> zusatzfelder;
 
+    /**
+     * Ruft setVeranstaltungen & setZusatzfelder um die Links zu erneuern
+     */
     public void refreshLinks() {
         this.setVeranstaltungen(this.getVeranstaltungen());
         this.setZusatzfelder(this.getZusatzfelder());
     }
 
     /**
-     *
+     * Fügt eine Veranstaltung zum Modul zu
      * @param veranstaltung
      */
     public void addVeranstaltung(Veranstaltung veranstaltung) {
@@ -70,6 +73,10 @@ public class Modul {
         veranstaltung.setModul(this);
     }
 
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Veranstaltungen
+     * @param veranstaltungen
+     */
     public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
         if (veranstaltungen == null) {
             return;
@@ -80,6 +87,10 @@ public class Modul {
         this.veranstaltungen = veranstaltungen;
     }
 
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Zusatzfelder
+     * @param zusatzfelder
+     */
     public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
         if (zusatzfelder == null) {
             return;

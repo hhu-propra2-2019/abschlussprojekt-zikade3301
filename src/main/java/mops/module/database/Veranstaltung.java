@@ -2,7 +2,6 @@ package mops.module.database;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +20,7 @@ import mops.module.services.JsonExclude;
 public class Veranstaltung {
 
     /**
-     *
+     *  Konstruktor stellt sicher das die Sets nicht null sind
      */
     public Veranstaltung() {
         veranstaltungsformen = new HashSet<>();
