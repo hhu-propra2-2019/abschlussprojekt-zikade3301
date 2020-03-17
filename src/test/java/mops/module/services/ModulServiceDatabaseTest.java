@@ -42,7 +42,7 @@ public class ModulServiceDatabaseTest {
     private String diffs2;
 
     /**
-     *
+     * Initialisiert die leeren Felder.
      */
     @BeforeEach
     public void init() {

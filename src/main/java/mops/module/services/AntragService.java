@@ -78,7 +78,9 @@ public class AntragService {
     }
 
     /**
-     * @param antrag
+     * Genehmigt den Änderungsantrag.
+     *
+     * @param antrag Muss ein Modul beinhalten, das schon existiert
      */
     public void approveModulModificationAntrag(Antrag antrag) {
         Modul altesmodul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
@@ -94,6 +96,10 @@ public class AntragService {
         antragRepository.save(antrag);
     }
 
+    /**
+     * Fügt einen Antrag zur Erstellung eines neuen Moduls hinzu.
+     * @param antrag Antrag mit neuem Modul, indem die Modul id null ist
+     */
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 

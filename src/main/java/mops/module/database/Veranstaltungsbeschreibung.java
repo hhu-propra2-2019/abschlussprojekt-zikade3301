@@ -12,7 +12,8 @@ import lombok.Data;
 public class Veranstaltungsbeschreibung {
 
     /**
-     * Konstruktor stellt sicher das die Sets nicht null sind
+     * Konstruktor stellt sicher das die Sets nicht null sind.
+     *
      */
     public Veranstaltungsbeschreibung() {
         literatur = new HashSet<>();
