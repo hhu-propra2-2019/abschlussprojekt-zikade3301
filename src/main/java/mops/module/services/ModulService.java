@@ -37,32 +37,38 @@ public class ModulService {
         aenderungen.setId(altesmodul.getId());
 
         for (Field field : neuesmodul.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-
-            if ("datumAenderung".equals((String) field.getName())) {
-                continue;
-            }
-
-            try {
-                if (field.get(altesmodul) == null) {
-                    if (field.get(neuesmodul) != null) {
-                        field.set(aenderungen, field.get(neuesmodul));
-                        foundDiffs = true;
-                    }
-                    continue;
-                }
-                if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
-                    field.set(aenderungen, field.get(neuesmodul));
-                    foundDiffs = true;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            if (checkSingleField(altesmodul, neuesmodul, aenderungen, field)) {
+                foundDiffs = true;
             }
         }
         if (!foundDiffs) {
             return null;
         }
         return aenderungen;
+    }
+
+    private static boolean checkSingleField(Modul altesmodul, Modul neuesmodul,
+                                            Modul aenderungen, Field field) {
+        field.setAccessible(true);
+
+        if ("datumAenderung".equals((String) field.getName())) {
+            return false;
+        }
+
+        try {
+            if (field.get(altesmodul) == null) {
+                if (field.get(neuesmodul) != null) {
+                    field.set(aenderungen, field.get(neuesmodul));
+                    return true;
+                }
+            } else if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
+                field.set(aenderungen, field.get(neuesmodul));
+                return true;
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 
