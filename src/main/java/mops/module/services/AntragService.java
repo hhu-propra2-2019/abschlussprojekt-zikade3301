@@ -20,7 +20,7 @@ public class AntragService {
     private final ModulSnapshotRepository modulSnapshotRepository;
 
     /**
-     * Erstellt einen Eintrag aus einem Modul
+     * Erstellt einen Eintrag aus einem Modul.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
      * @return
