@@ -33,7 +33,7 @@ public class SuchService {
                 Long id = searchResult.getLong("id");
                 String titelDeutsch = searchResult.getString("titel_Deutsch");
                 String titelEnglisch = searchResult.getString("titel_Englisch");
-                Modul modul = new Modul(id, titelDeutsch, titelEnglisch, null, null, null, null, null, true, null, null);
+                Modul modul = new Modul(id, titelDeutsch, titelEnglisch, null, null, null, null, null, true, null, null, null);
                 result.add(modul);
             }
         } catch (SQLException e) {

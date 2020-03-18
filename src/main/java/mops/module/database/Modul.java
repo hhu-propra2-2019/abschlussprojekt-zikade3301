@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 public class Modul {
 
     @Id
@@ -55,6 +57,10 @@ public class Modul {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
     private Set<Zusatzfeld> zusatzfelder;
+
+    public Modul() {
+
+    }
 
     /**
      * Ruft setVeranstaltungen & setZusatzfelder auf, um das Mapping zu erneuern.

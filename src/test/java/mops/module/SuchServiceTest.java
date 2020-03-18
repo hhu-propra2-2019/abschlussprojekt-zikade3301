@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import mops.module.database.Modul;
-import mops.module.database.ModulSnapshotRepository;
 import mops.module.services.SuchService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
