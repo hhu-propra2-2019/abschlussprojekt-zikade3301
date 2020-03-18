@@ -1,6 +1,7 @@
 package mops.module.modulGenerator;
 
 import com.github.javafaker.Faker;
+import java.util.HashSet;
 import java.util.Set;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -10,7 +11,7 @@ import mops.module.database.Zusatzfeld;
 
 public class ModulFaker {
     // modul
-    private static Faker faker = new Faker();
+    private static final Faker faker = new Faker();
     private static final String[] titelDeutsch = {"Rechnerarchitektur"};
     private static final String[] titelEnglish = {"Computer Architecture"};
     // veranstaltung Entität
@@ -45,25 +46,22 @@ public class ModulFaker {
     //
     public static Modul generateFakeModul() {
         Modul fakeModul = new Modul();
-        generateMultipleVeranstaltungen(fakeModul.getVeranstaltungen());
+        generateMultipleVeranstaltungen(fakeModul);
         fakeModul.setTitelDeutsch(chooseRandom(titelDeutsch));
         fakeModul.setTitelEnglisch(chooseRandom(titelEnglish));
         fakeModul.setGesamtLeistungspunkte(chooseRandom(gesamtLeistungspunkte));
         fakeModul.setStudiengang(chooseRandom(studiengang));
         fakeModul.setModulkategorie(chooseRandom(modulkategorrie));
         fakeModul.setSichtbar(chooseRandom(sichtbar));
-        chooseRandom(fakeModul.getModulbeauftragte(), modulbeauftragte);
-        Zusatzfeld zusatzfeld = new Zusatzfeld();
-        zusatzfeld.setTitel(chooseRandom(zusatzfeldtitel));
-        zusatzfeld.setInhalt(chooseRandom(zusatzfeldInhalt));
-        fakeModul.getZusatzfelder().add(zusatzfeld);
+        //
+        fakeModul.setModulbeauftragte(chooseSetRandom(modulbeauftragte));
         return fakeModul;
     }
 
-    private static void generateMultipleVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
+    private static void generateMultipleVeranstaltungen(Modul fakeModul) {
         double randomNumber = Math.random() * 5;
         for (int i = 0; i < randomNumber; i++) {
-            veranstaltungen.add(generateFakeVeranstaltung());
+            fakeModul.addVeranstaltung(generateFakeVeranstaltung());
         }
     }
 
@@ -75,10 +73,10 @@ public class ModulFaker {
         fakeVeranstaltung.setLeistungspunkte(chooseRandom(leistungspunkte));
         fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
         //
-        chooseRandom(fakeVeranstaltung.getLehrende(), lehrende);
-        chooseRandom(fakeVeranstaltung.getVeranstaltungsformen(), veranstaltungsFormen);
-        chooseRandom(fakeVeranstaltung.getVoraussetzungenTeilnahme(), veranstaltungTitel);
-        chooseRandom(fakeVeranstaltung.getSemester(), semester);
+        fakeVeranstaltung.setLehrende(chooseSetRandom(lehrende));
+        fakeVeranstaltung.setVeranstaltungsformen(chooseSetRandom(veranstaltungsFormen));
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(chooseSetRandom(veranstaltungTitel));
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(chooseSetRandom(semester));
         //
         return fakeVeranstaltung;
     }
@@ -91,22 +89,24 @@ public class ModulFaker {
         fakeBeshcreibung.setHaeufigkeit(chooseRandom(haeufigkeit));
         fakeBeshcreibung.setSprache(chooseRandom(sprache));
         //
-        chooseRandom(fakeBeshcreibung.getLiteratur(), literatur);
-        chooseRandom(fakeBeshcreibung.getVerwendbarkeit(), verwendbarkeit);
-        chooseRandom(fakeBeshcreibung.getVoraussetzungenBestehen(), voraussetzungenBestehen);
+        fakeBeshcreibung.setLiteratur(chooseSetRandom(literatur));
+        fakeBeshcreibung.setVerwendbarkeit(chooseSetRandom(verwendbarkeit));
+        fakeBeshcreibung.setVoraussetzungenBestehen(chooseSetRandom(voraussetzungenBestehen));
         //
         return fakeBeshcreibung;
     }
 
     private static <T extends Object> T chooseRandom(T[] objects) {
-        return objects[(int) Math.round(Math.random() * objects.length)];
+        return objects[(int) (Math.random() * objects.length)];
     }
 
-    private static <T extends Object> void chooseRandom(Set<T> set, T[] objects) {
-        double randomNumber = Math.random() * 6;
+    private static <T extends Object> Set<T> chooseSetRandom(T[] objects) {
+        Set<T> set = new HashSet<>();
+        double randomNumber = Math.random() * objects.length;
         for (int i = 0; i < randomNumber; i++) {
             set.add(objects[i]);
         }
+        return set;
     }
 
 }
