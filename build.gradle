@@ -69,6 +69,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation('org.postgresql:postgresql')
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.graphql-java:graphql-java:11.0'
+    implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0'
+    implementation 'com.google.guava:guava:26.0-jre'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
