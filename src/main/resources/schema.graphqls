@@ -1,0 +1,54 @@
+type Query {
+  modulById(id: ID): Modul
+}
+
+type Modul {
+  id: ID
+  titelDeutsch: String
+  titelEnglisch: String
+  veranstaltungen: [Veranstaltung]
+  modulbeauftragte: [String]
+  gesamtLeistungspunkte: String
+  studiengang: String
+  modulkategorie: Modulkategorie
+  zusatzfelder: [Zusatzfeld]
+}
+
+enum Modulkategorie {
+  PFLICHT_INFO
+  PFLICHT_MATHE
+  NEBENFACH
+  PRAXIS
+  WAHLPFLICHT_BA
+  WAHLPFLICHT_MA
+  BACHELORARBEIT
+  PROJEKTARBEIT
+  MASTERARBEIT
+  SONSTIGE
+}
+
+type Zusatzfeld {
+  id: ID
+  titel: String
+  inhalt: String
+}
+
+type Veranstaltung {
+  id: ID
+  titel: String
+  leistungspunkte: String
+  veranstaltungsformen: [String]
+  beschreibung: Veranstaltungsbeschreibung
+  voraussetzungenTeilnahme: [String]
+  semester: [String]
+}
+
+type Veranstaltungsbeschreibung {
+  inhalte: String
+  lernergebnisse: String
+  literatur: [String]
+  verwendbarkeit: [String]
+  voraussetzungenBestehen: [String]
+  haeufigkeit: String
+  sprache: String
+}
