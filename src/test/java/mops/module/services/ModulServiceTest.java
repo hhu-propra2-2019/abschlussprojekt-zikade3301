@@ -28,7 +28,7 @@ public class ModulServiceTest {
     private String diffs2;
 
     /**
-     * Initialisiert die leeren Felder.
+     * Erstellt Beispiel-Objekte als Strings, aus denen anschließend JsonService Module erstellt.
      */
     @BeforeEach
     public void init() {

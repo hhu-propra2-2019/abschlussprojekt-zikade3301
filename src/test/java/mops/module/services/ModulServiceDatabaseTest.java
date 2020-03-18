@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
-import mops.module.database.Zusatzfeld;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -40,9 +40,10 @@ public class ModulServiceDatabaseTest {
     private String modul4;
     private String diffs1;
     private String diffs2;
+    private String completeModul;
 
     /**
-     * Initialisiert die leeren Felder.
+     * Erstellt Beispiel-Objekte als Strings, aus denen anschließend JsonService Module erstellt.
      */
     @BeforeEach
     public void init() {
@@ -52,20 +53,32 @@ public class ModulServiceDatabaseTest {
         antragRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
 
-        modul1 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}],"
-                + "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul2 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\"}],"
-                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        modul3 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\","
-                + "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}],"
-                + "\"modulkategorie\":\"MASTERARBEIT\"}";
-        modul4 = "{\"veranstaltungen\":[{\"creditPoints\":\"5CP\","
-                + "\"beschreibung\":{\"inhalte\":\"Lorem ipsum\"}}],"
-                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs1 = "{\"modulkategorie\":\"BACHELORARBEIT\"}";
-        diffs2 = "{\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[{\"titel\":\"test\"}]}],"
-                + "\"modulkategorie\":\"BACHELORARBEIT\"}";
+        modul1 = "{'veranstaltungen':[{'creditPoints':'5CP'}],"
+                + "'modulkategorie':'MASTERARBEIT'}";
+        modul2 = "{'veranstaltungen':[{'creditPoints':'5CP'}],"
+                + "'modulkategorie':'BACHELORARBEIT'}";
+        modul3 = "{'veranstaltungen':[{'creditPoints':'5CP',"
+                + "'beschreibung':{'inhalte':'Lorem ipsum'}}],"
+                + "'modulkategorie':'MASTERARBEIT'}";
+        modul4 = "{'veranstaltungen':[{'creditPoints':'5CP',"
+                + "'beschreibung':{'inhalte':'Lorem ipsum'}}],"
+                + "'modulkategorie':'BACHELORARBEIT'}";
+        diffs1 = "{'modulkategorie':'BACHELORARBEIT'}";
+        diffs2 = "{'veranstaltungen':[{'id':3,"
+                + "'voraussetzungenTeilnahme':[{'titel':'test'}]}],"
+                + "'modulkategorie':'BACHELORARBEIT'}";
+        completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
+                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme',"
+                + "'lehrende':['Michael Schöttner'],'leistungspunkte':'10CP',"
+                + "'veranstaltungsformen':['Vorlesung','Praktische Übung'],"
+                + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
+                + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
+                + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
+                + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
+                + "'voraussetzungenTeilnahme':['Informatik I']}],'gesamtLeistungspunkte':'10CP',"
+                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA',"
+                + "'zusatzfelder':[{'titel':'Feld2','inhalt':'Numero dos'},{'titel':'Feld1',"
+                + "'inhalt':'Dies hier ist das erste Zusatzfeld!'}]}";
     }
 
     @Test
@@ -87,7 +100,7 @@ public class ModulServiceDatabaseTest {
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
         Antrag antrag = antragService.getAlleAntraege().get(0);
         antragService.approveModulCreationAntrag(antrag);
-        Modul modul = modulService.getAlleModule().get(0);
+        Modul modul = modulService.getAllModule().get(0);
         assertThat(antrag.getModulId()).isEqualTo(modul.getId());
     }
 
@@ -106,7 +119,7 @@ public class ModulServiceDatabaseTest {
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul modul = module.get(module.size() - 1);
         vergleichsmodul.setId(modul.getId());
 
@@ -128,7 +141,7 @@ public class ModulServiceDatabaseTest {
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul modul = module.get(module.size() - 1);
 
         Modul aenderungen = JsonService.jsonObjectToModul(modul4);
@@ -141,14 +154,14 @@ public class ModulServiceDatabaseTest {
 
         antragService.approveModulModificationAntrag(antrag);
 
-        module = modulService.getAlleModule();
+        module = modulService.getAllModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
-        Modul assertmodul = JsonService.jsonObjectToModul(modul4);
-        assertmodul.setId(geaendertesModul.getId());
+        Modul assertModul = JsonService.jsonObjectToModul(modul4);
+        assertModul.setId(geaendertesModul.getId());
 
         try {
-            JSONAssert.assertEquals(JsonService.modulToJsonObject(assertmodul),
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(assertModul),
                     JsonService.modulToJsonObject(geaendertesModul), false);
         } catch (JSONException e) {
             fail(e.toString());
@@ -158,59 +171,15 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void completeAddModulRoutineTest() {
-        Modul modul = new Modul();
-        modul.setGesamtLeistungspunkte("10CP");
-        modul.setModulkategorie(Modulkategorie.WAHLPFLICHT_BA);
-        modul.setStudiengang("Informatik");
-        modul.setTitelDeutsch("Betriebssysteme");
-        modul.setTitelEnglisch("Operating systems");
 
-        Veranstaltung veranstaltung = new Veranstaltung();
-        veranstaltung.setLeistungspunkte("10CP");
-        veranstaltung.setTitel("Vorlesung Betriebssysteme");
-
-        Veranstaltungsbeschreibung veranstaltungsbeschreibung = new Veranstaltungsbeschreibung();
-        veranstaltungsbeschreibung.setInhalte("Inhalte");
-        veranstaltungsbeschreibung.setHaeufigkeit("Alle 2 Semester");
-        veranstaltungsbeschreibung.setLernergebnisse("Synchronisierung");
-        veranstaltungsbeschreibung.setSprache("Deutsch");
-        veranstaltungsbeschreibung.setLiteratur(
-                new HashSet<>(Arrays.asList("Alter Schinken")));
-        veranstaltungsbeschreibung.setVerwendbarkeit(
-                new HashSet<>(Arrays.asList("Überall verwendbar")));
-        veranstaltungsbeschreibung.setVoraussetzungenBestehen(
-                new HashSet<>(Arrays.asList("50% der Punkte in der Klausur")));
-        veranstaltung.setBeschreibung(veranstaltungsbeschreibung);
-
-        veranstaltung.setLehrende(
-                new HashSet<>(Arrays.asList("Michael Schöttner")));
-        veranstaltung.setVeranstaltungsformen(
-                new HashSet<>(Arrays.asList("Vorlesung", "Praktische Übung")));
-
-        veranstaltung.setVoraussetzungenTeilnahme(
-                new HashSet<>(Arrays.asList("Informatik I")));
-
-        modul.setVeranstaltungen(
-                new HashSet<>(Arrays.asList(veranstaltung)));
-
-        Zusatzfeld feld1 = new Zusatzfeld();
-        feld1.setInhalt("Dies hier ist das erste Zusatzfeld!");
-        feld1.setTitel("Feld1");
-
-        Zusatzfeld feld2 = new Zusatzfeld();
-        feld2.setInhalt("Numero dos");
-        feld2.setTitel("Feld2");
-
-        modul.setZusatzfelder(new HashSet<>(Arrays.asList(feld1, feld2)));
-
-        System.out.println(JsonService.modulToJsonObject(modul));
-
+        Modul modul = JsonService.jsonObjectToModul(completeModul);
+        modul.refreshMapping();
         antragService.addModulCreationAntrag(modul);
 
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
         for (Veranstaltung v : dbmodul.getVeranstaltungen()) {
@@ -221,6 +190,14 @@ public class ModulServiceDatabaseTest {
 
         antraege = antragService.getAlleAntraege();
         antragService.approveModulModificationAntrag(antraege.get(antraege.size() - 1));
+
+        Optional<Modul> optionalModul = modulSnapshotRepository.findById(dbmodul.getId());
+
+        if (optionalModul.isPresent()) {
+            assertThat(dbmodul.getVeranstaltungen().stream()
+                    .findFirst().orElse(new Veranstaltung()).getLehrende())
+                    .contains("Stefan Harmeling");
+        }
     }
 
 }

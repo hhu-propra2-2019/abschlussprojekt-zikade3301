@@ -2,7 +2,6 @@ package mops.module.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class AntragService {
     private final ModulSnapshotRepository modulSnapshotRepository;
 
     /**
-     * Erstellt einen Änderungsantrag aus einem Modul heraus
+     * Erstellt einen Änderungsantrag aus einem Modul heraus.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
      * @return
@@ -42,9 +41,11 @@ public class AntragService {
      * @param newModul Neues Modul mit korrekter ID!
      */
     public void addModulModificationAntrag(Modul newModul) throws IllegalArgumentException {
-        Optional<Modul> optionalModul = modulSnapshotRepository.findById(newModul.getId());
-        if (optionalModul.isPresent()) {
-            Modul diffModul = ModulService.calculateModulDiffs(optionalModul.get(), newModul);
+        Modul oldModul = modulSnapshotRepository.findById(newModul.getId()).orElse(null);
+        if (oldModul == null) {
+            throw new IllegalArgumentException("Fehlerhaftes Modul!");
+        } else {
+            Modul diffModul = ModulService.calculateModulDiffs(oldModul, newModul);
 
             if (diffModul == null) {
                 throw new IllegalArgumentException("Das Modul wurde nicht verändert!");
@@ -55,8 +56,6 @@ public class AntragService {
             antrag.setDatumErstellung(LocalDateTime.now());
             antrag.setAntragsteller("Anonym");
             antragRepository.save(antrag);
-        } else {
-            throw new IllegalArgumentException("Fehlerhaftes Modul!");
         }
 
     }
@@ -83,14 +82,14 @@ public class AntragService {
      * @param antrag Muss ein Modul beinhalten, das schon existiert
      */
     public void approveModulModificationAntrag(Antrag antrag) {
-        Modul altesmodul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
-        if (altesmodul == null) {
+        Modul oldModul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
+        if (oldModul == null) {
             throw new IllegalArgumentException(
                     "Modul konnte in der Datenbank nicht gefunden werden!");
         }
-        ModulService.applyAntragOnModul(altesmodul, antrag);
-        altesmodul.refreshLinks();
-        modulSnapshotRepository.save(altesmodul);
+        ModulService.applyAntragOnModul(oldModul, antrag);
+        oldModul.refreshMapping();
+        modulSnapshotRepository.save(oldModul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
         antragRepository.save(antrag);
@@ -103,7 +102,7 @@ public class AntragService {
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
-        neuesmodul.refreshLinks();
+        neuesmodul.refreshMapping();
 
         modulSnapshotRepository.save(neuesmodul);
 
