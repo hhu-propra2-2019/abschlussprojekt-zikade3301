@@ -26,7 +26,6 @@ public class Veranstaltung {
         veranstaltungsformen = new HashSet<>();
         voraussetzungenTeilnahme = new HashSet<>();
         semester = new HashSet<>();
-        lehrende = new HashSet<>();
     }
 
     @Id
@@ -40,9 +39,6 @@ public class Veranstaltung {
     private Modul modul;
 
     private String titel;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> lehrende;
 
     private String leistungspunkte;
 

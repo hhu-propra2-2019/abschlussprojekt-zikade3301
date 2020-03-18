@@ -65,23 +65,20 @@
     </nav>
 
     <div class="card card-body">
-        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue">
-            Programmierung
+        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue" th:text="${modul.titelDeutsch}">
+            Modulname
         </p>
         <hr class="my-4" style="background-color: white">
         <div>
             <div class="mt-2 col-lg-3 col-md-3 col-sm-12" style="float: left">
                 <span style="font-weight: bold">Leistungspunkte:</span><br>
-                <span style="width: min-content" class="badge badge-dark">10 CP</span>
+                <span style="width: min-content" class="badge badge-dark" th:text="${modul.getGesamtLeistungspunkte()}">10 CP</span>
             </div>
             <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                 <span style="font-weight: bold; padding-left: 1rem">Modulbeauftragte:</span>
                 <ul>
-                    <li>
-                        <span>Prof. Dr. Stefan Harmeling</span>
-                    </li>
-                    <li>
-                        <span>Prof. Dr. Michael Schöttner</span>
+                    <li th:each="beauftragter : ${modul.getModulbeauftragte()}">
+                        <span th:text="${beauftragter}">Prof. Dr. Stefan Harmeling</span>
                     </li>
                 </ul>
             </div>
