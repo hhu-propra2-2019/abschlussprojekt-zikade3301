@@ -22,33 +22,33 @@ public class ModulService {
     /**
      * Berechnet die Differenzen zwischen zwei Modulen.
      *
-     * @param altesmodul Altes Modul
-     * @param neuesmodul Neues Modul
+     * @param oldModul Altes Modul
+     * @param newModul Neues Modul
      * @return
      */
-    public static Modul calculateModulDiffs(Modul altesmodul, Modul neuesmodul) {
-        Modul aenderungen = new Modul();
+    public static Modul calculateModulDiffs(Modul oldModul, Modul newModul) {
+        Modul changes = new Modul();
         boolean foundDiffs = false;
 
-        if (altesmodul == null || neuesmodul == null) {
-            throw new IllegalArgumentException("Ein Modul ist null!");
+        if (oldModul == null || newModul == null) {
+            throw new IllegalArgumentException("Mindestens ein Modul ist null!");
         }
 
-        aenderungen.setId(altesmodul.getId());
+        changes.setId(oldModul.getId());
 
-        for (Field field : neuesmodul.getClass().getDeclaredFields()) {
-            if (checkSingleField(altesmodul, neuesmodul, aenderungen, field)) {
+        for (Field field : newModul.getClass().getDeclaredFields()) {
+            if (checkSingleField(oldModul, newModul, changes, field)) {
                 foundDiffs = true;
             }
         }
         if (!foundDiffs) {
             return null;
         }
-        return aenderungen;
+        return changes;
     }
 
     private static boolean checkSingleField(Modul altesmodul, Modul neuesmodul,
-                                            Modul aenderungen, Field field) {
+                                            Modul changes, Field field) {
         field.setAccessible(true);
 
         if ("datumAenderung".equals((String) field.getName())) {
@@ -58,11 +58,11 @@ public class ModulService {
         try {
             if (field.get(altesmodul) == null) {
                 if (field.get(neuesmodul) != null) {
-                    field.set(aenderungen, field.get(neuesmodul));
+                    field.set(changes, field.get(neuesmodul));
                     return true;
                 }
             } else if (!field.get(altesmodul).equals(field.get(neuesmodul))) {
-                field.set(aenderungen, field.get(neuesmodul));
+                field.set(changes, field.get(neuesmodul));
                 return true;
             }
         } catch (IllegalAccessException e) {
@@ -73,17 +73,17 @@ public class ModulService {
 
 
     static void applyAntragOnModul(Modul modul, Antrag antrag) {
-        Modul modulaenderungen = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
+        Modul modulChanges = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
         for (Field field : modul.getClass().getDeclaredFields()) {
             field.setAccessible(true);
 
             try {
-                if (field.get(modulaenderungen) == null) {
+                if (field.get(modulChanges) == null) {
                     continue;
                 }
-                if (!field.get(modulaenderungen).equals(field.get(modul))) {
-                    field.set(modul, field.get(modulaenderungen));
+                if (!field.get(modulChanges).equals(field.get(modul))) {
+                    field.set(modul, field.get(modulChanges));
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -91,13 +91,13 @@ public class ModulService {
         }
     }
 
-    public List<Modul> getAlleModule() {
+    public List<Modul> getAllModule() {
         return StreamSupport.stream(modulSnapshotRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public List<Modul> getAlleSichtbarenModule() {
-        return getAlleModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
+    public List<Modul> getAllSichtbareModule() {
+        return getAllModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
     }
 
 }

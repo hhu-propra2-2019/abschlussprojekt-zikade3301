@@ -43,7 +43,7 @@ public class ModulServiceDatabaseTest {
     private String completeModul;
 
     /**
-     * Initialisiert die leeren Felder.
+     * Erstellt Beispiel-Objekte als Strings, aus denen anschließend JsonService Module erstellt.
      */
     @BeforeEach
     public void init() {
@@ -100,7 +100,7 @@ public class ModulServiceDatabaseTest {
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
         Antrag antrag = antragService.getAlleAntraege().get(0);
         antragService.approveModulCreationAntrag(antrag);
-        Modul modul = modulService.getAlleModule().get(0);
+        Modul modul = modulService.getAllModule().get(0);
         assertThat(antrag.getModulId()).isEqualTo(modul.getId());
     }
 
@@ -119,7 +119,7 @@ public class ModulServiceDatabaseTest {
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul modul = module.get(module.size() - 1);
         vergleichsmodul.setId(modul.getId());
 
@@ -141,7 +141,7 @@ public class ModulServiceDatabaseTest {
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul modul = module.get(module.size() - 1);
 
         Modul aenderungen = JsonService.jsonObjectToModul(modul4);
@@ -154,7 +154,7 @@ public class ModulServiceDatabaseTest {
 
         antragService.approveModulModificationAntrag(antrag);
 
-        module = modulService.getAlleModule();
+        module = modulService.getAllModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
         Modul assertModul = JsonService.jsonObjectToModul(modul4);
@@ -173,13 +173,13 @@ public class ModulServiceDatabaseTest {
     public void completeAddModulRoutineTest() {
 
         Modul modul = JsonService.jsonObjectToModul(completeModul);
-        modul.refreshLinks();
+        modul.refreshMapping();
         antragService.addModulCreationAntrag(modul);
 
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
-        List<Modul> module = modulService.getAlleModule();
+        List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
         for (Veranstaltung v : dbmodul.getVeranstaltungen()) {

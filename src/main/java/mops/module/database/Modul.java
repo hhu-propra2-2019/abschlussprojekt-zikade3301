@@ -28,6 +28,8 @@ public class Modul {
 
     private String titelEnglisch;
 
+    //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
+    //und FetchType.EAGER gewünscht
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
     private Set<Veranstaltung> veranstaltungen;
@@ -49,14 +51,15 @@ public class Modul {
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumAenderung;
 
+    //Beim Löschen von Modul werden alle Zusatzfelder mitgelöscht, siehe oben
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
     private Set<Zusatzfeld> zusatzfelder;
 
     /**
-     * Ruft setVeranstaltungen & setZusatzfelder auf, um die Links zu erneuern.
+     * Ruft setVeranstaltungen & setZusatzfelder auf, um das Mapping zu erneuern.
      */
-    public void refreshLinks() {
+    public void refreshMapping() {
         this.setVeranstaltungen(this.getVeranstaltungen());
         this.setZusatzfelder(this.getZusatzfelder());
     }

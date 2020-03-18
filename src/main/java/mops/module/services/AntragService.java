@@ -19,7 +19,7 @@ public class AntragService {
     private final ModulSnapshotRepository modulSnapshotRepository;
 
     /**
-     * Erstellt einen Änderungsantrag aus einem Modul heraus
+     * Erstellt einen Änderungsantrag aus einem Modul heraus.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
      * @return
@@ -88,7 +88,7 @@ public class AntragService {
                     "Modul konnte in der Datenbank nicht gefunden werden!");
         }
         ModulService.applyAntragOnModul(oldModul, antrag);
-        oldModul.refreshLinks();
+        oldModul.refreshMapping();
         modulSnapshotRepository.save(oldModul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
@@ -102,7 +102,7 @@ public class AntragService {
     public void approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
-        neuesmodul.refreshLinks();
+        neuesmodul.refreshMapping();
 
         modulSnapshotRepository.save(neuesmodul);
 
