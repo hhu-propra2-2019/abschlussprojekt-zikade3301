@@ -3,6 +3,7 @@ package mops.module.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,10 @@ import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -42,6 +46,8 @@ public class ModulServiceDatabaseTest {
     private String diffs2;
     private String completeModul;
 
+    private CustomComparator ignoreDates;
+
     /**
      * Erstellt Beispiel-Objekte als Strings, aus denen anschließend JsonService Module erstellt.
      */
@@ -49,6 +55,11 @@ public class ModulServiceDatabaseTest {
     public void init() {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
+
+        // Ignore dates for JSON comparison
+        ignoreDates = new CustomComparator(JSONCompareMode.LENIENT,
+                new Customization("datumErstellung", (o1, o2) -> true),
+                new Customization("datumAenderung", (o1, o2) -> true));
 
         antragRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
@@ -123,12 +134,9 @@ public class ModulServiceDatabaseTest {
         Modul modul = module.get(module.size() - 1);
         vergleichsmodul.setId(modul.getId());
 
-        vergleichsmodul.setDatumErstellung(modul.getDatumErstellung());
-        vergleichsmodul.setDatumAenderung(modul.getDatumAenderung());
-
         try {
             JSONAssert.assertEquals(JsonService.modulToJsonObject(vergleichsmodul),
-                    JsonService.modulToJsonObject(modul), false);
+                    JsonService.modulToJsonObject(modul), ignoreDates);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -157,12 +165,9 @@ public class ModulServiceDatabaseTest {
         module = modulService.getAllModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
-        Modul assertModul = JsonService.jsonObjectToModul(modul4);
-        assertModul.setId(geaendertesModul.getId());
-
         try {
-            JSONAssert.assertEquals(JsonService.modulToJsonObject(assertModul),
-                    JsonService.modulToJsonObject(geaendertesModul), false);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(aenderungen),
+                    JsonService.modulToJsonObject(geaendertesModul), ignoreDates);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -197,6 +202,33 @@ public class ModulServiceDatabaseTest {
             assertThat(dbmodul.getVeranstaltungen().stream()
                     .findFirst().orElse(new Veranstaltung()).getLehrende())
                     .contains("Stefan Harmeling");
+        }
+    }
+
+    @Test
+    public void semesterQueryTest() {
+        Modul modul1 = JsonService.jsonObjectToModul(completeModul);
+        Modul modul2 = JsonService.jsonObjectToModul(completeModul);
+
+        modul1.getVeranstaltungen().stream().findFirst().orElse(null)
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2018/19", "SoSe2019")));
+        modul2.getVeranstaltungen().stream().findFirst().orElse(null)
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2019/20")));
+
+        antragService.addModulCreationAntrag(modul1);
+        antragService.addModulCreationAntrag(modul2);
+
+        List<Antrag> antraege = antragService.getAlleAntraege();
+        antraege.forEach(a -> antragService.approveModulCreationAntrag(a));
+
+        List<Modul> dbmodule = modulSnapshotRepository.findModuleBySemester("WiSe2018/19");
+
+        try {
+            assertThat(dbmodule.size()).isEqualTo(1);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(modul1),
+                    JsonService.modulToJsonObject(dbmodule.get(0)), ignoreDates);
+        } catch (JSONException e) {
+            fail(e.toString());
         }
     }
 

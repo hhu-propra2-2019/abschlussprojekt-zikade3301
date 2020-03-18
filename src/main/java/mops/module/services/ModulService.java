@@ -100,4 +100,12 @@ public class ModulService {
         return getAllModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
     }
 
+    public List<Modul> getModuleBySemester(String semester) {
+        return modulSnapshotRepository.findModuleBySemester(semester);
+    }
+
+    public Modul getModulById(Long id) {
+        return modulSnapshotRepository.findById(id).orElse(null);
+    }
+
 }
