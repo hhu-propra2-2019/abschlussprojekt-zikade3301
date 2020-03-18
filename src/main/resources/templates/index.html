@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://thymeleaf.org"
       th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -94,7 +94,7 @@
             <ul style="font-size: large; list-style-type: none">
                 <li th:each="modul : ${allModules}">
                     <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
-                    <a th:href="@{/module/moduldetails(modulId=${modul.id})}" th:text="${modul.titelDeutsch}">Modulname</a>
+                    <a th:href="@{'/module/moduldetails/' + ${modul.id}}" th:text="${modul.titelDeutsch}">Modulname</a>
                 </li>
             </ul>
         </div>

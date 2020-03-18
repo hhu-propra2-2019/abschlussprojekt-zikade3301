@@ -3,13 +3,15 @@ package mops.module;
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import lombok.RequiredArgsConstructor;
+import mops.module.services.AntragService;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.annotation.SessionScope;
 
 
@@ -21,6 +23,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class IndexController {
 
     private final ModulService modulService;
+    private final AntragService antragService;
 
 
     /**
@@ -42,20 +45,21 @@ public class IndexController {
     /**
      * Moduldetails string.
      *
-     * @param modulId the modul id
+     * @param id the modul id
      * @param token   the token of keycloak for permissions.
      * @param model   the model of keycloak for permissions.
      * @return the string "moduldetails" for the selected module.
      */
-    @RequestMapping("/moduldetails")
+    @RequestMapping(value = "/moduldetails/{id}", method = RequestMethod.GET)
     public String moduldetails(
-            @RequestParam("modulId") String modulId,
+            @PathVariable String id,
             KeycloakAuthenticationToken token,
             Model model) {
         if (token != null) {
             model.addAttribute("account",createAccountFromPrincipal(token));
         }
-        model.addAttribute("modulId",modulId);
+        //TODO: getModulById verwenden
+        //model.addAttribute("modul", modulService.getAllModule());
         return "moduldetails";
     }
 
