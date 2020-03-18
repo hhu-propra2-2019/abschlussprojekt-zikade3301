@@ -22,10 +22,10 @@ public class SuchService {
         List<Modul> result = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT * FROM Modul WHERE titel_Deutsch LIKE ?  OR titel_Englisch Like ?"
+                    "SELECT * FROM Modul WHERE LOWER(titel_Deutsch) LIKE ?  OR LOWER(titel_Englisch) Like ?"
             );
-            stmt.setString(1, "%" + searchinput + "%");
-            stmt.setString(2, "%" + searchinput + "%");
+            stmt.setString(1, "%" + searchinput.toLowerCase() + "%");
+            stmt.setString(2, "%" + searchinput.toLowerCase() + "%");
 
             ResultSet searchResult = stmt.executeQuery();
 

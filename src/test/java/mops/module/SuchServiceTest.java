@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import mops.module.database.Modul;
+import mops.module.repositories.ModulSnapshotRepository;
 import mops.module.services.SuchService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +86,21 @@ public class SuchServiceTest {
         try {
             modulRepo.save(modul);
             results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+    }
+
+    @Test
+    void findWordsAlthoughTheyAreInUpperOrLowercase() throws SQLException {
+        List<Modul> results = new ArrayList<>();
+
+        try {
+            modulRepo.save(modul);
+            results = suchService.searchForModuleByTitle("programmierung", conn);
 
         } catch (Exception e) {
             System.err.println("Got an exception! ");
