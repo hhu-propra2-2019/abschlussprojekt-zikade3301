@@ -34,8 +34,8 @@ public class IndexController {
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
-            model.addAttribute("allModules", modulService.getAlleModule());
         }
+        model.addAttribute("allModules", modulService.getAllModule());
         return "index";
     }
 

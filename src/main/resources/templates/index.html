@@ -94,7 +94,6 @@
             <ul style="font-size: large; list-style-type: none">
                 <li th:each="modul : ${allModules}">
                     <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
-<!--                    TODO hier "id" (aktuell fest auf 1) entsprechend der echten id anpassen-->
                     <a th:href="@{/module/moduldetails(modulId=${modul.id})}" th:text="${modul.titelDeutsch}">Modulname</a>
                 </li>
             </ul>
