@@ -84,4 +84,3 @@ public class SuchServiceTest {
         assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 }
-
