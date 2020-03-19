@@ -30,6 +30,11 @@ import org.springframework.util.FileCopyUtils;
 public class GraphQlProvider {
 
     private GraphQL graphQL;
+    private GraphQlDataFetchers graphQlDataFetchers;
+
+    public GraphQlProvider(GraphQlDataFetchers graphQlDataFetchers) {
+        this.graphQlDataFetchers = graphQlDataFetchers;
+    }
 
     @Bean
     public GraphQL graphQL() {
@@ -48,9 +53,6 @@ public class GraphQlProvider {
         GraphQLSchema graphQlSchema = buildSchema(resourceToString(resource));
         this.graphQL = GraphQL.newGraphQL(graphQlSchema).build();
     }
-
-    @Autowired
-    GraphQlDataFetchers graphQlDataFetchers;
 
     private GraphQLSchema buildSchema(String sdl) {
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
