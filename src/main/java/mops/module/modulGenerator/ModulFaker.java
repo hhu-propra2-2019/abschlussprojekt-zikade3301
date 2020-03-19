@@ -1,60 +1,28 @@
 package mops.module.modulGenerator;
 
 import com.github.javafaker.Faker;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
-import mops.module.database.Zusatzfeld;
 
 public class ModulFaker {
-    // modul
     private static final Faker faker = new Faker();
-    private static final String[] titelDeutsch = {"Rechnerarchitektur"};
-    private static final String[] titelEnglish = {"Computer Architecture"};
-    // veranstaltung Entität
-    private static final String[] modulbeauftragte={faker.harryPotter().character(), faker.harryPotter().character()};
-    private static final String[] gesamtLeistungspunkte = {"10CP"};
-    private static final String[] studiengang = {"Bachelor-StudiengangInformatik"};
-    private static final Modulkategorie[] modulkategorrie = {Modulkategorie.PFLICHT_INFO};
-    private static final Boolean[] sichtbar = {true};
-    // zusatzfelder Entität
-    //
-    //// veranstaltung
-    private static final String veranstaltungTitel[] = {faker.pokemon().name()};
-    private static final String lehrende[] = {faker.harryPotter().character()};
-    private static final String leistungspunkte[] = {"5CP"};
-    private static final String veranstaltungsFormen[] = {faker.elderScrolls().quote()};
-    //// beshcreibung embedded
-    //// voraussetzungenTeilnahme -> mehrere veranstaltungTitels
-    private static final String semester[] = {"WS19","SS19","WS/SS20"};
-    //
-    ////// Veranstaltungsbeschreibung
-    private static final String inhalt[] = {faker.elderScrolls().quote()};
-    private static final String lernergebnisse[] = {faker.elderScrolls().quote()};
-    private static final String literatur[] = {faker.book().title()};
-    private static final String verwendbarkeit[] = {faker.backToTheFuture().quote(),faker.backToTheFuture().quote()};
-    private static final String voraussetzungenBestehen[] = {faker.job().keySkills()};
-    private static final String haeufigkeit[] = {"Die Vorlesung „Rechnerarchitektur“ mit zugehöriger Übung wird jedes Sommersemester angeboten."};
-    private static final String sprache[] = {"Deutsch"};
-    //// Zusatzfeld
-    private static final String zusatzfeldtitel[] = {faker.book().title()};
-    private static final String zusatzfeldInhalt[] = {faker.chuckNorris().fact()};
+    private static final Modulkategorie[] modulkategorrie = {Modulkategorie.PFLICHT_INFO, Modulkategorie.BACHELORARBEIT, Modulkategorie.NEBENFACH};
+    private static final String semester[] = {"WS19", "SS19", "WS/SS20"};
 
-    //
     public static Modul generateFakeModul() {
         Modul fakeModul = new Modul();
         generateMultipleVeranstaltungen(fakeModul);
-        fakeModul.setTitelDeutsch(chooseRandom(titelDeutsch));
-        fakeModul.setTitelEnglisch(chooseRandom(titelEnglish));
-        fakeModul.setGesamtLeistungspunkte(chooseRandom(gesamtLeistungspunkte));
-        fakeModul.setStudiengang(chooseRandom(studiengang));
+        fakeModul.setTitelDeutsch(faker.book().title());
+        fakeModul.setGesamtLeistungspunkte("10CP");
+        fakeModul.setStudiengang(faker.harryPotter().house());
         fakeModul.setModulkategorie(chooseRandom(modulkategorrie));
-        fakeModul.setSichtbar(chooseRandom(sichtbar));
-        //
-        fakeModul.setModulbeauftragte(chooseSetRandom(modulbeauftragte));
+        fakeModul.setSichtbar(true);
+        fakeModul.setModulbeauftragte(new HashSet<>(Arrays.asList(faker.harryPotter().character(), faker.harryPotter().character())));
         return fakeModul;
     }
 
@@ -68,31 +36,25 @@ public class ModulFaker {
     private static Veranstaltung generateFakeVeranstaltung() {
         Veranstaltung fakeVeranstaltung = new Veranstaltung();
         Veranstaltungsbeschreibung fakeBeshcreibung = generateFakeBeschreibung();
-        //
-        fakeVeranstaltung.setTitel(chooseRandom(veranstaltungTitel));
-        fakeVeranstaltung.setLeistungspunkte(chooseRandom(leistungspunkte));
+        fakeVeranstaltung.setTitel(faker.book().title());
+        fakeVeranstaltung.setLeistungspunkte("5CP");
         fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
-        //
-        fakeVeranstaltung.setLehrende(chooseSetRandom(lehrende));
-        fakeVeranstaltung.setVeranstaltungsformen(chooseSetRandom(veranstaltungsFormen));
-        fakeVeranstaltung.setVoraussetzungenTeilnahme(chooseSetRandom(veranstaltungTitel));
-        fakeVeranstaltung.setVoraussetzungenTeilnahme(chooseSetRandom(semester));
-        //
+        fakeVeranstaltung.setLehrende(new HashSet<>(Arrays.asList(faker.harryPotter().character(), faker.harryPotter().character())));
+        fakeVeranstaltung.setVeranstaltungsformen(new HashSet<>(Arrays.asList(faker.backToTheFuture().quote())));
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title())));
+        fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
 
     private static Veranstaltungsbeschreibung generateFakeBeschreibung() {
         Veranstaltungsbeschreibung fakeBeshcreibung = new Veranstaltungsbeschreibung();
-        //
-        fakeBeshcreibung.setInhalte(chooseRandom(inhalt));
-        fakeBeshcreibung.setLernergebnisse(chooseRandom(lernergebnisse));
-        fakeBeshcreibung.setHaeufigkeit(chooseRandom(haeufigkeit));
-        fakeBeshcreibung.setSprache(chooseRandom(sprache));
-        //
-        fakeBeshcreibung.setLiteratur(chooseSetRandom(literatur));
-        fakeBeshcreibung.setVerwendbarkeit(chooseSetRandom(verwendbarkeit));
-        fakeBeshcreibung.setVoraussetzungenBestehen(chooseSetRandom(voraussetzungenBestehen));
-        //
+        fakeBeshcreibung.setInhalte(faker.elderScrolls().quote());
+        fakeBeshcreibung.setLernergebnisse(faker.elderScrolls().quote());
+        fakeBeshcreibung.setHaeufigkeit("Einmal im leben");
+        fakeBeshcreibung.setSprache(faker.country().name());
+        fakeBeshcreibung.setLiteratur(new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title())));
+        fakeBeshcreibung.setVerwendbarkeit(new HashSet<>(Arrays.asList(faker.elderScrolls().quote())));
+        fakeBeshcreibung.setVoraussetzungenBestehen(new HashSet<>(Arrays.asList(faker.elderScrolls().quote(), faker.elderScrolls().quote())));
         return fakeBeshcreibung;
     }
 
