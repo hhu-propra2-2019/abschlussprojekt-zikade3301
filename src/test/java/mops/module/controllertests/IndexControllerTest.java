@@ -40,11 +40,4 @@ class IndexControllerTest {
         ).andExpect(model().attribute("modulId",equalTo("1")));
     }
 
-    @Test
-    void testSearchRouting() throws Exception {
-        mvc.perform(get("/module/search")
-             .param("searchField","someSearch")
-        ).andExpect(view().name(expect));
-    }
-
 }

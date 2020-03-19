@@ -1,6 +1,7 @@
-package mops.module.services;
+package mops.module;
 
 import mops.module.database.Modul;
+import mops.module.services.SuchService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
