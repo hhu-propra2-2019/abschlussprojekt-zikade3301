@@ -60,23 +60,26 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/module/">Übersicht</a></li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_INFO">Pflichtmodul Informatik</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_MATHE">Pflichtmodul Mathematik</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == NEBENFACH">Nebenfach</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == PRAXIS">Praxis- und Berufsorientierung</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_BA">Wahlpflichtmodul (B.Sc.)</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_MA">Wahlpflichtmodul (M.Sc.)</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == BACHELORARBEIT">Bachelorarbeit</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == PROJEKTARBEIT">Projektarbeit</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == MASTERARBEIT">Masterarbeit</li>
-            <li class="breadcrumb-item" th:if="modul.modulkategorie == SONSTIGE">Sonstige Module</li>
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_INFO">Pflichtmodul Informatik</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_MATHE">Pflichtmodul Mathematik</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == NEBENFACH">Nebenfach</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PRAXIS">Praxis- und Berufsorientierung</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_BA">Wahlpflichtmodul (B.Sc.)</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_MA">Wahlpflichtmodul (M.Sc.)</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == BACHELORARBEIT">Bachelorarbeit</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PROJEKTARBEIT">Projektarbeit</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == MASTERARBEIT">Masterarbeit</li>-->
+<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == SONSTIGE">Sonstige Module</li>-->
             <li class="breadcrumb-item active" aria-current="page">Programmierung</li>
         </ol>
     </nav>
 
     <div class="card card-body">
-        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue" th:text="${modul.titelDeutsch}">
+        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue" th:text="${modul.getTitelDeutsch()}">
             Modulname
+        </p>
+        <p class="mt-3 ml-2" style="font-weight: bold; font-size: xx-large; color: dodgerblue" th:text="${modul.getTitelEnglisch()}">
+            ModulnameEnglisch
         </p>
         <hr class="my-4" style="background-color: white">
         <div>
@@ -135,9 +138,66 @@
                         <span class="card-text" th:text="${veranstaltung.getBeschreibung().getLiteratur()}">Literatur</span>
                     </span>
                 </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Häufigkeit</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getHaeufigkeit()}">Häufigkeit</span>
+                    </span>
+                </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Verwendbarkeit</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getVerwendbarkeit()}">Verwendbarkeit</span>
+                    </span>
+                </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Voraussetzungen zum Bestehen</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getVoraussetzungenBestehen()}">VoraussetzungenBestehen</span>
+                    </span>
+                </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Sprache</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getSprache()}">Sprache</span>
+                    </span>
+                </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Voraussetzungen für eine Teilnahme</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getVoraussetzungenTeilnahme()}">VoraussetzungenTeilnahme</span>
+                    </span>
+                </div>
+                <div class="mt-3 mb-3 pl-2">
+                    <span class="card-subtitle" style="font-weight: bold">Semester</span>
+                    <br>
+                    <span>
+                        <span class="card-text" th:text="${veranstaltung.getSemester()}">Semester</span>
+                    </span>
+                </div>
             </div>
         </div>
 
+        <div class="mt-3 mb-3 pl-2">
+            <span class="card-subtitle" style="font-weight: bold">Studiengang</span>
+            <br>
+            <span>
+                <span class="card-text" th:text="${modul.getStudiengang()}">Studiengang</span>
+            </span>
+        </div>
+
+        <div class="mt-3 mb-3 pl-2" th:each="zusatzfeld : ${modul.getZusatzfelder()}">
+            <span class="card-subtitle" style="font-weight: bold" th:text="${zusatzfeld.getTitel()}">ZusatzfeldTitel</span>
+            <br>
+            <span>
+                <span class="card-text" th:text="${zusatzfeld.getInhalt()}">ZusatzfeldInhalt</span>
+            </span>
+        </div>
 
     </div>
 </main>
