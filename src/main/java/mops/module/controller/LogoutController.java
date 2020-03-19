@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
