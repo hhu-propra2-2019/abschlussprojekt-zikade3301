@@ -2,6 +2,7 @@ package mops.module.database;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
@@ -20,17 +21,21 @@ public class Veranstaltungsbeschreibung {
         voraussetzungenBestehen = new HashSet<>();
     }
 
+    @Column(length = 10000)
     private String inhalte;
 
+    @Column(length = 10000)
     private String lernergebnisse;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> literatur;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> verwendbarkeit;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> voraussetzungenBestehen;
 
     private String haeufigkeit;

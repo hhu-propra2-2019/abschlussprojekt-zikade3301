@@ -2,6 +2,7 @@ package mops.module.database;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -47,6 +48,7 @@ public class Veranstaltung {
     private String leistungspunkte;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> veranstaltungsformen;
 
     @Embedded
