@@ -64,6 +64,9 @@ public class GraphQlProvider {
                 .type(newTypeWiring("Query")
                         .dataFetcher("modulById",
                                 graphQlDataFetchers.getModulByIdDataFetcher()))
+                .type(newTypeWiring("Query")
+                        .dataFetcher("allModule",
+                                graphQlDataFetchers.getAllModuleDataFetcher()))
                 .scalar(localDateTime)
                 .build();
     }

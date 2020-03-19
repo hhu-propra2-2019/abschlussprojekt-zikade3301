@@ -1,5 +1,6 @@
 type Query {
-  modulById(id: ID): Modul
+  modulById(id: ID!): Modul
+  allModule: [Modul]
 }
 
 type Modul {

@@ -29,4 +29,8 @@ public class GraphQlDataFetchers {
             return modulService.getModulById(Long.parseLong(modulId));
         };
     }
+
+    public DataFetcher getAllModuleDataFetcher() {
+        return dataFetchingEnvironment -> modulService.getAllModule();
+    }
 }
