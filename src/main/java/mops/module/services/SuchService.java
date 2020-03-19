@@ -7,22 +7,26 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import mops.module.database.Modul;
+import mops.module.repositories.ModulSnapshotRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SuchService {
+
+    @Autowired
+    ModulSnapshotRepository modulSnapshotRepository;
 
     /**
      * Search for module.
      *
      * @param searchinput the given string to search
      */
-    // "Tabelle" durch Tabellennamen ersetzen
-    public List<Modul> searchForModuleByTitle(String searchinput, Connection conn) throws SQLException {
-        List<Modul> result = new ArrayList<>();
+    public List<Modul> searchForModuleByTitle(String searchinput, Connection conn) {
+        List<Modul> results = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT * FROM Modul WHERE LOWER(titel_Deutsch) LIKE ?  OR LOWER(titel_Englisch) Like ?"
+                    "SELECT id FROM Modul WHERE LOWER(titel_Deutsch) LIKE ?  OR LOWER(titel_Englisch) Like ?"
             );
             stmt.setString(1, "%" + searchinput.toLowerCase() + "%");
             stmt.setString(2, "%" + searchinput.toLowerCase() + "%");
@@ -31,16 +35,12 @@ public class SuchService {
 
             while (searchResult.next()) {
                 Long id = searchResult.getLong("id");
-                String titelDeutsch = searchResult.getString("titel_Deutsch");
-                String titelEnglisch = searchResult.getString("titel_Englisch");
-                Modul modul = new Modul(id, titelDeutsch, titelEnglisch, null, null, null, null, null, true, null, null, null);
-                result.add(modul);
+                Modul modul = modulSnapshotRepository.findById(id).orElse(null);
+                results.add(modul);
             }
         } catch (SQLException e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
-        return result;
+        return results;
     }
-
 }
