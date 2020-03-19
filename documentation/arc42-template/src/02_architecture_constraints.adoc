@@ -1,9 +1,18 @@
 [[section-architecture-constraints]]
 == Randbedingungen
 
-- Das Modulhandbuch soll in MOPS integriert sein
+Dieser Abschnitt beschäftigt sich mit den Randbedingugen welche die Entwurfsentscheidungen einschränken.
 
 === Technisch
+
+[cols="1,2" options="header"]
+
+|===
+|Randbedingung |Erläuterung, Hintergrund
+| _ _ | _ _
+
+
+|===
 
 === Organisatorisch
 

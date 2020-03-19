@@ -1,4 +1,5 @@
 [[section-solution-strategy]]
 == Lösungsstrategie
 
+Dieser Abschnitt stellt die wichtigsten Ziele und Lösungsansätze gegenüber.
 

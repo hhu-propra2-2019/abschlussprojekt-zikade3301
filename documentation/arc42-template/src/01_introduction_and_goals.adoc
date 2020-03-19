@@ -32,7 +32,13 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 
 === Qualitätsziele
 
+[cols="1,2" options="header"]
+|===
+|Qualitätszeile |Motivation und Erläuterung
+|_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein._
+| _Sicherheit_ | _Die Eingeflegten Daten sind nur von authorisierten Nutzern einzusehen_
 
+|===
 
 === Stakeholder
 

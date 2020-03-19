@@ -1,7 +1,7 @@
 [[section-building-block-view]]
 == Bausteinsicht
 
-
+Dieser Abschnitt beschreibt die Aufteilung der Anwendung
 
 === Whitebox Gesamtsystem
 

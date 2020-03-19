@@ -1,9 +1,21 @@
 [[section-system-scope-and-context]]
 == Kontextabgrenzung
 
+Dieser Abschnitt beschreibt das Umfeld des Modulhandbuches im Rahmen von Mops.
+Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
 
 
 === Fachlicher Kontext
+
+*Nutzer:*
+[cols="1,2" options="header"]
+|===
+|Randbedingung |Erläuterung
+| _Nicht angemeldete User_ | _ _
+| _Studenten_ | _ _
+| _Organisatoren_ | _ _
+| _Administratoren_ | _ _
+|===
 
 
 
@@ -18,5 +30,8 @@
 **<Diagramm oder Tabelle>**
 
 **<optional: Erläuterung der externen technischen Schnittstellen>**
+
+- PDF Export
+- REST API?
 
 **<Mapping fachliche auf technische Schnittstellen>**
