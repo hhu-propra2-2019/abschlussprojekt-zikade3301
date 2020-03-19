@@ -76,5 +76,12 @@ public class SuchServiceTest {
         assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
+    @Test
+    void searchForSubstringReturnsResult() {
+        modulRepo.save(modul);
+        List<Modul> results = suchService.searchForModuleByTitle("prog", conn);
+        assertThat(results.size() == 1);
+        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+    }
 }
 
