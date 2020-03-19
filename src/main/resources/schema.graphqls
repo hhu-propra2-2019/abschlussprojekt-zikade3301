@@ -11,8 +11,12 @@ type Modul {
   gesamtLeistungspunkte: String
   studiengang: String
   modulkategorie: Modulkategorie
+  datumErstellung: LocalDateTime
+  datumAenderung: LocalDateTime
   zusatzfelder: [Zusatzfeld]
 }
+
+scalar LocalDateTime
 
 enum Modulkategorie {
   PFLICHT_INFO

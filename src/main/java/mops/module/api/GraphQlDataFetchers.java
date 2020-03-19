@@ -8,16 +8,21 @@ import mops.module.services.ModulService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GraphQLDataFetchers {
+public class GraphQlDataFetchers {
 
     private ModulService modulService;
     private AntragService antragService;
 
-    public GraphQLDataFetchers(AntragRepository antragRepository, ModulSnapshotRepository modulSnapshotRepository) {
+    public GraphQlDataFetchers(AntragRepository antragRepository,
+                               ModulSnapshotRepository modulSnapshotRepository) {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
     }
 
+    /**
+     * Ruft das zur ID zugehörige Modul aus dem Repository ab und gibt es zurück.
+     * @return GraphQL DataFetcher
+     */
     public DataFetcher getModulByIdDataFetcher() {
         return dataFetchingEnvironment -> {
             String modulId = dataFetchingEnvironment.getArgument("id");
