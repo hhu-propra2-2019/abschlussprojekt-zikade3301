@@ -13,6 +13,8 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
+import mops.module.database.Veranstaltungsform;
+import mops.module.database.Zusatzfeld;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -79,18 +81,19 @@ public class ModulServiceDatabaseTest {
                 + "'voraussetzungenTeilnahme':[{'titel':'test'}]}],"
                 + "'modulkategorie':'BACHELORARBEIT'}";
         completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme',"
-                + "'leistungspunkte':'10CP','veranstaltungsformen':['Vorlesung',"
-                + "'Praktische Übung'],'beschreibung':{'inhalte':'Inhalte',"
-                + "'lernergebnisse':'Synchronisierung','literatur':['Alter Schinken'],"
-                + "'verwendbarkeit':['Überall verwendbar'],"
+                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
+                + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
+                + "{'form':'Vorlesung','semesterWochenStunden':2}],"
+                + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
+                + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
                 + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
                 + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['Informatik I']}],"
+                + "'voraussetzungenTeilnahme':['Informatik I'],"
+                + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
+                + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
+                + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
                 + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
-                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA',"
-                + "'zusatzfelder':[{'titel':'Feld2','inhalt':'Numero dos'},{'titel':'Feld1',"
-                + "'inhalt':'Dies hier ist das erste Zusatzfeld!'}]}";
+                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
     }
 
     @Test
@@ -179,6 +182,7 @@ public class ModulServiceDatabaseTest {
     public void completeAddModulRoutineTest() {
 
         Modul modul = JsonService.jsonObjectToModul(completeModul);
+
         Set<String> modulbeauftragte = new HashSet<>();
         modulbeauftragte.add("Michael Schöttner");
         modul.setModulbeauftragte(modulbeauftragte);

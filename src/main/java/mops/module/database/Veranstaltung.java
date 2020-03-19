@@ -2,6 +2,7 @@ package mops.module.database;
 
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mops.module.services.JsonExclude;
@@ -42,8 +44,10 @@ public class Veranstaltung {
 
     private String leistungspunkte;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> veranstaltungsformen;
+    //Beim Löschen von Veranstaltung werden alle Veranstaltungsformen mitgelöscht
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltung",
+            orphanRemoval = true)
+    private Set<Veranstaltungsform> veranstaltungsformen;
 
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
@@ -53,4 +57,45 @@ public class Veranstaltung {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> semester;
+
+    //Beim Löschen von Veranstaltung werden alle Zusatzfelder mitgelöscht
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltung",
+            orphanRemoval = true)
+    private Set<Zusatzfeld> zusatzfelder;
+
+    public void refreshMapping() {
+        this.setZusatzfelder(this.getZusatzfelder());
+        this.setVeranstaltungsformen(this.getVeranstaltungsformen());
+    }
+
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Zusatzfelder.
+     *
+     * @param zusatzfelder Schon vorhandenes Set von Zusatzfelder
+     */
+    public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
+        if (zusatzfelder == null) {
+            return;
+        }
+        for (Zusatzfeld zusatzfeld : zusatzfelder) {
+            zusatzfeld.setVeranstaltung(this);
+        }
+        this.zusatzfelder = zusatzfelder;
+    }
+
+    /**
+     * Überschreibt die Setter & erneuert die Links für die Veranstaltungsformen.
+     *
+     * @param veranstaltungsformen Schon vorhandenes Set von Veranstaltungsformen
+     */
+    public void setVeranstaltungsformen(Set<Veranstaltungsform> veranstaltungsformen) {
+        if (veranstaltungsformen == null) {
+            return;
+        }
+        for (Veranstaltungsform veranstaltungsform : veranstaltungsformen) {
+            veranstaltungsform.setVeranstaltung(this);
+        }
+        this.veranstaltungsformen = veranstaltungsformen;
+    }
+
 }

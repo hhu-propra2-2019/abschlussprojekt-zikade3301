@@ -51,17 +51,14 @@ public class Modul {
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumAenderung;
 
-    //Beim Löschen von Modul werden alle Zusatzfelder mitgelöscht, siehe oben
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
-            orphanRemoval = true)
-    private Set<Zusatzfeld> zusatzfelder;
-
     /**
      * Ruft setVeranstaltungen & setZusatzfelder auf, um das Mapping zu erneuern.
      */
     public void refreshMapping() {
         this.setVeranstaltungen(this.getVeranstaltungen());
-        this.setZusatzfelder(this.getZusatzfelder());
+        for (Veranstaltung v : veranstaltungen) {
+            v.refreshMapping();
+        }
     }
 
     /**
@@ -92,18 +89,4 @@ public class Modul {
         this.veranstaltungen = veranstaltungen;
     }
 
-    /**
-     * Überschreibt die Setter & erneuert die Links für die Zusatzfelder.
-     *
-     * @param zusatzfelder Schon vorhandenes Set von Zusatzfelder
-     */
-    public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
-        if (zusatzfelder == null) {
-            return;
-        }
-        for (Zusatzfeld zusatzfeld : zusatzfelder) {
-            zusatzfeld.setModul(this);
-        }
-        this.zusatzfelder = zusatzfelder;
-    }
 }
