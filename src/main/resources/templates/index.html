@@ -64,7 +64,6 @@
 
     <!--    TODO: getter statt modul.id-->
     <!--    TODO: PIPE für Kategorieübersetzung-->
-    <!--    TODO: Klappt KATEGORIEN VERGLEICHEN bei Einsortierung der Module? -->
     <div th:each="category : ${allCategories}">
         <p>
             <a class="btn btn-primary"
@@ -78,7 +77,7 @@
                role="button"
                aria-expanded="false"
                th:attr="aria-controls=${category}">
-               <span th:text="${category}">Modulkategorien</span>
+               <span th:text="${category.translate()}">Modulkategorien</span>
             </a>
         </p>
         <div class="collapse" th:id="${category}">

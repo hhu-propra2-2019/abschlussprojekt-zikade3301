@@ -60,17 +60,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/module/">Übersicht</a></li>
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_INFO">Pflichtmodul Informatik</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PFLICHT_MATHE">Pflichtmodul Mathematik</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == NEBENFACH">Nebenfach</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PRAXIS">Praxis- und Berufsorientierung</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_BA">Wahlpflichtmodul (B.Sc.)</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == WAHLPFLICHT_MA">Wahlpflichtmodul (M.Sc.)</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == BACHELORARBEIT">Bachelorarbeit</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == PROJEKTARBEIT">Projektarbeit</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == MASTERARBEIT">Masterarbeit</li>-->
-<!--            <li class="breadcrumb-item" th:if="modul.modulkategorie == SONSTIGE">Sonstige Module</li>-->
-            <li class="breadcrumb-item active" aria-current="page">Programmierung</li>
+            <li class="breadcrumb-item active" th:text="${modul.modulkategorie.translate()}">Modulkategorie</li>
+            <li class="breadcrumb-item active" aria-current="page" th:text="${modul.getTitelDeutsch()}">Titel</li>
         </ol>
     </nav>
 
@@ -89,7 +80,7 @@
             </div>
             <div class="mt-2 col-lg-3 col-md-3 col-sm-12" style="float: left">
                 <span style="font-weight: bold; padding-left: 1rem">Modulbeauftragte:</span>
-                <ul>
+                <ul style="list-style-type: none; padding: inherit">
                     <li th:each="beauftragter : ${modul.getModulbeauftragte()}">
                         <span th:text="${beauftragter}">Prof.</span>
                     </li>
@@ -99,14 +90,15 @@
                 <span style="font-weight: bold">Studiengang:</span>
                 <div th:text="${modul.getStudiengang()}">Studiengang</div>
             </div>
-<!--            TODO: Dynamisch-->
             <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: right">
                 <span style="font-weight: bold; padding-left: 1rem">Lehrformen:</span>
-                <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}">
+                <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}" style="list-style-type: none; padding: inherit">
                     <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}">
-                        <span th:text="${veranstaltungsform}">Veranstaltungsform</span>
-<!--                        TODO Semesterwochenstunden dymanisch einbinden-->
-<!--                        <span style="width: min-content; float: right" class="badge badge-secondary">4 SWS</span>-->
+                        <span style="width: min-content" class="badge badge-secondary"
+                              th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}">
+                            SWS
+                        </span>
+                        <span class="ml-2" th:text="${veranstaltungsform.getForm()}">Veranstaltungsform</span>
                     </li>
                 </ul>
             </div>
