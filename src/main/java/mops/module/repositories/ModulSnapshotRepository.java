@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModulSnapshotRepository extends CrudRepository<Modul, Long> {
 
-    @Query("SELECT m FROM Modul m WHERE LOWER(titelDeutsch) LIKE %?1% OR LOWER(titelEnglisch) LIKE %?1%")
+    @Query("SELECT m FROM Modul m WHERE LOWER(titel_Deutsch) LIKE %?1% OR LOWER(titel_Englisch) LIKE %?1%")
     List<Modul> findModuleByTitle(String searchinput);
 
 }
