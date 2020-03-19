@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+<head>
+    <meta charset="utf-8">
+    <title>Meine Module</title>
+    <th:block th:fragment="headcontent">
+        <!-- Links, Skripts, Styles hier einfügen! -->
+    </th:block>
+</head>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
+        <ul>
+            <li class="active">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle"
+                            style="width: 100%;
+                            border-radius: 0;
+                            text-align: left;
+                            background: transparent;
+                            color: dimgray;
+                            border: none"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Semesterauswahl
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="/module/">Übersicht</a>
+            </li>
+            <li th:if="${account}">
+                <div th:each="role: ${account.getRoles()}">
+                    <div th:switch="${role}">
+                        <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
+                        <a th:case="'sekretariat'" href="/module/administrator">Anträge</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </nav>
+</header>
+
+<main th:fragment="bodycontent">
+    <!-- Restlichen Inhalt hier einfügen! -->
+    <h1>Das sollten Modulverantwortliche sehen</h1>
+
+</main>
+</body>
+</html>

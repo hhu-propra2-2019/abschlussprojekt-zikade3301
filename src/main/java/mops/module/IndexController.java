@@ -1,11 +1,13 @@
 package mops.module;
 
-import org.keycloak.KeycloakPrincipal;
+import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
+
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 
@@ -13,16 +15,6 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @RequestMapping("/module")
 public class IndexController {
-
-
-    private Account createAccountFromPrincipal(KeycloakAuthenticationToken token) {
-        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        return new Account(
-                principal.getName(),
-                principal.getKeycloakSecurityContext().getIdToken().getEmail(),
-                null,
-                token.getAccount().getRoles());
-    }
 
     /**
      * Index string.
@@ -34,9 +26,29 @@ public class IndexController {
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
-            model.addAttribute("account", createAccountFromPrincipal(token));
+            model.addAttribute("account",createAccountFromPrincipal(token));
         }
         return "index";
+    }
+
+    /**
+     * Moduldetails string.
+     *
+     * @param modulId the modul id
+     * @param token   the token of keycloak for permissions.
+     * @param model   the model of keycloak for permissions.
+     * @return the string "moduldetails" for the selected module.
+     */
+    @RequestMapping("/moduldetails")
+    public String moduldetails(
+            @RequestParam("modulId") String modulId,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account",createAccountFromPrincipal(token));
+        }
+        model.addAttribute("modulId",modulId);
+        return "moduldetails";
     }
 
 }

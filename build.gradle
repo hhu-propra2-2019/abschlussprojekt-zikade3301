@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    runtimeOnly 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -68,13 +68,14 @@ dependencies {
     testCompile 'com.tngtech.archunit:archunit-junit5:0.13.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation('org.postgresql:postgresql')
+    implementation 'com.google.code.gson:gson:2.8.6'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation 'mops:styleguide:2.1.0'
+    implementation 'mops:styleguide:2.2.0'
 }
 
 test {
