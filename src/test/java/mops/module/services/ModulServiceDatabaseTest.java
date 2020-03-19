@@ -83,7 +83,7 @@ public class ModulServiceDatabaseTest {
         completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
                 + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
                 + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
-                + "{'form':'Vorlesung','semesterWochenStunden':2}],"
+                + "{'form':'Übung','semesterWochenStunden':2}],"
                 + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
                 + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
                 + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
