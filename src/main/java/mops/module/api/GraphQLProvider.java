@@ -2,7 +2,6 @@ package mops.module.api;
 
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import graphql.GraphQL;
@@ -49,7 +48,8 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("modulById", graphQLDataFetchers.getModulByIdDataFetcher()))
+                        .dataFetcher("modulById",
+                                graphQLDataFetchers.getModulByIdDataFetcher()))
                 .build();
     }
 }
