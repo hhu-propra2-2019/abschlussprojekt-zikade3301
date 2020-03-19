@@ -2,12 +2,9 @@ package mops.module;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mops.module.database.Antrag;
-import mops.module.database.Modul;
+import mops.module.database.Modulkategorie;
 import mops.module.services.AntragService;
-import mops.module.services.JsonService;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -43,6 +40,7 @@ public class IndexController {
             model.addAttribute("account", createAccountFromPrincipal(token));
         }
         model.addAttribute("allModules", modulService.getAllModule());
+        model.addAttribute("allCategories", Modulkategorie.values());
         return "index";
     }
 

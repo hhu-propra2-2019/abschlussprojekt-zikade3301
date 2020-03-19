@@ -60,63 +60,43 @@
     <form method="POST" class="form-group">
         <input class="form-control" placeholder="Suche" type="search">
     </form>
-    <!--    <div th:remove="all-but-first">
-            <div th:each="module : ${modules}" th:object="${module}">
-                <div th:each="category : *{categorys}" th:object="${category}">
-                    <div>
-                        <h3 th:text="*{title}">Titel</h3>
-                        <p th:text="*{content}"></p>
-                    </div>
-                </div>
+
+
+    <!--    TODO: getter statt modul.id-->
+    <!--    TODO: PIPE für Kategorieübersetzung-->
+    <!--    TODO: Klappt KATEGORIEN VERGLEICHEN bei Einsortierung der Module? -->
+    <div th:each="category : ${allCategories}">
+        <p>
+            <a class="btn btn-primary"
+               style="font-weight: bold;
+               font-size: larger;
+               border:none;
+               background-color: transparent;
+               color: dodgerblue"
+               data-toggle="collapse"
+               th:href="'#' + ${category}"
+               role="button"
+               aria-expanded="false"
+               th:attr="aria-controls=${category}">
+               <span th:text="${category}">Modulkategorien</span>
+            </a>
+        </p>
+        <div class="collapse" th:id="${category}">
+            <div class="card card-body pt-0" style="border: none">
+                <ul style="font-size: large; list-style-type: none">
+                    <li th:each="modul : ${allModules}">
+                        <div th:if="${modul.modulkategorie} == ${category}">
+                            <span style="width: min-content"
+                                  class="badge badge-dark mr-2"
+                                  th:text="${modul.getGesamtLeistungspunkte()}">CP</span>
+                            <a th:href="@{'/module/moduldetails/' + ${modul.id}}"
+                               th:text="${modul.titelDeutsch}">
+                                Modulname
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>-->
-
-
-
-
-    <p>
-        <a class="btn btn-primary"
-           style="font-weight: bold;
-           font-size: larger;
-           border:none;
-           background-color: transparent;
-           color: dodgerblue"
-           data-toggle="collapse"
-           href="#Pflichtmodule"
-           role="button"
-           aria-expanded="false"
-           aria-controls="Pflichtmodule">
-            Pflichtmodule
-        </a>
-    </p>
-    <div class="collapse" id="Pflichtmodule">
-        <div class="card card-body pt-0" style="border: none">
-            <ul style="font-size: large; list-style-type: none">
-                <li th:each="modul : ${allModules}">
-                    <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
-                    <a th:href="@{'/module/moduldetails/' + ${modul.id}}" th:text="${modul.titelDeutsch}">Modulname</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <p>
-        <a class="btn btn-primary"
-           style="font-weight: bold;
-           font-size: larger;
-           border:none;
-           background-color: transparent;
-           color: dodgerblue"
-           data-toggle="collapse"
-           href="#Wahlpflichtmodule_BA"
-           role="button"
-           aria-expanded="false"
-           aria-controls="Wahlpflichtmodule_BA">
-            Wahlpflichtmodule (B.Sc.)
-        </a>
-    </p>
-    <div class="collapse" id="Wahlpflichtmodule_BA">
-        <div class="card card-body pt-0" style="border: none">
         </div>
     </div>
 </main>
