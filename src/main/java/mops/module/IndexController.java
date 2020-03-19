@@ -61,12 +61,13 @@ public class IndexController {
         return "moduldetails";
     }
 
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public String searchMethodTmp(@RequestParam String searchField, Model model) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:3301/Modulhandbuch", "root", "zikade3301");
         List<Modul> searchResults = suchService.searchForModuleByTitle(searchField, conn);
         model.addAttribute("searchResults", searchResults);
         //TODO: new request for modules only including the testresults
-        return "index";
-    }
+        return "searchresults";
+    }*/
+
 }
