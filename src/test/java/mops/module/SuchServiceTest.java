@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
@@ -50,62 +49,30 @@ public class SuchServiceTest {
     }
 
     @Test
-    void searchReturnsModulObject() throws SQLException {
-        List<Modul> results = new ArrayList<>();
-
-        try {
-            modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
-
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+    void searchReturnsModulObject() {
+        modulRepo.save(modul);
+        List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
         assertThat(results.get(0).equals(modul));
     }
 
     @Test
-    void searchReturnsCorrectResultSize() throws SQLException {
-        List<Modul> results = new ArrayList<>();
-
-        try {
-            modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
-
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+    void searchReturnsCorrectResultSize() {
+        modulRepo.save(modul);
+        List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
         assertThat(results.size() == 1);
     }
 
     @Test
-    void returnedModulContainsSearchterm() throws SQLException {
-        List<Modul> results = new ArrayList<>();
-
-        try {
-            modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
-
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+    void returnedModulContainsSearchterm() {
+        modulRepo.save(modul);
+        List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch(), conn);
         assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
     @Test
-    void findWordsAlthoughTheyAreInUpperOrLowercase() throws SQLException {
-        List<Modul> results = new ArrayList<>();
-
-        try {
-            modulRepo.save(modul);
-            results = suchService.searchForModuleByTitle("programmierung", conn);
-
-        } catch (Exception e) {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+    void findWordsAlthoughTheyAreInUpperOrLowercase() {
+        modulRepo.save(modul);
+        List<Modul> results = suchService.searchForModuleByTitle("programmierung", conn);
         assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
