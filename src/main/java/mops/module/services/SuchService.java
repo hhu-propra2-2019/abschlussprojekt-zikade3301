@@ -22,26 +22,8 @@ public class SuchService {
      *
      * @param searchinput the given string to search
      */
-    public List<Modul> searchForModuleByTitle(String searchinput, Connection conn) {
-        List<Modul> results = new ArrayList<>();
-        try {
-            PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT id FROM Modul WHERE LOWER(titel_Deutsch) LIKE ?  OR LOWER(titel_Englisch) Like ?"
-            );
-            stmt.setString(1, "%" + searchinput.toLowerCase() + "%");
-            stmt.setString(2, "%" + searchinput.toLowerCase() + "%");
-
-            ResultSet searchResult = stmt.executeQuery();
-
-            while (searchResult.next()) {
-                Long id = searchResult.getLong("id");
-                Modul modul = modulSnapshotRepository.findById(id).orElse(null);
-                results.add(modul);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return results;
+    public List<Modul> searchForModuleByTitle(String searchinput) {
+        return modulSnapshotRepository.findModuleByTitle(searchinput.toLowerCase());
     }
 
     /**
