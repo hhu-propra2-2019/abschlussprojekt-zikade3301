@@ -13,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import mops.module.services.JsonExclude;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Veranstaltung {
 
     /**
@@ -28,6 +30,7 @@ public class Veranstaltung {
         veranstaltungsformen = new HashSet<>();
         voraussetzungenTeilnahme = new HashSet<>();
         semester = new HashSet<>();
+        zusatzfelder = new HashSet<>();
     }
 
     @Id

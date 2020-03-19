@@ -190,17 +190,13 @@
                         <span class="card-text" th:text="${veranstaltung.getBeschreibung().getLiteratur()}">Literatur</span>
                     </span>
                 </div>
+                <div class="mt-3 mb-3 pl-2" th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}">
+                    <span class="card-subtitle" style="font-weight: bold" th:text="${zusatzfeld.getTitel()}">ZusatzfeldTitel</span>
+                    <br>
+                    <span class="card-text" th:text="${zusatzfeld.getInhalt()}">ZusatzfeldInhalt</span>
+                </div>
             </div>
             <hr class="my-4" style="background-color: white">
-        </div>
-
-
-        <div class="mt-3 mb-3 pl-2" th:each="zusatzfeld : ${modul.getZusatzfelder()}">
-            <span class="card-subtitle" style="font-weight: bold" th:text="${zusatzfeld.getTitel()}">ZusatzfeldTitel</span>
-            <br>
-            <span>
-                <span class="card-text" th:text="${zusatzfeld.getInhalt()}">ZusatzfeldInhalt</span>
-            </span>
         </div>
 
     </div>
