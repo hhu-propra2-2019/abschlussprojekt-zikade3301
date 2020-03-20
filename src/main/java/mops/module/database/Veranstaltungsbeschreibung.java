@@ -1,26 +1,39 @@
 package mops.module.database;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import lombok.Data;
 
 @Embeddable
+@Data
 public class Veranstaltungsbeschreibung {
+
+    /**
+     * Konstruktor stellt sicher, dass die Sets nicht null sind.
+     */
+    public Veranstaltungsbeschreibung() {
+        literatur = new HashSet<>();
+        verwendbarkeit = new HashSet<>();
+        voraussetzungenBestehen = new HashSet<>();
+    }
 
     private String inhalte;
 
     private String lernergebnisse;
 
-    @ElementCollection
-    private List<String> literatur;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> literatur;
 
-    @ElementCollection
-    private List<String> verwendbarkeit;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> verwendbarkeit;
 
-    @ElementCollection
-    private List<String> voraussetzungenBestehen;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> voraussetzungenBestehen;
 
-    private String haufigkeit;
+    private String haeufigkeit;
 
     private String sprache;
 
