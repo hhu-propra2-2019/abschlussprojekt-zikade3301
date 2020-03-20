@@ -1,20 +1,18 @@
-package mops.module;
+package mops.module.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
-import mops.module.services.SuchService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+//@ActiveProfiles("dev")
 public class SuchServiceTest {
 
     @Autowired
@@ -46,41 +44,34 @@ public class SuchServiceTest {
         modulRepo.deleteAll();
     }
 
-
-    @Test
-    void searchReturnsModulObject() {
-        List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
-        assertThat(results.get(0).equals(modul));
-    }
-
     @Test
     void searchReturnsCorrectResultSize() {
         List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
-        assertThat(results.size() == 1);
+        assertTrue(results.size() == 1);
     }
 
     @Test
     void returnedModulContainsSearchterm() {
         List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
-        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
     @Test
     void findWordsAlthoughTheyAreInUpperOrLowercase() {
         List<Modul> results = suchService.searchForModuleByTitle("programmierung");
-        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
     @Test
     void searchForSubstringReturnsResult() {
         List<Modul> results = suchService.searchForModuleByTitle("prog");
-        assertThat(results.size() == 1);
-        assertThat(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertTrue(results.size() == 1);
+        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
     }
 
     @Test
     void unsuccessfulSearchReturnsEmptyList() {
         List<Modul> results = suchService.searchForModuleByTitle("katze");
-        assertThat(results.isEmpty());
+        assertTrue(results.isEmpty());
     }
 }
