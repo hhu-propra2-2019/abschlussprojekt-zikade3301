@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -17,7 +18,10 @@ import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -42,6 +46,8 @@ public class ModulServiceDatabaseTest {
     private String diffs2;
     private String completeModul;
 
+    private CustomComparator ignoreDates;
+
     /**
      * Erstellt Beispiel-Objekte als Strings, aus denen anschließend JsonService Module erstellt.
      */
@@ -49,6 +55,11 @@ public class ModulServiceDatabaseTest {
     public void init() {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
+
+        // Ignore dates for JSON comparison
+        ignoreDates = new CustomComparator(JSONCompareMode.LENIENT,
+                new Customization("datumErstellung", (o1, o2) -> true),
+                new Customization("datumAenderung", (o1, o2) -> true));
 
         antragRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
@@ -68,17 +79,19 @@ public class ModulServiceDatabaseTest {
                 + "'voraussetzungenTeilnahme':[{'titel':'test'}]}],"
                 + "'modulkategorie':'BACHELORARBEIT'}";
         completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme',"
-                + "'lehrende':['Michael Schöttner'],'leistungspunkte':'10CP',"
-                + "'veranstaltungsformen':['Vorlesung','Praktische Übung'],"
+                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
+                + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
+                + "{'form':'Übung','semesterWochenStunden':2}],"
                 + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
                 + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
                 + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
                 + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['Informatik I']}],'gesamtLeistungspunkte':'10CP',"
-                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA',"
-                + "'zusatzfelder':[{'titel':'Feld2','inhalt':'Numero dos'},{'titel':'Feld1',"
-                + "'inhalt':'Dies hier ist das erste Zusatzfeld!'}]}";
+                + "'voraussetzungenTeilnahme':['Informatik I'],"
+                + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
+                + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
+                + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
+                + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
+                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
     }
 
     @Test
@@ -123,12 +136,9 @@ public class ModulServiceDatabaseTest {
         Modul modul = module.get(module.size() - 1);
         vergleichsmodul.setId(modul.getId());
 
-        vergleichsmodul.setDatumErstellung(modul.getDatumErstellung());
-        vergleichsmodul.setDatumAenderung(modul.getDatumAenderung());
-
         try {
             JSONAssert.assertEquals(JsonService.modulToJsonObject(vergleichsmodul),
-                    JsonService.modulToJsonObject(modul), false);
+                    JsonService.modulToJsonObject(modul), ignoreDates);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -157,12 +167,9 @@ public class ModulServiceDatabaseTest {
         module = modulService.getAllModule();
         Modul geaendertesModul = module.get(module.size() - 1);
 
-        Modul assertModul = JsonService.jsonObjectToModul(modul4);
-        assertModul.setId(geaendertesModul.getId());
-
         try {
-            JSONAssert.assertEquals(JsonService.modulToJsonObject(assertModul),
-                    JsonService.modulToJsonObject(geaendertesModul), false);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(aenderungen),
+                    JsonService.modulToJsonObject(geaendertesModul), ignoreDates);
         } catch (JSONException e) {
             fail(e.toString());
         }
@@ -173,6 +180,7 @@ public class ModulServiceDatabaseTest {
     public void completeAddModulRoutineTest() {
 
         Modul modul = JsonService.jsonObjectToModul(completeModul);
+
         modul.refreshMapping();
         antragService.addModulCreationAntrag(modul);
 
@@ -182,9 +190,7 @@ public class ModulServiceDatabaseTest {
         List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
-        for (Veranstaltung v : dbmodul.getVeranstaltungen()) {
-            v.setLehrende(new HashSet<>(Arrays.asList("Stefan Harmeling")));
-        }
+        dbmodul.setModulbeauftragte(new HashSet<>(Arrays.asList("Stefan Harmeling")));
 
         antragService.addModulModificationAntrag(dbmodul);
 
@@ -194,9 +200,34 @@ public class ModulServiceDatabaseTest {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(dbmodul.getId());
 
         if (optionalModul.isPresent()) {
-            assertThat(dbmodul.getVeranstaltungen().stream()
-                    .findFirst().orElse(new Veranstaltung()).getLehrende())
-                    .contains("Stefan Harmeling");
+            assertThat(dbmodul.getModulbeauftragte()).contains("Stefan Harmeling");
+        }
+    }
+
+    @Test
+    public void semesterQueryTest() {
+        Modul modul1 = JsonService.jsonObjectToModul(completeModul);
+        Modul modul2 = JsonService.jsonObjectToModul(completeModul);
+
+        modul1.getVeranstaltungen().stream().findFirst().orElse(null)
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2018/19", "SoSe2019")));
+        modul2.getVeranstaltungen().stream().findFirst().orElse(null)
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2019/20")));
+
+        antragService.addModulCreationAntrag(modul1);
+        antragService.addModulCreationAntrag(modul2);
+
+        List<Antrag> antraege = antragService.getAlleAntraege();
+        antraege.forEach(a -> antragService.approveModulCreationAntrag(a));
+
+        List<Modul> dbmodule = modulSnapshotRepository.findModuleBySemester("WiSe2018/19");
+
+        try {
+            assertThat(dbmodule.size()).isEqualTo(1);
+            JSONAssert.assertEquals(JsonService.modulToJsonObject(modul1),
+                    JsonService.modulToJsonObject(dbmodule.get(0)), ignoreDates);
+        } catch (JSONException e) {
+            fail(e.toString());
         }
     }
 
