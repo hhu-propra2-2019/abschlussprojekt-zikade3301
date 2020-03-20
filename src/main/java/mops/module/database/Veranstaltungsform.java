@@ -1,6 +1,5 @@
 package mops.module.database;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,16 +11,15 @@ import mops.module.services.JsonExclude;
 
 @Entity
 @Data
-public class Zusatzfeld {
+public class Veranstaltungsform {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titel;
+    private String form;
 
-    @Column(length = 10000)
-    private String inhalt;
+    private int semesterWochenStunden;
 
     @JsonExclude
     @EqualsAndHashCode.Exclude
