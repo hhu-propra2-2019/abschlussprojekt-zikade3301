@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
@@ -38,5 +38,4 @@ public class SearchController {
         //TODO: new request for modules only including the testresults
         return "searchresults";
     }
-
 }
