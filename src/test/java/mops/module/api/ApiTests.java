@@ -81,6 +81,8 @@ public class ApiTests {
                 .alwaysDo(print())
                 .apply(springSecurity())
                 .build();
+
+        modulSnapshotRepository.deleteAll();
     }
 
     @Test
@@ -119,8 +121,10 @@ public class ApiTests {
         Modul modul1 = JsonService.jsonObjectToModul(testmodul1);
         modulSnapshotRepository.save(modul1);
 
+        String query = String.format("{modulById(id:%d){titelDeutsch}}", modul1.getId());
+
         MvcResult mvcResult = mvc.perform(get("/module/api")
-                .param("query", "{modulById(id:1){titelDeutsch}}"))
+                .param("query", query))
                 .andReturn();
 
         mvc.perform(asyncDispatch(mvcResult))
@@ -134,7 +138,7 @@ public class ApiTests {
         modulSnapshotRepository.save(modul2);
 
         MvcResult mvcResult = mvc.perform(get("/module/api")
-                .param("query", "{modulById(id:2){datumErstellung}}"))
+                .param("query", "{allModule{datumErstellung}}"))
                 .andReturn();
 
         mvcResult = mvc.perform(asyncDispatch(mvcResult)).andReturn();
@@ -143,11 +147,13 @@ public class ApiTests {
         String actualTimestamp = JsonParser.parseString(resultString)
                 .getAsJsonObject()
                 .getAsJsonObject("data")
-                .getAsJsonObject("modulById")
+                .getAsJsonArray("allModule")
+                .get(0)
+                .getAsJsonObject()
                 .get("datumErstellung")
                 .getAsString();
 
-        LocalDateTime expectedDate = LocalDateTime.of(2011, 11, 11, 11, 11, 11);
+        LocalDateTime expectedDate = modul2.getDatumErstellung();
         assertThat(LocalDateTime.parse(actualTimestamp)).isEqualTo(expectedDate);
     }
 }
