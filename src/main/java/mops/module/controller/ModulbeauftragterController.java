@@ -32,7 +32,7 @@ public class ModulbeauftragterController {
     }
 
 
-//    TODO TEST HIERFÜR
+//    TODO TEST HIERFÜR UND ÜBERDENKEN
     @GetMapping("/modulerstellung")
     @Secured("ROLE_orga")
     public String result(
@@ -40,6 +40,7 @@ public class ModulbeauftragterController {
             Model model,
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
         return "modulerstellung";
     }
 
