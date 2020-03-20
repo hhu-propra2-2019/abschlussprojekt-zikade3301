@@ -19,6 +19,8 @@ public class ArchUnitTests {
     static final ArchRule controllerIsAnnotatedWithRequestMapping = classes()
             .that()
             .haveNameMatching(".*Controller")
+            .and()
+            .haveNameNotMatching(".*LogoutController")
             .should()
             .beAnnotatedWith(RequestMapping.class)
             .andShould(new Rule("/module", "Request-Mapping incorrect!"));

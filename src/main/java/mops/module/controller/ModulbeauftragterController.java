@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
@@ -14,12 +14,12 @@ import org.springframework.web.context.annotation.SessionScope;
 @Controller
 @SessionScope
 @RequestMapping("/module")
-public class AdministratorController {
+public class ModulbeauftragterController {
 
-    @GetMapping("/administrator")
-    @Secured("ROLE_sekretariat")
-    public String administrator(KeycloakAuthenticationToken token, Model model) {
+    @GetMapping("/modulbeauftragter")
+    @Secured("ROLE_orga")
+    public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        return "administrator";
+        return "modulbeauftragter";
     }
 }
