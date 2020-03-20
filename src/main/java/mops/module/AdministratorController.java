@@ -78,7 +78,8 @@ public class AdministratorController {
 
 
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
-    public String moduldetails(
+    @Secured("ROLE_sekretariat")
+    public String antragdetails(
             @PathVariable String id,
             KeycloakAuthenticationToken token,
             Model model) {
