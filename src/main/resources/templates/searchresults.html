@@ -56,7 +56,9 @@
 </header>
 <main th:fragment="bodycontent">
         <ul th:each="result: ${searchResults}">
-            <li th:text="${result}"></li>
+            <li th:href="@{/module/moduldetails(modulId=${result.getId()})}">
+                <a th:text="${result}"></a>
+            </li>
         </ul>
 </main>
 </body>
