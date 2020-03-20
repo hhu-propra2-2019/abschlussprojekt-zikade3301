@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import mops.module.database.Modul;
-import mops.module.database.Modulbeauftragter;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
