@@ -7,9 +7,9 @@ public enum Modulkategorie {
 
 
     /**
-     * Changes the DB-category to a more readable version for the Frontend.
+     * Ändert die Modulkategorie zu einer menschlich lesbareren Bezeichnung.
      *
-     * @return The German readable version of the category.
+     * @return Die deutsche lesbarere Version der Modulkategorie
      */
     public String toReadable() {
 
