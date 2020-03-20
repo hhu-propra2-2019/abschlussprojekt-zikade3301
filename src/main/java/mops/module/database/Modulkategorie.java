@@ -7,11 +7,11 @@ public enum Modulkategorie {
 
 
     /**
-     * Translates the DB-category.
+     * Changes the DB-category to a more readable version for the Frontend.
      *
-     * @return The German version of the category.
+     * @return The German readable version of the category.
      */
-    public String translate() {
+    public String toReadable() {
 
         switch (this) {
             case PFLICHT_INFO: return "Informatik Pflichtmodul";

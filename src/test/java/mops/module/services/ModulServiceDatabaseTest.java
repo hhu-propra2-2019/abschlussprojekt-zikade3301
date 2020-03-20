@@ -13,8 +13,6 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
-import mops.module.database.Veranstaltungsform;
-import mops.module.database.Zusatzfeld;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -183,10 +181,6 @@ public class ModulServiceDatabaseTest {
 
         Modul modul = JsonService.jsonObjectToModul(completeModul);
 
-        Set<String> modulbeauftragte = new HashSet<>();
-        modulbeauftragte.add("Michael Schöttner");
-        modul.setModulbeauftragte(modulbeauftragte);
-        System.out.println(JsonService.modulToJsonObject(modul));
         modul.refreshMapping();
         antragService.addModulCreationAntrag(modul);
 

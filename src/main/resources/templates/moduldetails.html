@@ -60,7 +60,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/module/">Übersicht</a></li>
-            <li class="breadcrumb-item active" th:text="${modul.modulkategorie.translate()}">Modulkategorie</li>
+            <li class="breadcrumb-item active" th:text="${modul.getModulkategorie().toReadable()}">Modulkategorie</li>
             <li class="breadcrumb-item active" aria-current="page" th:text="${modul.getTitelDeutsch()}">Titel</li>
         </ol>
     </nav>
