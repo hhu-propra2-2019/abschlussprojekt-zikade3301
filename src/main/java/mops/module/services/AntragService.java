@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -116,4 +117,12 @@ public class AntragService {
                 .collect(Collectors.toList());
     }
 
+    public List<Antrag> getAlleAntraegeGeordnetDatum() {
+        return getAlleAntraege().stream().sorted(Comparator.comparing(Antrag::getDatumErstellung))
+                .collect(Collectors.toList());
+
+    }
+    public Antrag getAntragById(Long id) {
+        return antragRepository.findById(id).orElse(null);
+    }
 }
