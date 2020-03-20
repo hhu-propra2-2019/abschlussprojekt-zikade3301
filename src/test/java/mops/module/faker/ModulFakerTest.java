@@ -15,6 +15,7 @@ import mops.module.services.AntragService;
 import mops.module.services.JsonService;
 import mops.module.services.ModulService;
 import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import mops.module.modulGenerator.ModulFaker;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("dev")
 @SpringBootTest
 public class ModulFakerTest {
     private ModulService modulService;
@@ -40,9 +42,19 @@ public class ModulFakerTest {
     public void init() {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
+
+        antragRepository.deleteAll();
+        modulSnapshotRepository.deleteAll();
+
         ignoreDates = new CustomComparator(JSONCompareMode.LENIENT,
                 new Customization("datumErstellung", (o1, o2) -> true),
                 new Customization("datumAenderung", (o1, o2) -> true));
+    }
+
+    @AfterEach
+    public void emptyRepo(){
+        antragRepository.deleteAll();
+        modulSnapshotRepository.deleteAll();
     }
 
     @Test
