@@ -15,6 +15,7 @@ public interface ModulSnapshotRepository extends CrudRepository<Modul, Long> {
     @Query("SELECT m FROM Modul m WHERE LOWER(titel_Deutsch) LIKE %?1% OR LOWER(titel_Englisch) LIKE %?1%")
     List<Modul> findModuleByTitle(String searchinput);
 
-    @Query(value = "select m.* from Modul m join veranstaltung v on m.id = v.modul_id where to_tsvector('german', inhalte) @@ to_tsquery('german', ?1)", nativeQuery = true)
+    @Query(value = "select m.* from Modul m join veranstaltung v on m.id = v.modul_id where to_tsvector('german', inhalte) @@ plainto_tsquery('german', ?1)", nativeQuery = true)
     List<Modul> fullTextSearchForModule(String searchinput);
 }
+
