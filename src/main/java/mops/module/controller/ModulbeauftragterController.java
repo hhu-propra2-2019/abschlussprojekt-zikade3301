@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Controller
 @SessionScope
@@ -33,7 +36,17 @@ public class ModulbeauftragterController {
             Model model,
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
+
+        List<String> listForVeranstaltungen = new ArrayList<String>();
+        int i = 0;
+        if(veranstaltungsanzahl > 0) {
+            while(i < veranstaltungsanzahl) {
+                String s = String.valueOf(i+1);
+                listForVeranstaltungen.add(s);
+                i++;
+            }
+        }
+        model.addAttribute("veranstaltungsanzahl", listForVeranstaltungen);
         return "modulerstellung";
     }
 
