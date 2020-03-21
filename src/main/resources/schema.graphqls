@@ -12,9 +12,9 @@ type Modul {
   gesamtLeistungspunkte: String
   studiengang: String
   modulkategorie: Modulkategorie
+  sichtbar: Boolean
   datumErstellung: LocalDateTime
   datumAenderung: LocalDateTime
-  zusatzfelder: [Zusatzfeld]
 }
 
 scalar LocalDateTime
@@ -32,20 +32,27 @@ enum Modulkategorie {
   SONSTIGE
 }
 
-type Zusatzfeld {
-  id: ID
-  titel: String
-  inhalt: String
-}
-
 type Veranstaltung {
   id: ID
   titel: String
   leistungspunkte: String
-  veranstaltungsformen: [String]
+  veranstaltungsformen: [Veranstaltungsform]
   beschreibung: Veranstaltungsbeschreibung
   voraussetzungenTeilnahme: [String]
   semester: [String]
+  zusatzfelder: [Zusatzfeld]
+}
+
+type Veranstaltungsform {
+  id: ID
+  form: String
+  semesterWochenStunden: Int
+}
+
+type Zusatzfeld {
+  id: ID
+  titel: String
+  inhalt: String
 }
 
 type Veranstaltungsbeschreibung {

@@ -37,7 +37,6 @@ import org.springframework.web.context.WebApplicationContext;
 @ActiveProfiles("dev")
 public class ApiTests {
     GraphQlProvider mockedGraphQlProvider;
-    GraphQlProvider realGraphQlProvider;
     String testmodul1;
     String testmodul2;
 
