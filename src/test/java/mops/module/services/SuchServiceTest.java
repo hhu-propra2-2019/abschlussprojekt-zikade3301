@@ -1,5 +1,6 @@
 package mops.module.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -48,26 +49,26 @@ public class SuchServiceTest {
     @Test
     void searchReturnsCorrectResultSize() {
         List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
-        assertTrue(results.size() == 1);
+        assertEquals(1, results.size());
     }
 
     @Test
     void returnedModulContainsSearchterm() {
         List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
-        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
     void findWordsAlthoughTheyAreInUpperOrLowercase() {
         List<Modul> results = suchService.searchForModuleByTitle("programmierung");
-        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
     void searchForSubstringReturnsResult() {
         List<Modul> results = suchService.searchForModuleByTitle("prog");
-        assertTrue(results.size() == 1);
-        assertTrue(results.get(0).getTitelDeutsch().equals(modul.getTitelDeutsch()));
+        assertEquals(1, results.size());
+        assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
