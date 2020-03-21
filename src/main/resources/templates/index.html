@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://thymeleaf.org"
       th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -7,7 +7,7 @@
     <th:block th:fragment="headcontent">
 
         <!-- Links, Skripts, Styles hier einfügen! -->
-        <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">
+<!--        <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">-->
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -60,64 +60,40 @@
     <form method="POST" class="form-group">
         <input class="form-control" placeholder="Suche" type="search">
     </form>
-    <!--    <div th:remove="all-but-first">
-            <div th:each="module : ${modules}" th:object="${module}">
-                <div th:each="category : *{categorys}" th:object="${category}">
-                    <div>
-                        <h3 th:text="*{title}">Titel</h3>
-                        <p th:text="*{content}"></p>
-                    </div>
-                </div>
+
+
+    <div th:each="category : ${allCategories}">
+        <p>
+            <a class="btn btn-primary"
+               style="font-weight: bold;
+               font-size: larger;
+               border:none;
+               background-color: transparent;
+               color: dodgerblue"
+               data-toggle="collapse"
+               th:href="'#' + ${category}"
+               role="button"
+               aria-expanded="false"
+               th:attr="aria-controls=${category}">
+               <span th:text="${category.toReadable()}">Modulkategorien</span>
+            </a>
+        </p>
+        <div class="collapse" th:id="${category}">
+            <div class="card card-body pt-0" style="border: none">
+                <ul style="font-size: large; list-style-type: none">
+                    <li th:each="modul : ${allModules}">
+                        <div th:if="${modul.getModulkategorie()} == ${category}">
+                            <span style="width: min-content"
+                                  class="badge badge-dark mr-2"
+                                  th:text="${modul.getGesamtLeistungspunkte()}">CP</span>
+                            <a th:href="@{'/module/moduldetails/' + ${modul.getId()}}"
+                               th:text="${modul.getTitelDeutsch()}">
+                                Modulname
+                            </a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>-->
-
-
-
-
-    <p>
-        <a class="btn btn-primary"
-           style="font-weight: bold;
-           font-size: larger;
-           border:none;
-           background-color: transparent;
-           color: dodgerblue"
-           data-toggle="collapse"
-           href="#Pflichtmodule"
-           role="button"
-           aria-expanded="false"
-           aria-controls="Pflichtmodule">
-            Pflichtmodule
-        </a>
-    </p>
-    <div class="collapse" id="Pflichtmodule">
-        <div class="card card-body pt-0" style="border: none">
-            <ul style="font-size: large; list-style-type: none">
-                <li>
-                    <span style="width: min-content" class="badge badge-dark mr-2">10 CP</span>
-<!--                    TODO hier "id" (aktuell fest auf 1) entsprechend der echten id anpassen-->
-                    <a th:href="@{/module/moduldetails(modulId=${1})}">Programmierung</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <p>
-        <a class="btn btn-primary"
-           style="font-weight: bold;
-           font-size: larger;
-           border:none;
-           background-color: transparent;
-           color: dodgerblue"
-           data-toggle="collapse"
-           href="#Wahlpflichtmodule_BA"
-           role="button"
-           aria-expanded="false"
-           aria-controls="Wahlpflichtmodule_BA">
-            Wahlpflichtmodule (B.Sc.)
-        </a>
-    </p>
-    <div class="collapse" id="Wahlpflichtmodule_BA">
-        <div class="card card-body pt-0" style="border: none">
         </div>
     </div>
 </main>
