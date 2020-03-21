@@ -7,6 +7,7 @@ import java.util.List;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,11 +49,19 @@ public class FullTextSearchTest {
     }
 
     @Test
-    void fullTextSearchTest() {
+    void fullTextSearchMultiWordTest() {
         List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("geschichtet, problemstellung");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
+    }
 
+    @Test
+    @DisplayName("Search for 'schicht' finds 'geschichtet'")
+    void fullTextSearchStemWordTest() {
+        List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("schicht");
+
+        assertFalse(results.isEmpty());
+        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
     }
 }
