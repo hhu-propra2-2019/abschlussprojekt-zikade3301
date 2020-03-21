@@ -2,20 +2,13 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import mops.module.database.Modul;
-import mops.module.database.Modulkategorie;
-import mops.module.database.Veranstaltung;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 
@@ -32,7 +25,7 @@ public class ModulbeauftragterController {
     }
 
 
-//    TODO TEST HIERFÜR UND ÜBERDENKEN
+    //    TODO TEST HIERFÜR UND ÜBERDENKEN
     @GetMapping("/modulerstellung")
     @Secured("ROLE_orga")
     public String result(
@@ -43,6 +36,9 @@ public class ModulbeauftragterController {
         model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
         return "modulerstellung";
     }
+
+
+    //    TODO MAPPING FÜR DAS ERSTELLEN VON MODULEN
 
 
 
