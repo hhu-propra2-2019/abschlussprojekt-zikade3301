@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +20,13 @@ public class FullTextSearchTest {
     @Autowired
     ModulSnapshotRepository modulRepo;
 
-    @Test
-    void fullTextSearchTest() {
-        String completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
+    private String completeModulString;
+    private Modul completeModul;
+
+    @BeforeEach
+    void init() {
+        modulRepo.deleteAll();
+        completeModulString = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
                 + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
                 + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
                 + "{'form':'Übung','semesterWochenStunden':2}],"
@@ -37,13 +42,17 @@ public class FullTextSearchTest {
                 + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
 
-        Modul complete = JsonService.jsonObjectToModul(completeModul);
-        complete.refreshMapping();
-        modulRepo.save(complete);
+        completeModul = JsonService.jsonObjectToModul(completeModulString);
+        completeModul.refreshMapping();
+        modulRepo.save(completeModul);
+    }
+
+    @Test
+    void fullTextSearchTest() {
         List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("geschichtet, problemstellung");
 
         assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals(complete.getTitelDeutsch()));
+        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
 
     }
 }
