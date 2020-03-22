@@ -82,7 +82,7 @@ public class GraphQlProvider {
                         return ((LocalDateTime) dataFetcherResult).toString();
                     } else {
                         throw new CoercingSerializeException(
-                                "Cannot parse as a LocalDateTime instance!");
+                                "Parameter kann nicht als LocalDateTime geparsed werden!");
                     }
                 }
 
