@@ -110,6 +110,13 @@ public class ModulService {
         return modulSnapshotRepository.findById(id).orElse(null);
     }
 
+
+    /**
+     * Gibt das letzte und die x darauffolgenden Semester als Liste von Strings zurück.
+     *
+     * @param count Anzahl der darauffolgenden Semester
+     * @return Liste von formatierten Semester-Strings
+     */
     public static List<String> getLastAndNextSemesters(int count) {
         List<String> semesterListe = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
@@ -120,6 +127,12 @@ public class ModulService {
         return semesterListe;
     }
 
+    /**
+     * Gibt das zugehörige Semester zum Datum zurück.
+     *
+     * @param date Datum
+     * @return Formatierter Semester-String
+     */
     public static String getSemesterFromDate(LocalDateTime date) {
         int currentYear = date.getYear();
         LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
@@ -134,9 +147,16 @@ public class ModulService {
         }
     }
 
+    /**
+     * Formatiert den jeweiligen Wintersemester-String.
+     *
+     * @param firstYear Jahr, in dem das Wintersemester beginnt
+     * @return Formatierter Wintersemester-String
+     */
     public static String getWinterSemesterYear(int firstYear) {
         String secondYear = Integer.toString(firstYear + 1);
-        secondYear = secondYear.length() > 2 ? secondYear.substring(secondYear.length() - 2) : secondYear;
+        secondYear = secondYear.length() > 2
+                ? secondYear.substring(secondYear.length() - 2) : secondYear;
         return firstYear + "-" + secondYear;
     }
 
