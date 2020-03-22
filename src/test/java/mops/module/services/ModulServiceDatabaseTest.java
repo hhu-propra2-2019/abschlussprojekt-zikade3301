@@ -64,14 +64,14 @@ public class ModulServiceDatabaseTest {
         antragRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
 
-        modul1 = "{'veranstaltungen':[{'creditPoints':'5CP'}],"
+        modul1 = "{'veranstaltungen':[{'leistungspunkte':'5CP'}],"
                 + "'modulkategorie':'MASTERARBEIT'}";
-        modul2 = "{'veranstaltungen':[{'creditPoints':'5CP'}],"
+        modul2 = "{'veranstaltungen':[{'leistungspunkte':'5CP'}],"
                 + "'modulkategorie':'BACHELORARBEIT'}";
-        modul3 = "{'veranstaltungen':[{'creditPoints':'5CP',"
+        modul3 = "{'veranstaltungen':[{'leistungspunkte':'5CP',"
                 + "'beschreibung':{'inhalte':'Lorem ipsum'}}],"
                 + "'modulkategorie':'MASTERARBEIT'}";
-        modul4 = "{'veranstaltungen':[{'creditPoints':'5CP',"
+        modul4 = "{'veranstaltungen':[{'leistungspunkte':'5CP',"
                 + "'beschreibung':{'inhalte':'Lorem ipsum'}}],"
                 + "'modulkategorie':'BACHELORARBEIT'}";
         diffs1 = "{'modulkategorie':'BACHELORARBEIT'}";
@@ -83,26 +83,28 @@ public class ModulServiceDatabaseTest {
                 + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
                 + "{'form':'Übung','semesterWochenStunden':2}],"
                 + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
-                + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
-                + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
+                + "'literatur':'Alter Schinken','verwendbarkeit':'Überall verwendbar',"
+                + "'voraussetzungenBestehen':'50% der Punkte in der Klausur',"
                 + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['Informatik I'],"
+                + "'voraussetzungenTeilnahme':'Informatik I',"
                 + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
                 + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
                 + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
-                + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
+                + "'modulbeauftragte':'Michael Schöttner','gesamtLeistungspunkte':'10CP',"
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
     }
 
     @Test
     public void addModulCreationAntragTestCreateOne() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
+        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
+                "Beispielantragsteller");
         assertThat(antragRepository.count()).isEqualTo(1);
     }
 
     @Test
     public void approveModulCreationAntragTestAntragCreated() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
+        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
+                "Beispielantragsteller");
         Antrag antrag = antragService.getAlleAntraege().get(0);
         antragService.approveModulCreationAntrag(antrag);
         assertThat(modulSnapshotRepository.count()).isEqualTo(1);
@@ -110,7 +112,8 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulCreationAntragTestModulIdIsAddedToAntrag() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1));
+        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
+                "Beispielantragsteller");
         Antrag antrag = antragService.getAlleAntraege().get(0);
         antragService.approveModulCreationAntrag(antrag);
         Modul modul = modulService.getAllModule().get(0);
@@ -128,7 +131,8 @@ public class ModulServiceDatabaseTest {
         veranstaltung.setBeschreibung(veranstaltungsbeschreibung);
         vergleichsmodul.addVeranstaltung(veranstaltung);
 
-        antragService.addModulCreationAntrag(vergleichsmodul);
+        antragService.addModulCreationAntrag(vergleichsmodul,
+                "Beispielantragsteller");
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
 
@@ -146,7 +150,8 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulModificationAntragTest() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul3));
+        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul3),
+                "Beispielantragsteller");
 
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
@@ -157,7 +162,7 @@ public class ModulServiceDatabaseTest {
         Modul aenderungen = JsonService.jsonObjectToModul(modul4);
 
         aenderungen.setId(modul.getId());
-        antragService.addModulModificationAntrag(aenderungen);
+        antragService.addModulModificationAntrag(aenderungen, "Beispielantragsteller");
 
         antraege = antragService.getAlleAntraege();
         Antrag antrag = antraege.get(antraege.size() - 1);
@@ -182,7 +187,8 @@ public class ModulServiceDatabaseTest {
         Modul modul = JsonService.jsonObjectToModul(completeModul);
 
         modul.refreshMapping();
-        antragService.addModulCreationAntrag(modul);
+        antragService.addModulCreationAntrag(modul,
+                "Beispielantragsteller");
 
         List<Antrag> antraege = antragService.getAlleAntraege();
         antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
@@ -190,9 +196,9 @@ public class ModulServiceDatabaseTest {
         List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
-        dbmodul.setModulbeauftragte(new HashSet<>(Arrays.asList("Stefan Harmeling")));
+        dbmodul.setModulbeauftragte("Stefan Harmeling");
 
-        antragService.addModulModificationAntrag(dbmodul);
+        antragService.addModulModificationAntrag(dbmodul, "Beispielantragsteller");
 
         antraege = antragService.getAlleAntraege();
         antragService.approveModulModificationAntrag(antraege.get(antraege.size() - 1));
@@ -200,7 +206,7 @@ public class ModulServiceDatabaseTest {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(dbmodul.getId());
 
         if (optionalModul.isPresent()) {
-            assertThat(dbmodul.getModulbeauftragte()).contains("Stefan Harmeling");
+            assertThat(dbmodul.getModulbeauftragte()).isEqualTo("Stefan Harmeling");
         }
     }
 
@@ -214,8 +220,8 @@ public class ModulServiceDatabaseTest {
         modul2.getVeranstaltungen().stream().findFirst().orElse(null)
                 .setSemester(new HashSet<>(Arrays.asList("WiSe2019/20")));
 
-        antragService.addModulCreationAntrag(modul1);
-        antragService.addModulCreationAntrag(modul2);
+        antragService.addModulCreationAntrag(modul1, "Beispielantragsteller");
+        antragService.addModulCreationAntrag(modul2, "Beispielantragsteller");
 
         List<Antrag> antraege = antragService.getAlleAntraege();
         antraege.forEach(a -> antragService.approveModulCreationAntrag(a));

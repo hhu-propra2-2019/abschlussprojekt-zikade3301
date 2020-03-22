@@ -11,27 +11,15 @@ import lombok.Data;
 @Data
 public class Veranstaltungsbeschreibung {
 
-    /**
-     * Konstruktor stellt sicher, dass die Sets nicht null sind.
-     */
-    public Veranstaltungsbeschreibung() {
-        literatur = new HashSet<>();
-        verwendbarkeit = new HashSet<>();
-        voraussetzungenBestehen = new HashSet<>();
-    }
-
     private String inhalte;
 
     private String lernergebnisse;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> literatur;
+    private String literatur;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> verwendbarkeit;
+    private String verwendbarkeit;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> voraussetzungenBestehen;
+    private String voraussetzungenBestehen;
 
     private String haeufigkeit;
 

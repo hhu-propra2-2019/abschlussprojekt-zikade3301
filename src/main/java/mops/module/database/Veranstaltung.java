@@ -28,7 +28,6 @@ public class Veranstaltung {
      */
     public Veranstaltung() {
         veranstaltungsformen = new HashSet<>();
-        voraussetzungenTeilnahme = new HashSet<>();
         semester = new HashSet<>();
         zusatzfelder = new HashSet<>();
     }
@@ -55,8 +54,7 @@ public class Veranstaltung {
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> voraussetzungenTeilnahme;
+    private String voraussetzungenTeilnahme;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> semester;

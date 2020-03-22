@@ -40,7 +40,8 @@ public class AntragService {
      *
      * @param newModul Neues Modul mit korrekter ID!
      */
-    public void addModulModificationAntrag(Modul newModul) throws IllegalArgumentException {
+    public void addModulModificationAntrag(Modul newModul, String antragsteller)
+            throws IllegalArgumentException {
         Modul oldModul = modulSnapshotRepository.findById(newModul.getId()).orElse(null);
         if (oldModul == null) {
             throw new IllegalArgumentException("Fehlerhaftes Modul!");
@@ -54,7 +55,7 @@ public class AntragService {
             diffModul.setDatumAenderung(LocalDateTime.now());
             Antrag antrag = modulToAntrag(diffModul);
             antrag.setDatumErstellung(LocalDateTime.now());
-            antrag.setAntragsteller("Anonym");
+            antrag.setAntragsteller(antragsteller);
             antragRepository.save(antrag);
         }
 
@@ -65,14 +66,14 @@ public class AntragService {
      *
      * @param newModul Neues Modul
      */
-    public void addModulCreationAntrag(Modul newModul) {
+    public void addModulCreationAntrag(Modul newModul, String antragsteller) {
         newModul.setId(null);
         newModul.setDatumErstellung(LocalDateTime.now());
         newModul.setDatumAenderung(LocalDateTime.now());
 
         Antrag antrag = modulToAntrag(newModul);
         antrag.setDatumErstellung(LocalDateTime.now());
-        antrag.setAntragsteller("Anonym");
+        antrag.setAntragsteller(antragsteller);
         antragRepository.save(antrag);
     }
 

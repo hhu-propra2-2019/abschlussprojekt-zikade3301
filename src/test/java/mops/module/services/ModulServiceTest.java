@@ -40,15 +40,15 @@ public class ModulServiceTest {
                 + "\"modulkategorie\":\"MASTERARBEIT\"}";
         modul2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
-        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[]}],\"modulkategorie\":\"MASTERARBEIT\"}";
+        modul3 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
+                + "\"modulkategorie\":\"MASTERARBEIT\"}";
         modul4 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[\"Informatik I\"]}],"
+                + "\"voraussetzungenTeilnahme\":\"Informatik I\"}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         diffs1 = "{\"id\":5,"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
         diffs2 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3,"
-                + "\"voraussetzungenTeilnahme\":[\"Informatik I\"]}],"
+                + "\"voraussetzungenTeilnahme\":\"Informatik I\"}],"
                 + "\"modulkategorie\":\"BACHELORARBEIT\"}";
     }
 

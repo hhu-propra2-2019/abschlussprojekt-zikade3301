@@ -34,8 +34,7 @@ public class Modul {
             orphanRemoval = true)
     private Set<Veranstaltung> veranstaltungen;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> modulbeauftragte;
+    private String modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 
