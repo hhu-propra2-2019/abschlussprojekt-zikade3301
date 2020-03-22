@@ -132,16 +132,16 @@
                             </div>
                             <br>
 
-                            <!--                        TODO HIER KANN ES MEHRERE GEBEN-->
-                            <!--                            <div class="mt-3 mb-3">-->
-                            <!--                                <label for="organizer">Modulbeauftragter</label>-->
-                            <!--                                <input type="text"-->
-                            <!--                                       style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"-->
-                            <!--                                       name="organizer"-->
-                            <!--                                       class="form-control col-md-8 col-sm-8"-->
-                            <!--                                       id="organizer"-->
-                            <!--                                       placeholder="Modulbeauftragter der Veranstaltung" required>-->
-                            <!--                            </div>-->
+<!--                            TODO hier mehrere-->
+                            <div class="mt-3 mb-3 col-12">
+                                <label for="organizer">Modulbeauftragte</label>
+                                <input type="text"
+                                       style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
+                                       name="organizer"
+                                       class="form-control col-md-8 col-sm-8"
+                                       id="organizer"
+                                       placeholder="Modulbeauftragte der Veranstaltung" required>
+                            </div>
 
 
 
@@ -193,7 +193,7 @@
                                      style="border: none;
                                      border-radius: unset;
                                      background-color: white"
-                                     th:each="i : ${veranstaltungsanzahl}">
+                                     th:each="i : ${#numbers.sequence(1, veranstaltungsanzahl)}">
                                     <div class="card-header" th:id="'veranstaltung'+ ${i}+'heading'" style="background-color: white;">
                                         <h2 class="mb-0">
                                             <a data-toggle="collapse"
@@ -528,6 +528,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <input type="hidden" name="veranstaltungsanzahl" th:value="${veranstaltungsanzahl}">
 
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
