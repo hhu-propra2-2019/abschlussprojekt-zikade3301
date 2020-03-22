@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -119,5 +121,14 @@ public class ModulServiceTest {
         LocalDateTime localDateTime = LocalDateTime.of(2020, 6, 22, 17, 6);
         String actual = ModulService.getSemesterFromDate(localDateTime);
         assertThat(actual).isEqualTo("SoSe2020");
+    }
+
+    @Test
+    public void getPastAndNextSemestersTest() {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 3, 22, 17, 6);
+        List<String> actual = ModulService.getPastAndNextSemesters(localDateTime,2, 3);
+        List<String> expected = Arrays.asList("WiSe2018-19", "SoSe2019", "WiSe2019-20",
+                "SoSe2020", "WiSe2020-21");
+        assertThat(actual).isEqualTo(expected);
     }
 }
