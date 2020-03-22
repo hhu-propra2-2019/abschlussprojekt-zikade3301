@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
+import java.time.LocalDateTime;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -100,4 +101,23 @@ public class ModulServiceTest {
         }
     }
 
+    @Test
+    public void getWinterSemesterYearTest() {
+        String actual = ModulService.getWinterSemesterYear(2019);
+        assertThat(actual).isEqualTo("2019-20");
+    }
+
+    @Test
+    public void getWinterSemesterFromDateTest() {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 3, 22, 17, 6);
+        String actual = ModulService.getSemesterFromDate(localDateTime);
+        assertThat(actual).isEqualTo("WiSe2019-20");
+    }
+
+    @Test
+    public void getSommerSemesterFromDateTest() {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 6, 22, 17, 6);
+        String actual = ModulService.getSemesterFromDate(localDateTime);
+        assertThat(actual).isEqualTo("SoSe2020");
+    }
 }
