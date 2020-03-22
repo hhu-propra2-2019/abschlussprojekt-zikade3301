@@ -59,12 +59,20 @@ public class IndexController {
             KeycloakAuthenticationToken token,
             Model model) {
         if (token != null) {
-            model.addAttribute("account",createAccountFromPrincipal(token));
+            model.addAttribute("account", createAccountFromPrincipal(token));
         }
         model.addAttribute("modul", modulService.getModulById(Long.parseLong(id)));
         return "moduldetails";
     }
 
+    /**
+     * Semesteransicht string.
+     *
+     * @param semester the corresponding semester
+     * @param token   the token of keycloak for permissions.
+     * @param model   the model of keycloak for permissions.
+     * @return the string "index" with modules in the selected semester.
+     */
     @RequestMapping(value = "/semester/{semester}", method = RequestMethod.GET)
     public String semesterAnsicht(
             @PathVariable String semester,
