@@ -137,7 +137,7 @@ public class ModulService {
     public static String getWinterSemesterYear(int firstYear) {
         String secondYear = Integer.toString(firstYear + 1);
         secondYear = secondYear.length() > 2 ? secondYear.substring(secondYear.length() - 2) : secondYear;
-        return firstYear + "/" + secondYear;
+        return firstYear + "-" + secondYear;
     }
 
 }
