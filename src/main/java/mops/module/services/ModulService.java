@@ -1,6 +1,8 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -106,6 +108,36 @@ public class ModulService {
 
     public Modul getModulById(Long id) {
         return modulSnapshotRepository.findById(id).orElse(null);
+    }
+
+    public static List<String> getLastAndNextSemesters(int count) {
+        List<String> semesterListe = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (int i = -1; i < count; i++) {
+            semesterListe.add(getSemesterFromDate(now.plusMonths(6 * i)));
+        }
+        return semesterListe;
+    }
+
+    public static String getSemesterFromDate(LocalDateTime date) {
+        int currentYear = date.getYear();
+        LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
+        LocalDateTime wsStart = LocalDateTime.of(currentYear, 10, 1, 0, 0);
+
+        if (date.isBefore(ssStart)) {
+            return "WiSe" + getWinterSemesterYear(currentYear - 1);
+        } else if (date.isAfter(wsStart)) {
+            return "WiSe" + getWinterSemesterYear(currentYear);
+        } else {
+            return "SoSe" + currentYear;
+        }
+    }
+
+    public static String getWinterSemesterYear(int firstYear) {
+        String secondYear = Integer.toString(firstYear + 1);
+        secondYear = secondYear.length() > 2 ? secondYear.substring(secondYear.length() - 2) : secondYear;
+        return firstYear + "/" + secondYear;
     }
 
 }
