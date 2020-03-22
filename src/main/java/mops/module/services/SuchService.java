@@ -28,6 +28,6 @@ public class SuchService {
      * @return list of modules where searchterm was found in description
      */
     public List<Modul> searchInVeranstaltungsbeschreibung(String searchinput) {
-        return modulSnapshotRepository.fullTextSearchForModule(searchinput);
+        return modulSnapshotRepository.fullTextSearchForModule(searchinput.toLowerCase());
     }
 }

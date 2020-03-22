@@ -6,13 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 public class FullTextSearchTest {
 
     @Autowired
@@ -48,9 +51,22 @@ public class FullTextSearchTest {
         modulRepo.save(completeModul);
     }
 
+    @AfterEach
+    public void cleanUp() {
+        modulRepo.deleteAll();
+    }
+
     @Test
     void fullTextSearchMultiWordTest() {
         List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("geschichtet, problemstellung");
+
+        assertFalse(results.isEmpty());
+        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
+    }
+
+    @Test
+    void fullTextSearchFindsTitle() {
+        List<Modul> results = suchService.searchInVeranstaltungsbeschreibung(completeModul.getTitelDeutsch());
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
