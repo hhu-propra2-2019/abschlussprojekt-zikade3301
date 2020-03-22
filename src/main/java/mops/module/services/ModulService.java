@@ -112,17 +112,18 @@ public class ModulService {
 
 
     /**
-     * Gibt das letzte und die x darauffolgenden Semester als Liste von Strings zurück.
+     * Gibt die letzten x und die y darauffolgenden Semester als Liste von Strings zurück.
      *
-     * @param count Anzahl der darauffolgenden Semester
+     * @param pastCount Anzahl der vergangenen Semester
+     * @param nextCount Anzahl der darauffolgenden Semester (inklusive dem aktuellen Semester)
      * @return Liste von formatierten Semester-Strings
      */
-    public static List<String> getLastAndNextSemesters(int count) {
+    public static List<String> getPastAndNextSemesters(LocalDateTime when,
+                                                       int pastCount, int nextCount) {
         List<String> semesterListe = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
 
-        for (int i = -1; i < count; i++) {
-            semesterListe.add(getSemesterFromDate(now.plusMonths(6 * i)));
+        for (int i = pastCount * (-1); i < nextCount; i++) {
+            semesterListe.add(getSemesterFromDate(when.plusMonths(6 * i)));
         }
         return semesterListe;
     }
@@ -130,17 +131,17 @@ public class ModulService {
     /**
      * Gibt das zugehörige Semester zum Datum zurück.
      *
-     * @param date Datum
+     * @param when Datum
      * @return Formatierter Semester-String
      */
-    public static String getSemesterFromDate(LocalDateTime date) {
-        int currentYear = date.getYear();
+    public static String getSemesterFromDate(LocalDateTime when) {
+        int currentYear = when.getYear();
         LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
         LocalDateTime wsStart = LocalDateTime.of(currentYear, 10, 1, 0, 0);
 
-        if (date.isBefore(ssStart)) {
+        if (when.isBefore(ssStart)) {
             return "WiSe" + getWinterSemesterYear(currentYear - 1);
-        } else if (date.isAfter(wsStart)) {
+        } else if (when.isAfter(wsStart)) {
             return "WiSe" + getWinterSemesterYear(currentYear);
         } else {
             return "SoSe" + currentYear;
