@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -75,5 +76,11 @@ public class SuchServiceTest {
     void unsuccessfulSearchReturnsEmptyList() {
         List<Modul> results = suchService.searchForModuleByTitle("katze");
         assertTrue(results.isEmpty());
+    }
+
+    @Test
+    void multiWordQueryReturnsResult() {
+        List<Modul> results = suchService.searchForModuleByTitle("Graph Entscheidung");
+        assertFalse(results.isEmpty());
     }
 }
