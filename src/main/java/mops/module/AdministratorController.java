@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.annotation.SessionScope;
@@ -66,7 +67,7 @@ public class AdministratorController {
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul));
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete2Modul));
 
-        //Bis hier nur Input zeug
+        //Bis hier nur Input
 
 
         model.addAttribute("formatter",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -88,7 +89,28 @@ public class AdministratorController {
 
         model.addAttribute("account",createAccountFromPrincipal(token));
         model.addAttribute("antrag", antrag);
+        model.addAttribute("anragsID", id);
+        model.addAttribute("veranstaltungen", antrag.getVeranstaltungen());
         return "antragdetails";
+    }
+
+    @PostMapping(value = "/antragdetails/{id}")
+    @Secured("ROLE_sekretariat")
+    public String antragAnnehmen(
+            @PathVariable String id,
+            KeycloakAuthenticationToken token, Model model, Modul antragAngenommen) {
+
+        System.out.println("enigstens drinnen");
+
+        String jsonModulAenderung = JsonService.modulToJsonObject(antragAngenommen);
+
+        Antrag antrag = antragService.getAntragById(Long.parseLong(id));
+        antrag.setJsonModulAenderung(jsonModulAenderung);
+        antragService.approveModulCreationAntrag(antrag);
+
+
+        model.addAttribute("account",createAccountFromPrincipal(token));
+        return "redirect:/module/administrator";
     }
 }
 
