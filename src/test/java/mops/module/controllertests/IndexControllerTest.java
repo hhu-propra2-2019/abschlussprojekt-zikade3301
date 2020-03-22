@@ -9,13 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
-import mops.module.database.Veranstaltung;
 import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
