@@ -34,9 +34,10 @@
                         Semesterauswahl
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
+                        <a th:each="semester: ${nextSemesters}"
+                           th:text="${semester}"
+                           th:href="@{'/module/semester/' + ${semester}}"
+                           style="background: white; color: dimgray" class="dropdown-item">Semester</a>
                     </div>
                 </div>
             </li>

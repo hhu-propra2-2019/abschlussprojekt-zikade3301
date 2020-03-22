@@ -41,6 +41,7 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("nextSemesters", ModulService.getLastAndNextSemesters(4));
         return "index";
     }
 
@@ -62,6 +63,20 @@ public class IndexController {
         }
         model.addAttribute("modul", modulService.getModulById(Long.parseLong(id)));
         return "moduldetails";
+    }
+
+    @RequestMapping(value = "/semester/{semester}", method = RequestMethod.GET)
+    public String semesterAnsicht(
+            @PathVariable String semester,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account", createAccountFromPrincipal(token));
+        }
+        model.addAttribute("allModules", modulService.getModuleBySemester(semester));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("nextSemesters", ModulService.getLastAndNextSemesters(4));
+        return "index";
     }
 
 }
