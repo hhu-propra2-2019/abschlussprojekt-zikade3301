@@ -61,6 +61,4 @@ public class ModulerstellungController {
         antragService.addModulCreationAntrag(modul, antragsteller);
         return "modulbeauftragter";
     }
-
-
 }

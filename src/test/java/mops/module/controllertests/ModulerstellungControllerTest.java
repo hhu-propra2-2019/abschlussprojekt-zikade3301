@@ -91,13 +91,10 @@ class ModulerstellungControllerTest {
     }
 
 
-
     //TODO
     // Fehler wenn Parameter fehlt
     // Sekretariat hat Zugriff
     // WEITERE TESTS?
-
-
 
 
 }
