@@ -536,16 +536,15 @@
                                                 <div class="form-check mb-2" style="display: flex">
                                                     <input class="form-check-input" type="checkbox" value="true"
                                                            th:name="'veranstaltung' + ${i} + '_veranstaltungsform_texarea_checked'">
-                                                    <input class="form-control ml-1"
-                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform_texarea_inhalt'"
-                                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 26rem;
-                                                           height: 5rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                                           type="text"
-                                                           value="">
+                                                    <textarea class="form-control ml-1"
+                                                              th:name="'veranstaltung' + ${i} + '_veranstaltungsform_texarea_inhalt'"
+                                                              style=" border-bottom: 1px solid white;
+                                                              max-width: 26rem;
+                                                              height: 5rem;
+                                                              background: transparent;
+                                                              font-size: small;
+                                                              color: white;"
+                                                              aria-label="XXYXXY"></textarea>
                                                 </div>
                                             </div>
 

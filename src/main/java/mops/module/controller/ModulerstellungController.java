@@ -49,7 +49,11 @@ public class ModulerstellungController {
             Model model,
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
+        if(veranstaltungsanzahl < 1) {
+            model.addAttribute("veranstaltungsanzahl", 1);
+        } else {
+            model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
+        }
         return "modulerstellung";
     }
 
