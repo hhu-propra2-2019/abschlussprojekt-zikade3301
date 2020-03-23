@@ -39,9 +39,9 @@ public class Modul {
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
+    @IndexedEmbedded
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
-    @IndexedEmbedded
     private Set<Veranstaltung> veranstaltungen;
 
     //TODO: Modulbeauftragte auch durchsuchen

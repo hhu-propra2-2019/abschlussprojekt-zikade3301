@@ -22,6 +22,7 @@ public class SuchServiceTest {
 
     @Autowired
     HibernateModuleSearch hbsearch;
+
     @Autowired
     ModulSnapshotRepository modulRepo;
 

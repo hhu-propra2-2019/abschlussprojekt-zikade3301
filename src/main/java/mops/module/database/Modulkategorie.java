@@ -1,6 +1,6 @@
 package mops.module.database;
 
-import org.hibernate.search.annotations.Indexed;
+import org.springframework.stereotype.Indexed;
 
 @Indexed
 public enum Modulkategorie {
