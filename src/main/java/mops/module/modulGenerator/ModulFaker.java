@@ -8,22 +8,32 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
+import mops.module.database.Veranstaltungsform;
 
 public class ModulFaker {
     private static final Faker faker = new Faker();
-    private static final Modulkategorie[] modulkategorrie = {Modulkategorie.PFLICHT_INFO, Modulkategorie.BACHELORARBEIT, Modulkategorie.NEBENFACH};
     private static final String semester[] = {"WS19", "SS19", "WS/SS20"};
 
     public static Modul generateFakeModul() {
         Modul fakeModul = new Modul();
         generateMultipleVeranstaltungen(fakeModul);
+        generateMultipleBeauftragte(fakeModul);
         fakeModul.setTitelDeutsch(faker.book().title());
+        fakeModul.setTitelDeutsch("Kein Englisch");
         fakeModul.setGesamtLeistungspunkte("10CP");
         fakeModul.setStudiengang(faker.harryPotter().house());
-        fakeModul.setModulkategorie(chooseRandom(modulkategorrie));
+        fakeModul.setModulkategorie(chooseRandom(Modulkategorie.values()));
         fakeModul.setSichtbar(true);
-        fakeModul.setModulbeauftragte(new HashSet<>(Arrays.asList(faker.harryPotter().character(), faker.harryPotter().character())));
         return fakeModul;
+    }
+
+    private static void generateMultipleBeauftragte(Modul fakeModul) {
+        double randomNumber = Math.random() * 5;
+        Set<String> personen = new HashSet<>();
+        for (int i = 0; i < randomNumber; i++) {
+            personen.add(faker.harryPotter().character());
+        }
+        fakeModul.setModulbeauftragte(personen);
     }
 
     private static void generateMultipleVeranstaltungen(Modul fakeModul) {
@@ -39,12 +49,12 @@ public class ModulFaker {
         fakeVeranstaltung.setTitel(faker.book().title());
         fakeVeranstaltung.setLeistungspunkte("5CP");
         fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
-        fakeVeranstaltung.setLehrende(new HashSet<>(Arrays.asList(faker.harryPotter().character(), faker.harryPotter().character())));
-        fakeVeranstaltung.setVeranstaltungsformen(new HashSet<>(Arrays.asList(faker.backToTheFuture().quote())));
+        generateMultipleVeranstaltungsform(fakeVeranstaltung);
         fakeVeranstaltung.setVoraussetzungenTeilnahme(new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title())));
         fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
+
 
     private static Veranstaltungsbeschreibung generateFakeBeschreibung() {
         Veranstaltungsbeschreibung fakeBeshcreibung = new Veranstaltungsbeschreibung();
@@ -56,6 +66,22 @@ public class ModulFaker {
         fakeBeshcreibung.setVerwendbarkeit(new HashSet<>(Arrays.asList(faker.elderScrolls().quote())));
         fakeBeshcreibung.setVoraussetzungenBestehen(new HashSet<>(Arrays.asList(faker.elderScrolls().quote(), faker.elderScrolls().quote())));
         return fakeBeshcreibung;
+    }
+
+    private static void generateMultipleVeranstaltungsform(Veranstaltung fakeVeranstaltung) {
+        double randomNumber = Math.random() * 5;
+        Set<Veranstaltungsform> fomen = new HashSet<>();
+        for (int i = 0; i < randomNumber; i++) {
+            fomen.add(generateFakeVeranstaltungsform());
+        }
+        fakeVeranstaltung.setVeranstaltungsformen(fomen);
+    }
+
+    private static Veranstaltungsform generateFakeVeranstaltungsform() {
+        Veranstaltungsform veranstaltungsform = new Veranstaltungsform();
+        veranstaltungsform.setForm("form");
+        veranstaltungsform.setSemesterWochenStunden(faker.number().randomDigit());
+        return veranstaltungsform;
     }
 
     private static <T extends Object> T chooseRandom(T[] objects) {
