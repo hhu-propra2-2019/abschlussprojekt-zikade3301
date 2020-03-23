@@ -15,6 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormService {
 
+    /**
+     * Erstellt aus eingegebenen Formulardaten ein entsprechendes Modul-Objekt.
+     * @param allParams Alle Parameter des Modulformulars als Map, wobei jeweils der im Formular
+     *                  übergebene name der Key und die Nutzereingabe als String der Value ist.
+     * @return Modul-Objekt entsprechend der eingegebenen Daten.
+     */
     public static Modul readModulFromParameterMap(Map<String, String> allParams) {
 
         //Einlesen der Formulardaten für modulspezifische Felder

@@ -32,7 +32,14 @@ public class ModulerstellungController {
         this.antragService = antragService;
     }
 
-
+    /**
+     * Controller für das Generieren eines Modulerstellungsformulars für die eingegebene Anzahl
+     * von Veranstaltungen.
+     * @param veranstaltungsanzahl Anzahl der Veranstaltungen.
+     * @param model Modell für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return View für die Modulerstellung.
+     */
     @GetMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String result(
@@ -48,7 +55,15 @@ public class ModulerstellungController {
         return "modulerstellung";
     }
 
-
+    /**
+     * Controller für das Entgegebennehmen eines Post-Requests mit den Formulardaten für die
+     * Erstellung eines Modulantrags.
+     * @param allParams Alle Parameter des Modulformulars als Map, wobei jeweils der im Formular
+     *                  übergebene name der Key und die Nutzereingabe als String der Value ist.
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return View für die Modulerstellung.
+     */
     @PostMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addCreationAntrag(@RequestParam Map<String,String> allParams,
