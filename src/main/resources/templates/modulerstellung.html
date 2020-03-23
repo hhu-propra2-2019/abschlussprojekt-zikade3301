@@ -71,7 +71,7 @@
 <main th:fragment="bodycontent">
 
     <!-- Modal -->
-    <form>
+    <form action="#" th:action="@{/module/modulerstellung}" method="post">
         <div class="modal"
              id="formularModal"
              tabindex="-1"
@@ -94,15 +94,15 @@
 
                             <!-- AUSWAHL DES TITELS -->
                             <div class="mt-3 mb-3" style="display: flex;">
-                                <label for="title" class="col-1">Titel</label>
+                                <label for="titelDeutsch" class="col-1">Titel</label>
                                 <input type="text"
                                        style="border: none;
                                        border-bottom: 1px solid dimgray;
                                        border-radius: inherit;
                                        color: lightslategrey"
-                                       name="title"
+                                       name="titelDeutsch"
                                        class="form-control col-5"
-                                       id="title"
+                                       id="titelDeutsch"
                                        placeholder="Titel des Moduls" required>
                                 <div class="ml-1 col-1">&nbsp;</div>
                                 <input type="text"
@@ -110,36 +110,36 @@
                                        border-bottom: 1px solid dimgray;
                                        border-radius: inherit;
                                        color: lightslategrey"
-                                       name="titleEnglish"
+                                       name="titelEnglisch"
                                        class="form-control col-5"
-                                       id="titleEnglish"
+                                       id="titelEnglisch"
                                        placeholder="Englischer Titel des Moduls" required>
                             </div>
                             <br>
 
                             <!-- AUSWAHL Studiengang -->
                             <div class="mt-3 mb-3" style="display: flex;">
-                                <label for="subject" class="col-2">Studiengang</label>
+                                <label for="studiengang" class="col-2">Studiengang</label>
                                 <input type="text"
                                        style="color: lightslategrey;
                                        border: none;
                                        border-bottom: 1px solid dimgray;
                                        border-radius: inherit;"
-                                       name="subject"
+                                       name="studiengang"
                                        class="form-control col-4"
-                                       id="subject"
+                                       id="studiengang"
                                        placeholder="Studiengang" required>
                             </div>
                             <br>
 
 <!--                            TODO hier mehrere-->
                             <div class="mt-3 mb-3 col-12">
-                                <label for="organizer">Modulbeauftragte</label>
+                                <label for="modulbeauftragte">Modulbeauftragte</label>
                                 <input type="text"
                                        style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
-                                       name="organizer"
+                                       name="modulbeauftragte"
                                        class="form-control col-md-8 col-sm-8"
-                                       id="organizer"
+                                       id="modulbeauftragte"
                                        placeholder="Modulbeauftragte der Veranstaltung" required>
                             </div>
 
@@ -148,21 +148,21 @@
                             <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE -->
                             <div style="display: inline-flex;">
                                 <div class="mt-3 mb-3 col-4" style="float: left">
-                                    <label for="cp" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>
+                                    <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>
                                     <input type="number"
                                            style="float: right;
                                            color: lightslategrey"
-                                           name="cp"
+                                           name="gesamtLeistungspunkte"
                                            class="form-control col-md-4 col-sm-4"
-                                           id="cp"
+                                           id="gesamtLeistungspunkte"
                                            placeholder="CP" required>
                                 </div>
                                 <div class="mt-3 mb-3 col-8" style="float: left">
-                                    <label for="modulcategory">Modulkategorie</label>
-                                    <select name="modulcategory"
+                                    <label for="modulkategorie">Modulkategorie</label>
+                                    <select name="modulkategorie"
                                             style="float: right"
                                             class="form-control col-md-8 col-sm-8"
-                                            id="modulcategory" required>
+                                            id="modulkategorie" required>
                                         <option selected hidden value="">Modulkategorie Wählen</option>
                                         <option value="PFLICHT_INFO">Informatik Pflichtmodul</option>
                                         <option value="PFLICHT_MATHE">Mathematik Pflichtmodul</option>
@@ -221,6 +221,7 @@
                                             <div class="mt-3 mb-3" style="display: flex;">
                                                 <div class="input-group mb-3 col-8 pl-0" style="display: block">
                                                     <input type="text"
+                                                           th:name="'veranstaltung' + ${i} + '_titel'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                            color: white;
@@ -235,6 +236,7 @@
 
                                                 <div class="input-group mb-3 col-3" style="display: block">
                                                     <input type="number"
+                                                           th:name="'veranstaltung' + ${i} + '_leistungspunkte'"
                                                            style="background: transparent;
                                                            border: none;
                                                            border-bottom: 1px solid white;
@@ -250,6 +252,7 @@
                                             <div class="input-group col-8 pl-0">
                                                 <div class="input-group mb-3 col-8 pl-0" style="display: block">
                                                     <input type="text"
+                                                           th:name="'veranstaltung' + ${i} + '_haeufigkeit'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                                color: white;
@@ -263,6 +266,7 @@
                                                 </div>
                                                 <div class="input-group mb-3 col-4 pl-0" style="display: block">
                                                     <input type="text"
+                                                           th:name="'veranstaltung' + ${i} + '_sprache'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                                color: white;
@@ -287,6 +291,7 @@
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
+                                                          th:name="'veranstaltung' + ${i} + '_inhalte'"
                                                           aria-label="XXYXXY"
                                                           style="background: transparent;
                                                            border-radius: unset;
@@ -306,6 +311,7 @@
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
+                                                          th:name="'veranstaltung' + ${i} + '_lernergebnisse'"
                                                           aria-label="XXYXXY"
                                                           style="background: transparent;
                                                            border-radius: unset;
@@ -325,6 +331,7 @@
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
+                                                              th:name="'veranstaltung' + ${i} + '_literatur'"
                                                               aria-label="XXYXXY"
                                                               style="background: transparent;
                                                                border-radius: unset;
@@ -343,6 +350,7 @@
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
+                                                              th:name="'veranstaltung' + ${i} + '_voraussetzungenTeilnahme'"
                                                               aria-label="XXYXXY"
                                                               style="background: transparent;
                                                                border-radius: unset;
@@ -363,6 +371,7 @@
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
+                                                              th:name="'veranstaltung' + ${i} + '_verwendbarkeit'"
                                                               aria-label="XXYXXY"
                                                               style="background: transparent;
                                                                border-radius: unset;
@@ -381,6 +390,7 @@
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
+                                                              th:name="'veranstaltung' + ${i} + '_voraussetzungenBestehen'"
                                                               aria-label="XXYXXY"
                                                               style="background: transparent;
                                                                border-radius: unset;
@@ -394,8 +404,10 @@
                                                     Die Veranstaltung beinhaltet:
                                                 </span>
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform1_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform1_form'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -405,6 +417,7 @@
                                                            value="">
                                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform1_sws'"
                                                            style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -417,8 +430,10 @@
                                                 </div>
 
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform2_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform2_form'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -428,6 +443,7 @@
                                                            value="">
                                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform2_sws'"
                                                            style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -440,8 +456,10 @@
                                                 </div>
 
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform3_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform3_form'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -451,6 +469,7 @@
                                                            value="">
                                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform3_sws'"
                                                            style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -463,8 +482,10 @@
                                                 </div>
 
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform4_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform4_form'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -474,6 +495,7 @@
                                                            value="">
                                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform4_sws'"
                                                            style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -486,8 +508,10 @@
                                                 </div>
 
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform5_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform5_form'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -497,6 +521,7 @@
                                                            value="">
                                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform5_sws'"
                                                            style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -509,8 +534,10 @@
                                                 </div>
 
                                                 <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-check-input" type="checkbox" value="">
+                                                    <input class="form-check-input" type="checkbox" value="true"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform_texarea_checked'">
                                                     <input class="form-control ml-1"
+                                                           th:name="'veranstaltung' + ${i} + '_veranstaltungsform_texarea_inhalt'"
                                                            style=" border-bottom: 1px solid white;
                                                            max-width: 26rem;
                                                            height: 5rem;
@@ -521,6 +548,21 @@
                                                            value="">
                                                 </div>
                                             </div>
+
+                                            <!--TODO-->
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'"
+                                                   th:value="true">
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'"
+                                                   th:value="${'veranstaltung' + i + ' zusatzfeld1 titel'}">
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
+                                                   th:value="${'veranstaltung' + i + ' zusatzfeld1 inhalt'}">
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'"
+                                                   th:value="false">
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'"
+                                                   th:value="${'veranstaltung' + i + ' zusatzfeld2 titel'}">
+                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
+                                                   th:value="${'veranstaltung' + i + ' zusatzfeld2 inhalt'}">
+
 
                                         </div>
                                     </div>
