@@ -18,7 +18,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import mops.module.database.Modulkategorie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -70,6 +70,7 @@ public class GraphQlProvider {
                         .dataFetcher("allModule",
                                 graphQlDataFetchers.getAllModuleDataFetcher()))
                 .scalar(localDateTime)
+                .scalar(modulkategorie)
                 .build();
     }
 
@@ -97,8 +98,34 @@ public class GraphQlProvider {
                 }
             });
 
+    public static final GraphQLScalarType modulkategorie = new GraphQLScalarType(
+            "Modulkategorie",
+            "A custom scalar that handles the Modulkategorie enum in our Modul object",
+            new Coercing<Object, Object>() {
+                @Override
+                public Object serialize(Object dataFetcherResult) {
+                    if (dataFetcherResult instanceof Modulkategorie) {
+                        return dataFetcherResult.toString();
+                    } else {
+                        throw new CoercingSerializeException(
+                                "Parameter kann nicht als Modulkategorie geparsed werden!");
+                    }
+                }
+
+                @Override
+                public Object parseValue(Object input) {
+                    return Modulkategorie.valueOf(input.toString());
+                }
+
+                @Override
+                public Object parseLiteral(Object input) {
+                    return Modulkategorie.valueOf(input.toString());
+                }
+            });
+
     /**
      * Wandelt eine eingelesene UTF-8-codierte Resource in einen String um.
+     *
      * @param resource Spring Resource
      * @return String
      */
