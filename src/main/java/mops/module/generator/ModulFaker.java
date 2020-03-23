@@ -1,4 +1,4 @@
-package mops.module.modulGenerator;
+package mops.module.generator;
 
 import com.github.javafaker.Faker;
 import java.util.Arrays;
@@ -12,14 +12,19 @@ import mops.module.database.Veranstaltungsform;
 
 public class ModulFaker {
     private static final Faker faker = new Faker();
-    private static final String semester[] = {"WS19", "SS19", "WS/SS20"};
+    private static final String[] semester = {"SoSe2019", "WiSe2019-20"};
 
+    /**
+     * Generiert fake Modul zu testen.
+     *
+     * @return
+     */
     public static Modul generateFakeModul() {
         Modul fakeModul = new Modul();
         generateMultipleVeranstaltungen(fakeModul);
         generateMultipleBeauftragte(fakeModul);
         fakeModul.setTitelDeutsch(faker.book().title());
-        fakeModul.setTitelDeutsch("Kein Englisch");
+        fakeModul.setTitelEnglisch("Kein Englisch");
         fakeModul.setGesamtLeistungspunkte("10CP");
         fakeModul.setStudiengang(faker.harryPotter().house());
         fakeModul.setModulkategorie(chooseRandom(Modulkategorie.values()));
@@ -50,31 +55,35 @@ public class ModulFaker {
         fakeVeranstaltung.setLeistungspunkte("5CP");
         fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
         generateMultipleVeranstaltungsform(fakeVeranstaltung);
-        fakeVeranstaltung.setVoraussetzungenTeilnahme(new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title())));
+        Set<String> vt = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(vt);
         fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
 
 
     private static Veranstaltungsbeschreibung generateFakeBeschreibung() {
-        Veranstaltungsbeschreibung fakeBeshcreibung = new Veranstaltungsbeschreibung();
-        fakeBeshcreibung.setInhalte(faker.elderScrolls().quote());
-        fakeBeshcreibung.setLernergebnisse(faker.elderScrolls().quote());
-        fakeBeshcreibung.setHaeufigkeit("Einmal im leben");
-        fakeBeshcreibung.setSprache(faker.country().name());
-        fakeBeshcreibung.setLiteratur(new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title())));
-        fakeBeshcreibung.setVerwendbarkeit(new HashSet<>(Arrays.asList(faker.elderScrolls().quote())));
-        fakeBeshcreibung.setVoraussetzungenBestehen(new HashSet<>(Arrays.asList(faker.elderScrolls().quote(), faker.elderScrolls().quote())));
-        return fakeBeshcreibung;
+        Veranstaltungsbeschreibung fakeBeschreibung = new Veranstaltungsbeschreibung();
+        fakeBeschreibung.setInhalte(faker.elderScrolls().quote());
+        fakeBeschreibung.setLernergebnisse(faker.elderScrolls().quote());
+        fakeBeschreibung.setHaeufigkeit("Einmal im leben");
+        fakeBeschreibung.setSprache(faker.country().name());
+        Set<String> sl = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
+        fakeBeschreibung.setLiteratur(sl);
+        Set<String> v = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
+        fakeBeschreibung.setVerwendbarkeit(v);
+        Set<String> vb = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
+        fakeBeschreibung.setVoraussetzungenBestehen(vb);
+        return fakeBeschreibung;
     }
 
     private static void generateMultipleVeranstaltungsform(Veranstaltung fakeVeranstaltung) {
         double randomNumber = Math.random() * 5;
-        Set<Veranstaltungsform> fomen = new HashSet<>();
+        Set<Veranstaltungsform> formen = new HashSet<>();
         for (int i = 0; i < randomNumber; i++) {
-            fomen.add(generateFakeVeranstaltungsform());
+            formen.add(generateFakeVeranstaltungsform());
         }
-        fakeVeranstaltung.setVeranstaltungsformen(fomen);
+        fakeVeranstaltung.setVeranstaltungsformen(formen);
     }
 
     private static Veranstaltungsform generateFakeVeranstaltungsform() {

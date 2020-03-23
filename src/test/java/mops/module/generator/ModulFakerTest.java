@@ -1,11 +1,10 @@
-package mops.module.faker;
+package mops.module.generator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -18,7 +17,6 @@ import org.json.JSONException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import mops.module.modulGenerator.ModulFaker;
 import org.skyscreamer.jsonassert.Customization;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -52,32 +50,20 @@ public class ModulFakerTest {
     }
 
     @AfterEach
-    public void emptyRepo(){
+    public void emptyRepo() {
         antragRepository.deleteAll();
         modulSnapshotRepository.deleteAll();
     }
 
     @Test
     public void generateFakeModulTest() {
-        List<Modul> module = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            module.add(ModulFaker.generateFakeModul());
-        }
+        Modul modul = ModulFaker.generateFakeModul();
 
-        module.stream().forEach(antragService::addModulCreationAntrag);
+        antragService.addModulCreationAntrag(modul);
         List<Antrag> antraege = antragService.getAlleAntraege();
         antraege.stream().forEach(antragService::approveModulCreationAntrag);
 
-        List<Modul> repoModule = modulService.getAllModule();
-        assertThat(repoModule.size()).isEqualTo(1);
-
-        for(Modul m : repoModule) {
-            try {
-                JSONAssert.assertEquals(JsonService.modulToJsonObject(m),
-                        JsonService.modulToJsonObject(repoModule.get(0)), ignoreDates);
-            } catch (JSONException e) {
-                fail(e.toString());
-            }
-        }
+        Modul repoModule = modulService.getAllModule().get(0);
+        assertThat(repoModule).isNotNull();
     }
 }
