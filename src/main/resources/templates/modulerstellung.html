@@ -290,8 +290,7 @@
                                                           border-radius: unset;
                                                           margin-bottom: 1rem;
                                                           height: 10rem;
-                                                          color: white;">
-                                                </textarea>
+                                                          color: white;"></textarea>
                                             </div>
 
                                             <div class="input-group">
@@ -309,8 +308,7 @@
                                                           style="background: transparent;
                                                           border-radius: unset;
                                                           margin-bottom: 3rem;
-                                                          color: white;">
-                                                </textarea>
+                                                          color: white;"></textarea>
                                             </div>
 
                                             <div class="col-12 pl-0" style="display: inline-block;">
@@ -329,8 +327,7 @@
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
-                                                              color: white;">
-                                                    </textarea>
+                                                              color: white;"></textarea>
                                                 </div>
 
                                                 <div class="input-group col-6">
@@ -348,8 +345,7 @@
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
-                                                              color: white;">
-                                                    </textarea>
+                                                              color: white;"></textarea>
                                                 </div>
                                             </div>
 
@@ -369,8 +365,7 @@
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
-                                                              color: white;">
-                                                    </textarea>
+                                                              color: white;"></textarea>
                                                 </div>
 
                                                 <div class="input-group col-6">
@@ -388,8 +383,7 @@
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
-                                                              color: white;">
-                                                    </textarea>
+                                                              color: white;"></textarea>
                                                 </div>
                                             </div>
 
@@ -542,50 +536,84 @@
                                                               height: 5rem;
                                                               background: transparent;
                                                               font-size: small;
-                                                              color: white;">
-                                                    </textarea>
+                                                              color: white;"></textarea>
                                                 </div>
                                             </div>
 
 
                                             <!-- TODO Hier ist noch überall HIDDEN; müssen im Frontend Eingabefelder hinzufügen-->
-                                            <div style="margin-top: 3rem;">
-                                                <span style="font-size: x-large; margin-bottom: 2rem">
+                                            <div style="margin-top: 3rem; display: grid;">
+                                                <span class="col-12" style="font-size: x-large">
                                                     Weitere Informationen:
                                                 </span>
-                                                <div class="form-check mb-2" style="display: flex;
-                                                border: 1px solid white; border-radius: 10px">
-                                                    <div>
-                                                        <input class="form-check-input" type="checkbox" value="true"
-                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'">
-                                                        <input type="text"
-                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'">
-                                                        <textarea class="form-control ml-1"
-                                                                  th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
-                                                                  style=" border-bottom: 1px solid white;
-                                                              max-width: 26rem;
-                                                              height: 5rem;
-                                                              background: transparent;
-                                                              font-size: small;
-                                                              color: white;">
-                                                        </textarea>
+                                                <div class="col-12" style="padding: 0;">
+                                                    <div class="col-6" style="float:left">
+                                                        <div class="form-check mb-2"
+                                                             style="padding: 0;
+                                                             margin:0.3rem;
+                                                             border: 1px solid white;
+                                                             border-radius: 10px">
+                                                            <div class="col-12" style="padding: 0">
+                                                                <div style="border-bottom: 1px solid white" class="col-12">
+                                                                    <input type="checkbox"
+                                                                           class="col-1"
+                                                                           value="true"
+                                                                           style="border: none;
+                                                                           float: left;
+                                                                           margin-top: 2%;"
+                                                                           th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'">
+                                                                    <input placeholder="Titel Ihres Zusatzfeldes ..."
+                                                                           type="text"
+                                                                           class="col-11"
+                                                                           style="border: none;
+                                                                           font-size: larger;
+                                                                           color: white;
+                                                                           background: transparent;"
+                                                                           th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'">
+                                                                </div>
+                                                                <textarea class="form-control ml-1 col-12"
+                                                                          placeholder="Inhalt Ihres Zusatzfeldes ..."
+                                                                          th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
+                                                                          style="height: 5rem;
+                                                                          border: none;
+                                                                          background: transparent;
+                                                                          font-size: small;
+                                                                          color: white;"></textarea>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="form-check mb-2" style="display: flex">
-                                                    <div>
-                                                        <input class="form-check-input" type="checkbox" value="true"
-                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'">
-                                                        <input type="text"
-                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'">
-                                                        <textarea class="form-control ml-1"
-                                                                  th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
-                                                                  style=" border-bottom: 1px solid white;
-                                                              max-width: 26rem;
-                                                              height: 5rem;
-                                                              background: transparent;
-                                                              font-size: small;
-                                                              color: white;">
-                                                        </textarea>
+                                                    <div class="col-6"  style="float:left">
+                                                        <div class="form-check mb-2"
+                                                             style="padding: 0;
+                                                             margin:0.3rem;
+                                                             border: 1px solid white;
+                                                             border-radius: 10px">
+                                                            <div class="col-12" style="padding: 0">
+                                                                <div style="border-bottom: 1px solid white" class="col-12">
+                                                                    <input type="checkbox"
+                                                                           value="true"
+                                                                           class="col-1"
+                                                                           style="border: none;
+                                                                           float: left;
+                                                                           margin-top: 2%;"
+                                                                           th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'">
+                                                                    <input type="text"
+                                                                           class="col-11"
+                                                                           style="border: none;
+                                                                           font-size: larger;
+                                                                           color: white;
+                                                                           background: transparent;"
+                                                                           th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'">
+                                                                </div>
+                                                                <textarea class="form-control ml-1 col-12"
+                                                                          th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
+                                                                          style="height: 5rem;
+                                                                          border: none;
+                                                                          background: transparent;
+                                                                          font-size: small;
+                                                                          color: white;"></textarea>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
