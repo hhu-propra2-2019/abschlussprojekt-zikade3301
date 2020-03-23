@@ -43,7 +43,7 @@ Mithilfe von GraphQL wird eine dynamische API zur Verfügung gestellt, die per G
   "data": {
     "allModule": [
       {
-        "titelDeutsch": "Betriebssysteme",
+        "titelDeutsch": "Machine Learning",
         "id": "1"
       },
       {
