@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 //TODO: Conditional Indexing: only index, when module is visible
 @Indexed
-@Analyzer(impl = org.apache.lucene.analysis.de.GermanAnalyzer.class)
+//@Analyzer(impl = org.apache.lucene.analysis.de.GermanAnalyzer.class)
 public class Modul {
 
     @Id

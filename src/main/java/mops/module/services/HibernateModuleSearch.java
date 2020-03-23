@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import mops.module.database.Modul;
+import org.apache.lucene.search.Query;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
@@ -28,10 +29,13 @@ public class HibernateModuleSearch {
 
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
             .buildQueryBuilder().forEntity(Modul.class).get();
-        org.apache.lucene.search.Query query = qb
+        Query query = qb
             .keyword()
-            .onFields("titelDeutsch", "titelEnglisch", "veranstaltungen.titel").boostedTo(10f)
-            .matching(searchinput)
+                .wildcard()
+            .onFields("titelDeutsch", "titelEnglisch").boostedTo(10f)
+            .andField("veranstaltungen.titel").boostedTo(2f)
+            .andField("veranstaltungen.beschreibung.inhalte").boostedTo(2f)
+            .matching("*" + searchinput.toLowerCase() + "*")
             .createQuery();
 
         javax.persistence.Query persistenceQuery =

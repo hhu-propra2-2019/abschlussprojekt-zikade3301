@@ -72,11 +72,19 @@ public class FullTextSearchTest {
     }
 
     @Test
-    void fullTextSearchFindsGermanTitle() {
-        List<Modul> results = hbSearch.search(completeModul.getTitelDeutsch());
+    void fullTextSearchFindsFullWordsFromParts() {
+        List<Modul> results = hbSearch.search("Betriebs");
 
         assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
+        assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
+    }
+
+    @Test
+    void fullTextSearchFindsGermanTitle() {
+        List<Modul> results = hbSearch.search("Betriebssysteme");
+
+        assertFalse(results.isEmpty());
+        assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
     }
 
     @Test
@@ -87,13 +95,27 @@ public class FullTextSearchTest {
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelEnglisch()));
     }
 
-    /*
+    @Test
+    void fullTextSearchfindsInhalteInVeranstaltungsbeschreibung() {
+        List<Modul> results = hbSearch.search("Architekturformen");
+        List<Veranstaltung> results2 = new ArrayList<>();
+        Set miep = results.get(0).getVeranstaltungen();
+        results2.addAll(miep);
+
+        assertFalse(results.isEmpty());
+        assertThat(results2.get(0).getBeschreibung().getInhalte().equals("Architekturformen"));
+    }
+
     @Test
     @DisplayName("Search for 'Architektur' finds 'Architekturformen'")
     void fullTextSearchStemWordTest() {
         List<Modul> results = hbSearch.search("Architektur");
+        List<Veranstaltung> results2 = new ArrayList<>();
+        Set miep = results.get(0).getVeranstaltungen();
+        results2.addAll(miep);
 
         assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
-    }*/
+        assertThat(results2.get(0).getBeschreibung().getInhalte().equals("Architekturformen"));
+    }
+
 }

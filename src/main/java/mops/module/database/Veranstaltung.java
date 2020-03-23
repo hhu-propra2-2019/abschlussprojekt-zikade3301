@@ -19,6 +19,7 @@ import lombok.Setter;
 import mops.module.services.JsonExclude;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 @Entity
 @Getter
@@ -57,6 +58,7 @@ public class Veranstaltung {
     private Set<Veranstaltungsform> veranstaltungsformen;
 
     @Embedded
+    @IndexedEmbedded
     private Veranstaltungsbeschreibung beschreibung;
 
     //TODO: durchsuchen?
