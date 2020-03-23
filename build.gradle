@@ -57,6 +57,7 @@ repositories {
 dependencies {
     implementation 'eu.de-swaef.pdf:Markdown2Pdf:2.0.1'
     implementation 'org.apache.pdfbox:pdfbox:2.0.19'
+    compile 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
