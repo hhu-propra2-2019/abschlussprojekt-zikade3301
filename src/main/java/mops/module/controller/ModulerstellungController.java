@@ -1,10 +1,12 @@
 package mops.module.controller;
 
-import java.util.HashMap;
+import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.security.RolesAllowed;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
@@ -15,19 +17,13 @@ import mops.module.services.AntragService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
-
-import javax.annotation.security.RolesAllowed;
-
-import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 
 @Controller
@@ -43,7 +39,7 @@ public class ModulerstellungController {
         this.antragService = antragService;
     }
 
-    //    TODO TEST HIERFÜR
+
     @GetMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String result(
@@ -51,7 +47,7 @@ public class ModulerstellungController {
             Model model,
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        if(veranstaltungsanzahl < 1) {
+        if (veranstaltungsanzahl < 1) {
             model.addAttribute("veranstaltungsanzahl", 1);
         } else {
             model.addAttribute("veranstaltungsanzahl", veranstaltungsanzahl);
@@ -60,7 +56,6 @@ public class ModulerstellungController {
     }
 
 
-    //    TODO TEST HIERFÜR
     @PostMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addCreationAntrag(@RequestParam Map<String,String> allParams,

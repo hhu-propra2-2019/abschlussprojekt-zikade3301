@@ -5,9 +5,18 @@
     <meta charset="utf-8">
     <title>Modulerstellung</title>
     <th:block th:fragment="headcontent">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous">
+        </script>
     </th:block>
 </head>
 <body>
@@ -71,14 +80,19 @@
                 <div class="modal-body" style="color: black; padding: 1rem">
 
                     <form method='get' action='/module/modulerstellung'>
-                        <div style="font-weight: bold">Wie viele unabhängige Modulteile soll das Modul beinhalten?</div>
+                        <div style="font-weight: bold">
+                            Wie viele unabhängige Modulteile soll das Modul beinhalten?
+                        </div>
                         <div>
                             Beachten Sie, dass diese Modulteile unabhängig voneinander belegt werden
                             können und eine definierte Anzahl an Leistungspunkten haben.
                         </div>
                         <div class="mt-3 mb-3">
                             <input type="number"
-                                   style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
+                                   style="float: right;
+                                   border: none;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
                                    name="veranstaltungsanzahl"
                                    class="form-control col-md-8 col-sm-8"
                                    id="veranstaltungsanzahl"

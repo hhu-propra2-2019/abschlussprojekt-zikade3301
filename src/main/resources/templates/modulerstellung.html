@@ -246,7 +246,6 @@
                                                            border-radius: unset;
                                                            color: white;"
                                                            class="form-control"
-                                                           aria-label="XXXXXX"
                                                            aria-describedby="basic-addon2">
                                                     <div style="color: white; font-size: small;">Leistungspunkte</div>
                                                 </div>
@@ -258,11 +257,11 @@
                                                            th:name="'veranstaltung' + ${i} + '_haeufigkeit'"
                                                            class="form-control"
                                                            style="background: transparent;
-                                                               color: white;
-                                                               font-size: larger;
-                                                               border: none;
-                                                               border-bottom: 1px solid white;
-                                                               border-radius: unset;"
+                                                           color: white;
+                                                           font-size: larger;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;"
                                                            aria-label="haeufigkeit"
                                                            aria-describedby="basic-addon1">
                                                     <div style="color: white; font-size: small;">Häufigkeit</div>
@@ -272,11 +271,11 @@
                                                            th:name="'veranstaltung' + ${i} + '_sprache'"
                                                            class="form-control"
                                                            style="background: transparent;
-                                                               color: white;
-                                                               font-size: larger;
-                                                               border: none;
-                                                               border-bottom: 1px solid white;
-                                                               border-radius: unset;"
+                                                           color: white;
+                                                           font-size: larger;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;"
                                                            aria-label="sprache"
                                                            aria-describedby="basic-addon1">
                                                     <div style="color: white; font-size: small;">Sprache</div>
@@ -295,12 +294,12 @@
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
                                                           th:name="'veranstaltung' + ${i} + '_inhalte'"
-                                                          aria-label="XXYXXY"
                                                           style="background: transparent;
-                                                           border-radius: unset;
-                                                           margin-bottom: 1rem;
-                                                           height: 10rem;
-                                                           color: white;"></textarea>
+                                                          border-radius: unset;
+                                                          margin-bottom: 1rem;
+                                                          height: 10rem;
+                                                          color: white;">
+                                                </textarea>
                                             </div>
 
                                             <div class="input-group">
@@ -315,11 +314,11 @@
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
                                                           th:name="'veranstaltung' + ${i} + '_lernergebnisse'"
-                                                          aria-label="XXYXXY"
                                                           style="background: transparent;
-                                                           border-radius: unset;
-                                                           margin-bottom: 3rem;
-                                                           color: white;"></textarea>
+                                                          border-radius: unset;
+                                                          margin-bottom: 3rem;
+                                                          color: white;">
+                                                </textarea>
                                             </div>
 
                                             <div class="col-12 pl-0" style="display: inline-block;">
@@ -335,11 +334,11 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:name="'veranstaltung' + ${i} + '_literatur'"
-                                                              aria-label="XXYXXY"
                                                               style="background: transparent;
-                                                               border-radius: unset;
-                                                               margin-bottom: 3rem;
-                                                               color: white;"></textarea>
+                                                              border-radius: unset;
+                                                              margin-bottom: 3rem;
+                                                              color: white;">
+                                                    </textarea>
                                                 </div>
 
                                                 <div class="input-group col-6">
@@ -354,11 +353,11 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:name="'veranstaltung' + ${i} + '_voraussetzungenTeilnahme'"
-                                                              aria-label="XXYXXY"
                                                               style="background: transparent;
-                                                               border-radius: unset;
-                                                               margin-bottom: 3rem;
-                                                               color: white;"></textarea>
+                                                              border-radius: unset;
+                                                              margin-bottom: 3rem;
+                                                              color: white;">
+                                                    </textarea>
                                                 </div>
                                             </div>
 
@@ -375,11 +374,11 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:name="'veranstaltung' + ${i} + '_verwendbarkeit'"
-                                                              aria-label="XXYXXY"
                                                               style="background: transparent;
-                                                               border-radius: unset;
-                                                               margin-bottom: 3rem;
-                                                               color: white;"></textarea>
+                                                              border-radius: unset;
+                                                              margin-bottom: 3rem;
+                                                              color: white;">
+                                                    </textarea>
                                                 </div>
 
                                                 <div class="input-group col-6">
@@ -396,9 +395,10 @@
                                                               th:name="'veranstaltung' + ${i} + '_voraussetzungenBestehen'"
                                                               aria-label="XXYXXY"
                                                               style="background: transparent;
-                                                               border-radius: unset;
-                                                               margin-bottom: 3rem;
-                                                               color: white;"></textarea>
+                                                              border-radius: unset;
+                                                              margin-bottom: 3rem;
+                                                              color: white;">
+                                                    </textarea>
                                                 </div>
                                             </div>
 
@@ -546,12 +546,12 @@
                                                               height: 5rem;
                                                               background: transparent;
                                                               font-size: small;
-                                                              color: white;"
-                                                              aria-label="XXYXXY"></textarea>
+                                                              color: white;">
+                                                    </textarea>
                                                 </div>
                                             </div>
 
-                                            <!--TODO-->
+                                            <!-- TODO Hier ist noch überall HIDDEN; müssen im Frontend Eingabefelder hinzufügen-->
                                             <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'"
                                                    th:value="true">
                                             <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'"
