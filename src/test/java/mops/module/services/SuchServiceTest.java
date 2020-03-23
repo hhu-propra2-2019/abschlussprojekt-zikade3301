@@ -1,11 +1,9 @@
 package mops.module.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import mops.module.database.Modul;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +20,8 @@ public class SuchServiceTest {
     @Autowired
     SuchService suchService;
 
+    @Autowired
+    HibernateModuleSearch hbsearch;
     @Autowired
     ModulSnapshotRepository modulRepo;
 
@@ -56,33 +56,33 @@ public class SuchServiceTest {
 
     @Test
     void returnedModulContainsSearchterm() {
-        List<Modul> results = suchService.searchForModuleByTitle(modul.getTitelDeutsch());
+        List<Modul> results = hbsearch.search(modul.getTitelDeutsch());//suchService.searchForModuleByTitle(modul.getTitelDeutsch());
         assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
     void findWordsAlthoughTheyAreInUpperOrLowercase() {
-        List<Modul> results = suchService.searchForModuleByTitle("programmierung");
+        List<Modul> results = hbsearch.search("programmierung*");
         assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
     void searchForSubstringReturnsResult() {
-        List<Modul> results = suchService.searchForModuleByTitle("prog");
+        List<Modul> results = hbsearch.search("prog*");
         assertEquals(1, results.size());
         assertEquals(results.get(0).getTitelDeutsch(), modul.getTitelDeutsch());
     }
 
     @Test
     void unsuccessfulSearchReturnsEmptyList() {
-        List<Modul> results = suchService.searchForModuleByTitle("katze");
+        List<Modul> results = hbsearch.search("katze");
         assertTrue(results.isEmpty());
     }
 
     /*@Test
     @Ignore
     void multiWordQueryReturnsResult() {
-        List<Modul> results = suchService.searchForModuleByTitle("Graph Entscheidung");
+        List<Modul> results = hbsearch.search("Graph Entscheidung");
         assertFalse(results.isEmpty());
     }
     */

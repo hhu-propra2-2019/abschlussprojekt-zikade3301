@@ -22,6 +22,8 @@ public class FullTextSearchTest {
     SuchService suchService;
 
     @Autowired
+    HibernateModuleSearch hbSearch;
+    @Autowired
     ModulSnapshotRepository modulRepo;
 
     private String completeModulString;
@@ -31,7 +33,7 @@ public class FullTextSearchTest {
     void init() {
         modulRepo.deleteAll();
         completeModulString = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
+                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme test','leistungspunkte':'10CP'"
                 + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
                 + "{'form':'Übung','semesterWochenStunden':2}],"
                 + "'beschreibung':{'inhalte':' \uF0B7Architekturformen: monolitisch, geschichtet, Mikrokern, Client/Server\uF0B7Speicher: Segmentierung, Paging, Garbage Collection\uF0B7Nebenläufigkeit: Schedulingstrategien, Prozesse, Threads, Interrupts\uF0B7Synchronisierung: Semaphore, klassische Problemstellungen, Verklemmungen\uF0B7Dateisysteme: FAT, UNIX, EXT, NTFS\uF0B7Kommunikation: Signale, Pipes, Sockets\uF0B7Sicherheit: HW-Schutz\uF0B7Fallstudien, u.a. Linux, Microsoft Windows',"
@@ -58,7 +60,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchMultiWordTest() {
-        List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("geschichtet, problemstellung");
+        List<Modul> results = hbSearch.search("test");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
@@ -75,7 +77,7 @@ public class FullTextSearchTest {
     @Test
     @DisplayName("Search for 'Architektur' finds 'Architekturformen'")
     void fullTextSearchStemWordTest() {
-        List<Modul> results = suchService.searchInVeranstaltungsbeschreibung("Architektur");
+        List<Modul> results = hbSearch.search("Architektur");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));

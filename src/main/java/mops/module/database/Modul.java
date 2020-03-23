@@ -13,34 +13,47 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
 @Setter
+//TODO: Conditional Indexing: only index, when module is visible
+@Indexed
+@Analyzer(impl = org.apache.lucene.analysis.de.GermanAnalyzer.class)
 public class Modul {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String titelDeutsch;
 
+    @Field
     private String titelEnglisch;
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
+    @IndexedEmbedded
     private Set<Veranstaltung> veranstaltungen;
 
+    //TODO: Modulbeauftragte auch durchsuchen
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 
+    @Field
     private String studiengang;
 
+    //TODO: das Feld auch durchsuchen?
     private Modulkategorie modulkategorie;
 
     private Boolean sichtbar;

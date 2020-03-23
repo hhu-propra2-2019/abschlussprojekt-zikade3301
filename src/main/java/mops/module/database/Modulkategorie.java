@@ -1,5 +1,8 @@
 package mops.module.database;
 
+import org.hibernate.search.annotations.Indexed;
+
+@Indexed
 public enum Modulkategorie {
     PFLICHT_INFO, PFLICHT_MATHE, NEBENFACH, PRAXIS,
     WAHLPFLICHT_BA, WAHLPFLICHT_MA, BACHELORARBEIT,

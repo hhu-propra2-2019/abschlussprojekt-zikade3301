@@ -22,7 +22,7 @@ public class SuchService {
     }
 
     /**
-     * Uses Postgres internal FullTextSearch to get results in module description
+     * Uses Postgres internal FullTextSearch to get results in module description.
      *
      * @param searchinput given searchterm from user
      * @return list of modules where searchterm was found in description

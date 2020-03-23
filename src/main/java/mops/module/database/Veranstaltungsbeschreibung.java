@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import lombok.Data;
+import org.hibernate.search.annotations.Field;
 
 @Embeddable
 @Data
@@ -22,14 +23,17 @@ public class Veranstaltungsbeschreibung {
     }
 
     @Column(columnDefinition = "TEXT")
+    @Field
     private String inhalte;
 
     @Column(columnDefinition = "TEXT")
+    @Field
     private String lernergebnisse;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> literatur;
 
+    //TODO durchsuchen?
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> verwendbarkeit;
 
@@ -38,6 +42,7 @@ public class Veranstaltungsbeschreibung {
 
     private String haeufigkeit;
 
+    @Field
     private String sprache;
 
 }
