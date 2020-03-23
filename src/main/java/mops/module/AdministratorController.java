@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
@@ -94,13 +95,13 @@ public class AdministratorController {
         return "antragdetails";
     }
 
-    @PostMapping(value = "/antragdetails/{id}")
+    //TODO - klappt nicht
+
+    @PostMapping("/antragdetails/{id}")
     @Secured("ROLE_sekretariat")
     public String antragAnnehmen(
             @PathVariable String id,
             KeycloakAuthenticationToken token, Model model, Modul antragAngenommen) {
-
-        System.out.println("enigstens drinnen");
 
         String jsonModulAenderung = JsonService.modulToJsonObject(antragAngenommen);
 
