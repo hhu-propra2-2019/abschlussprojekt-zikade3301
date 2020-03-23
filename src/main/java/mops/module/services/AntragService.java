@@ -122,6 +122,7 @@ public class AntragService {
                 .collect(Collectors.toList());
 
     }
+
     public Antrag getAntragById(Long id) {
         return antragRepository.findById(id).orElse(null);
     }
