@@ -183,12 +183,6 @@
                         </div>
                         <br>
 
-
-
-                        <!--  TODO: Alle Formularfelder hinzufügen -->
-                        <!--  TODO: Alle Formularfelder mit Thymeleaf auslesen -->
-
-
                         <!-- VERANSTALTUNGEN WERDEN IN EINER SCHLEIFE AUFGELISTET -->
                         <div>
                             <div class="accordion mt-3" id="accordion">
@@ -393,7 +387,6 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:name="'veranstaltung' + ${i} + '_voraussetzungenBestehen'"
-                                                              aria-label="XXYXXY"
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
@@ -578,8 +571,9 @@
 
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
-    <!--                    TODO: SUBMIT MAPPING SCHREIBEN-->
-                        <button type="submit" class="btn btn-primary mr-1" style="float: right">Modulerstellung beantragen</button>
+                        <button type="submit" class="btn btn-primary mr-1" style="float: right">
+                            Modulerstellung beantragen
+                        </button>
                         <button type="button" class="btn btn-secondary mr-1" style="float: right">
                             <a href="/module/modulbeauftragter" style="color: white; text-decoration: none;">
                                 Abbrechen

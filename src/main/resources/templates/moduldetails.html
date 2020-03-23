@@ -107,7 +107,10 @@
                               th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}">
                             SWS
                         </span>
-                        <span class="ml-2" th:text="${veranstaltungsform.getForm()}">Veranstaltungsform</span>
+                        <span class="ml-2"
+                              th:text="${veranstaltungsform.getForm()}">
+                            Veranstaltungsform
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -118,26 +121,41 @@
         <div class="card mt-2" style="border: none" th:each="veranstaltung : ${modul.getVeranstaltungen()}">
             <div class="card-body">
                 <div class="mb-3">
-                    <h3 class="card-title mb-0" style="color: dodgerblue; display: contents; float: left" th:text="${veranstaltung.getTitel()}">
+                    <h3 class="card-title mb-0"
+                        style="color: dodgerblue;
+                        display: contents;
+                        float: left"
+                        th:text="${veranstaltung.getTitel()}">
                         Veranstaltungstitel
                     </h3>
-                    <span style="width: min-content" class="badge badge-dark ml-1" th:text="${veranstaltung.getLeistungspunkte()}">CP</span>
+                    <span style="width: min-content"
+                          class="badge badge-dark ml-1"
+                          th:text="${veranstaltung.getLeistungspunkte()}">
+                        CP
+                    </span>
                 </div>
                 <div class="mt-2 pl-2">
                     <span class="card-subtitle" style="font-weight: bold">Inhalte:</span>
                     <br>
                     <div>
-                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getInhalte()}">
+                        <span class="card-text"
+                              th:text="${veranstaltung.getBeschreibung().getInhalte()}">
                         Veranstaltungsinhalt
                         </span>
                         <br>
                     </div>
                 </div>
                 <div class="mt-3 mb-3 pl-2">
-                    <span class="card-subtitle" style="font-weight: bold">Lernergebnisse/Kompetenzen:</span>
+                    <span class="card-subtitle"
+                          style="font-weight: bold">
+                        Lernergebnisse/Kompetenzen:
+                    </span>
                     <br>
                     <span>
-                        <span class="card-text" th:text="${veranstaltung.getBeschreibung().getLernergebnisse()}">Lernergebnisse</span>
+                        <span class="card-text"
+                              th:text="${veranstaltung.getBeschreibung().getLernergebnisse()}">
+                            Lernergebnisse
+                        </span>
                     </span>
                 </div>
 
@@ -146,42 +164,60 @@
                         <span class="card-subtitle" style="font-weight: bold">Häufigkeit</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getBeschreibung().getHaeufigkeit()}">Häufigkeit</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getBeschreibung().getHaeufigkeit()}">
+                                Häufigkeit
+                            </span>
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                         <span class="card-subtitle" style="font-weight: bold">Verwendbarkeit</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getBeschreibung().getVerwendbarkeit()}">Verwendbarkeit</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getBeschreibung().getVerwendbarkeit()}">
+                                Verwendbarkeit
+                            </span>
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen zum Bestehen</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getBeschreibung().getVoraussetzungenBestehen()}">VoraussetzungenBestehen</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getBeschreibung().getVoraussetzungenBestehen()}">
+                                VoraussetzungenBestehen
+                            </span>
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                         <span class="card-subtitle" style="font-weight: bold">Sprache</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getBeschreibung().getSprache()}">Sprache</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getBeschreibung().getSprache()}">
+                                Sprache
+                            </span>
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen für eine Teilnahme</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getVoraussetzungenTeilnahme()}">VoraussetzungenTeilnahme</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getVoraussetzungenTeilnahme()}">
+                                VoraussetzungenTeilnahme
+                            </span>
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
                         <span class="card-subtitle" style="font-weight: bold">Semester</span>
                         <br>
                         <span>
-                            <span class="card-text" th:text="${veranstaltung.getSemester()}">Semester</span>
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getSemester()}">
+                                Semester
+                            </span>
                         </span>
                     </div>
                 </div>
@@ -192,20 +228,30 @@
                         <br>
                         <span>
 <!--                            TODO bei kleinem Screen bricht Literatur falsch um-->
-                            <span class="card-text" th:text="${veranstaltung.getBeschreibung().getLiteratur()}">Literatur</span>
+<!--                            TODO DB ÄNDERUNG! IST DAS NOCH AKTUELL?-->
+                            <span class="card-text"
+                                  th:text="${veranstaltung.getBeschreibung().getLiteratur()}">
+                                Literatur
+                            </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2" th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}">
-                        <span class="card-subtitle" style="font-weight: bold" th:text="${zusatzfeld.getTitel()}">ZusatzfeldTitel</span>
+                    <div class="mt-3 mb-3 pl-2"
+                         th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}">
+                        <span class="card-subtitle"
+                              style="font-weight: bold"
+                              th:text="${zusatzfeld.getTitel()}">
+                            ZusatzfeldTitel
+                        </span>
                         <br>
-                        <span class="card-text" th:text="${zusatzfeld.getInhalt()}">ZusatzfeldInhalt</span>
+                        <span class="card-text"
+                              th:text="${zusatzfeld.getInhalt()}">
+                            ZusatzfeldInhalt
+                        </span>
                     </div>
                 </div>
             </div>
             <hr class="my-4" style="background-color: white">
         </div>
-
-        <!--    TODO: ZEIELENEINRÜCKUNG IN DIESER DATEI-->
     </div>
 </main>
 </body>
