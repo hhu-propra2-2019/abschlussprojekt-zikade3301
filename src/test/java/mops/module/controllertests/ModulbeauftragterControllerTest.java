@@ -45,8 +45,16 @@ class ModulbeauftragterControllerTest {
     }
 
     @Test
-    void testModulbeauftragterStatusLoggedIn() throws Exception {
+    void testModulbeauftragterAccessForOrganizers() throws Exception {
         SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("orga"));
+
+        mvc.perform(get("/module/modulbeauftragter"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
+        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("sekretariat"));
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(status().isOk());
@@ -65,18 +73,6 @@ class ModulbeauftragterControllerTest {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
-
-        assertThrows(java.lang.AssertionError.class,
-                () -> {
-                    mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
-                });
-    }
-
-    @Test
-    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {

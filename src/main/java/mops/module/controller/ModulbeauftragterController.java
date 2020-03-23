@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.annotation.security.RolesAllowed;
+
 
 @Controller
 @SessionScope
@@ -17,7 +19,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class ModulbeauftragterController {
 
     @GetMapping("/modulbeauftragter")
-    @Secured("ROLE_orga")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
         return "modulbeauftragter";

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.annotation.security.RolesAllowed;
+
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 
@@ -43,7 +45,7 @@ public class ModulerstellungController {
 
     //    TODO TEST HIERFÜR
     @GetMapping("/modulerstellung")
-    @Secured("ROLE_orga")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String result(
             @RequestParam(name = "veranstaltungsanzahl", required = true) int veranstaltungsanzahl,
             Model model,
@@ -60,7 +62,7 @@ public class ModulerstellungController {
 
     //    TODO TEST HIERFÜR
     @PostMapping("/modulerstellung")
-    @Secured("ROLE_orga")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addCreationAntrag(@RequestParam Map<String,String> allParams,
                                     Model model,
                                     KeycloakAuthenticationToken token) {

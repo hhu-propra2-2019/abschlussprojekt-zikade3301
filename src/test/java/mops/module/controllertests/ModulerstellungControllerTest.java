@@ -39,15 +39,29 @@ class ModulerstellungControllerTest {
 
     @Test
     void testModulerstellungViewName() throws Exception {
-        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("orga"));
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
 
         mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
                 .andExpect(view().name(expect));
     }
 
     @Test
-    void testModulerstellungStatus() throws Exception {
-        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("orga"));
+    void testModulerstellungAccessForOrganizers() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testModulerstellungAccessForAdministrator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
                 .andExpect(status().isOk());
@@ -78,10 +92,6 @@ class ModulerstellungControllerTest {
     //TODO
     // Fehler wenn Parameter fehlt
     // Sekretariat hat Zugriff
-
-
-
-
 
 
 
