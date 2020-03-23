@@ -11,7 +11,6 @@ import mops.module.database.Veranstaltung;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,7 +62,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchMultiWordTest() {
-        List<Modul> results = hbSearch.search("test");
+        List<Modul> results = hbSearch.search("Speicher Nebenläufigkeit");
         List<Veranstaltung> results2 = new ArrayList<>();
         Set miep = results.get(0).getVeranstaltungen();
         results2.addAll(miep);
@@ -85,6 +84,13 @@ public class FullTextSearchTest {
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelEnglisch()));
+    }
+
+    @Test
+    void fullTextSearchFindsModulbeauftragten() {
+        List<Modul> results = hbSearch.search("Schöttner");
+        assertFalse(results.isEmpty());
+        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelDeutsch()));
     }
 
     /*

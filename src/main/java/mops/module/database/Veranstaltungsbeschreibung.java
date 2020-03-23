@@ -8,6 +8,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import lombok.Data;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 @Embeddable
 @Data
@@ -33,10 +34,13 @@ public class Veranstaltungsbeschreibung {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> literatur;
 
-    //TODO durchsuchen?
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> verwendbarkeit;
 
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> voraussetzungenBestehen;
 
