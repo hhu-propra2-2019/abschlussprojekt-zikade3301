@@ -150,7 +150,7 @@
                             <div style="display: inline-flex;">
                                 <div class="mt-3 mb-3 col-4" style="float: left">
                                     <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>
-                                    <input type="number"
+                                    <input type="text"
                                            style="float: right;
                                            color: lightslategrey"
                                            name="gesamtLeistungspunkte"
@@ -230,7 +230,7 @@
                                                 </div>
 
                                                 <div class="input-group mb-3 col-3" style="display: block">
-                                                    <input type="number"
+                                                    <input type="text"
                                                            th:name="'veranstaltung' + ${i} + '_leistungspunkte'"
                                                            style="background: transparent;
                                                            border: none;
@@ -444,7 +444,8 @@
                                                            font-size: small;
                                                            color: white;"
                                                            type="number"
-                                                           value="">
+                                                           value=""
+                                                           min="0">
                                                     <label style="font-size: larger; margin-left: 0.5rem">
                                                         SWS
                                                     </label>
@@ -470,7 +471,8 @@
                                                            font-size: small;
                                                            color: white;"
                                                            type="number"
-                                                           value="">
+                                                           value=""
+                                                           min="0">
                                                     <label style="font-size: larger; margin-left: 0.5rem">
                                                         SWS
                                                     </label>
@@ -496,7 +498,8 @@
                                                            font-size: small;
                                                            color: white;"
                                                            type="number"
-                                                           value="">
+                                                           value=""
+                                                           min="0">
                                                     <label style="font-size: larger; margin-left: 0.5rem">
                                                         SWS
                                                     </label>
@@ -522,7 +525,8 @@
                                                            font-size: small;
                                                            color: white;"
                                                            type="number"
-                                                           value="">
+                                                           value=""
+                                                           min="0">
                                                     <label style="font-size: larger; margin-left: 0.5rem">
                                                         SWS
                                                     </label>
@@ -549,22 +553,39 @@
                                                 <span style="font-size: x-large; margin-bottom: 2rem">
                                                     Weitere Informationen:
                                                 </span>
+                                                <div class="form-check mb-2" style="display: flex;
+                                                border: 1px solid white; border-radius: 10px">
+                                                    <div>
+                                                        <input class="form-check-input" type="checkbox" value="true"
+                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'">
+                                                        <input type="text"
+                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'">
+                                                        <textarea class="form-control ml-1"
+                                                                  th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
+                                                                  style=" border-bottom: 1px solid white;
+                                                              max-width: 26rem;
+                                                              height: 5rem;
+                                                              background: transparent;
+                                                              font-size: small;
+                                                              color: white;">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
                                                 <div class="form-check mb-2" style="display: flex">
                                                     <div>
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'"
-                                                               th:value="true">
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'"
-                                                               th:value="${'veranstaltung' + i + ' zusatzfeld1 titel'}">
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
-                                                               th:value="${'veranstaltung' + i + ' zusatzfeld1 inhalt'}">
-                                                    </div>
-                                                    <div>
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'"
-                                                               th:value="false">
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'"
-                                                               th:value="${'veranstaltung' + i + ' zusatzfeld2 titel'}">
-                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
-                                                               th:value="${'veranstaltung' + i + ' zusatzfeld2 inhalt'}">
+                                                        <input class="form-check-input" type="checkbox" value="true"
+                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'">
+                                                        <input type="text"
+                                                               th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'">
+                                                        <textarea class="form-control ml-1"
+                                                                  th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
+                                                                  style=" border-bottom: 1px solid white;
+                                                              max-width: 26rem;
+                                                              height: 5rem;
+                                                              background: transparent;
+                                                              font-size: small;
+                                                              color: white;">
+                                                        </textarea>
                                                     </div>
                                                 </div>
                                             </div>
