@@ -28,6 +28,7 @@ public class Veranstaltungsbeschreibung {
     private String lernergebnisse;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> literatur;
 
     @ElementCollection(fetch = FetchType.EAGER)
