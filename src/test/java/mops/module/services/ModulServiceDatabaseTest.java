@@ -3,11 +3,11 @@ package mops.module.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -79,17 +79,19 @@ public class ModulServiceDatabaseTest {
                 + "'voraussetzungenTeilnahme':[{'titel':'test'}]}],"
                 + "'modulkategorie':'BACHELORARBEIT'}";
         completeModul = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme',"
-                + "'lehrende':['Michael Schöttner'],'leistungspunkte':'10CP',"
-                + "'veranstaltungsformen':['Vorlesung','Praktische Übung'],"
+                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
+                + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
+                + "{'form':'Übung','semesterWochenStunden':2}],"
                 + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
                 + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
                 + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
                 + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['Informatik I']}],'gesamtLeistungspunkte':'10CP',"
-                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA',"
-                + "'zusatzfelder':[{'titel':'Feld2','inhalt':'Numero dos'},{'titel':'Feld1',"
-                + "'inhalt':'Dies hier ist das erste Zusatzfeld!'}]}";
+                + "'voraussetzungenTeilnahme':['Informatik I'],"
+                + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
+                + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
+                + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
+                + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
+                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
     }
 
     @Test
@@ -178,6 +180,7 @@ public class ModulServiceDatabaseTest {
     public void completeAddModulRoutineTest() {
 
         Modul modul = JsonService.jsonObjectToModul(completeModul);
+
         modul.refreshMapping();
         antragService.addModulCreationAntrag(modul);
 
@@ -187,9 +190,7 @@ public class ModulServiceDatabaseTest {
         List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
-        for (Veranstaltung v : dbmodul.getVeranstaltungen()) {
-            v.setLehrende(new HashSet<>(Arrays.asList("Stefan Harmeling")));
-        }
+        dbmodul.setModulbeauftragte(new HashSet<>(Arrays.asList("Stefan Harmeling")));
 
         antragService.addModulModificationAntrag(dbmodul);
 
@@ -199,9 +200,7 @@ public class ModulServiceDatabaseTest {
         Optional<Modul> optionalModul = modulSnapshotRepository.findById(dbmodul.getId());
 
         if (optionalModul.isPresent()) {
-            assertThat(dbmodul.getVeranstaltungen().stream()
-                    .findFirst().orElse(new Veranstaltung()).getLehrende())
-                    .contains("Stefan Harmeling");
+            assertThat(dbmodul.getModulbeauftragte()).contains("Stefan Harmeling");
         }
     }
 
