@@ -146,8 +146,6 @@
                                        placeholder="Modulbeauftragte der Veranstaltung" required>
                             </div>
 
-
-
                             <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE -->
                             <div style="display: inline-flex;">
                                 <div class="mt-3 mb-3 col-4" style="float: left">
@@ -545,21 +543,31 @@
                                                 </div>
                                             </div>
 
+
                                             <!-- TODO Hier ist noch überall HIDDEN; müssen im Frontend Eingabefelder hinzufügen-->
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'"
-                                                   th:value="true">
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'"
-                                                   th:value="${'veranstaltung' + i + ' zusatzfeld1 titel'}">
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
-                                                   th:value="${'veranstaltung' + i + ' zusatzfeld1 inhalt'}">
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'"
-                                                   th:value="false">
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'"
-                                                   th:value="${'veranstaltung' + i + ' zusatzfeld2 titel'}">
-                                            <input type="hidden" th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
-                                                   th:value="${'veranstaltung' + i + ' zusatzfeld2 inhalt'}">
-
-
+                                            <div style="margin-top: 3rem;">
+                                                <span style="font-size: x-large; margin-bottom: 2rem">
+                                                    Weitere Informationen:
+                                                </span>
+                                                <div class="form-check mb-2" style="display: flex">
+                                                    <div>
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_checked'"
+                                                               th:value="true">
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_titel'"
+                                                               th:value="${'veranstaltung' + i + ' zusatzfeld1 titel'}">
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld1_inhalt'"
+                                                               th:value="${'veranstaltung' + i + ' zusatzfeld1 inhalt'}">
+                                                    </div>
+                                                    <div>
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_checked'"
+                                                               th:value="false">
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_titel'"
+                                                               th:value="${'veranstaltung' + i + ' zusatzfeld2 titel'}">
+                                                        <input th:name="'veranstaltung' + ${i} + '_zusatzfeld2_inhalt'"
+                                                               th:value="${'veranstaltung' + i + ' zusatzfeld2 inhalt'}">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
