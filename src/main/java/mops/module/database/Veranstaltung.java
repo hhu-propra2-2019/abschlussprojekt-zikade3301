@@ -61,17 +61,18 @@ public class Veranstaltung {
     @IndexedEmbedded
     private Veranstaltungsbeschreibung beschreibung;
 
-    //TODO: durchsuchen?
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> voraussetzungenTeilnahme;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> semester;
 
-    //TODO Zusatzfelder durchsuchen?
     //Beim Löschen von Veranstaltung werden alle Zusatzfelder mitgelöscht
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltung",
             orphanRemoval = true)
+    @IndexedEmbedded
     private Set<Zusatzfeld> zusatzfelder;
 
     public void refreshMapping() {

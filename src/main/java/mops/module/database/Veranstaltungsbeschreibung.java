@@ -35,10 +35,13 @@ public class Veranstaltungsbeschreibung {
     @IndexedEmbedded
     private Set<String> literatur;
 
-    //TODO durchsuchen?
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> verwendbarkeit;
 
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> voraussetzungenBestehen;
 

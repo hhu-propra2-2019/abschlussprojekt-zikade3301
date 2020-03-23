@@ -44,7 +44,8 @@ public class Modul {
             orphanRemoval = true)
     private Set<Veranstaltung> veranstaltungen;
 
-    //TODO: Modulbeauftragte auch durchsuchen
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> modulbeauftragte;
 
