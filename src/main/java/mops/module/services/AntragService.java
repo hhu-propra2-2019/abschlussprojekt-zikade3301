@@ -120,7 +120,6 @@ public class AntragService {
     public List<Antrag> getAlleAntraegeGeordnetDatum() {
         return getAlleAntraege().stream().sorted(Comparator.comparing(Antrag::getDatumErstellung))
                 .collect(Collectors.toList());
-
     }
 
     public Antrag getAntragById(Long id) {
