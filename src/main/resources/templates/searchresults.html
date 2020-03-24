@@ -54,13 +54,16 @@
 
     </nav>
 </header>
+
+
 <main th:fragment="bodycontent">
     <div> HIER STEHEN SUCHERGEBNISSE!!</div>
-        <ul th:each="result: ${searchResults}">
-            <li th:href="@{/module/moduldetails(modulId=${result.getId()})}">
-                <a th:text="${result}"></a>
-            </li>
-        </ul>
+    <ul th:each="result: ${searchResults}">
+        <li>
+            <a th:href="@{'/module/moduldetails/' + ${result.getId()}}"
+               th:text="${result.getTitelDeutsch()}"></a>
+        </li>
+    </ul>
 </main>
 </body>
 </html>
