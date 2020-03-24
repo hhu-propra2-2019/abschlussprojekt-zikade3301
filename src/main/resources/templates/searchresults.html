@@ -55,6 +55,7 @@
     </nav>
 </header>
 <main th:fragment="bodycontent">
+    <div> HIER STEHEN SUCHERGEBNISSE!!</div>
         <ul th:each="result: ${searchResults}">
             <li th:href="@{/module/moduldetails(modulId=${result.getId()})}">
                 <a th:text="${result}"></a>

@@ -57,8 +57,8 @@
 </header>
 <main th:fragment="bodycontent">
 
-    <form method="POST" class="form-group">
-        <input class="form-control" placeholder="Suche" type="search">
+    <form class="form-group" method="GET" th:action="@{/module/search}">
+        <input class="form-control" name="searchField" placeholder="Suche" type="search">
     </form>
 
 
