@@ -4,6 +4,7 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 
 import java.util.Map;
 import javax.annotation.security.RolesAllowed;
+import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.services.AntragService;
 import mops.module.services.FormService;
@@ -42,7 +43,7 @@ public class ModulerstellungController {
      */
     @GetMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String result(
+    public String addModulCreationAntragForm(
             @RequestParam(name = "veranstaltungsanzahl", required = true) int veranstaltungsanzahl,
             Model model,
             KeycloakAuthenticationToken token) {
@@ -66,14 +67,20 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String addCreationAntrag(@RequestParam Map<String,String> allParams,
+    public String addModulCreationAntrag(@RequestParam Map<String,String> allParams,
                                     Model model,
                                     KeycloakAuthenticationToken token) {
 
         Modul modul = FormService.readModulFromParameterMap(allParams);
+        modul.refreshMapping();
         String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
 
-        antragService.addModulCreationAntrag(modul, antragsteller);
+        Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
+        //TODO: Sekretariat-Anträge direkt approven?
+        //if (token.getAccount().getRoles().contains("ROLE_sekretariat")) {
+        //    antragService.approveModulCreationAntrag(antrag);
+        //    return "modulbeauftragter";
+        //}
         return "modulbeauftragter";
     }
 }

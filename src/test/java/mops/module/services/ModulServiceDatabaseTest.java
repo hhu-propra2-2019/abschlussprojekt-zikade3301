@@ -103,20 +103,17 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulCreationAntragTestAntragCreated() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
+        Antrag antrag = antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
                 "Beispielantragsteller");
-        Antrag antrag = antragService.getAlleAntraege().get(0);
         antragService.approveModulCreationAntrag(antrag);
         assertThat(modulSnapshotRepository.count()).isEqualTo(1);
     }
 
     @Test
     public void approveModulCreationAntragTestModulIdIsAddedToAntrag() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
+        Antrag antrag = antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul1),
                 "Beispielantragsteller");
-        Antrag antrag = antragService.getAlleAntraege().get(0);
-        antragService.approveModulCreationAntrag(antrag);
-        Modul modul = modulService.getAllModule().get(0);
+        Modul modul = antragService.approveModulCreationAntrag(antrag);
         assertThat(antrag.getModulId()).isEqualTo(modul.getId());
     }
 
@@ -131,13 +128,9 @@ public class ModulServiceDatabaseTest {
         veranstaltung.setBeschreibung(veranstaltungsbeschreibung);
         vergleichsmodul.addVeranstaltung(veranstaltung);
 
-        antragService.addModulCreationAntrag(vergleichsmodul,
+        Antrag antrag = antragService.addModulCreationAntrag(vergleichsmodul,
                 "Beispielantragsteller");
-        List<Antrag> antraege = antragService.getAlleAntraege();
-        antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
-
-        List<Modul> module = modulService.getAllModule();
-        Modul modul = module.get(module.size() - 1);
+        Modul modul = antragService.approveModulCreationAntrag(antrag);
         vergleichsmodul.setId(modul.getId());
 
         try {
@@ -150,27 +143,16 @@ public class ModulServiceDatabaseTest {
 
     @Test
     public void approveModulModificationAntragTest() {
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(modul3),
-                "Beispielantragsteller");
-
-        List<Antrag> antraege = antragService.getAlleAntraege();
-        antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
-
-        List<Modul> module = modulService.getAllModule();
-        Modul modul = module.get(module.size() - 1);
+        Antrag creationAntrag = antragService.addModulCreationAntrag(
+                JsonService.jsonObjectToModul(modul3), "Beispielantragsteller");
+        Modul modul = antragService.approveModulCreationAntrag(creationAntrag);
 
         Modul aenderungen = JsonService.jsonObjectToModul(modul4);
-
         aenderungen.setId(modul.getId());
-        antragService.addModulModificationAntrag(aenderungen, "Beispielantragsteller");
 
-        antraege = antragService.getAlleAntraege();
-        Antrag antrag = antraege.get(antraege.size() - 1);
-
-        antragService.approveModulModificationAntrag(antrag);
-
-        module = modulService.getAllModule();
-        Modul geaendertesModul = module.get(module.size() - 1);
+        Antrag modificationAntrag = antragService.addModulModificationAntrag(aenderungen,
+                "Beispielantragsteller");
+        Modul geaendertesModul = antragService.approveModulModificationAntrag(modificationAntrag);
 
         try {
             JSONAssert.assertEquals(JsonService.modulToJsonObject(aenderungen),
@@ -187,27 +169,18 @@ public class ModulServiceDatabaseTest {
         Modul modul = JsonService.jsonObjectToModul(completeModul);
 
         modul.refreshMapping();
-        antragService.addModulCreationAntrag(modul,
+        Antrag creationAntrag = antragService.addModulCreationAntrag(modul,
                 "Beispielantragsteller");
 
-        List<Antrag> antraege = antragService.getAlleAntraege();
-        antragService.approveModulCreationAntrag(antraege.get(antraege.size() - 1));
-
-        List<Modul> module = modulService.getAllModule();
-        Modul dbmodul = module.get(module.size() - 1);
+        Modul dbmodul = antragService.approveModulCreationAntrag(creationAntrag);
 
         dbmodul.setModulbeauftragte("Stefan Harmeling");
 
-        antragService.addModulModificationAntrag(dbmodul, "Beispielantragsteller");
+        Antrag modificationAntrag = antragService.addModulModificationAntrag(dbmodul,
+                "Beispielantragsteller");
+        Modul modifiedModul = antragService.approveModulModificationAntrag(modificationAntrag);
 
-        antraege = antragService.getAlleAntraege();
-        antragService.approveModulModificationAntrag(antraege.get(antraege.size() - 1));
-
-        Optional<Modul> optionalModul = modulSnapshotRepository.findById(dbmodul.getId());
-
-        if (optionalModul.isPresent()) {
-            assertThat(dbmodul.getModulbeauftragte()).isEqualTo("Stefan Harmeling");
-        }
+        assertThat(modifiedModul.getModulbeauftragte()).isEqualTo("Stefan Harmeling");
     }
 
     @Test
@@ -220,11 +193,11 @@ public class ModulServiceDatabaseTest {
         modul2.getVeranstaltungen().stream().findFirst().orElse(null)
                 .setSemester(new HashSet<>(Arrays.asList("WiSe2019/20")));
 
-        antragService.addModulCreationAntrag(modul1, "Beispielantragsteller");
-        antragService.addModulCreationAntrag(modul2, "Beispielantragsteller");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller");
+        Antrag antrag2 = antragService.addModulCreationAntrag(modul2, "Beispielantragsteller");
 
-        List<Antrag> antraege = antragService.getAlleAntraege();
-        antraege.forEach(a -> antragService.approveModulCreationAntrag(a));
+        antragService.approveModulCreationAntrag(antrag1);
+        antragService.approveModulCreationAntrag(antrag2);
 
         List<Modul> dbmodule = modulSnapshotRepository.findModuleBySemester("WiSe2018/19");
 
