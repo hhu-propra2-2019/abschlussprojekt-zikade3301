@@ -121,6 +121,10 @@ public class AntragService {
         return getAlleAntraege().stream().sorted(Comparator.comparing(Antrag::getDatumErstellung))
                 .collect(Collectors.toList());
     }
+    public List<Antrag> getAlleOffenenAntraegeGeordnetDatum() {
+        return getAlleAntraegeGeordnetDatum().stream().filter(x -> x.getDatumGenehmigung() == null)
+                .collect(Collectors.toList());
+    }
 
     public Antrag getAntragById(Long id) {
         return antragRepository.findById(id).orElse(null);
