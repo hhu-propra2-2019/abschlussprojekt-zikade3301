@@ -22,9 +22,6 @@ import org.springframework.test.context.ActiveProfiles;
 public class FullTextSearchTest {
 
     @Autowired
-    SuchService suchService;
-
-    @Autowired
     HibernateModuleSearch hbSearch;
     @Autowired
     ModulSnapshotRepository modulRepo;
