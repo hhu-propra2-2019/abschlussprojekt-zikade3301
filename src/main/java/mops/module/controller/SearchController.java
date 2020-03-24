@@ -32,7 +32,7 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(@RequestParam(value = "searchField") String searchField, Model model) {
-        List<Modul> searchResults = moduleSearch.search(searchField);
+        List<Modul> searchResults = moduleSearch.searchResultList(searchField);
         model.addAttribute("searchResults", searchResults);
         //TODO: new request for modules only including the testresults
         return "searchresults";

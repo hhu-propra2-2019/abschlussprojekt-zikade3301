@@ -1,6 +1,10 @@
 package mops.module.services;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import mops.module.database.Modul;
@@ -8,6 +12,7 @@ import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +28,25 @@ public class HibernateModuleSearch {
     }
 
     @Transactional
-    public List<Modul> search(String searchinput) {
+    public List<Modul> searchResultList(String searchInput) {
+        List<Modul> result = new ArrayList<>();
+        List<String> searchWords = split(searchInput);
+        Set<Modul> resultModuls = new HashSet<>();
+        for (String word: searchWords) {
+            resultModuls.addAll(search(word));
+        }
+        result.addAll(resultModuls);
+        return result;
+    }
+
+    public List<String> split(String searchInput) {
+        String[] list = searchInput.split(" ");
+        List<String> result = Arrays.asList(list);
+        return result;
+    }
+
+    @Transactional
+    public List<Modul> search(String searchInput) {
         FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
@@ -42,7 +65,7 @@ public class HibernateModuleSearch {
                 .andField("veranstaltungen.beschreibung.verwendbarkeit")
                 .andField("veranstaltungen.beschreibung.voraussetzungenBestehen")
                 .andField("veranstaltungen.beschreibung.sprache")
-                .matching("*" + searchinput.toLowerCase() + "*")
+                .matching("*" + searchInput.toLowerCase() + "*")
                 .createQuery();
 
         javax.persistence.Query persistenceQuery =
