@@ -12,8 +12,12 @@ import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import mops.module.database.Modul;
+import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
@@ -26,7 +30,14 @@ public class PdfService {
             Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
     ).toImmutable();
 
-    private static final String CSS = "body {\n"
+    private static final String CSS_INHALTSVERZEICHNIS = "body {\n"
+            + "    font-family: 'Helvetica', sans-serif;\n"
+            + "    overflow: hidden;\n"
+            + "    word-wrap: break-word;\n"
+            + "    font-size: 14px;\n"
+            + "}";
+
+    private static final String CSS_MODULE = "body {\n"
             + "    font-family: 'Helvetica', sans-serif;\n"
             + "    overflow: hidden;\n"
             + "    word-wrap: break-word;\n"
@@ -38,9 +49,24 @@ public class PdfService {
      * @return
      */
     public static PDDocument generatePdf(List<Modul> module) {
+        int pageCount = 1;
         PDDocument document = new PDDocument();
-        for (Modul modul : module) {
+
+        Map<Modul, Integer> pageForModul = new HashMap<>();
+        List<Modul> sortedModule = new ArrayList<>();
+
+        int anzahlModulkategorien = Modulkategorie.values().length;
+        for (int i = 0; i < anzahlModulkategorien; i++) {
+            Modulkategorie currentModulkategorie = Modulkategorie.values()[i];
+            module.stream()
+                    .filter(m -> m.getModulkategorie() == currentModulkategorie)
+                    .forEach(sortedModule::add);
+        }
+
+        for (Modul modul : sortedModule) {
+            pageForModul.put(modul, pageCount);
             PDDocument toAppend = generatePdf(modul);
+            pageCount += toAppend.getNumberOfPages();
             appendPdf(document, toAppend);
             try {
                 toAppend.close();
@@ -48,7 +74,28 @@ public class PdfService {
                 e.printStackTrace();
             }
         }
-        return document;
+
+        PDDocument tableOfContents = getTableOfContents(pageForModul, sortedModule);
+        appendPdf(tableOfContents, document);
+        try {
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return tableOfContents;
+    }
+
+    private static PDDocument getTableOfContents(Map<Modul, Integer> pageForModul,
+                                                 List<Modul> sortedModule) {
+        StringBuilder str = new StringBuilder("<h1>Inhaltsverzeichnis</h1>");
+        str.append("<table style=\"width:100%\">");
+        for (Modul modul : sortedModule) {
+            str.append("<tr><td align=\"left\">" + modul.getTitelDeutsch()
+                    + "</td><td align=\"right\">" + pageForModul.get(modul) + "</td></tr>");
+        }
+        str.append("</table>");
+        String html = PdfConverterExtension.embedCss(str.toString(), CSS_INHALTSVERZEICHNIS);
+        return htmlToPdf(html);
     }
 
 
@@ -59,15 +106,22 @@ public class PdfService {
     public static PDDocument generatePdf(Modul modul) {
         String str = buildString(modul);
 
+        String html = PdfConverterExtension.embedCss(markdownToHtml(str), CSS_MODULE);
+        return htmlToPdf(html);
+    }
+
+    private static String markdownToHtml(String markdown) {
         MutableDataHolder markdownOptions = new MutableDataSet();
         markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
         Parser parser = Parser.builder(markdownOptions).build();
-        Node document = parser.parse(str);
+        Node document = parser.parse(markdown);
 
         final HtmlRenderer htmlRenderer = HtmlRenderer.builder(OPTIONS).build();
-        String html = htmlRenderer.render(document);
-        html = PdfConverterExtension.embedCss(html, CSS);
 
+        return htmlRenderer.render(document);
+    }
+
+    private static PDDocument htmlToPdf(String html) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
 
