@@ -23,27 +23,30 @@ public class Veranstaltungsbeschreibung {
         voraussetzungenBestehen = new HashSet<>();
     }
 
-    @Column(columnDefinition = "TEXT")
     @Field
+    @Column(length = 10000)
     private String inhalte;
 
-    @Column(columnDefinition = "TEXT")
     @Field
+    @Column(length = 10000)
     private String lernergebnisse;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Field
     @IndexedEmbedded
+    @Column(length = 10000)
     private Set<String> literatur;
 
     @Field
     @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> verwendbarkeit;
 
     @Field
     @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 10000)
     private Set<String> voraussetzungenBestehen;
 
     private String haeufigkeit;

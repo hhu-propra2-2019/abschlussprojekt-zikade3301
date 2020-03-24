@@ -55,6 +55,9 @@ repositories {
 }
 
 dependencies {
+
+
+    compile 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'com.h2database:h2'
     implementation 'org.hibernate:hibernate-search-orm:5.11.5.Final'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
