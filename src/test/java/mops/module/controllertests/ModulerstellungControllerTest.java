@@ -35,7 +35,7 @@ class ModulerstellungControllerTest {
                 .build();
     }
 
-    private final String expect = "modulerstellung";
+    private final String expectGet = "modulerstellung";
 
 
     @Test
@@ -45,11 +45,11 @@ class ModulerstellungControllerTest {
                 .setAuthentication(generateAuthenticationToken("orga"));
 
         mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-                .andExpect(view().name(expect));
+                .andExpect(view().name(expectGet));
     }
 
     @Test
-    void testModulerstellungAccessForOrganizers() throws Exception {
+    void testGetModulerstellungAccessForOrganizers() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -59,7 +59,7 @@ class ModulerstellungControllerTest {
     }
 
     @Test
-    void testModulerstellungAccessForAdministrator() throws Exception {
+    void testGetModulerstellungAccessForAdministrator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
@@ -69,16 +69,16 @@ class ModulerstellungControllerTest {
     }
 
     @Test
-    void testModulerstellungNoAccessIfNotLoggedIn() throws Exception {
+    void testGetModulerstellungNoAccessIfNotLoggedIn() throws Exception {
         assertThrows(AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-                            .andExpect(view().name(expect));
+                            .andExpect(view().name(expectGet));
                 });
     }
 
     @Test
-    void testModulerstellungNoAccessForStudents() throws Exception {
+    void testGetModulerstellungNoAccessForStudents() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
@@ -86,15 +86,79 @@ class ModulerstellungControllerTest {
         assertThrows(AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-                            .andExpect(view().name(expect));
+                            .andExpect(view().name(expectGet));
                 });
     }
 
 
+
+// POST TESTS
+//
+//    @Test
+//    void testPostModulerstellungAccessForOrganizers() throws Exception {
+//        SecurityContextHolder
+//                .getContext()
+//                .setAuthentication(generateAuthenticationToken("orga"));
+//
+//        mvc.perform(post("/module/modulerstellung?veranstaltungsanzahl=1"))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void testPostModulerstellungAccessForAdministrator() throws Exception {
+//        SecurityContextHolder
+//                .getContext()
+//                .setAuthentication(generateAuthenticationToken("sekretariat"));
+//
+//        mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void testPostModulerstellungNoAccessIfNotLoggedIn() throws Exception {
+//        assertThrows(AssertionError.class,
+//                () -> {
+//                    mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
+//                            .andExpect(view().name(expectGet));
+//                });
+//    }
+//
+//    @Test
+//    void testPostModulerstellungNoAccessForStudents() throws Exception {
+//        SecurityContextHolder
+//                .getContext()
+//                .setAuthentication(generateAuthenticationToken("studentin"));
+//
+//        assertThrows(AssertionError.class,
+//                () -> {
+//                    mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
+//                            .andExpect(view().name(expectGet));
+//                });
+//    }
+
+
+
+
+
+
+
+
+
+// POST TESTS
+//
+//    @Test
+//    void testModulerstellungViewName() throws Exception {
+//        SecurityContextHolder
+//                .getContext()
+//                .setAuthentication(generateAuthenticationToken("orga"));
+//
+//        mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
+//                .andExpect(view().name(expectGet));
+//    }
+//
+
     //TODO
     // Fehler wenn Parameter fehlt
-    // Sekretariat hat Zugriff
-    // WEITERE TESTS?
 
 
 }
