@@ -77,7 +77,6 @@ class AntragdetailsControllerTest {
                 .andExpect(status().isOk());
     }
 
-
     //TODO -
     @Test
     void testAntragAnnehmen() {

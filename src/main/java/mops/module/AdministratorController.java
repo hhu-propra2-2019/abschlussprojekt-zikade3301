@@ -34,7 +34,6 @@ public class AdministratorController {
     @Secured("ROLE_sekretariat")
     public String administrator(KeycloakAuthenticationToken token, Model model) {
 
-
         //Nur Input um zu gucken ob alles auch klappt
 
         String complete1Modul =
@@ -54,13 +53,14 @@ public class AdministratorController {
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
 
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul));
-
+        antragService.getAntragById((long)1).setAntragsteller("Iven");
         //Bis hier nur Input
+
 
 
         model.addAttribute("formatter",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("allAntraege", antragService.getAlleAntraegeGeordnetDatum());
+        model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
 
         return "administrator";
     }

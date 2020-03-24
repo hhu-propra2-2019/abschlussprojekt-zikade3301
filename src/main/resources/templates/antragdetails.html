@@ -57,7 +57,7 @@
 </header>
 <main th:fragment="bodycontent">
 
-    <form action="#" th:action="@{/module/antragdetails}"  method="post" th:object="${antrag}">
+    <form action="#" th:action="@{'/module/antragdetails/' + ${antragId}}"  method="post" th:object="${antrag}">
 
         <!-- AUSWAHL DES TITELS -->
         <div class="mt-3 mb-3" style="display: flex;">
@@ -69,7 +69,7 @@
                    name="title"
                    class="form-control col-5"
                    id="title"
-                   placeholder="Titel des Moduls" required  th:field="*{titelDeutsch}">
+                   placeholder="Titel des Moduls" required  th:field="*{modul.titelDeutsch}">
             <div class="ml-1 col-1">&nbsp;</div>
             <input type="text"
                    style="border: none;
@@ -78,7 +78,7 @@
                    name="titleEnglish"
                    class="form-control col-5"
                    id="titleEnglish"
-                   placeholder="Englischer Titel des Moduls" required  th:field="*{titelEnglisch}">
+                   placeholder="Englischer Titel des Moduls" required  th:field="*{modul.titelEnglisch}">
         </div>
 
         <!-- AUSWAHL Studiengang -->
@@ -92,7 +92,7 @@
                    name="subject"
                    class="form-control col-4"
                    id="subject"
-                   placeholder="Studiengang" required th:field="*{studiengang}">
+                   placeholder="Studiengang" required th:field="*{modul.studiengang}">
         </div>
 
         <!--                            TODO hier mehrere und die Einrückung-->
@@ -103,7 +103,7 @@
                    name="modulbeauftragte"
                    class="form-control col-md-8 col-sm-8"
                    id="modulbeauftragte"
-                   placeholder="Modulbeauftragte der Veranstaltung" required th:field="*{modulbeauftragte}">
+                   placeholder="Modulbeauftragte der Veranstaltung" required th:field="*{modul.modulbeauftragte}">
         </div>
 
         <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE-->
@@ -115,14 +115,14 @@
                        name="gesamtLeistungspunkte"
                        class="form-control col-md-4 col-sm-4"
                        id="gesamtLeistungspunkte"
-                       placeholder="CP" required th:field="*{gesamtLeistungspunkte}">
+                       placeholder="CP" required th:field="*{modul.gesamtLeistungspunkte}">
             </div>
             <div class="mt-3 mb-3 col-8" style="float: left">
                 <label for="modulkategorie">Modulkategorie</label>
                 <select name="modulkategorie"
                         style="float: right"
                         class="form-control col-md-8 col-sm-8"
-                        id="modulkategorie" required th:field="*{modulkategorie}">
+                        id="modulkategorie" required th:field="*{modul.modulkategorie}">
                     <option selected hidden value="">Modulkategorie Wählen</option>
                     <option value="PFLICHT_INFO">Informatik Pflichtmodul</option>
                     <option value="PFLICHT_MATHE">Mathematik Pflichtmodul</option>
