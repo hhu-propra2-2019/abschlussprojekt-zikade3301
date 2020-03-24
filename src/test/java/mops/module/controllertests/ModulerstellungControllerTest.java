@@ -4,22 +4,27 @@ import static mops.module.controllertests.AuthenticationTokenGenerator.generateA
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import mops.module.database.Modul;
+import mops.module.generator.ModulFaker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 
 @SpringBootTest
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 class ModulerstellungControllerTest {
 
@@ -93,16 +98,23 @@ class ModulerstellungControllerTest {
 
 
 // POST TESTS
-//
-//    @Test
-//    void testPostModulerstellungAccessForOrganizers() throws Exception {
-//        SecurityContextHolder
-//                .getContext()
-//                .setAuthentication(generateAuthenticationToken("orga"));
-//
-//        mvc.perform(post("/module/modulerstellung?veranstaltungsanzahl=1"))
-//                .andExpect(status().isOk());
-//    }
+
+    @Test
+    void testPostModulerstellungAccessForOrganizers() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        // TODO: ModulWrapper nutzen, sobald Elias gepusht hat
+        String testmodul = String.valueOf(ModulFaker.generateFakeModul());
+        mvc.perform(post("/module/modulerstellung")
+                .param("allParams", testmodul))
+                .andExpect(status().isOk());
+    }
+
+
+
+
 //
 //    @Test
 //    void testPostModulerstellungAccessForAdministrator() throws Exception {
@@ -138,6 +150,23 @@ class ModulerstellungControllerTest {
 
 
 
+// verify(userService, times(1)).findById(user.getId());
+
+//    @Test
+//    public void test_create_user_success() throws Exception {
+//        User user = new User("Arya Stark");
+//        when(userService.exists(user)).thenReturn(false);
+//        doNothing().when(userService).create(user);
+//        mockMvc.perform(
+//                post("/users")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(asJsonString(user)))
+//                .andExpect(status().isCreated())
+//                .andExpect(header().string("location", containsString("http://localhost/users/")));
+//        verify(userService, times(1)).exists(user);
+//        verify(userService, times(1)).create(user);
+//        verifyNoMoreInteractions(userService);
+//    }
 
 
 
@@ -159,6 +188,7 @@ class ModulerstellungControllerTest {
 
     //TODO
     // Fehler wenn Parameter fehlt
-
+    // ERSTELLUNG ANTRAG GEHT
+    // VIEW NAME RICHTIG
 
 }

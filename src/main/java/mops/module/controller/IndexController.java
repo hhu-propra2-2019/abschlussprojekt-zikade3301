@@ -46,11 +46,12 @@ public class IndexController {
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allCategories", Modulkategorie.values());
 
-        //Modul modul = ModulFaker.generateFakeModul();
-        //modul.refreshMapping();
-        //String antragsteller = "fake Name";
-        //Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
-        //antragService.approveModulCreationAntrag(antrag);
+        // FAKE DATA
+        Modul modul = ModulFaker.generateFakeModul();
+        modul.refreshMapping();
+        String antragsteller = "fake Name";
+        Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
+        antragService.approveModulCreationAntrag(antrag);
 
         return "index";
     }

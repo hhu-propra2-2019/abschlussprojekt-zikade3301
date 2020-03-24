@@ -1,7 +1,6 @@
 package mops.module.generator;
 
 import com.github.javafaker.Faker;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import mops.module.database.Modul;
@@ -15,7 +14,7 @@ public class ModulFaker {
     private static final String[] semester = {"SoSe2019", "WiSe2019-20"};
 
     /**
-     * Generiert fake Modul zu testen.
+     * Generiert fake Module für das Testing.
      *
      * @return
      */

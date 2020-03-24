@@ -7,6 +7,7 @@ import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticatio
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+
+    @Value("${spring.profiles.active}")
+    String activeProfile;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
@@ -64,6 +68,10 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .hasRole("monitoring")
                 .anyRequest()
                 .permitAll();
+
+        if (activeProfile.trim().equalsIgnoreCase("dev")) {
+            http.csrf().disable();
+        }
     }
 
     /**

@@ -34,7 +34,7 @@ public class ModulerstellungController {
     }
 
     /**
-     * Controller für das Generieren eines Modulerstellungsformulars für die eingegebene Anzahl
+     * Get-Mapping für das Generieren eines Modulerstellungsformulars für die eingegebene Anzahl
      * von Veranstaltungen.
      * @param veranstaltungsanzahl Anzahl der Veranstaltungen.
      * @param model Modell für die HTML-Datei.
@@ -57,8 +57,7 @@ public class ModulerstellungController {
     }
 
     /**
-     * Controller für das Entgegebennehmen eines Post-Requests mit den Formulardaten für die
-     * Erstellung eines Modulantrags.
+     * Post-Mapping für die Formulardaten für die Erstellung eines Modulantrags.
      * @param allParams Alle Parameter des Modulformulars als Map, wobei jeweils der im Formular
      *                  übergebene name der Key und die Nutzereingabe als String der Value ist.
      * @param model Model für die HTML-Datei.
@@ -81,6 +80,6 @@ public class ModulerstellungController {
         //    antragService.approveModulCreationAntrag(antrag);
         //    return "modulbeauftragter";
         //}
-        return "modulbeauftragter";
+        return "redirect:/module/modulbeauftragter";
     }
 }
