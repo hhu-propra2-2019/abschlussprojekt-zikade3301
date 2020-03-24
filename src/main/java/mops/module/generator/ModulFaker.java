@@ -34,9 +34,12 @@ public class ModulFaker {
 
     private static void generateMultipleBeauftragte(Modul fakeModul) {
         double randomNumber = Math.random() * 5;
-        Set<String> personen = new HashSet<>();
+        String personen = "";
         for (int i = 0; i < randomNumber; i++) {
-            personen.add(faker.harryPotter().character());
+            if (i != 0) {
+                personen += (", ");
+            }
+            personen += (faker.harryPotter().character());
         }
         fakeModul.setModulbeauftragte(personen);
     }
@@ -50,13 +53,12 @@ public class ModulFaker {
 
     private static Veranstaltung generateFakeVeranstaltung() {
         Veranstaltung fakeVeranstaltung = new Veranstaltung();
-        Veranstaltungsbeschreibung fakeBeshcreibung = generateFakeBeschreibung();
+        Veranstaltungsbeschreibung fakeBeschreibung = generateFakeBeschreibung();
         fakeVeranstaltung.setTitel(faker.book().title());
         fakeVeranstaltung.setLeistungspunkte("5CP");
-        fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
+        fakeVeranstaltung.setBeschreibung(fakeBeschreibung);
         generateMultipleVeranstaltungsform(fakeVeranstaltung);
-        Set<String> vt = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
-        fakeVeranstaltung.setVoraussetzungenTeilnahme(vt);
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(faker.elderScrolls().quote());
         fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
@@ -68,12 +70,9 @@ public class ModulFaker {
         fakeBeschreibung.setLernergebnisse(faker.elderScrolls().quote());
         fakeBeschreibung.setHaeufigkeit("Einmal im leben");
         fakeBeschreibung.setSprache(faker.country().name());
-        Set<String> sl = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
-        fakeBeschreibung.setLiteratur(sl);
-        Set<String> v = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
-        fakeBeschreibung.setVerwendbarkeit(v);
-        Set<String> vb = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
-        fakeBeschreibung.setVoraussetzungenBestehen(vb);
+        fakeBeschreibung.setLiteratur(faker.elderScrolls().quote());
+        fakeBeschreibung.setVerwendbarkeit(faker.elderScrolls().quote());
+        fakeBeschreibung.setVoraussetzungenBestehen(faker.elderScrolls().quote());
         return fakeBeschreibung;
     }
 

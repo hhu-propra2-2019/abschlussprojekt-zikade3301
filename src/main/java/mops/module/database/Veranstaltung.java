@@ -3,6 +3,7 @@ package mops.module.database;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -54,6 +55,7 @@ public class Veranstaltung {
     @Embedded
     private Veranstaltungsbeschreibung beschreibung;
 
+    @Column(length = 10000)
     private String voraussetzungenTeilnahme;
 
     @ElementCollection(fetch = FetchType.EAGER)

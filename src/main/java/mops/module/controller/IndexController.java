@@ -3,9 +3,13 @@ package mops.module.controller;
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import lombok.RequiredArgsConstructor;
+import mops.module.database.Antrag;
+import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
+import mops.module.generator.ModulFaker;
 import mops.module.services.AntragService;
 import mops.module.services.ModulService;
+import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +45,13 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allCategories", Modulkategorie.values());
+
+        //Modul modul = ModulFaker.generateFakeModul();
+        //modul.refreshMapping();
+        //String antragsteller = "fake Name";
+        //Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
+        //antragService.approveModulCreationAntrag(antrag);
+
         return "index";
     }
 
