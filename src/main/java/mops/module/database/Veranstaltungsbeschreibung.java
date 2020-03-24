@@ -32,6 +32,7 @@ public class Veranstaltungsbeschreibung {
     private String lernergebnisse;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @Field
     @IndexedEmbedded
     private Set<String> literatur;
 

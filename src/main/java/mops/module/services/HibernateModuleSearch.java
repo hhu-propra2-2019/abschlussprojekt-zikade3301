@@ -5,7 +5,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import mops.module.database.Modul;
 import org.apache.lucene.search.Query;
-import org.hibernate.search.FullTextSession;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -28,40 +27,28 @@ public class HibernateModuleSearch {
         FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
-            .buildQueryBuilder().forEntity(Modul.class).get();
+                .buildQueryBuilder().forEntity(Modul.class).get();
         Query query = qb
-            .keyword()
+                .keyword()
                 .wildcard()
-            .onFields("titelDeutsch", "titelEnglisch").boostedTo(10f)
-            .andField("veranstaltungen.titel").boostedTo(2f)
-            .andField("veranstaltungen.beschreibung.inhalte").boostedTo(2f)
-            .matching("*" + searchinput.toLowerCase() + "*")
-            .createQuery();
-
-        javax.persistence.Query persistenceQuery =
-            fullTextEntityManager.createFullTextQuery(query, Modul.class);
-
-        List<Modul> results = persistenceQuery.getResultList();
-
-        /*FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-
-        QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Modul.class).get();
-
-        //TODO add all fields and boost individual fields in result (eg name)
-        org.apache.lucene.search.Query query = queryBuilder
-                .simpleQueryString()
-                .onFields("titelDeutsch", "titelEnglisch", "veranstaltung.titel").boostedTo(10f)
-                .andField("studiengang").boostedTo(3f)
-                .andField("veranstaltung.titel").boostedTo(10f)
-                .andField("veranstaltung.inhalte").boostedTo(5f)
-                .andField("veranstaltung.lernergebnisse")
-                .andField("veranstaltung.sprache")
-                .matching(searchinput)
+                .onFields("titelDeutsch", "titelEnglisch").boostedTo(10f)
+                .andField("modulbeauftragte")
+                .andField("studiengang")
+                .andField("veranstaltungen.titel").boostedTo(2f)
+                .andField("veranstaltungen.voraussetzungenTeilnahme")
+                .andField("veranstaltungen.beschreibung.inhalte").boostedTo(2f)
+                .andField("veranstaltungen.beschreibung.lernergebnisse")
+                .andField("veranstaltungen.beschreibung.literatur")
+                .andField("veranstaltungen.beschreibung.verwendbarkeit")
+                .andField("veranstaltungen.beschreibung.voraussetzungenBestehen")
+                .andField("veranstaltungen.beschreibung.sprache")
+                .matching("*" + searchinput.toLowerCase() + "*")
                 .createQuery();
 
-        org.hibernate.search.jpa.FullTextQuery jpaQuery = fullTextEntityManager.createFullTextQuery(query, Modul.class);
+        javax.persistence.Query persistenceQuery =
+                fullTextEntityManager.createFullTextQuery(query, Modul.class);
 
-        List<Modul> results = jpaQuery.getResultList();*/
+        List<Modul> results = persistenceQuery.getResultList();
 
         return results;
     }
