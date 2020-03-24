@@ -13,10 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.lucene.analysis.core.KeywordTokenizerFactory;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -24,7 +30,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Setter
 //TODO: Conditional Indexing: only index, when module is visible
 @Indexed
-//@Analyzer(impl = org.apache.lucene.analysis.de.GermanAnalyzer.class)
+
 public class Modul {
 
     @Id

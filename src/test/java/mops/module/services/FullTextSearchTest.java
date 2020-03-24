@@ -63,7 +63,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchMultiWordTest() {
-        List<Modul> results = hbSearch.searchResultList("test");
+        List<Modul> results = hbSearch.search("test");
         List<Veranstaltung> results2 = new ArrayList<>();
         Set miep = results.get(0).getVeranstaltungen();
         results2.addAll(miep);
@@ -73,7 +73,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchFindsFullWordsFromParts() {
-        List<Modul> results = hbSearch.searchResultList("Betriebs");
+        List<Modul> results = hbSearch.search("Betriebs");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
@@ -81,7 +81,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchFindsGermanTitle() {
-        List<Modul> results = hbSearch.searchResultList("Betriebssysteme");
+        List<Modul> results = hbSearch.search("Betriebssysteme");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
@@ -89,7 +89,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchFindsEnglishTitle() {
-        List<Modul> results = hbSearch.searchResultList("Operating");
+        List<Modul> results = hbSearch.search("Operating");
 
         assertFalse(results.isEmpty());
         assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelEnglisch()));
@@ -97,7 +97,7 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchfindsInhalteInVeranstaltungsbeschreibung() {
-        List<Modul> results = hbSearch.searchResultList("Architekturformen");
+        List<Modul> results = hbSearch.search("Architekturformen");
         List<Veranstaltung> results2 = new ArrayList<>();
         Set miep = results.get(0).getVeranstaltungen();
         results2.addAll(miep);
@@ -109,7 +109,7 @@ public class FullTextSearchTest {
     @Test
     @DisplayName("Search for 'Architektur' finds 'Architekturformen'")
     void fullTextSearchStemWordTest() {
-        List<Modul> results = hbSearch.searchResultList("Architektur");
+        List<Modul> results = hbSearch.search("Architektur");
         List<Veranstaltung> results2 = new ArrayList<>();
         Set miep = results.get(0).getVeranstaltungen();
         results2.addAll(miep);
@@ -120,10 +120,10 @@ public class FullTextSearchTest {
 
     @Test
     void fullTextSearchFindsSplittedWords() {
-        List<Modul> results = hbSearch.searchResultList("Operating systems");
+        List<Modul> results = hbSearch.search("Operating systems");
 
         assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelEnglisch()));
+        assertThat(results.get(0).getTitelEnglisch().equals(completeModul.getTitelEnglisch()));
     }
 
 }

@@ -28,44 +28,25 @@ public class HibernateModuleSearch {
     }
 
     @Transactional
-    public List<Modul> searchResultList(String searchInput) {
-        List<Modul> result = new ArrayList<>();
-        List<String> searchWords = split(searchInput);
-        Set<Modul> resultModuls = new HashSet<>();
-        for (String word: searchWords) {
-            resultModuls.addAll(search(word));
-        }
-        result.addAll(resultModuls);
-        return result;
-    }
-
-    public List<String> split(String searchInput) {
-        String[] list = searchInput.split(" ");
-        List<String> result = Arrays.asList(list);
-        return result;
-    }
-
-    @Transactional
     public List<Modul> search(String searchInput) {
         FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
                 .buildQueryBuilder().forEntity(Modul.class).get();
         Query query = qb
-                .keyword()
-                .wildcard()
+                .simpleQueryString()
                 .onFields("titelDeutsch", "titelEnglisch").boostedTo(10f)
                 .andField("modulbeauftragte")
                 .andField("studiengang")
-                .andField("veranstaltungen.titel").boostedTo(2f)
+                .andField("veranstaltungen.titel").boostedTo(9f)
                 .andField("veranstaltungen.voraussetzungenTeilnahme")
-                .andField("veranstaltungen.beschreibung.inhalte").boostedTo(2f)
+                .andField("veranstaltungen.beschreibung.inhalte").boostedTo(8f)
                 .andField("veranstaltungen.beschreibung.lernergebnisse")
-                .andField("veranstaltungen.beschreibung.literatur")
+                .andField("veranstaltungen.beschreibung.literatur").boostedTo(6f)
                 .andField("veranstaltungen.beschreibung.verwendbarkeit")
                 .andField("veranstaltungen.beschreibung.voraussetzungenBestehen")
                 .andField("veranstaltungen.beschreibung.sprache")
-                .matching("*" + searchInput.toLowerCase() + "*")
+                .matching(searchInput.toLowerCase() + "*")
                 .createQuery();
 
         javax.persistence.Query persistenceQuery =
