@@ -1,24 +1,37 @@
 package mops.module.services;
 
-import com.qkyrie.markdown2pdf.Markdown2PdfConverter;
-import com.qkyrie.markdown2pdf.internal.exceptions.ConversionException;
-import com.qkyrie.markdown2pdf.internal.exceptions.Markdown2PdfLogicException;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
+import com.vladsch.flexmark.pdf.converter.PdfConverterExtension;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
-import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDResources;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class PdfService {
     private static final PDFMergerUtility pdfMerger = new PDFMergerUtility();
-    private static final Markdown2PdfConverter markdown2PdfConverter = Markdown2PdfConverter.newConverter();
+
+    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
+            Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
+    ).toImmutable();
+
+    private static final String CSS = "body {\n"
+            + "    font-family: 'Helvetica', sans-serif;\n"
+            + "    overflow: hidden;\n"
+            + "    word-wrap: break-word;\n"
+            + "    font-size: 12px;\n"
+            + "}";
 
     /**
      * @param module
@@ -45,27 +58,34 @@ public class PdfService {
      */
     public static PDDocument generatePdf(Modul modul) {
         String str = buildString(modul);
-        final PDDocument[] documents = new PDDocument[1];
+
+        MutableDataHolder markdownOptions = new MutableDataSet();
+        markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
+        Parser parser = Parser.builder(markdownOptions).build();
+        Node document = parser.parse(str);
+
+        final HtmlRenderer htmlRenderer = HtmlRenderer.builder(OPTIONS).build();
+        String html = htmlRenderer.render(document);
+        html = PdfConverterExtension.embedCss(html, CSS);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
+
+        PDDocument pdDocument = null;
         try {
-            markdown2PdfConverter.readFrom(() -> str).writeTo(bytes -> {
-                try {
-                    documents[0] = PDDocument.load(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).doIt();
-        } catch (ConversionException | Markdown2PdfLogicException e) {
+            pdDocument = PDDocument.load(outputStream.toByteArray());
+            outputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        replaceTimesWithHelvetica(documents[0]);
-        return documents[0];
+        return pdDocument;
     }
 
     private static String buildString(Modul modul) {
         StringBuilder str = new StringBuilder();
-        str.append("#" + modul.getTitelDeutsch() + "\n");
-        str.append("#" + modul.getTitelEnglisch() + "\n");
+        str.append("# " + modul.getTitelDeutsch() + "\n");
+        str.append("# " + modul.getTitelEnglisch() + "\n");
         str.append("## Studiengang\n");
         str.append(modul.getStudiengang() + "\n");
         str.append("## Leistungspunkte\n");
@@ -111,40 +131,6 @@ public class PdfService {
             pdfMerger.appendDocument(dist, source);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static void replaceTimesWithHelvetica(PDDocument document) {
-        for (PDPage page : document.getPages()) {
-            PDResources resources = page.getResources();
-            for (COSName key : resources.getFontNames()) {
-                PDFont font = null;
-                try {
-                    font = resources.getFont(key);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (font != null) {
-                    String fontName = font.getFontDescriptor().getFontName();
-
-                    switch (fontName) {
-                        case "Times-Roman":
-                            resources.put(key, PDType1Font.HELVETICA);
-                            break;
-                        case "Times-Bold":
-                            resources.put(key, PDType1Font.HELVETICA_BOLD);
-                            break;
-                        case "Times-Italic":
-                            resources.put(key, PDType1Font.HELVETICA_OBLIQUE);
-                            break;
-                        case "Times-BoldItalic":
-                            resources.put(key, PDType1Font.HELVETICA_BOLD_OBLIQUE);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
         }
     }
 }

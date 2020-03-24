@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'eu.de-swaef.pdf:Markdown2Pdf:2.0.1'
+    compile 'com.vladsch.flexmark:flexmark-all:0.60.2'
     implementation 'org.apache.pdfbox:pdfbox:2.0.19'
     compile 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'com.h2database:h2'
