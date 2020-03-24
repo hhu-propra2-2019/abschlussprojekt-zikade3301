@@ -34,7 +34,7 @@ public class Modul {
     //und FetchType.EAGER gewünscht
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
-    private List<Veranstaltung> veranstaltungen;
+    private Set<Veranstaltung> veranstaltungen;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> modulbeauftragte;
@@ -70,7 +70,7 @@ public class Modul {
      */
     public void addVeranstaltung(Veranstaltung veranstaltung) {
         if (veranstaltungen == null) {
-            veranstaltungen = new LinkedList<>();
+            veranstaltungen = new HashSet<>();
         }
         veranstaltungen.add(veranstaltung);
         veranstaltung.setModul(this);
@@ -81,7 +81,7 @@ public class Modul {
      *
      * @param veranstaltungen Schon vorhandenes von Veranstaltungen
      */
-    public void setVeranstaltungen(List<Veranstaltung> veranstaltungen) {
+    public void setVeranstaltungen(Set<Veranstaltung> veranstaltungen) {
         if (veranstaltungen == null) {
             return;
         }
