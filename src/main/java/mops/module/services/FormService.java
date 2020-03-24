@@ -71,6 +71,8 @@ public class FormService {
         String titel = veranstaltungenParams.get("veranstaltung" + index + "_" + "titel");
         String leistungspunkte = veranstaltungenParams.get("veranstaltung" + index
                 + "_" + "leistungspunkte");
+        String voraussetzungenTeilnahme = veranstaltungenParams.get("veranstaltung" + index
+                + "_" + "voraussetzungenTeilnahme");
         Veranstaltungsbeschreibung beschreibung =
                 readVeranstaltungsbeschreibungFromParameterMap(veranstaltungenParams, index);
         Set<Veranstaltungsform> veranstaltungsformen =
@@ -81,6 +83,7 @@ public class FormService {
         Veranstaltung veranstaltung = new Veranstaltung();
         veranstaltung.setTitel(titel);
         veranstaltung.setLeistungspunkte(leistungspunkte);
+        veranstaltung.setVoraussetzungenTeilnahme(voraussetzungenTeilnahme);
         veranstaltung.setZusatzfelder(zusatzfelder);
         veranstaltung.setVeranstaltungsformen(veranstaltungsformen);
         veranstaltung.setBeschreibung(beschreibung);
@@ -159,7 +162,9 @@ public class FormService {
                 Veranstaltungsform veranstaltungsform =
                         readSingleVeranstaltungsformFromParameterMap(veranstaltungsformenParams,
                                 index, finalJ);
-                veranstaltungsformen.add(veranstaltungsform);
+                if (!veranstaltungsform.getForm().equals("")) {
+                    veranstaltungsformen.add(veranstaltungsform);
+                }
             }
         }
         String veranstaltungsformTextareaChecked = veranstaltungenParams.get("veranstaltung"

@@ -40,7 +40,7 @@ public class AntragService {
      *
      * @param newModul Neues Modul mit korrekter ID!
      */
-    public void addModulModificationAntrag(Modul newModul, String antragsteller)
+    public Antrag addModulModificationAntrag(Modul newModul, String antragsteller)
             throws IllegalArgumentException {
         Modul oldModul = modulSnapshotRepository.findById(newModul.getId()).orElse(null);
         if (oldModul == null) {
@@ -57,8 +57,8 @@ public class AntragService {
             antrag.setDatumErstellung(LocalDateTime.now());
             antrag.setAntragsteller(antragsteller);
             antragRepository.save(antrag);
+            return antrag;
         }
-
     }
 
     /**
@@ -66,7 +66,7 @@ public class AntragService {
      *
      * @param newModul Neues Modul
      */
-    public void addModulCreationAntrag(Modul newModul, String antragsteller) {
+    public Antrag addModulCreationAntrag(Modul newModul, String antragsteller) {
         newModul.setId(null);
         newModul.setDatumErstellung(LocalDateTime.now());
         newModul.setDatumAenderung(LocalDateTime.now());
@@ -75,6 +75,7 @@ public class AntragService {
         antrag.setDatumErstellung(LocalDateTime.now());
         antrag.setAntragsteller(antragsteller);
         antragRepository.save(antrag);
+        return antrag;
     }
 
     /**
@@ -82,7 +83,7 @@ public class AntragService {
      *
      * @param antrag Muss ein Modul beinhalten, das schon existiert
      */
-    public void approveModulModificationAntrag(Antrag antrag) {
+    public Modul approveModulModificationAntrag(Antrag antrag) {
         Modul oldModul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
         if (oldModul == null) {
             throw new IllegalArgumentException(
@@ -90,26 +91,27 @@ public class AntragService {
         }
         ModulService.applyAntragOnModul(oldModul, antrag);
         oldModul.refreshMapping();
-        modulSnapshotRepository.save(oldModul);
+        Modul modul = modulSnapshotRepository.save(oldModul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
         antragRepository.save(antrag);
+        return modul;
     }
 
     /**
      * Fügt einen Antrag zur Erstellung eines neuen Moduls hinzu.
-     * @param antrag Antrag mit neuem Modul, indem die Modul id null ist
+     * @param antrag Antrag mit neuem Modul, in dem die Modul id null ist
      */
-    public void approveModulCreationAntrag(Antrag antrag) {
+    public Modul approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
-
         neuesmodul.refreshMapping();
 
-        modulSnapshotRepository.save(neuesmodul);
+        Modul modul = modulSnapshotRepository.save(neuesmodul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
-        antrag.setModulId(neuesmodul.getId());
+        antrag.setModulId(modul.getId());
         antragRepository.save(antrag);
+        return modul;
     }
 
     public List<Antrag> getAlleAntraege() {
