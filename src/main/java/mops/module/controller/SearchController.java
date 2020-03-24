@@ -2,10 +2,9 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.sql.SQLException;
 import java.util.List;
 import mops.module.database.Modul;
-import mops.module.services.SuchService;
+import mops.module.services.HibernateModuleSearch;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,19 +20,19 @@ import org.springframework.web.context.annotation.SessionScope;
 public class SearchController {
 
     @Autowired
-    private SuchService suchService;
+    private HibernateModuleSearch moduleSearch;
 
     @GetMapping("/searchresults")
-    public String search(KeycloakAuthenticationToken token, Model model) {
+    public String searchresults(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
-            model.addAttribute("account",createAccountFromPrincipal(token));
+            model.addAttribute("account", createAccountFromPrincipal(token));
         }
         return "searchresults";
     }
 
     @GetMapping("/search")
-    public String searchMethodTmp(@RequestParam String searchField, Model model) throws SQLException {
-        List<Modul> searchResults = suchService.searchForModuleByTitle(searchField);
+    public String search(@RequestParam(value = "searchField") String searchField, Model model) {
+        List<Modul> searchResults = moduleSearch.search(searchField);
         model.addAttribute("searchResults", searchResults);
         //TODO: new request for modules only including the testresults
         return "searchresults";
