@@ -59,7 +59,7 @@ class ModulbeauftragterControllerTest {
     }
 
     @Test
-    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
+    void testModulbeauftragterAccessForAdministrator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));

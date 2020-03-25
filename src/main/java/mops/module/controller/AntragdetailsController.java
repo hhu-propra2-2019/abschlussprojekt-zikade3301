@@ -79,7 +79,7 @@ public class AntragdetailsController {
             Model model,
             KeycloakAuthenticationToken token) {
 
-        Modul modul = ModulService.readModulFromWrapper(antragAngenommen);
+        Modul modul = ModulWrapperService.readModulFromWrapper(antragAngenommen);
 
         Antrag antrag = antragService.getAntragById(Long.parseLong(id));
         antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
