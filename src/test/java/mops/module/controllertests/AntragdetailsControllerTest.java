@@ -1,7 +1,6 @@
 package mops.module.controllertests;
 
 import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,15 +17,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
-class AdministratorControllerTest {
+class AntragdetailsControllerTest {
+
 
     @Autowired
     private WebApplicationContext context;
@@ -43,57 +41,48 @@ class AdministratorControllerTest {
                 .build();
     }
 
-    private final String expect = "administrator";
+    private final String expect = "antragdetails";
+
+
+
+    //TODO - Wsh nicht korrekt so
+
+    /*
 
     @Test
-    void testAdministratorViewName() throws Exception {
+    void testAntragdetailsViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/administrator"))
+        Antrag neuerAntrag = new Antrag();
+        neuerAntrag.setJsonModulAenderung("{'studiengang':'Informatik'}");
+
+        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
+
+        mvc.perform(get("/module/antragdetails/3301"))
                 .andExpect(view().name(expect));
     }
 
     @Test
-    void testAdministratorStatusLoggedIn() throws Exception {
+    void testAntragdetailsStatus() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/administrator"))
+        Antrag neuerAntrag = new Antrag();
+        neuerAntrag.setJsonModulAenderung("{'studiengang':'Informatik'}");
+
+        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
+
+        mvc.perform(get("/module/antragdetails/3301"))
                 .andExpect(status().isOk());
     }
 
+    //TODO -
     @Test
-    void testAdministratorNoAccessIfNotLoggedIn() throws Exception {
-        assertThrows(java.lang.AssertionError.class,
-                () -> {
-                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
-                });
+    void testAntragAnnehmen() {
     }
 
-    @Test
-    void testAdministratorNoAccessForStudents() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("studentin"));
-
-        assertThrows(java.lang.AssertionError.class,
-                () -> {
-                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
-                });
-    }
-
-    @Test
-    void testAdministratorNoAccessForOrganisator() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("orga"));
-
-        assertThrows(java.lang.AssertionError.class,
-                () -> {
-                    mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
-                });
-    }
+     */
 }

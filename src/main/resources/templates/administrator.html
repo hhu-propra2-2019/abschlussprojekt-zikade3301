@@ -67,7 +67,32 @@
 
     </nav>
 </header>
-    <h1>DAS IST DIE SEITE FÜR FRAU RENNWANZ!</h1>
+<main th:fragment="bodycontent">
+
+    <div th:each="antrag : ${allAntraege}">
+        <p>
+            <a class="btn btn-primary"
+               style="font-weight: bold;
+               font-size: larger;
+               border:none;
+               background-color: transparent;
+               color: dodgerblue"
+               data-toggle="collapse"
+               th:href="'#' + ${antrag}"
+               role="button"
+               aria-expanded="false"
+               th:attr="aria-controls=${antrag}">
+                <span style="width: min-content"
+                      class="badge badge-dark mr-2"
+                      th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</span>
+                <a th:href="@{'/module/antragdetails/' + ${antrag.getId()}}"
+                   th:text="${antrag.getAntragsteller()}">
+                    Antragsteller
+                </a>
+
+            </a>
+        </p>
+    </div>
 </main>
 </body>
 </html>
