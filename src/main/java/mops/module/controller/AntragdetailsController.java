@@ -53,39 +53,13 @@ public class AntragdetailsController {
         Modul modul = JsonService.jsonObjectToModul(
                 antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
 
-        //Überführen des Sets Veranstatungen in eine Liste für die th:object funktion bei Thymeleaf
-        List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
-
-        //Überführen der Sets Veranstaltungsformen und Zusatzfeld in eine Liste in einem Array.
-        List<Veranstaltungsform> [] veranstaltungsformenGesamt =
-                new LinkedList [veranstaltungen.size()];
-        List<Zusatzfeld> [] zusatzfeldGesamt =
-                new LinkedList [veranstaltungen.size()];
-
-        //Befüllen der Listen Arrays mit den werten aus dem Antrag
-        for (int i = 0; i < veranstaltungen.size(); i++) {
-            List<Veranstaltungsform> veranstaltungsformen =
-                    new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
-            // veranstaltungsformen muss immer size 6 haben.
-            while (veranstaltungsformen.size() < 6) {
-                veranstaltungsformen.add(new Veranstaltungsform());
-            }
-
-            List<Zusatzfeld> zusatzfeld =
-                    new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
-            veranstaltungsformenGesamt[i] = veranstaltungsformen;
-            zusatzfeldGesamt[i] = zusatzfeld;
-        }
-
-        //Verpacken in ein Wrapper Object
-        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen,
-                veranstaltungsformenGesamt, zusatzfeldGesamt);
-        //TODO: sicherstellen dass nicht doppelt initialisiert
+        ModulWrapper antrag = new ModulWrapper(modul, null, null, null);
         antrag.initPrefilled(6, 2);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account",createAccountFromPrincipal(token));
         model.addAttribute("antrag", antrag);
+
         return "antragdetails";
     }
 

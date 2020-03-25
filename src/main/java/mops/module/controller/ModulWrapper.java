@@ -20,6 +20,7 @@ public class ModulWrapper {
     List<Veranstaltungsform> [] veranstaltungsformen;
     List<Zusatzfeld> [] zusatzfelder;
 
+    @SuppressWarnings("unchecked")
     public void initEmpty(int veranstaltungsanzahl, int veranstaltungsformenProVeranstaltung,
                           int zusatzfelderProVeranstaltung) {
         veranstaltungen = new LinkedList<>();
@@ -33,53 +34,34 @@ public class ModulWrapper {
             veranstaltungen.add(veranstaltung);
             for (int j = 0; j < veranstaltungsformenProVeranstaltung; j++) {
                 Veranstaltungsform vf = new Veranstaltungsform();
-//                vf.setVeranstaltung(veranstaltungen.get(i));
                 veranstaltungsformen[i].add(vf);
             }
             for (int j = 0; j < zusatzfelderProVeranstaltung; j++) {
                 Zusatzfeld zf = new Zusatzfeld();
-//                zf.setVeranstaltung(veranstaltungen.get(i));
                 zusatzfelder[i].add(zf);
             }
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void initPrefilled(int veranstaltungsformenProVeranstaltung,
                               int zusatzfelderProVeranstaltung) {
         veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
         veranstaltungsformen = new LinkedList[veranstaltungen.size()];
         zusatzfelder = new LinkedList[veranstaltungen.size()];
         for (int i = 0; i < veranstaltungen.size(); i++) {
-            veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            veranstaltungsformen[i] =
+                    new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
             zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
             while (veranstaltungsformen[i].size() < veranstaltungsformenProVeranstaltung) {
                 Veranstaltungsform vf = new Veranstaltungsform();
-//                vf.setVeranstaltung(veranstaltungen.get(i));
                 veranstaltungsformen[i].add(vf);
             }
             while (zusatzfelder[i].size() < zusatzfelderProVeranstaltung) {
                 Zusatzfeld z = new Zusatzfeld();
-//                z.setVeranstaltung(veranstaltungen.get(i));
                 zusatzfelder[i].add(z);
             }
-
-//
-//            veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
-//            while(veranstaltungsformen[i].size() < veranstaltungsformenProVeranstaltung) {
-////            for (int j = 0; j < veranstaltungsformenProVeranstaltung - veranstaltungsformen[i].size(); j++) {
-//                Veranstaltungsform vf = new Veranstaltungsform();
-//                vf.setVeranstaltung(veranstaltungen.get(i));
-//                veranstaltungsformen[i].add(vf);
-//            }
-//        }
-//        for (int i = 0; i < veranstaltungen.size(); i++) {
-//            zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
-//            while(zusatzfelder[i].size() < zusatzfelderProVeranstaltung) {
-////            for (int j = 0; j < zusatzfelderProVeranstaltung - zusatzfelder[i].size(); j++) {
-//                Zusatzfeld z = new Zusatzfeld();
-//                z.setVeranstaltung(veranstaltungen.get(i));
-//                zusatzfelder[i].add(z);
-//            }
         }
     }
+
 }
