@@ -36,3 +36,4 @@ out/
 *.class
 .gradle
 build/
+lucene/
