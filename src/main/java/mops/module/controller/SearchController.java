@@ -22,6 +22,7 @@ public class SearchController {
     @Autowired
     private HibernateModuleSearch moduleSearch;
 
+    /*
     @GetMapping("/searchresults")
     public String searchresults(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
@@ -29,9 +30,17 @@ public class SearchController {
         }
         return "searchresults";
     }
+    */
+
 
     @GetMapping("/search")
-    public String search(@RequestParam(value = "searchField") String searchField, Model model) {
+    public String search(
+            @RequestParam String searchField,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account", createAccountFromPrincipal(token));
+        }
         List<Modul> searchResults = moduleSearch.search(searchField);
         model.addAttribute("searchResults", searchResults);
         //TODO: new request for modules only including the testresults
