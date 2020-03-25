@@ -68,7 +68,7 @@ public class SuchServiceTest {
                 + "'Dies hier ist das zweite Zusatzfeld!'},"
                 + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
                 + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
-                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
+                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA','sichtbar':'true'}";
 
         completeModul = JsonService.jsonObjectToModul(completeModulString);
         completeModul.refreshMapping();
@@ -76,7 +76,7 @@ public class SuchServiceTest {
 
         String anotherModulString = "{'titelDeutsch':'Programmierung',"
                 + "'titelEnglisch':'Programming', 'veranstaltungen':[{'titel':"
-                + "'Vorlesung Programmierung','leistungspunkte':'10CP'}]}";
+                + "'Vorlesung Programmierung','leistungspunkte':'10CP'}],'sichtbar':'true'}";
 
         anotherModul = JsonService.jsonObjectToModul(anotherModulString);
         anotherModul.refreshMapping();
