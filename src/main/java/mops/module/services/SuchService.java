@@ -58,7 +58,7 @@ public class SuchService {
 
     private void removeNotVisibleModules(List<Modul> results) {
         for (Modul result : results) {
-            if (!result.getSichtbar()) {
+            if (result.getSichtbar() == null || !result.getSichtbar()) {
                 results.remove(result);
             }
         }
