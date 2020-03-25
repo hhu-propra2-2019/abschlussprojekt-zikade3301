@@ -121,7 +121,7 @@
 
         <!--  EIGENE CARD FÜR DIE EINZELNE VERANSTALTUNG-->
         <div class="card mt-2" style="border: none" th:each="veranstaltung : ${modul.getVeranstaltungen()}">
-            <div class="card-body">
+            <div class="card-body" style="display: grid;">
                 <div class="mb-3">
                     <h3 class="card-title mb-0"
                         style="color: dodgerblue;
@@ -161,8 +161,8 @@
                     </span>
                 </div>
 
-                <div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                <div style="display: flex;">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Häufigkeit</span>
                         <br>
                         <span>
@@ -172,7 +172,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Verwendbarkeit</span>
                         <br>
                         <span>
@@ -182,7 +182,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen zum Bestehen</span>
                         <br>
                         <span>
@@ -192,7 +192,9 @@
                             </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                </div>
+                <div style="display: flex;">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Sprache</span>
                         <br>
                         <span>
@@ -202,7 +204,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen für eine Teilnahme</span>
                         <br>
                         <span>
@@ -212,7 +214,7 @@
                             </span>
                         </span>
                     </div>
-                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12" style="float: left">
+                    <div class="mt-3 mb-3 pl-2 col-lg-4 col-md-4 col-sm-12">
                         <span class="card-subtitle" style="font-weight: bold">Semester</span>
                         <br>
                         <span>
@@ -228,14 +230,11 @@
                     <div class="mt-3 mb-3 pl-2">
                         <span class="card-subtitle" style="font-weight: bold">Literatur</span>
                         <br>
-                        <span>
-<!--                            TODO bei kleinem Screen bricht Literatur falsch um-->
-<!--                            TODO DB ÄNDERUNG! IST DAS NOCH AKTUELL?-->
-                            <span class="card-text"
-                                  th:text="${veranstaltung.getBeschreibung().getLiteratur()}">
-                                Literatur
-                            </span>
+                        <span class="card-text"
+                              th:text="${veranstaltung.getBeschreibung().getLiteratur()}">
+                            Literatur
                         </span>
+
                     </div>
                     <div class="mt-3 mb-3 pl-2"
                          th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}"
