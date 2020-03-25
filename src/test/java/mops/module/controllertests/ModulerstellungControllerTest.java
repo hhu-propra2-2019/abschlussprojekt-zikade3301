@@ -2,6 +2,7 @@ package mops.module.controllertests;
 
 import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,12 +10,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import mops.module.controller.ModulWrapper;
+import mops.module.database.Modul;
 import mops.module.generator.ModulFaker;
+import mops.module.services.AntragService;
+import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.Token;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,19 +43,25 @@ class ModulerstellungControllerTest {
     private MockMvc mvc;
 
 
+    private AntragService antragService;
+
+
     @BeforeEach
     void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
                 .alwaysDo(print())
                 .apply(springSecurity())
                 .build();
+
+        this.antragService = mock(AntragService.class);
     }
 
     private final String expectGet = "modulerstellung";
+    private final String expectPost = "modulbeauftragter";
 
 
     @Test
-    void testModulerstellungViewName() throws Exception {
+    void testGetModulerstellungViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -102,96 +119,134 @@ class ModulerstellungControllerTest {
 // POST TESTS
 
     @Test
+    void testPostModulerstellungViewName() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        Modul testmodul = ModulFaker.generateFakeModul();
+        ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+        testWrapper.initPrefilled(6, 2);
+
+        mvc.perform(post("/module/modulerstellung")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("modulId", "")
+                .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+                .andExpect(view().name(expectPost));
+    }
+
+    @Test
     void testPostModulerstellungAccessForOrganizers() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
 
-        // TODO: ModulWrapper nutzen, sobald Elias gepusht hat
-        //        Modul testmodul = ModulFaker.generateFakeModul();
-        //        ModulWrapper testModulwrapper = new ModulWrapper(testmodul, testmodul.getVeranstaltungen, null, null);
-        //        mvc.perform(post("/module/modulerstellung")
-        //                .param("allParams", testModulwrapper))
-        //                .andExpect(status().isOk());
+        Modul testmodul = ModulFaker.generateFakeModul();
+        ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+        testWrapper.initPrefilled(6, 2);
+
+        mvc.perform(post("/module/modulerstellung")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("modulId", "")
+                .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testPostModulerstellungAccessForAdministrator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
+
+        Modul testmodul = ModulFaker.generateFakeModul();
+        ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+        testWrapper.initPrefilled(6, 2);
+
+        mvc.perform(post("/module/modulerstellung")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("modulId", "")
+                .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testPostModulerstellungNoAccessIfNotLoggedIn() throws Exception {
+
+        assertThrows(AssertionError.class,
+                () -> {
+                    Modul testmodul = ModulFaker.generateFakeModul();
+                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+                    testWrapper.initPrefilled(6, 2);
+
+                    mvc.perform(post("/module/modulerstellung")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("modulId", "")
+                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+                            .andExpect(status().isOk());
+                });
+    }
+
+    @Test
+    void testPostModulerstellungNoAccessForStudents() throws Exception {
+        SecurityContextHolder
+        .getContext()
+        .setAuthentication(generateAuthenticationToken("studentin"));
+
+        assertThrows(AssertionError.class,
+                () -> {
+                    Modul testmodul = ModulFaker.generateFakeModul();
+                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+                    testWrapper.initPrefilled(6, 2);
+
+                    mvc.perform(post("/module/modulerstellung")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .param("modulId", "")
+                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+                            .andExpect(status().isOk());
+                });
     }
 
 
 
 
-//
-//    @Test
-//    void testPostModulerstellungAccessForAdministrator() throws Exception {
-//        SecurityContextHolder
-//                .getContext()
-//                .setAuthentication(generateAuthenticationToken("sekretariat"));
-//
-//        mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void testPostModulerstellungNoAccessIfNotLoggedIn() throws Exception {
-//        assertThrows(AssertionError.class,
-//                () -> {
-//                    mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-//                            .andExpect(view().name(expectGet));
-//                });
-//    }
-//
-//    @Test
-//    void testPostModulerstellungNoAccessForStudents() throws Exception {
-//        SecurityContextHolder
-//                .getContext()
-//                .setAuthentication(generateAuthenticationToken("studentin"));
-//
-//        assertThrows(AssertionError.class,
-//                () -> {
-//                    mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-//                            .andExpect(view().name(expectGet));
-//                });
-//    }
 
 
 
-// verify(userService, times(1)).findById(user.getId());
+
+
 
 //    @Test
-//    public void test_create_user_success() throws Exception {
-//        User user = new User("Arya Stark");
-//        when(userService.exists(user)).thenReturn(false);
-//        doNothing().when(userService).create(user);
-//        mockMvc.perform(
-//                post("/users")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(user)))
-//                .andExpect(status().isCreated())
-//                .andExpect(header().string("location", containsString("http://localhost/users/")));
-//        verify(userService, times(1)).exists(user);
-//        verify(userService, times(1)).create(user);
-//        verifyNoMoreInteractions(userService);
-//    }
-
-
-
-
-
-
-// POST TESTS
-//
-//    @Test
-//    void testModulerstellungViewName() throws Exception {
+//    void testPostModulerstellungCreateAntragIsCalled() throws Exception {
 //        SecurityContextHolder
 //                .getContext()
 //                .setAuthentication(generateAuthenticationToken("orga"));
 //
-//        mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
-//                .andExpect(view().name(expectGet));
-//    }
+//        Modul testmodul = ModulFaker.generateFakeModul();
+//        ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+//        testWrapper.initPrefilled(6, 2);
 //
+//
+//
+//        mvc.perform(post("/module/modulerstellung")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .param("modulId", "")
+//                .content(JsonService.modulWrapperToJsonObject(testWrapper)));
+//        verify(antragService).addModulCreationAntrag(testmodul, "");
+//
+//
+//    }
+
+
+
+
+
+
+
 
     //TODO
-    // Fehler wenn Parameter fehlt
+    // Fehler wenn Parameter fehlt?
     // ERSTELLUNG ANTRAG GEHT
-    // VIEW NAME RICHTIG
+    // RENNWANZ KRAM DIREKT BESTÄTIGT
+
 
 }
