@@ -16,7 +16,7 @@ import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
-import mops.module.services.ModulService;
+import mops.module.services.ModulWrapperService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,6 @@ import org.springframework.web.context.annotation.SessionScope;
 public class AntragdetailsController {
 
     private final AntragService antragService;
-    private ModulService modulService;
 
     /** Antragdetails Mapping.
      *
@@ -54,12 +53,10 @@ public class AntragdetailsController {
 
         Modul modul = JsonService.jsonObjectToModul(
                 antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
-
-        ModulWrapper antrag = new ModulWrapper(modul, null, null, null);
-        antrag.initPrefilled(6, 2);
+        ModulWrapper antrag = ModulWrapperService.initializePrefilledModulWrapper(modul);
 
         model.addAttribute("antragId", id);
-        model.addAttribute("account",createAccountFromPrincipal(token));
+        model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("antrag", antrag);
 
         return "antragdetails";
@@ -91,4 +88,5 @@ public class AntragdetailsController {
         model.addAttribute("account",createAccountFromPrincipal(token));
         return "redirect:/module/administrator";
     }
+
 }

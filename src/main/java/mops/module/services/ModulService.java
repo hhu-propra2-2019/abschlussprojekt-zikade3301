@@ -96,22 +96,6 @@ public class ModulService {
         }
     }
 
-    public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
-        for (int i = 0; i < modulWrapper.getVeranstaltungen().size(); i++) {
-            modulWrapper.getVeranstaltungen().get(i).setVeranstaltungsformen(
-                    new HashSet<>(modulWrapper.getVeranstaltungsformen()[i]));
-            modulWrapper.getVeranstaltungen().get(i).setZusatzfelder(
-                    new HashSet<>(modulWrapper.getZusatzfelder()[i]));
-        }
-        Set<Veranstaltung> veranstaltungenSet = new HashSet<>(modulWrapper.getVeranstaltungen());
-
-        Modul modul = modulWrapper.getModul();
-        //modul.getVeranstaltungen().clear();     //TODO: verwaiste Veranstaltungen entfernen!
-        modul.setVeranstaltungen(veranstaltungenSet);
-        modul.refreshMapping();
-        return modul;
-    }
-
     public List<Modul> getAllModule() {
         return StreamSupport.stream(modulSnapshotRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
