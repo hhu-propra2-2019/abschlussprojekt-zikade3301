@@ -17,6 +17,7 @@ public class PdfServiceTest {
         List<Modul> module= new ArrayList<>();
         for (int i = 0; i <20 ; i++) {
             module.add(ModulFaker.generateFakeModul());
+            module.get(i).setId((long)i);
         }
         PDDocument document1 = PdfService.generatePdf(module);
         document1.save("test.pdf");

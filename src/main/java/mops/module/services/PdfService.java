@@ -37,24 +37,29 @@ public class PdfService {
             Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
     ).toImmutable();
 
-    private static final int COUNT_OF_PRE_PAGES = 1;
+    private static final int COUNT_OF_PRE_PAGES = 2;
 
     private static final String CSS_MODULE =
-              "body {\n"
-            + "    font-family: 'Helvetica', sans-serif;\n"
-            + "    overflow: hidden;\n"
-            + "    word-wrap: break-word;\n"
-            + "    font-size: 12px;\n"
-            + "}\n\n"
-            + "inhaltsverzeichnis {\n"
-            + "    display: block;\n"
-            + "    page-break-after: always;\n"
-            + "    font-size: 14px;\n"
-            + "}\n\n"
-            + "a:link {\n"
-            + "    text-decoration: none;\n"
-            + "    color: black;\n"
-            + "}\n\n";
+            "body {\n"
+                    + "    font-family: 'Helvetica', sans-serif;\n"
+                    + "    overflow: hidden;\n"
+                    + "    word-wrap: break-word;\n"
+                    + "    font-size: 12px;\n"
+                    + "}\n\n"
+                    + "inhaltsverzeichnis, #frontpage {\n"
+                    + "    display: block;\n"
+                    + "    page-break-after: always;\n"
+                    + "    font-size: 14px;\n"
+                    + "}\n\n"
+                    + "a:link {\n"
+                    + "    text-decoration: none;\n"
+                    + "    color: black;\n"
+                    + "}\n\n"
+
+                    + "#frontpage {\n"
+                    + "    font-size: 16px;\n"
+                    + "      text-align: center;\n"
+                    + "}\n";
 
     /**
      * @param module
@@ -100,13 +105,34 @@ public class PdfService {
         alleModule = alleModule.replaceFirst("<h2>Platzhalter</h2>", "");
 
         String tableOfContents = getTableOfContents(pageForModul, sortedModule);
+        String frontPage = generateFrontPage();
 
-        String complete = tableOfContents + alleModule.toString();
+        String complete = frontPage + tableOfContents + alleModule.toString();
         complete = PdfConverterExtension.embedCss(complete, CSS_MODULE);
 
         PDDocument document = htmlToPdf(complete);
         addPageNumbers(document);
         return document;
+    }
+
+    private static String generateFrontPage() {
+        StringBuilder str = new StringBuilder();
+        str.append("<div id=\"frontpage\">\n"
+                +markdownToHtml(
+                "# Modulhandbuch\n"
+                + "## für den\n"
+                + "## Bachelor- und Master-Studiengang Informatik\n"
+                + getLinebreak(22)
+                + "## Institut für Informatik\n"
+                + "## der Mathematisch-Naturwissenschaftliche Fakultät\n"
+                + "## der Heinrich-Heine-Universität\n"
+                + getLinebreak(1)
+                + "## Herausgegeben vom\n"
+                + "## Ausschuss für die Bachelor- und Master-Prüfung\n"
+                + "## im Fach Informatik\n")
+                + "</div>\n");
+
+        return str.toString();
     }
 
     private static String getTableOfContents(Map<Modul, Integer> pageForModul,
@@ -261,6 +287,30 @@ public class PdfService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static String getLinebreak(int n) {
+        String str = "";
+        for (int i = 0; i < n; i++) {
+            str += "<br/>";
+        }
+        return str += "\n";
+    }
+
+    private static String getSpace(int n) {
+        String str = "";
+        for (int i = 0; i < n; i++) {
+            str += "&nbsp;";
+        }
+        return str += " ";
+    }
+
+    private static void closeDocument(PDDocument document) {
+        try {
+            document.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
