@@ -20,6 +20,7 @@ public class ModulWrapper {
     List<Veranstaltungsform> [] veranstaltungsformen;
     List<Zusatzfeld> [] zusatzfelder;
 
+    @SuppressWarnings("uncheccked")
     public void initEmpty(int veranstaltungsanzahl, int veranstaltungsformenProVeranstaltung,
                           int zusatzfelderProVeranstaltung) {
         veranstaltungen = new LinkedList<>();
