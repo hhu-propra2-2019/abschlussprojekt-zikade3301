@@ -8,6 +8,14 @@ public class PdfModulWrapper {
 
     private final Modul modul;
 
+    public String getTitelDeutsch(){
+        return getSafeString(modul.getTitelDeutsch());
+    }
+
+    public String getTitelEnglisch(){
+        return getSafeString(modul.getTitelEnglisch());
+    }
+
     public String getStudiengang() {
         return getSafeString(modul.getStudiengang());
     }
