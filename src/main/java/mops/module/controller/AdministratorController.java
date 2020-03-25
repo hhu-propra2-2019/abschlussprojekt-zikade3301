@@ -35,28 +35,6 @@ public class AdministratorController {
     @Secured("ROLE_sekretariat")
     public String administrator(KeycloakAuthenticationToken token, Model model) {
 
-        //Nur Input um zu gucken ob alles auch klappt
-
-//        String complete1Modul =
-//                "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-//                        + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
-//                        + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
-//                        + "{'form':'Übung','semesterWochenStunden':2}],"
-//                        + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
-//                        + "'literatur':'Alter Schinken','verwendbarkeit':'Überall verwendbar',"
-//                        + "'voraussetzungenBestehen':'50% der Punkte in der Klausur',"
-//                        + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-//                        + "'voraussetzungenTeilnahme':'Informatik I',"
-//                        + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
-//                        + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
-//                        + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
-//                        + "'modulbeauftragte':'Michael Schöttner','gesamtLeistungspunkte':'10CP',"
-//                        + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
-//
-//        String antragsteller = ((KeycloakPrincipal) token.getPrincipal()).getName();
-//        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul), antragsteller);
-        //Bis hier nur Input
-
         //TODO: datumformat überdenken
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         model.addAttribute("account", createAccountFromPrincipal(token));

@@ -51,7 +51,7 @@ public class ModulerstellungController {
     @GetMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addModulCreationAntragForm(
-            @RequestParam(name = "veranstaltungsanzahl", required = true) int veranstaltungsanzahl,
+            @RequestParam(name = "veranstaltungsanzahl") int veranstaltungsanzahl,
             Model model,
             KeycloakAuthenticationToken token) {
 
@@ -69,7 +69,7 @@ public class ModulerstellungController {
 
     /**
      * Post-Mapping für die Formulardaten für die Erstellung eines Modulantrags.
-     * @param modulWrapper TODO
+     * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
      * @param model Model für die HTML-Datei.
      * @param token Keycloak-Token.
      * @return View für die Modulerstellung.
@@ -78,8 +78,8 @@ public class ModulerstellungController {
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addModulCreationAntrag(@RequestParam(name = "modulId") String modulId,
                                          ModulWrapper modulWrapper,
-                                    Model model,
-                                    KeycloakAuthenticationToken token) {
+                                         Model model,
+                                         KeycloakAuthenticationToken token) {
 
         if (modulId.equals("")) {
             Modul modul = ModulService.readModulFromWrapper(modulWrapper);
@@ -110,7 +110,7 @@ public class ModulerstellungController {
                     return "modulbeauftragter";
                 }
             } //else {
-            //return "error"; //TODO
+            //return "error"; //TODO: Fehlerseite wenn Antrag ohne Änderungen abgeschickt wurde
             //}
             model.addAttribute("account", createAccountFromPrincipal(token));
 
