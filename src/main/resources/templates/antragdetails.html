@@ -330,12 +330,12 @@
                                 </div>
                             </div>
 
-                            <!-- TODO - Wie macht man das mit neuen Feldern dir vom Sekretariat hinzugefügt werden? -->
                             <div>
                                 <span style="font-size: x-large; margin-bottom: 2rem">
                                     Die Veranstaltung beinhaltet:
                                 </span>
-                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform,iter2 : *{veranstaltungsformen[__${iter.index}__]}">
+                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform,iter2 : *{veranstaltungsformen[__${(iter.index)}__]}"
+                                     th:unless="${iter2.index == 5}">
                                     <input class="form-control ml-1"
                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
@@ -343,7 +343,8 @@
                                                            font-size: small;
                                                            color: white;"
                                            type="text"
-                                           value="" th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}">
+                                           value=""
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}">
                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                     <input class="form-control ml-1"
                                            style="max-width: 6rem;
@@ -351,102 +352,16 @@
                                                            font-size: small;
                                                            color: white;"
                                            type="number"
-                                           value="" th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}" >
+                                           value="0"
+                                           min="0"
+                                           required
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}" >
                                     <label style="font-size: larger; margin-left: 0.5rem">
                                         SWS
                                     </label>
                                 </div>
 
                                 <div class="form-check mb-2" style="display: flex">
-                                    <input class="form-control ml-1"
-                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 15rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="text"
-                                           value="">
-                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
-                                    <input class="form-control ml-1"
-                                           style="max-width: 6rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="number"
-                                           value="">
-                                    <label style="font-size: larger; margin-left: 0.5rem">
-                                        SWS
-                                    </label>
-                                </div>
-
-                                <div class="form-check mb-2" style="display: flex">
-                                    <input class="form-control ml-1"
-                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 15rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="text"
-                                           value="">
-                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
-                                    <input class="form-control ml-1"
-                                           style="max-width: 6rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="number"
-                                           value="">
-                                    <label style="font-size: larger; margin-left: 0.5rem">
-                                        SWS
-                                    </label>
-                                </div>
-
-                                <div class="form-check mb-2" style="display: flex">
-                                    <input class="form-control ml-1"
-                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 15rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="text"
-                                           value="">
-                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
-                                    <input class="form-control ml-1"
-                                           style="max-width: 6rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="number"
-                                           value="">
-                                    <label style="font-size: larger; margin-left: 0.5rem">
-                                        SWS
-                                    </label>
-                                </div>
-
-                                <div class="form-check mb-2" style="display: flex">
-                                    <input class="form-control ml-1"
-                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 15rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="text"
-                                           value="">
-                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
-                                    <input class="form-control ml-1"
-                                           style="max-width: 6rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                           type="number"
-                                           value="">
-                                    <label style="font-size: larger; margin-left: 0.5rem">
-                                        SWS
-                                    </label>
-                                </div>
-
-                                <div class="form-check mb-2" style="display: flex">
-                                    <input class="form-check-input" type="checkbox" value="">
                                     <input class="form-control ml-1"
                                            style=" border-bottom: 1px solid white;
                                                            max-width: 26rem;
@@ -455,11 +370,117 @@
                                                            font-size: small;
                                                            color: white;"
                                            type="text"
-                                           value="">
+                                           value="0"
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${5}__].form}">
+
                                 </div>
+
+
+                                <!--
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0">
+                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="number"
+                                           value="0">
+                                    <label style="font-size: larger; margin-left: 0.5rem">
+                                        SWS
+                                    </label>
+                                </div>
+
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0">
+                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="number"
+                                           value="0">
+                                    <label style="font-size: larger; margin-left: 0.5rem">
+                                        SWS
+                                    </label>
+                                </div>
+
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0">
+                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="number"
+                                           value="0">
+                                    <label style="font-size: larger; margin-left: 0.5rem">
+                                        SWS
+                                    </label>
+                                </div>
+
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0">
+                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="number"
+                                           value="0">
+                                    <label style="font-size: larger; margin-left: 0.5rem">
+                                        SWS
+                                    </label>
+                                </div>
+
+
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 26rem;
+                                                           height: 5rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0">
+                                </div>
+
+                                -->
                             </div>
 
-                            <!-- TODO Hier ist noch überall HIDDEN; müssen im Frontend Eingabefelder hinzufügen-->
                             <div style="margin-top: 3rem; display: grid;">
                                 <span class="col-12" style="font-size: x-large">
                                     Weitere Informationen:
