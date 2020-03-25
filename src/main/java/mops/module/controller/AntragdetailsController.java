@@ -16,6 +16,7 @@ import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class AntragdetailsController {
 
     private final AntragService antragService;
+    private ModulService modulService;
 
     /** Antragdetails Mapping.
      *
@@ -80,27 +82,13 @@ public class AntragdetailsController {
             Model model,
             KeycloakAuthenticationToken token) {
 
-        //Auspacken des Wrappers
-        for (int i = 0; i < antragAngenommen.getVeranstaltungen().size(); i++) {
-            antragAngenommen.getVeranstaltungen().get(i).setVeranstaltungsformen(
-                    new HashSet<>(antragAngenommen.getVeranstaltungsformen()[i]));
-            antragAngenommen.getVeranstaltungen().get(i).setZusatzfelder(
-                    new HashSet<>(antragAngenommen.getZusatzfelder()[i]));
-        }
-        Set<Veranstaltung> veranstaltungenSet =
-                new HashSet<>(antragAngenommen.getVeranstaltungen());
-
-        Modul modul = antragAngenommen.getModul();
-        modul.setVeranstaltungen(veranstaltungenSet);
-
-        String jsonModulAenderung = JsonService.modulToJsonObject(modul);
+        Modul modul = ModulService.readModulFromWrapper(antragAngenommen);
 
         Antrag antrag = antragService.getAntragById(Long.parseLong(id));
-        antrag.setJsonModulAenderung(jsonModulAenderung);
+        antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
         antragService.approveModulCreationAntrag(antrag);
 
         model.addAttribute("account",createAccountFromPrincipal(token));
         return "redirect:/module/administrator";
     }
-
 }
