@@ -2,16 +2,12 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.util.LinkedList;
-import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
-import mops.module.database.Veranstaltung;
-import mops.module.database.Veranstaltungsform;
-import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
 import mops.module.services.ModulService;
+import mops.module.services.ModulWrapperService;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +51,7 @@ public class ModulerstellungController {
             Model model,
             KeycloakAuthenticationToken token) {
 
-        //Verpacken in ein Wrapper Object
-        Modul modul = new Modul();
-        ModulWrapper modulWrapper = new ModulWrapper(modul, null, null, null);
-        modulWrapper.initEmpty(veranstaltungsanzahl, 6, 2);
+        ModulWrapper modulWrapper = ModulWrapperService.initializeEmptyWrapper(veranstaltungsanzahl);
 
         model.addAttribute("modulWrapper", modulWrapper);
         model.addAttribute("account", createAccountFromPrincipal(token));
@@ -82,7 +75,7 @@ public class ModulerstellungController {
                                          KeycloakAuthenticationToken token) {
 
         if (modulId.equals("")) {
-            Modul modul = ModulService.readModulFromWrapper(modulWrapper);
+            Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
             String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
 
             Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
@@ -96,7 +89,7 @@ public class ModulerstellungController {
         } else {
             Long modulIdLong = Long.parseLong(modulId);
             Modul altesModul = modulService.getModulById(modulIdLong);
-            Modul neuesModul = ModulService.readModulFromWrapper(modulWrapper);
+            Modul neuesModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
 
             neuesModul.setId(modulIdLong);
             neuesModul.refreshMapping();
@@ -105,7 +98,7 @@ public class ModulerstellungController {
             if (diffModul != null) {
                 String antragsteller = ((KeycloakPrincipal) token.getPrincipal()).getName();
                 Antrag antrag = antragService.addModulModificationAntrag(neuesModul, antragsteller);
-                if (token.getAccount().getRoles().contains("ROLE_sekretariat")) {
+                if (token.getAccount().getRoles().contains("ROLE_sekretariat")) { //TODO: bug fixen, if gibt immer false
                     antragService.approveModulModificationAntrag(antrag);
                     return "modulbeauftragter";
                 }
@@ -135,10 +128,8 @@ public class ModulerstellungController {
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
         Modul modul = modulService.getModulById(Long.parseLong(id));
+        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledModulWrapper(modul);
 
-        //Verpacken in ein Wrapper Object
-        ModulWrapper modulWrapper = new ModulWrapper(modul, null, null, null);
-        modulWrapper.initPrefilled(6, 2);
         model.addAttribute("modulWrapper", modulWrapper);
         model.addAttribute("modulId", id);
 
