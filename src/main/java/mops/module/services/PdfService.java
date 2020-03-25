@@ -36,7 +36,7 @@ public class PdfService {
         this.templateEngine = templateEngine;
 
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/");
+        templateResolver.setPrefix("templates/pdfgeneration/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("UTF-8");
@@ -46,15 +46,11 @@ public class PdfService {
 
     private TemplateEngine templateEngine;
 
-    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
-            Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
-    ).toImmutable();
-
     private static final int COUNT_OF_PRE_PAGES = 2;
 
     private static String CSS_MODULE = getCss();
 
-    private static final String pathToPdfResources = "./src/main/resources/static/pdfgeneration";
+    private static final String pathToPdfResources = "./src/main/resources/templates/pdfgeneration";
 
     /**
      * @param module
@@ -75,21 +71,16 @@ public class PdfService {
         }
 
         String alleModule = "";
+        List<Modul> sortedModuleSubList = new ArrayList<>();
         for (Modul modul : sortedModule) {
-            alleModule = alleModule.replaceFirst("<h2>Platzhalter</h2>", "");
+            sortedModuleSubList.add(modul);
+            String html = buildString(sortedModuleSubList);
+            alleModule = html;
 
-            String html = markdownToHtml(buildString(modul));
-            html = "<div id=\"modul" + modul.getId() + "\">" + html;
-            html = html + "</div><br /><br />";
+            String cssHtml = PdfConverterExtension.embedCss(html, CSS_MODULE);
 
-            alleModule += html;
-
-            // Platzhalter, um Seite auf der das neue Modul beginnt ermitteln zu können
-            alleModule += "<h2>Platzhalter</h2>";
-
-            String cssHtml = PdfConverterExtension.embedCss(alleModule.toString(), CSS_MODULE);
             pageForModul.put(modul, pageCount);
-            PDDocument toAppend = htmlToPdf(cssHtml);
+            PDDocument toAppend = HtmlService.htmlToPdf(cssHtml);
             pageCount = toAppend.getNumberOfPages() + COUNT_OF_PRE_PAGES;
             try {
                 toAppend.close();
@@ -97,15 +88,14 @@ public class PdfService {
                 e.printStackTrace();
             }
         }
-        alleModule = alleModule.replaceFirst("<h2>Platzhalter</h2>", "");
 
         String tableOfContents = getTableOfContents(pageForModul, sortedModule);
         String frontPage = generateFrontPage();
 
-        String complete = frontPage + tableOfContents + alleModule.toString();
+        String complete = frontPage + tableOfContents + alleModule;
         complete = PdfConverterExtension.embedCss(complete, CSS_MODULE);
 
-        PDDocument document = htmlToPdf(complete);
+        PDDocument document = HtmlService.htmlToPdf(complete);
         return document;
     }
 
@@ -136,46 +126,32 @@ public class PdfService {
         return str.toString();
     }
 
-    /**
-     * @param modul
-     * @return
-     */
-    public PDDocument generatePdf(Modul modul) {
-        String html = markdownToHtml(buildString(modul));
-
-        html = PdfConverterExtension.embedCss(html, CSS_MODULE);
-        return htmlToPdf(html);
+    public static List<PdfModulWrapper> filterModuleAfterKategorie(List<PdfModulWrapper> module, Modulkategorie modulkategorie) {
+        return module.stream().filter(m -> m.getModulkategorie() == modulkategorie).collect(Collectors.toList());
     }
 
-    public String markdownToHtml(String markdown) {
-        MutableDataHolder markdownOptions = new MutableDataSet();
-        markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
-        Parser parser = Parser.builder(markdownOptions).build();
-        Node document = parser.parse(markdown);
-
-        final HtmlRenderer htmlRenderer = HtmlRenderer.builder(OPTIONS).build();
-
-        return htmlRenderer.render(document);
-    }
-
-    public static PDDocument htmlToPdf(String html) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
-
-        PDDocument pdDocument = null;
-        try {
-            pdDocument = PDDocument.load(outputStream.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static List<Modulkategorie> getUsedKategorien(List<PdfModulWrapper> module) {
+        List<Modulkategorie> modulkategorien = new ArrayList<>();
+        for(PdfModulWrapper modul : module) {
+            if (!modulkategorien.contains(modul.getModulkategorie())) {
+                modulkategorien.add(modul.getModulkategorie());
+            }
         }
-
-        return pdDocument;
+        return modulkategorien;
     }
 
-    public String buildString(Modul modul) {
-        // TO BE DONE
-        return "";
+    public String buildString(List<Modul> module) {
+        Context context = new Context();
+        context.setVariable("pdfService", this);
+
+        List<PdfModulWrapper> modulWrapperList = module.stream()
+                .map(PdfModulWrapper::new).collect(Collectors.toList());
+        context.setVariable("module", modulWrapperList);
+        context.setVariable("categories", getUsedKategorien(modulWrapperList));
+
+        StringWriter writer = new StringWriter();
+        templateEngine.process("modulhandbuch", context, writer);
+        return writer.toString();
     }
 
     private static String getCss() {
@@ -188,30 +164,6 @@ public class PdfService {
             e.printStackTrace();
         }
         return str.toString();
-    }
-
-    private static String getLinebreak(int n) {
-        String str = "";
-        for (int i = 0; i < n; i++) {
-            str += "<br/>";
-        }
-        return str += "\n";
-    }
-
-    private static String getSpace(int n) {
-        String str = "";
-        for (int i = 0; i < n; i++) {
-            str += "&nbsp;";
-        }
-        return str += " ";
-    }
-
-    private static void closeDocument(PDDocument document) {
-        try {
-            document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public List<Modul> filterModule(List<Modul> module, Modulkategorie modulkategorie){
