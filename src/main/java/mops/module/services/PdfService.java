@@ -1,8 +1,6 @@
 package mops.module.services;
 
 import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.html.LinkResolverFactory;
-import com.vladsch.flexmark.html.RendererBuilder;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.pdf.converter.PdfConverterExtension;
@@ -41,19 +39,22 @@ public class PdfService {
 
     private static final int COUNT_OF_PRE_PAGES = 1;
 
-    private static final String CSS_INHALTSVERZEICHNIS = "body {\n"
-            + "    font-family: 'Helvetica', sans-serif;\n"
-            + "    overflow: hidden;\n"
-            + "    word-wrap: break-word;\n"
-            + "    font-size: 14px;\n"
-            + "}";
-
-    private static final String CSS_MODULE = "body {\n"
+    private static final String CSS_MODULE =
+              "body {\n"
             + "    font-family: 'Helvetica', sans-serif;\n"
             + "    overflow: hidden;\n"
             + "    word-wrap: break-word;\n"
             + "    font-size: 12px;\n"
-            + "}";
+            + "}\n\n"
+            + "inhaltsverzeichnis {\n"
+            + "    display: block;\n"
+            + "    page-break-after: always;\n"
+            + "    font-size: 14px;\n"
+            + "}\n\n"
+            + "a:link {\n"
+            + "    text-decoration: none;\n"
+            + "    color: black;\n"
+            + "}\n\n";
 
     /**
      * @param module
@@ -61,7 +62,6 @@ public class PdfService {
      */
     public static PDDocument generatePdf(List<Modul> module) {
         int pageCount = 1 + COUNT_OF_PRE_PAGES;
-        PDDocument document = new PDDocument();
 
         Map<Modul, Integer> pageForModul = new HashMap<>();
         List<Modul> sortedModule = new ArrayList<>();
@@ -74,40 +74,55 @@ public class PdfService {
                     .forEach(sortedModule::add);
         }
 
+        String alleModule = "";
         for (Modul modul : sortedModule) {
+            alleModule = alleModule.replaceFirst("<h2>Platzhalter</h2>", "");
+
+            String html = markdownToHtml(buildString(modul));
+            html = "<div id=\"modul" + modul.getId() + "\">" + html;
+            html = html + "</div><br /><br />";
+
+            alleModule += html;
+
+            // Platzhalter, um Seite auf der das neue Modul beginnt ermitteln zu können
+            alleModule += "<h2>Platzhalter</h2>";
+
+            String cssHtml = PdfConverterExtension.embedCss(alleModule.toString(), CSS_MODULE);
             pageForModul.put(modul, pageCount);
-            PDDocument toAppend = generatePdf(modul);
-            pageCount += toAppend.getNumberOfPages();
-            appendPdf(document, toAppend);
+            PDDocument toAppend = htmlToPdf(cssHtml);
+            pageCount = toAppend.getNumberOfPages() + COUNT_OF_PRE_PAGES;
             try {
                 toAppend.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        alleModule = alleModule.replaceFirst("<h2>Platzhalter</h2>", "");
 
-        PDDocument tableOfContents = getTableOfContents(pageForModul, sortedModule);
-        appendPdf(tableOfContents, document);
-        try {
-            document.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        addPageNumbers(tableOfContents);
-        return tableOfContents;
+        String tableOfContents = getTableOfContents(pageForModul, sortedModule);
+
+        String complete = tableOfContents + alleModule.toString();
+        complete = PdfConverterExtension.embedCss(complete, CSS_MODULE);
+
+        PDDocument document = htmlToPdf(complete);
+        addPageNumbers(document);
+        return document;
     }
 
-    private static PDDocument getTableOfContents(Map<Modul, Integer> pageForModul,
-                                                 List<Modul> sortedModule) {
-        StringBuilder str = new StringBuilder("<h2>Inhaltsverzeichnis</h2>");
+    private static String getTableOfContents(Map<Modul, Integer> pageForModul,
+                                             List<Modul> sortedModule) {
+        StringBuilder str = new StringBuilder();
+        str.append("<inhaltsverzeichnis>");
+        str.append("<h2>Inhaltsverzeichnis</h2>");
         str.append("<table style=\"width:100%\">");
         for (Modul modul : sortedModule) {
-            str.append("<tr><td align=\"left\">" + modul.getTitelDeutsch()
-                    + "</td><td align=\"right\">" + pageForModul.get(modul) + "</td></tr>");
+            str.append("<tr><td align=\"left\"><a href=\"#modul" + modul.getId() + "\">" + modul.getTitelDeutsch()
+                    + "</a></td><td align=\"right\"><a href=\"#modul" + modul.getId() + "\">" + pageForModul.get(modul) + "</a></td></tr>");
         }
         str.append("</table>");
-        String html = PdfConverterExtension.embedCss(str.toString(), CSS_INHALTSVERZEICHNIS);
-        return htmlToPdf(html);
+        str.append("</inhaltsverzeichnis>");
+        //String html = PdfConverterExtension.embedCss(str.toString(), CSS_INHALTSVERZEICHNIS);
+        return str.toString();
     }
 
 
@@ -116,9 +131,9 @@ public class PdfService {
      * @return
      */
     public static PDDocument generatePdf(Modul modul) {
-        String str = buildString(modul);
+        String html = markdownToHtml(buildString(modul));
 
-        String html = PdfConverterExtension.embedCss(markdownToHtml(str), CSS_MODULE);
+        html = PdfConverterExtension.embedCss(html, CSS_MODULE);
         return htmlToPdf(html);
     }
 
@@ -227,7 +242,7 @@ public class PdfService {
         PDPageTree allPages = document.getPages();
         PDFont font = PDType1Font.HELVETICA;
         float fontSize = 8.0f;
-        for (int i = 0; i < allPages.getCount(); i++) {
+        for (int i = 1; i < allPages.getCount(); i++) {
             PDPage page = allPages.get(i);
             String pageNumber = "- " + (i + 1) + " -";
 
