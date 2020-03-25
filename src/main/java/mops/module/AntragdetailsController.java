@@ -3,17 +3,15 @@ package mops.module;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
+import mops.module.database.Veranstaltungsform;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
@@ -40,9 +37,10 @@ public class AntragdetailsController {
      * @param id Id des Antrags.
      * @param token Der Token von keycloak für die Berechtigung.
      * @param model Modell für die HTML Datei.
-     * @return
+     * @return HTML antragdetails.
      */
 
+    @SuppressWarnings("uncheccked")  //Wegen der liste in dem array
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
     public String antragdetails(
@@ -52,21 +50,26 @@ public class AntragdetailsController {
 
         Modul modul = JsonService.jsonObjectToModul(antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
 
-
-        //Überführen der Map in eine Liste für die th:object funktion bei Thymeleaf
+        //Überführen des Sets Veranstatungen in eine Liste für die th:object funktion bei Thymeleaf
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
 
-        //Verpacken in ein Wrapper Object
-        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen);
+        //Überführen der Sets Veranstaltungsformen in eine Liste in einem Array.
+        @SuppressWarnings("uncheccked")
+        List<Veranstaltungsform> [] veranstaltungsformenGesamt = new LinkedList [veranstaltungen.size()];
 
+        for (int i = 0; i < veranstaltungen.size(); i++) {
+            List<Veranstaltungsform> veranstaltungsformen = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            veranstaltungsformenGesamt[i] = veranstaltungsformen;
+        }
+
+        //Verpacken in ein Wrapper Object
+        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen, veranstaltungsformenGesamt);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account",createAccountFromPrincipal(token));
         model.addAttribute("antrag", antrag);
         return "antragdetails";
     }
-
-    //TODO - klappt nicht
 
     /** Antrag annehmen.
      *
@@ -76,11 +79,6 @@ public class AntragdetailsController {
      * @param model Modell für die HTML Datei.
      * @return Redirect zur Antragsübersicht.
      */
-/*
-    @PostMapping("/antragdetails/{id}")
-    @Secured("ROLE_sekretariat")
-
- */
 
     @PostMapping("/antragdetails/{id}")
     @Secured("ROLE_sekretariat")
@@ -91,16 +89,19 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token) {
 
         //Auspacken des Wrappers
+        for(int i = 0; i<antragAngenommen.veranstaltungen.size(); i++) {
+            antragAngenommen.veranstaltungen.get(i).setVeranstaltungsformen(new HashSet<>(antragAngenommen.veranstaltungsformen[i]));
+        }
         Set<Veranstaltung> veranstaltungenSet = new HashSet<>(antragAngenommen.veranstaltungen);
+
         Modul modul = antragAngenommen.modul;
         modul.setVeranstaltungen(veranstaltungenSet);
 
-        String jsonModulAenderung = JsonService.modulToJsonObject(antragAngenommen.modul);
+        String jsonModulAenderung = JsonService.modulToJsonObject(modul);
 
-         Antrag antrag = antragService.getAntragById(Long.parseLong(id));
-         antrag.setJsonModulAenderung(jsonModulAenderung);
-         antragService.approveModulCreationAntrag(antrag);
-
+        Antrag antrag = antragService.getAntragById(Long.parseLong(id));
+        antrag.setJsonModulAenderung(jsonModulAenderung);
+        antragService.approveModulCreationAntrag(antrag);
 
         model.addAttribute("account",createAccountFromPrincipal(token));
         return "redirect:/module/administrator";

@@ -3,6 +3,7 @@ package mops.module.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -230,5 +231,23 @@ public class ModulServiceDatabaseTest {
             fail(e.toString());
         }
     }
+
+
+    // TODO - Tests für meine zwei Methoden im Antragsservice
+
+    /*
+    @Test
+    public void testgetAlleAntraegeGeordnetDatum() {
+
+    }
+
+
+
+    @Test
+    public void testgetAlleOffenenAntraegeGeordnetDatumAnzahl() {
+
+    }
+
+     */
 
 }

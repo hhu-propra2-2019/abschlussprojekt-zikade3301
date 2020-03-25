@@ -53,10 +53,8 @@ public class AdministratorController {
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
 
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul));
-        antragService.getAntragById((long)1).setAntragsteller("Iven");
+       // antragService.getAntragById((long)1).setAntragsteller("Iven");
         //Bis hier nur Input
-
-
 
         model.addAttribute("formatter",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         model.addAttribute("account", createAccountFromPrincipal(token));
@@ -64,6 +62,5 @@ public class AdministratorController {
 
         return "administrator";
     }
-
 }
 
