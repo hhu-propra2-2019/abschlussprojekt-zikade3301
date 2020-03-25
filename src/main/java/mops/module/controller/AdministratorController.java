@@ -57,7 +57,8 @@ public class AdministratorController {
 //        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul), antragsteller);
         //Bis hier nur Input
 
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd")); //TODO: datumformat überdenken
+        //TODO: datumformat überdenken
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
 

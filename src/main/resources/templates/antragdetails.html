@@ -44,12 +44,14 @@
                 <div th:each="role: ${account.getRoles()}">
                     <div th:switch="${role}">
                         <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
-                        <a th:case="'sekretariat'" href="/module/administrator">Anträge</a>
+                        <div th:case="'sekretariat'" href="/module/modulbeauftragter">
+                            <a href="/module/modulbeauftragter">Module bearbeiten</a>
+                            <a href="/module/administrator">Anträge</a>
+                        </div>
                     </div>
                 </div>
             </li>
         </ul>
-
     </nav>
 </header>
 <main th:fragment="bodycontent">
@@ -89,7 +91,7 @@
                    placeholder="Studiengang" required th:field="*{modul.studiengang}">
         </div>
 
-        <!--                            TODO hier mehrere -->
+        <!-- TODO hier mehrere -->
         <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
             <label for="modulbeauftragte">Modulbeauftragte</label>
             <input type="text"
@@ -149,7 +151,7 @@
                                     <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
                                 </svg>
                                 <span style="font-size: medium; font-weight: bold; color: lightslategrey; text-decoration: none"
-                                      th:text="${iter.index}+'. Veranstaltung'">
+                                      th:text="${iter.index+1}+'. Veranstaltung'">
                                                     Veranstaltungsnummer
                                 </span>
                             </a>
@@ -223,13 +225,13 @@
 
                             <div class="input-group">
                                 <div class="input-group-prepend col-12 pl-0" >
-                                                    <span class="input-group-text pl-0"
-                                                          style="background: transparent;
-                                                          color: white;
-                                                          font-size: larger;
-                                                          border: none;" >
-                                                        Veranstaltungsinhalte
-                                                    </span>
+                                    <span class="input-group-text pl-0"
+                                          style="background: transparent;
+                                          color: white;
+                                          font-size: larger;
+                                          border: none;" >
+                                        Veranstaltungsinhalte
+                                    </span>
                                 </div>
                                 <textarea class="form-control col-12 pl-0"
                                           aria-label="XXYXXY"
@@ -242,13 +244,13 @@
 
                             <div class="input-group">
                                 <div class="input-group-prepend col-12 pl-0">
-                                                    <span class="input-group-text pl-0"
-                                                          style="background: transparent;
-                                                          color: white;
-                                                          font-size: larger;
-                                                          border: none;">
-                                                        Lernergebnisse
-                                                    </span>
+                                    <span class="input-group-text pl-0"
+                                          style="background: transparent;
+                                          color: white;
+                                          font-size: larger;
+                                          border: none;">
+                                        Lernergebnisse
+                                    </span>
                                 </div>
                                 <textarea class="form-control col-12 pl-0"
                                           style="background: transparent;
@@ -260,13 +262,13 @@
                             <div class="col-12 pl-0" style="display: inline-block;">
                                 <div class="input-group col-6 pl-0" style="float: left">
                                     <div class="input-group-prepend col-12 pl-0">
-                                                        <span class="input-group-text pl-0"
-                                                              style="background: transparent;
-                                                              color: white;
-                                                              font-size: larger;
-                                                              border: none;">
-                                                            Literatur
-                                                        </span>
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Literatur
+                                        </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
                                               style="background: transparent;
@@ -277,13 +279,13 @@
 
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend col-12 pl-0">
-                                                        <span class="input-group-text pl-0"
-                                                              style="background: transparent;
-                                                              color: white;
-                                                              font-size: larger;
-                                                              border: none;">
-                                                            Voraussetzungen für eine Teilnahme
-                                                        </span>
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Voraussetzungen für eine Teilnahme
+                                        </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
                                               style="background: transparent;
@@ -296,13 +298,13 @@
                             <div class="col-12 pl-0" style="display: inline-block;">
                                 <div class="input-group col-6 pl-0" style="float: left">
                                     <div class="input-group-prepend col-12 pl-0">
-                                                        <span class="input-group-text pl-0"
-                                                              style="background: transparent;
-                                                              color: white;
-                                                              font-size: larger;
-                                                              border: none;">
-                                                            Verwendbarkeit
-                                                        </span>
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Verwendbarkeit
+                                        </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
                                               aria-label="XXYXXY"
@@ -314,13 +316,13 @@
 
                                 <div class="input-group col-6">
                                     <div class="input-group-prepend col-12 pl-0">
-                                                        <span class="input-group-text pl-0"
-                                                              style="background: transparent;
-                                                              color: white;
-                                                              font-size: larger;
-                                                              border: none;">
-                                                            Voraussetzungen zum Bestehen
-                                                        </span>
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Voraussetzungen zum Bestehen
+                                        </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
                                               style="background: transparent;
@@ -515,8 +517,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -55,7 +55,7 @@ public class ModulService {
                                             Modul changes, Field field) {
         field.setAccessible(true);
 
-        if ("datumAenderung".equals((String) field.getName())) {
+        if ("datumAenderung".equals(field.getName())) {
             return false;
         }
 
@@ -145,7 +145,7 @@ public class ModulService {
 //                        modulWrapper.getZusatzfelder().get(i * zusatzfelderProVeranstaltung + j));
 //            }
 //        }
-//
+
 //        //TODO: fixen, entfernt teilweise zu viele oder zu wenige wenn einige leer?
 //        modulWrapper.getVeranstaltungsformen().removeIf(vf -> vf.getForm().isEmpty());
 ////

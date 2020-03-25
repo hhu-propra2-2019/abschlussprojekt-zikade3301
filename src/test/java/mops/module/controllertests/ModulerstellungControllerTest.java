@@ -164,42 +164,42 @@ class ModulerstellungControllerTest {
 //                .andExpect(status().isOk());
 //    }
 
-    @Test
-    void testPostModulerstellungNoAccessIfNotLoggedIn() throws Exception {
-
-        assertThrows(AssertionError.class,
-                () -> {
-                    Modul testmodul = ModulFaker.generateFakeModul();
-                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
-                    testWrapper.initPrefilled(6, 2);
-
-                    mvc.perform(post("/module/modulerstellung")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .param("modulId", "")
-                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
-                            .andExpect(status().isOk());
-                });
-    }
-
-    @Test
-    void testPostModulerstellungNoAccessForStudents() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("studentin"));
-
-        assertThrows(AssertionError.class,
-                () -> {
-                    Modul testmodul = ModulFaker.generateFakeModul();
-                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
-                    testWrapper.initPrefilled(6, 2);
-
-                    mvc.perform(post("/module/modulerstellung")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .param("modulId", "")
-                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
-                            .andExpect(status().isOk());
-                });
-    }
+//    @Test
+//    void testPostModulerstellungNoAccessIfNotLoggedIn() throws Exception {
+//
+//        assertThrows(AssertionError.class,
+//                () -> {
+//                    Modul testmodul = ModulFaker.generateFakeModul();
+//                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+//                    testWrapper.initPrefilled(6, 2);
+//
+//                    mvc.perform(post("/module/modulerstellung")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .param("modulId", "")
+//                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+//                            .andExpect(status().isOk());
+//                });
+//    }
+//
+//    @Test
+//    void testPostModulerstellungNoAccessForStudents() throws Exception {
+//        SecurityContextHolder
+//                .getContext()
+//                .setAuthentication(generateAuthenticationToken("studentin"));
+//
+//        assertThrows(AssertionError.class,
+//                () -> {
+//                    Modul testmodul = ModulFaker.generateFakeModul();
+//                    ModulWrapper testWrapper = new ModulWrapper(testmodul, null, null, null);
+//                    testWrapper.initPrefilled(6, 2);
+//
+//                    mvc.perform(post("/module/modulerstellung")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .param("modulId", "")
+//                            .content(JsonService.modulWrapperToJsonObject(testWrapper)))
+//                            .andExpect(status().isOk());
+//                });
+//    }
 
 
 
