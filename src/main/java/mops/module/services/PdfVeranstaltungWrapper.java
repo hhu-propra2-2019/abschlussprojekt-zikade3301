@@ -3,6 +3,8 @@ package mops.module.services;
 import static mops.module.services.PdfModulWrapper.getSafeString;
 import static mops.module.services.PdfModulWrapper.safeAppend;
 
+
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Veranstaltung;
@@ -14,8 +16,8 @@ public class PdfVeranstaltungWrapper {
 
     private final Veranstaltung veranstaltung;
 
-    public String getLehrveranstaltungen() {
-        String veranstaltungsString = "";
+    public Set<String> getLehrveranstaltungen() {
+        Set<String> lehrveranstaltungen = new HashSet<>();
         for (Veranstaltungsform veranstaltungsform : veranstaltung.getVeranstaltungsformen()) {
             String veranstaltungsformString = "";
             veranstaltungsformString = safeAppend(veranstaltungsformString, veranstaltungsform.getForm());
@@ -23,9 +25,13 @@ public class PdfVeranstaltungWrapper {
             if (veranstaltungsform.getSemesterWochenStunden() > 0) {
                 veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden() + " SWS";
             }
-            veranstaltungsString += veranstaltungsformString;
+            lehrveranstaltungen.add(veranstaltungsformString);
         }
-        return veranstaltungsString;
+        return lehrveranstaltungen;
+    }
+
+    public String getTitel() {
+        return getSafeString(veranstaltung.getTitel());
     }
 
     public String getLeistungspunkte() {
