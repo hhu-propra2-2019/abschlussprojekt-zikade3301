@@ -102,9 +102,11 @@
             <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: right">
                 <span style="font-weight: bold; padding-left: 1rem">Lehrformen:</span>
                 <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}" style="list-style-type: none; padding: inherit">
-                    <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}">
+                    <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
+                        th:unless="${veranstaltungsform.form.isEmpty()}">
                         <span style="width: min-content" class="badge badge-secondary"
-                              th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}">
+                              th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}"
+                              th:unless="${veranstaltungsform.semesterWochenStunden == 0}">
                             SWS
                         </span>
                         <span class="ml-2"
@@ -236,7 +238,8 @@
                         </span>
                     </div>
                     <div class="mt-3 mb-3 pl-2"
-                         th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}">
+                         th:each="zusatzfeld : ${veranstaltung.getZusatzfelder()}"
+                         th:unless="${zusatzfeld.titel.isEmpty() || zusatzfeld.inhalt.isEmpty()}">
                         <span class="card-subtitle"
                               style="font-weight: bold"
                               th:text="${zusatzfeld.getTitel()}">

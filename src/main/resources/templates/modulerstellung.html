@@ -91,7 +91,8 @@
                 <div class="modal-content" style="height: 100%;">
 
                     <div class="modal-header">
-                        <h3 class="modal-title" id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
+                        <h3 th:if="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
+                        <h3 th:unless="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Moduländerung beantragen</h3>
                     </div>
                     <div class="modal-body" style="padding: 0">
                         <div style="padding: 1rem; display: inline;">
@@ -224,7 +225,6 @@
                                                 <div class="input-group mb-3 col-8 pl-0" style="display: block">
                                                     <input type="text"
                                                            th:field = "*{veranstaltungen[__${i.index}__].titel}"
-                                                           th:name="'veranstaltung' + ${i.index} + '_titel'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                            color: white;
@@ -240,7 +240,6 @@
                                                 <div class="input-group mb-3 col-3" style="display: block">
                                                     <input type="text"
                                                            th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}"
-                                                           th:name="'veranstaltung' + ${i.index} + '_leistungspunkte'"
                                                            style="background: transparent;
                                                            border: none;
                                                            border-bottom: 1px solid white;
@@ -256,7 +255,6 @@
                                                 <div class="input-group mb-3 col-8 pl-0" style="display: block">
                                                     <input type="text"
                                                            th:field = "*{veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}"
-                                                           th:name="'veranstaltung' + ${i.index} + '_haeufigkeit'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                            color: white;
@@ -271,7 +269,6 @@
                                                 <div class="input-group mb-3 col-4 pl-0" style="display: block">
                                                     <input type="text"
                                                            th:field = "*{veranstaltungen[__${i.index}__].beschreibung.sprache}"
-                                                           th:name="'veranstaltung' + ${i.index} + '_sprache'"
                                                            class="form-control"
                                                            style="background: transparent;
                                                            color: white;
@@ -297,7 +294,6 @@
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
                                                           th:field = "*{veranstaltungen[__${i.index}__].beschreibung.inhalte}"
-                                                          th:name="'veranstaltung' + ${i.index} + '_inhalte'"
                                                           style="background: transparent;
                                                           border-radius: unset;
                                                           margin-bottom: 1rem;
@@ -317,7 +313,6 @@
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
                                                           th:field = "*{veranstaltungen[__${i.index}__].beschreibung.lernergebnisse}"
-                                                          th:name="'veranstaltung' + ${i.index} + '_lernergebnisse'"
                                                           style="background: transparent;
                                                           border-radius: unset;
                                                           margin-bottom: 3rem;
@@ -337,7 +332,6 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:field = "*{veranstaltungen[__${i.index}__].beschreibung.literatur}"
-                                                              th:name="'veranstaltung' + ${i.index} + '_literatur'"
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
@@ -356,7 +350,6 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:field = "*{veranstaltungen[__${i.index}__].voraussetzungenTeilnahme}"
-                                                              th:name="'veranstaltung' + ${i.index} + '_voraussetzungenTeilnahme'"
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
@@ -377,7 +370,6 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:field = "*{veranstaltungen[__${i.index}__].beschreibung.verwendbarkeit}"
-                                                              th:name="'veranstaltung' + ${i.index} + '_verwendbarkeit'"
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
@@ -396,7 +388,6 @@
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
                                                               th:field = "*{veranstaltungen[__${i.index}__].beschreibung.voraussetzungenBestehen}"
-                                                              th:name="'veranstaltung' + ${i.index} + '_voraussetzungenBestehen'"
                                                               style="background: transparent;
                                                               border-radius: unset;
                                                               margin-bottom: 3rem;
@@ -411,16 +402,8 @@
                                                 <div th:each="veranstaltungsform, j : *{veranstaltungsformen}"
                                                      th:if="*{veranstaltungsformen[__${j.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}"
                                                      class="form-check mb-2" style="display: flex">
-<!--                                                    <div th:text="${veranstaltungToVeranstaltungsformMap.get(__${i.index}__).add(__${j.index}__)}"></div>-->
-                                                        <!--  <input th:if="${#strings.isEmpty(veranstaltungsform.getForm())}" class="form-check-input" type="checkbox" value="true"-->
-                                                        <!--         th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform' + ${j} + '_checked'">-->
-                                                        <!--  <input th:unless="${#strings.isEmpty(veranstaltungsform.getForm())}" class="form-check-input" type="checkbox" value="true"-->
-                                                        <!--         th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform' + ${j} + '_checked'" checked>-->
-<!--                                                        <input th:field = "*{veranstaltungsformen[__${j.index}__].veranstaltung}"-->
-<!--                                                               type="hidden">-->
                                                         <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${j.index}__].form}"
-                                                               th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform' + ${j} + '_form'"
                                                                style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -431,7 +414,6 @@
                                                         <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                         <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${j.index}__].semesterWochenStunden}"
-                                                               th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform' + ${j} + '_sws'"
                                                                style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -443,32 +425,28 @@
                                                             SWS
                                                         </label>
                                                 </div>
-
-
                                             </div>
 
-                                            <!--                                                <div class="form-check mb-2" style="display: flex">-->
-                                            <!--                                                    <input class="form-check-input" type="checkbox" value="true"-->
-                                            <!--                                                           th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_checked'">-->
-                                            <!--                                                    <textarea class="form-control ml-1"-->
-                                            <!--                                                              th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_inhalt'"-->
-                                            <!--                                                              style=" border-bottom: 1px solid white;-->
-                                            <!--                                                              max-width: 26rem;-->
-                                            <!--                                                              height: 5rem;-->
-                                            <!--                                                              background: transparent;-->
-                                            <!--                                                              font-size: small;-->
-                                            <!--                                                              color: white;"></textarea>-->
-                                            <!--                                                </div>-->
+<!--                                        //TODO: Sechstes Feld muss Freitextfeld statt Feld mit SWS sein!-->
+                                            <!--<div class="form-check mb-2" style="display: flex">-->
+                                            <!--    <input class="form-check-input" type="checkbox" value="true"-->
+                                            <!--           th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_checked'">-->
+                                            <!--    <textarea class="form-control ml-1"-->
+                                            <!--              th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_inhalt'"-->
+                                            <!--              style=" border-bottom: 1px solid white;-->
+                                            <!--              max-width: 26rem;-->
+                                            <!--              height: 5rem;-->
+                                            <!--              background: transparent;-->
+                                            <!--              font-size: small;-->
+                                            <!--              color: white;"></textarea>-->
+                                            <!--</div>-->
 
-                                            <!-- TODO Hier ist noch überall HIDDEN; müssen im Frontend Eingabefelder hinzufügen-->
                                             <div style="margin-top: 3rem; display: grid;">
                                                 <span class="col-12" style="font-size: x-large">
                                                     Weitere Informationen:
                                                 </span>
                                                 <div class="col-12" style="padding: 0;">
                                                     <div th:each="zusatzfeld, k : *{zusatzfelder}" th:if="*{zusatzfelder[__${k.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}" class="col-6" style="float:left">
-                                                        <input th:field = "*{zusatzfelder[__${k.index}__].veranstaltung.id}"
-                                                               type="hidden">
                                                         <div class="form-check mb-2"
                                                              style="padding: 0;
                                                              margin:0.3rem;
@@ -476,22 +454,6 @@
                                                              border-radius: 10px">
                                                             <div class="col-12" style="padding: 0">
                                                                 <div style="border-bottom: 1px solid white" class="col-12">
-<!--                                                                    <input type="checkbox"-->
-<!--                                                                           th:if="${#strings.isEmpty(zusatzfeld.getTitel())}"-->
-<!--                                                                           class="col-1"-->
-<!--                                                                           value="true"-->
-<!--                                                                           style="border: none;-->
-<!--                                                                           float: left;-->
-<!--                                                                           margin-top: 2%;"-->
-<!--                                                                           th:name="'veranstaltung' + ${i.index} + '_zusatzfeld' + ${k} + '_checked'">-->
-<!--                                                                    <input type="checkbox"-->
-<!--                                                                           th:unless="${#strings.isEmpty(zusatzfeld.getTitel())}"-->
-<!--                                                                           class="col-1"-->
-<!--                                                                           value="true"-->
-<!--                                                                           style="border: none;-->
-<!--                                                                           float: left;-->
-<!--                                                                           margin-top: 2%;"-->
-<!--                                                                           th:name="'veranstaltung' + ${i.index} + '_zusatzfeld' + ${k} + '_checked'">-->
                                                                     <input placeholder="Titel Ihres Zusatzfeldes ..."
                                                                            th:field = "*{zusatzfelder[__${k.index}__].titel}"
                                                                            type="text"
@@ -500,12 +462,11 @@
                                                                            font-size: larger;
                                                                            color: white;
                                                                            background: transparent;"
-                                                                           th:name="'veranstaltung' + ${i.index} + '_zusatzfeld' + ${k} + '_titel'" checked>
+                                                                           checked>
                                                                 </div>
                                                                 <textarea class="form-control ml-1 col-12"
                                                                           th:field = "*{zusatzfelder[__${k.index}__].inhalt}"
                                                                           placeholder="Inhalt Ihres Zusatzfeldes ..."
-                                                                          th:name="'veranstaltung' + ${i.index} + '_zusatzfeld' + ${k} + '_inhalt'"
                                                                           style="height: 5rem;
                                                                           border: none;
                                                                           background: transparent;
@@ -514,39 +475,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-<!--                                                    <div class="col-6"  style="float:left">-->
-<!--                                                        <div class="form-check mb-2"-->
-<!--                                                             style="padding: 0;-->
-<!--                                                             margin:0.3rem;-->
-<!--                                                             border: 1px solid white;-->
-<!--                                                             border-radius: 10px">-->
-<!--                                                            <div class="col-12" style="padding: 0">-->
-<!--                                                                <div style="border-bottom: 1px solid white" class="col-12">-->
-<!--                                                                    <input type="checkbox"-->
-<!--                                                                           value="true"-->
-<!--                                                                           class="col-1"-->
-<!--                                                                           style="border: none;-->
-<!--                                                                           float: left;-->
-<!--                                                                           margin-top: 2%;"-->
-<!--                                                                           th:name="'veranstaltung' + ${i.index} + '_zusatzfeld2_checked'">-->
-<!--                                                                    <input type="text"-->
-<!--                                                                           class="col-11"-->
-<!--                                                                           style="border: none;-->
-<!--                                                                           font-size: larger;-->
-<!--                                                                           color: white;-->
-<!--                                                                           background: transparent;"-->
-<!--                                                                           th:name="'veranstaltung' + ${i.index} + '_zusatzfeld2_titel'">-->
-<!--                                                                </div>-->
-<!--                                                                <textarea class="form-control ml-1 col-12"-->
-<!--                                                                          th:name="'veranstaltung' + ${i.index} + '_zusatzfeld2_inhalt'"-->
-<!--                                                                          style="height: 5rem;-->
-<!--                                                                          border: none;-->
-<!--                                                                          background: transparent;-->
-<!--                                                                          font-size: small;-->
-<!--                                                                          color: white;"></textarea>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -555,8 +483,6 @@
                             </div>
                         </div>
                     </div>
-
-<!--                    <input type="hidden" name="veranstaltungsanzahl" th:value="${veranstaltungsanzahl}">-->
 
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
