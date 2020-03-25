@@ -25,10 +25,10 @@ public class SearchController {
     /**
      * Searchresults string.
      *
-     * @param searchField User input in search form on index
-     * @param token       the token of keycloak for permissions
-     * @param model       the model of keycloak for permissions
-     * @return the string "searchresults" for the carried out search
+     * @param searchField Benutzer Eingabe für das Such Formular
+     * @param token       Token von Keycloak der den Zugriff auf eine Seite regelt
+     * @param model       Model von Keycloak das den Zugriff auf eine Seite regelt
+     * @return            Gibt den String "searchresuls" als Ergebnis der Suche zurück.
      */
     @GetMapping("/search")
     public String search(

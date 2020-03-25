@@ -18,9 +18,9 @@ public class SuchService {
     private EntityManager entityManager;
 
     /**
-     * Initializes the Lucene index for fulltextsearching modules.
-     * This needs to be done once at application start to index data that is already there.
-     * Afterwards all entries are automatically indexed.
+     * Initializiert den Lucene Index für die volltextsuchenden Module.
+     * Muss beim Start des Programms einmal ausgeführt werden, um die Daten die schon vorhanden sind zu indexieren.
+     * Danach werden alle Einträge automatisch indexiert.
      */
     @Transactional
     public void initIndex() {
@@ -34,12 +34,11 @@ public class SuchService {
     }
 
     /**
-     * Fulltextsearch on all relevant fields of modules in the database.
-     * Results are roughly ordered by relevance: hits in titles are ranked higher than hits
-     * in the description.
+     * Die Volltextsuche wird auf alle relevanten Felder in den Modulen der Datenbank angewandt.
+     * Die Ergebnisse sind grob nach relevanz sortiert: Treffer im Titel sind wichtiger als in der Beschreibung
      *
-     * @param searchInput String which contains one or more search terms
-     * @return list of modules that contain the search term(s)
+     * @param searchInput Ein String der einen oder mehrere Suchbegriffe beinhaltet.
+     * @return  Gibt eine Liste der Module zurück, diese enhalten den gesuchten Begriff.
      */
     @Transactional
     public List<Modul> search(String searchInput) {
