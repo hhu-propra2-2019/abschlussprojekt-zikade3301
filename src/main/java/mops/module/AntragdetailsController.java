@@ -12,6 +12,7 @@ import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
+import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -40,7 +41,7 @@ public class AntragdetailsController {
      * @return HTML antragdetails.
      */
 
-    @SuppressWarnings("uncheccked")  //Wegen der liste in dem array
+    @SuppressWarnings("uncheccked")  //TODO - Begründen
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
     public String antragdetails(
@@ -53,17 +54,20 @@ public class AntragdetailsController {
         //Überführen des Sets Veranstatungen in eine Liste für die th:object funktion bei Thymeleaf
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
 
-        //Überführen der Sets Veranstaltungsformen in eine Liste in einem Array.
-        @SuppressWarnings("uncheccked")
+        //Überführen der Sets Veranstaltungsformen und Zusatzfeld in eine Liste in einem Array.
         List<Veranstaltungsform> [] veranstaltungsformenGesamt = new LinkedList [veranstaltungen.size()];
+        List<Zusatzfeld> [] zusatzfeldGesamt = new LinkedList [veranstaltungen.size()];
 
         for (int i = 0; i < veranstaltungen.size(); i++) {
             List<Veranstaltungsform> veranstaltungsformen = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            List<Zusatzfeld> zusatzfeld = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
             veranstaltungsformenGesamt[i] = veranstaltungsformen;
+            zusatzfeldGesamt[i] = zusatzfeld;
+
         }
 
         //Verpacken in ein Wrapper Object
-        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen, veranstaltungsformenGesamt);
+        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen, veranstaltungsformenGesamt, zusatzfeldGesamt);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account",createAccountFromPrincipal(token));
@@ -89,8 +93,9 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token) {
 
         //Auspacken des Wrappers
-        for(int i = 0; i<antragAngenommen.veranstaltungen.size(); i++) {
+        for (int i = 0; i < antragAngenommen.veranstaltungen.size() ; i++) {
             antragAngenommen.veranstaltungen.get(i).setVeranstaltungsformen(new HashSet<>(antragAngenommen.veranstaltungsformen[i]));
+            antragAngenommen.veranstaltungen.get(i).setZusatzfelder(new HashSet<>(antragAngenommen.zusatzfeld[i]));
         }
         Set<Veranstaltung> veranstaltungenSet = new HashSet<>(antragAngenommen.veranstaltungen);
 
