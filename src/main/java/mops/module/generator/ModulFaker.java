@@ -34,9 +34,9 @@ public class ModulFaker {
 
     private static void generateMultipleBeauftragte(Modul fakeModul) {
         double randomNumber = Math.random() * 5;
-        Set<String> personen = new HashSet<>();
+        String personen = "";
         for (int i = 0; i < randomNumber; i++) {
-            personen.add(faker.harryPotter().character());
+            personen += faker.harryPotter().character();
         }
         fakeModul.setModulbeauftragte(personen);
     }
@@ -55,8 +55,8 @@ public class ModulFaker {
         fakeVeranstaltung.setLeistungspunkte("5CP");
         fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
         generateMultipleVeranstaltungsform(fakeVeranstaltung);
-        Set<String> vt = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
-        fakeVeranstaltung.setVoraussetzungenTeilnahme(vt);
+        fakeVeranstaltung.setVoraussetzungenTeilnahme("- " + faker.book().title()
+                + "\n- " + faker.book().title());
         fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
@@ -68,12 +68,10 @@ public class ModulFaker {
         fakeBeschreibung.setLernergebnisse(faker.elderScrolls().quote());
         fakeBeschreibung.setHaeufigkeit("Einmal im leben");
         fakeBeschreibung.setSprache(faker.country().name());
-        Set<String> sl = new HashSet<>(Arrays.asList(faker.book().title(), faker.book().title()));
-        fakeBeschreibung.setLiteratur(sl);
-        Set<String> v = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
-        fakeBeschreibung.setVerwendbarkeit(v);
-        Set<String> vb = new HashSet<>(Arrays.asList(faker.elderScrolls().quote()));
-        fakeBeschreibung.setVoraussetzungenBestehen(vb);
+        fakeBeschreibung.setLiteratur("- " + faker.book().title()
+                + "\n- " + faker.book().title());
+        fakeBeschreibung.setVerwendbarkeit("- " + faker.elderScrolls().quote());
+        fakeBeschreibung.setVoraussetzungenBestehen("- " + faker.elderScrolls().quote());
         return fakeBeschreibung;
     }
 
