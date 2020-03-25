@@ -1,12 +1,16 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
+import mops.module.controller.ModulWrapper;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
+import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.springframework.stereotype.Service;
@@ -89,6 +93,62 @@ public class ModulService {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
+        //TODO: Magic Numbers besser lösen
+        int anzahlZusatzfelderImWrapper;
+        if (modulWrapper.getZusatzfelder() == null) {
+            anzahlZusatzfelderImWrapper = 0;
+        } else {
+            anzahlZusatzfelderImWrapper = modulWrapper.getZusatzfelder().size();
+        }
+        int anzahlVeranstaltungsformenImWrapper;
+        if (modulWrapper.getVeranstaltungsformen() == null) {
+            anzahlVeranstaltungsformenImWrapper = 0;
+        } else {
+            anzahlVeranstaltungsformenImWrapper = modulWrapper.getVeranstaltungsformen().size();
+        }
+
+        int anzahlVeranstaltungen = modulWrapper.getVeranstaltungen().size();
+        int veranstaltungsformenProVeranstaltung = 6;
+        int zusatzfelderProVeranstaltung = 2;
+
+        if (anzahlVeranstaltungsformenImWrapper != veranstaltungsformenProVeranstaltung
+                * anzahlVeranstaltungen) {
+            throw new IllegalArgumentException(
+                    "falsche Größe der Veranstaltungsformenliste im Wrapper");
+        }
+
+        if (anzahlZusatzfelderImWrapper != zusatzfelderProVeranstaltung
+                        * anzahlVeranstaltungen) {
+            throw new IllegalArgumentException("falsche Größe der Zusatzfelderliste im Wrapper");
+        }
+
+        for (int i = 0; i < anzahlVeranstaltungen; i++) {
+            for (int j = 0; j < veranstaltungsformenProVeranstaltung; j++) {
+                modulWrapper.getVeranstaltungen().get(i).getVeranstaltungsformen().add(
+                        modulWrapper.getVeranstaltungsformen().get(
+                                i * veranstaltungsformenProVeranstaltung + j));
+            }
+            for (int j = 0; j < zusatzfelderProVeranstaltung; j++) {
+                modulWrapper.getVeranstaltungen().get(i).getZusatzfelder().add(
+                        modulWrapper.getZusatzfelder().get(i * zusatzfelderProVeranstaltung + j));
+            }
+        }
+
+        //TODO: fixen, entfernt teilweise zu viele oder zu wenige wenn einige leer?
+        modulWrapper.getVeranstaltungsformen().removeIf(vf -> vf.getForm().isEmpty());
+
+        modulWrapper.getZusatzfelder().removeIf(z -> z.getTitel().isEmpty()
+                || z.getInhalt().isEmpty());
+
+        Set<Veranstaltung> veranstaltungen = new HashSet<>(modulWrapper.getVeranstaltungen());
+        Modul modul = modulWrapper.getModul();
+//        modul.getVeranstaltungen().clear();     //TODO
+        modul.setVeranstaltungen(veranstaltungen);
+        modul.refreshMapping();
+        return modul;
     }
 
     public List<Modul> getAllModule() {
