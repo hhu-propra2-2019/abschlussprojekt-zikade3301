@@ -19,10 +19,11 @@ public class SuchService {
 
     /**
      * Die Volltextsuche wird auf alle relevanten Felder in den Modulen der Datenbank angewandt.
-     * Die Ergebnisse sind grob nach relevanz sortiert: Treffer im Titel sind wichtiger als in der Beschreibung
+     * Die Ergebnisse sind grob nach Relevanz sortiert:
+     * Treffer im Titel sind wichtiger als in der Beschreibung.
      *
-     * @param searchInput Ein String der einen oder mehrere Suchbegriffe beinhaltet.
-     * @return  Gibt eine Liste der Module zurück, diese enhalten den gesuchten Begriff.
+     * @param searchInput Ein String, der einen oder mehrere Suchbegriffe beinhaltet.
+     * @return Gibt eine Liste der Module zurück, diese enhalten den gesuchten Begriff.
      */
     @Transactional
     public List<Modul> search(String searchInput) {
