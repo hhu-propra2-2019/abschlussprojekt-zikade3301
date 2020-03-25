@@ -1,10 +1,6 @@
 package mops.module.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import mops.module.database.Modul;
@@ -12,7 +8,6 @@ import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.aop.aspectj.annotation.LazySingletonAspectInstanceFactoryDecorator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +17,33 @@ public class HibernateModuleSearch {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void initIndex() throws InterruptedException {
-        FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-        fullTextEntityManager.createIndexer().startAndWait();
+    /**
+     * Initializes the Lucene index for fulltextsearching modules.
+     * This needs to be done once at application start to index data that is already there.
+     * Afterwards all entries are automatically indexed.
+     */
+    public void initIndex() {
+        FullTextEntityManager fullTextEntityManager;
+        fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        try {
+            fullTextEntityManager.createIndexer().startAndWait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Fulltextsearch on all relevant fields of modules in the database.
+     * Results are roughly ordered by relevance: hits in titles are ranked higher than hits
+     * in the description.
+     *
+     * @param searchInput String which contains one or more search terms
+     * @return list of modules that contain the search term(s)
+     */
     @Transactional
     public List<Modul> search(String searchInput) {
-        FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
+        FullTextEntityManager fullTextEntityManager;
+        fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 
         QueryBuilder qb = fullTextEntityManager.getSearchFactory()
                 .buildQueryBuilder().forEntity(Modul.class).get();
@@ -52,9 +66,7 @@ public class HibernateModuleSearch {
         javax.persistence.Query persistenceQuery =
                 fullTextEntityManager.createFullTextQuery(query, Modul.class);
 
-        List<Modul> results = persistenceQuery.getResultList();
-
-        return results;
+        return persistenceQuery.getResultList();
     }
 
 }
