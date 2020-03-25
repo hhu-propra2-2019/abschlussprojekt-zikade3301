@@ -65,8 +65,11 @@ public class HibernateModuleSearch {
 
         javax.persistence.Query persistenceQuery =
                 fullTextEntityManager.createFullTextQuery(query, Modul.class);
+        List<Modul> results = persistenceQuery.getResultList();
 
-        return persistenceQuery.getResultList();
+        results.removeIf(result -> !result.getSichtbar());
+
+        return results;
     }
 
 }

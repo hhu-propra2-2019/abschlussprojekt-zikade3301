@@ -28,7 +28,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Getter
 @Setter
-//TODO: Conditional Indexing: only index, when module is visible
 @Indexed
 
 public class Modul {
