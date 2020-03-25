@@ -1,0 +1,39 @@
+<div th:each="c : ${categories}">
+    <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
+    <h2 th:text="${c.toReadable()}">Pflichtmodule der Informatik (1.–4. Fachsemester)</h2>
+    <h2 th:text="${c.toReadable()}">Compulsory Modules in Computer Science</h2>
+    <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
+        <h3 th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
+        <h3 th:text="${m.titelEnglisch}">Computer Architecture</h3>
+        <h3>Studiengang</h3>
+        <span th:text="${m.studiengang}">Bachelor-Studiengang Informatik</span>
+        <div th:each="v, vitemStat : ${m.veranstaltungen}">
+            <h3 th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '.' + ${vitemStat.index + 1} + ' ' + ${v.titel}"
+                th:if="${#lists.size(m.veranstaltungen) > 1}">Rechnerarchitektur</h3>
+            <h3>Lehrveranstaltungen</h3>
+            <span>
+                <ul th:remove="all-but-first">
+                    <li th:each="lv : ${v.lehrveranstaltungen}"
+                        th:text="${lv}">Vorlesung „Rechnerarchitektur“, 2 SWS</li>
+                    <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
+                </ul>
+            </span>
+            <h3>Inhalte</h3>
+            <span th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP) behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:</span>
+            <h3>Lernergebnisse/Kompetenzen</h3>
+            <span th:utext="${v.lernergebnisse}">Nach erfolgreicher Teilnahme an den Veranstaltungen dieses Moduls können die Studierenden</span>
+            <h3>Literatur</h3>
+            <span th:utext="${v.literatur}">Die primären Lehrbücher zu den verschiedenen Bestandteilen dieses Moduls sind:</span>
+            <h3>Verwendbarkeit des Moduls</h3>
+            <span th:utext="${v.verwendbarkeit}">Pflichtbereich</span>
+            <h3>Teilnahmevoraussetzungen</h3>
+            <span th:utext="${v.teilnahmevoraussetzungen}">Keine</span>
+            <h3>Voraussetzungen für die Vergabe von Leistungspunkten</h3>
+            <span th:utext="${v.voraussetzungenBestehen}"></span>
+            <h3>Häufigkeit des Angebots, modulare Schiene</h3>
+            <span th:utext="${v.haeufigkeit}"></span>
+        </div>
+        <h3>Modulbeauftragte und hauptamtliche Lehrende</h3>
+        <span th:text="${m.modulbeauftragte}">Prof. Dr. Stefan Conrad, Prof. Dr. Martin Mauve</span>
+    </div>
+</div>
