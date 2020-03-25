@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -30,12 +29,11 @@ public class Modul {
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
-            orphanRemoval = true)
+    //TODO: orphan removal wurde entfernt, Lösung für Löschen veralteter Veranstaltungen finden
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Veranstaltung> veranstaltungen;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> modulbeauftragte;
+    private String modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 

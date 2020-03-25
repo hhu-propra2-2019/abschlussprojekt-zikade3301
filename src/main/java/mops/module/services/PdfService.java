@@ -11,7 +11,6 @@ import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,22 +21,28 @@ import java.util.List;
 import java.util.Map;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
-import mops.module.database.Veranstaltung;
-import mops.module.database.Veranstaltungsbeschreibung;
-import mops.module.database.Zusatzfeld;
-import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.PDPageTree;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @Service
 public class PdfService {
-    private static final PDFMergerUtility pdfMerger = new PDFMergerUtility();
+
+    public PdfService(TemplateEngine templateEngine) {
+        this.templateEngine = templateEngine;
+
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
+
+        templateEngine.setTemplateResolver(templateResolver);
+    }
+
+    private TemplateEngine templateEngine;
 
     private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
             Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
@@ -53,7 +58,7 @@ public class PdfService {
      * @param module
      * @return
      */
-    public static PDDocument generatePdf(List<Modul> module) {
+    public PDDocument generatePdf(List<Modul> module) {
         int pageCount = 1 + COUNT_OF_PRE_PAGES;
 
         Map<Modul, Integer> pageForModul = new HashMap<>();
@@ -133,7 +138,7 @@ public class PdfService {
      * @param modul
      * @return
      */
-    public static PDDocument generatePdf(Modul modul) {
+    public PDDocument generatePdf(Modul modul) {
         String html = markdownToHtml(buildString(modul));
 
         html = PdfConverterExtension.embedCss(html, CSS_MODULE);
@@ -166,70 +171,9 @@ public class PdfService {
         return pdDocument;
     }
 
-    private static String buildString(Modul modul) {
-        StringBuilder str = new StringBuilder();
-        str.append("## " + modul.getTitelDeutsch() + "\n");
-        str.append("## " + modul.getTitelEnglisch() + "\n");
-        str.append("### Studiengang\n");
-        str.append(modul.getStudiengang() + "\n");
-        str.append("### Leistungspunkte\n");
-        str.append(modul.getGesamtLeistungspunkte() + "\n");
-        str.append("### Lehrveranstaltungen\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getTitel)
-                .map(x -> "- " + x + "\n")
-                .forEach(str::append);
-        str.append("### Inhalte\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getBeschreibung)
-                .map(Veranstaltungsbeschreibung::getInhalte)
-                .map(x -> x + "\n")
-                .forEach(str::append);
-        str.append("### Literatur\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getBeschreibung)
-                .map(Veranstaltungsbeschreibung::getLiteratur)
-                .map(x -> "- " + x + "\n")
-                .forEach(str::append);
-        str.append("### Verwendbarkeit\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getBeschreibung)
-                .map(Veranstaltungsbeschreibung::getVerwendbarkeit)
-                .map(x -> "- " + x + "\n")
-                .forEach(str::append);
-        str.append("### Teilnahmevoraussetzungen\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getVoraussetzungenTeilnahme)
-                .map(x -> "- " + x + "\n")
-                .forEach(str::append);
-        str.append("### Voraussetzungen für die Vergabe von Leistungspunkten\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getBeschreibung)
-                .map(Veranstaltungsbeschreibung::getVoraussetzungenBestehen)
-                .map(x -> "- " + x + "\n")
-                .forEach(str::append);
-        str.append("### Studiengang\n");
-        modul.getModulbeauftragte().stream()
-                .map(x -> x + "\n")
-                .forEach(str::append);
-        str.append("### Häufigkeit des Angebots, modulare Schiene\n");
-        modul.getVeranstaltungen().stream()
-                .map(Veranstaltung::getBeschreibung)
-                .map(Veranstaltungsbeschreibung::getHaeufigkeit)
-                .map(x -> x + "\n")
-                .forEach(str::append);
-        str.append("### Modulbeauftragte und hauptamtliche Lehrende\n");
-        modul.getModulbeauftragte().stream()
-                .map(x -> x + ", ")
-                .forEach(str::append);
-        str.append("\n");
-        for (Veranstaltung veranstaltung : modul.getVeranstaltungen()) {
-            for (Zusatzfeld zusatzfeld : veranstaltung.getZusatzfelder()) {
-                str.append("### " + zusatzfeld.getTitel() + "\n");
-                str.append(zusatzfeld.getInhalt() + "\n");
-            }
-        }
-        return str.toString();
+    public String buildString(Modul modul) {
+        // TO BE DONE
+        return "";
     }
 
     private static String getCss() {
