@@ -1,7 +1,7 @@
 package mops.module.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,6 @@ import mops.module.database.Veranstaltung;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,24 +25,46 @@ public class FullTextSearchTest {
     @Autowired
     ModulSnapshotRepository modulRepo;
 
-    private String completeModulString;
     private Modul completeModul;
+    private Modul anotherModul;
 
     @BeforeEach
     void init() {
         modulRepo.deleteAll();
-        completeModulString = "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme test','leistungspunkte':'10CP'"
-                + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
+        String completeModulString = "{'titelDeutsch':'Betriebssysteme',"
+                + "'titelEnglisch':'Operating systems', 'veranstaltungen':"
+                + "[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP',"
+                + "'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
                 + "{'form':'Übung','semesterWochenStunden':2}],"
-                + "'beschreibung':{'inhalte':' \uF0B7Architekturformen: monolitisch, geschichtet, Mikrokern, Client/Server\uF0B7Speicher: Segmentierung, Paging, Garbage Collection\uF0B7Nebenläufigkeit: Schedulingstrategien, Prozesse, Threads, Interrupts\uF0B7Synchronisierung: Semaphore, klassische Problemstellungen, Verklemmungen\uF0B7Dateisysteme: FAT, UNIX, EXT, NTFS\uF0B7Kommunikation: Signale, Pipes, Sockets\uF0B7Sicherheit: HW-Schutz\uF0B7Fallstudien, u.a. Linux, Microsoft Windows',"
-                + "'lernergebnisse':'Studierende sollen nach Absolvierung der Lehrveranstaltungen in der Lage sein,\uF0B7Betriebssystembegriffe zu nennen und zu erläutern\uF0B7Speicherverwaltungstechniken (physikalisch, virtuell, Segmentierung und Paging) auf gegebene Bei-spiele anzuwenden und zu bewerten.\uF0B7Schedulingstrategien anzuwenden und zu bewerten.\uF0B7Synchronisierungsprobleme in parallelen Threads zu erkennen und eigene Synchronisierungslösungen zu konzipieren\uF0B7Interprozesskommunikation anzuwenden\uF0B7grundlegende Betriebssystemkonzepte in modernen Desktop-Betriebssystemen in eigenen Worten erklären zu können',"
-                + "'literatur':['\uF0B7Andrew S. Tanenbaum: „Modern Operating Systems”, 4. Auflage, Prentice Hall, 2014.'],'verwendbarkeit':['Wahlpflichtbereich','Schwerpunktbereich','Individuelle Ergänzung im Master-Studiengang Informatik','Anwendungsfach im Bachelor-Studiengang Mathematik und Anwendungsgebiete','Nebenfach im Bachelor-Studiengang Physik','Nebenfach im Bachelor-Studiengang Medizinische Physik'],"
-                + "'voraussetzungenBestehen':['Erfolgreiche Teilnahme an der Prüfung am Ende der Veranstaltung.'],"
-                + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['„Programmierung”','„Rechnerarchitektur”'],"
-                + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
-                + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
+                + "'beschreibung':{'inhalte':'"
+                + "*Architekturformen: monolitisch, geschichtet, Mikrokern, Client/Server"
+                + "*Speicher: Segmentierung, Paging, Garbage Collection"
+                + "*Nebenläufigkeit: Schedulingstrategien, Prozesse, Threads, Interrupts"
+                + "*Synchronisierung: Semaphore, klassische Problemstellungen, Verklemmungen"
+                + "*Dateisysteme: FAT, UNIX, EXT, NTFS"
+                + "*Kommunikation: Signale, Pipes, Sockets"
+                + "*Sicherheit: HW-Schutz"
+                + "*Fallstudien, u.a. Linux, Microsoft Windows',"
+                + "'lernergebnisse':'Studierende sollen nach Absolvierung der Lehrveranstaltungen "
+                + "in der Lage sein,*Betriebssystembegriffe zu nennen und zu erläutern"
+                + "*Speicherverwaltungstechniken (physikalisch, virtuell, Segmentierung und "
+                + "Paging) auf gegebene Bei-spiele anzuwenden und zu bewerten."
+                + "*Schedulingstrategien anzuwenden und zu bewerten."
+                + "*Synchronisierungsprobleme in parallelen Threads zu erkennen und eigene"
+                + "Synchronisierungslösungen zu konzipieren"
+                + "*Interprozesskommunikation anzuwenden"
+                + "*grundlegende Betriebssystemkonzepte in modernen Desktop-Betriebssystemen"
+                + "in eigenen Worten erklären zu können',"
+                + "'literatur':['Andrew S. Tanenbaum: „Modern Operating Systems”, 4. Auflage,"
+                + "Prentice Hall, 2014.'],'verwendbarkeit':['Wahlpflichtbereich',"
+                + "'Schwerpunktbereich','Individuelle Ergänzung im Master-Studiengang Informatik',"
+                + "'Anwendungsfach im Bachelor-Studiengang Mathematik und Anwendungsgebiete',"
+                + "'Nebenfach im Bachelor-Studiengang Physik','Nebenfach im Bachelor-Studiengang "
+                + "Medizinische Physik'], 'voraussetzungenBestehen':['Erfolgreiche Teilnahme an der"
+                + "Prüfung am Ende der Veranstaltung.'], 'haeufigkeit':'Alle 2 Semester',"
+                + "'sprache':'Deutsch'}, 'voraussetzungenTeilnahme':['„Programmierung”',"
+                + "'„Rechnerarchitektur”'], 'zusatzfelder':[{'titel':'Zusatzfeld2', 'inhalt':"
+                + "'Dies hier ist das zweite Zusatzfeld!'},"
                 + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
                 + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
@@ -51,6 +72,14 @@ public class FullTextSearchTest {
         completeModul = JsonService.jsonObjectToModul(completeModulString);
         completeModul.refreshMapping();
         modulRepo.save(completeModul);
+
+        String anotherModulString = "{'titelDeutsch':'Programmierung',"
+                + "'titelEnglisch':'Programming', 'veranstaltungen':[{'titel':"
+                + "'Vorlesung Programmierung','leistungspunkte':'10CP'}]}";
+
+        anotherModul = JsonService.jsonObjectToModul(anotherModulString);
+        anotherModul.refreshMapping();
+        modulRepo.save(anotherModul);
     }
 
     @AfterEach
@@ -59,68 +88,77 @@ public class FullTextSearchTest {
     }
 
     @Test
-    void fullTextSearchMultiWordTest() {
-        List<Modul> results = hbSearch.search("test");
-        List<Veranstaltung> results2 = new ArrayList<>();
-        Set miep = results.get(0).getVeranstaltungen();
-        results2.addAll(miep);
-        assertFalse(results2.isEmpty());
-        assertThat(results2.get(0).getTitel().equals("test"));
+    void fullTextSearchReturnsNoResultWhenNoMatch() {
+        String searchinput = "Internet";
+        List<Modul> results = hbSearch.search(searchinput);
+
+        assertTrue(results.isEmpty());
     }
 
     @Test
-    void fullTextSearchFindsFullWordsFromParts() {
-        List<Modul> results = hbSearch.search("Betriebs");
+    void fullTextSearchReturnsOneResultWhenOneMatch() {
+        String searchinput = "Betriebssysteme";
+        List<Modul> results = hbSearch.search(searchinput);
 
-        assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
+        assertEquals(1, results.size());
+    }
+
+    @Test
+    void fullTextSearchReturnsTwoResultsWhenTwoMatches() {
+        String searchinput = "Betriebssysteme Programmierung";
+        List<Modul> results = hbSearch.search(searchinput);
+
+        assertEquals(2, results.size());
     }
 
     @Test
     void fullTextSearchFindsGermanTitle() {
-        List<Modul> results = hbSearch.search("Betriebssysteme");
+        String searchinput = "Betriebssysteme";
+        List<Modul> results = hbSearch.search(searchinput);
 
-        assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals("Betriebssysteme"));
+        assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
 
     @Test
     void fullTextSearchFindsEnglishTitle() {
-        List<Modul> results = hbSearch.search("Operating");
+        String searchinput = "Operating";
+        List<Modul> results = hbSearch.search(searchinput);
 
-        assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelDeutsch().equals(completeModul.getTitelEnglisch()));
+        assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
     }
 
     @Test
     void fullTextSearchfindsInhalteInVeranstaltungsbeschreibung() {
-        List<Modul> results = hbSearch.search("Architekturformen");
-        List<Veranstaltung> results2 = new ArrayList<>();
-        Set miep = results.get(0).getVeranstaltungen();
-        results2.addAll(miep);
+        String searchinput = "Architekturformen";
+        List<Modul> results = hbSearch.search(searchinput);
+        Set<Veranstaltung> veranstaltungen = results.get(0).getVeranstaltungen();
+        List<Veranstaltung> results2 = new ArrayList<>(veranstaltungen);
 
-        assertFalse(results.isEmpty());
-        assertThat(results2.get(0).getBeschreibung().getInhalte().equals("Architekturformen"));
+        assertTrue(results2.get(0).getBeschreibung().getInhalte().contains(searchinput));
     }
 
     @Test
-    @DisplayName("Search for 'Architektur' finds 'Architekturformen'")
-    void fullTextSearchStemWordTest() {
-        List<Modul> results = hbSearch.search("Architektur");
-        List<Veranstaltung> results2 = new ArrayList<>();
-        Set miep = results.get(0).getVeranstaltungen();
-        results2.addAll(miep);
+    void fullTextSearchFindsFullWordsFromParts() {
+        String searchinput = "Betriebs";
+        List<Modul> results = hbSearch.search(searchinput);
 
-        assertFalse(results.isEmpty());
-        assertThat(results2.get(0).getBeschreibung().getInhalte().equals("Architekturformen"));
+        assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
 
     @Test
     void fullTextSearchFindsSplittedWords() {
-        List<Modul> results = hbSearch.search("Operating systems");
+        String searchinput = "Operating systems";
+        List<Modul> results = hbSearch.search(searchinput);
 
-        assertFalse(results.isEmpty());
-        assertThat(results.get(0).getTitelEnglisch().equals(completeModul.getTitelEnglisch()));
+        assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
+    }
+
+    @Test
+    void fullTextSearchFindsMultipleWordsFromParts() {
+        String searchinput = "Op sys";
+        List<Modul> results = hbSearch.search(searchinput);
+
+        assertEquals(results.get(0).getTitelEnglisch(), completeModul.getTitelEnglisch());
     }
 
 }
