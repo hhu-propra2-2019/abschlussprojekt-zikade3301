@@ -33,7 +33,9 @@ import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PdfService {
     private static final PDFMergerUtility pdfMerger = new PDFMergerUtility();
 
@@ -138,7 +140,7 @@ public class PdfService {
         return htmlToPdf(html);
     }
 
-    private static String markdownToHtml(String markdown) {
+    public static String markdownToHtml(String markdown) {
         MutableDataHolder markdownOptions = new MutableDataSet();
         markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
         Parser parser = Parser.builder(markdownOptions).build();

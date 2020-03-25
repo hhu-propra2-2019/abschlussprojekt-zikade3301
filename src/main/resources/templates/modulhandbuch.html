@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modulhandbuch</title>
+</head>
+<body>
+<!--th:text="*{}"-->
+<div th:each="c : ${categorys}">
+    <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
+    <h2 th:text="${c.toReadable()}">Pflichtmodule der Informatik (1.–4. Fachsemester)</h2>
+    <h2 th:text="${c.toReadable()}">Compulsory Modules in Computer Science</h2>
+    <div th:each="m, itemStat : ${moduls}">
+        <h3 th:text="${c.ordinal()+1} + '.' + ${itemStat.index} + ' ' + *{m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
+        <h3 th:text="*{m.titelEnglisch}">Computer Architecture</h3>
+        <h3>Studiengang</h3>
+        <span th:utext="${@pdfService.markdownToHtml(m.studiengang)}">Bachelor-Studiengang Informatik</span>
+        <h3>Leistungspunkte</h3>
+        <span th:utext="${@pdfService.markdownToHtml(m.getGesamtLeistungspunkte())}">9 LP ab PO 2016, alte PO‘s 10 LP</span>
+        <h3>Lehrveranstaltungen</h3>
+        <span>
+        <ul th:remove="all-but-first">
+            <li th:each="v : ${m.getVeranstaltungen()}"
+                th:text="${v.getTitel()} + ', ' + ${v.getBeschreibung().haeufigkeit}">Vorlesung „Rechnerarchitekturr“, 2 SWS</li>
+            <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
+        </ul>
+    </span>
+        <h3>Inhalte</h3>
+        <span>Die Vorlesung „Rechnerarchitekturr“ sowie die dazugehörige Übung (5 LP) behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:</span>
+        <h3>Lernergebnisse/Kompetenzen</h3>
+        <span>Nach erfolgreicher Teilnahme an den Veranstaltungen dieses Moduls können die Studierenden</span>
+        <h3>Empfohlene Literatur</h3>
+        <span>Die primären Lehrbücher zu den verschiedenen Bestandteilen dieses Moduls sind:</span>
+        <h3>Verwendbarkeit des Moduls</h3>
+        <span>
+        <ul>
+            <li>Pflichtbereich</li>
+            <li>Anwendungsfach im Bachelor-Studiengang Mathematik und Anwendungsgebiete</li>
+        </ul>
+    </span>
+        <h3>Teilnahmevoraussetzungen</h3>
+        <span>Keine</span>
+        <h3>Voraussetzungen für die Vergabe von Leistungspunkten</h3>
+        <span>
+        <ul>
+            <li>aktive und erfolgreiche Teilnahme an den Übungen zur Vorlesung „Rechnerarchitektur“</li>
+            <li>aktive und erfolgreiche Teilnahme an den praktischen Übungen</li>
+        </ul>
+    </span>
+        <h3>Häufigkeit des Angebots, modulare Schiene</h3>
+        <span>
+        <ul>
+            <li>aktive und erfolgreiche Teilnahme an den Übungen zur Vorlesung „Rechnerarchitektur“</li>
+            <li>aktive und erfolgreiche Teilnahme an den praktischen Übungen</li>
+        </ul>
+    </span>
+        <h3>Modulbeauftragte und hauptamtliche Lehrende</h3>
+        <span>Prof. Dr. Stefan Conrad, Prof. Dr. Martin Mauve</span>
+    </div>
+</div>
+</body>
+</html>
