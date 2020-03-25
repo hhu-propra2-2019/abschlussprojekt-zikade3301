@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
