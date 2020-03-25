@@ -18,22 +18,6 @@ public class SuchService {
     private EntityManager entityManager;
 
     /**
-     * Initializiert den Lucene Index für die volltextsuchenden Module.
-     * Muss beim Start des Programms einmal ausgeführt werden, um die Daten die schon vorhanden sind zu indexieren.
-     * Danach werden alle Einträge automatisch indexiert.
-     */
-    @Transactional
-    public void initIndex() {
-        FullTextEntityManager fullTextEntityManager;
-        fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-        try {
-            fullTextEntityManager.createIndexer().startAndWait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Die Volltextsuche wird auf alle relevanten Felder in den Modulen der Datenbank angewandt.
      * Die Ergebnisse sind grob nach relevanz sortiert: Treffer im Titel sind wichtiger als in der Beschreibung
      *
