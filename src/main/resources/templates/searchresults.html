@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{mopslayout :: html(name='Modulhandbuch', title='Optional: Tabtitel', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+      th:replace="~{mopslayout :: html(name='Modulhandbuch', title='Suchergebnisse', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
     <meta charset="utf-8">
     <title>Name des Subsystems</title>
@@ -57,7 +57,6 @@
 
 
 <main th:fragment="bodycontent">
-    <div> HIER STEHEN SUCHERGEBNISSE!!</div>
     <ul th:each="result: ${searchResults}">
         <li>
             <a th:href="@{'/module/moduldetails/' + ${result.getId()}}"
