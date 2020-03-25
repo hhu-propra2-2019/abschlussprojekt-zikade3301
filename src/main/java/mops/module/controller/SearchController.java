@@ -48,9 +48,9 @@ public class SearchController {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
         }
+
         List<Modul> searchResults = moduleSearch.search(searchField);
         model.addAttribute("searchResults", searchResults);
-        //TODO: new request for modules only including the testresults
         return "searchresults";
     }
 }

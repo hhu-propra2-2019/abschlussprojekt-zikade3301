@@ -13,23 +13,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.lucene.analysis.core.KeywordTokenizerFactory;
-import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
-import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.TokenFilterDef;
-import org.hibernate.search.annotations.TokenizerDef;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
 @Setter
 @Indexed
-
 public class Modul {
 
     @Id
@@ -59,7 +51,6 @@ public class Modul {
     @Field
     private String studiengang;
 
-    //TODO: das Feld auch durchsuchen?
     private Modulkategorie modulkategorie;
 
     private Boolean sichtbar;
