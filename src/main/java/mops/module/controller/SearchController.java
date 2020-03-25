@@ -4,7 +4,7 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 
 import java.util.List;
 import mops.module.database.Modul;
-import mops.module.services.HibernateModuleSearch;
+import mops.module.services.SuchService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class SearchController {
 
     @Autowired
-    private HibernateModuleSearch moduleSearch;
+    private SuchService suchService;
 
     /*
     @GetMapping("/searchresults")
@@ -49,7 +49,7 @@ public class SearchController {
             model.addAttribute("account", createAccountFromPrincipal(token));
         }
 
-        List<Modul> searchResults = moduleSearch.search(searchField);
+        List<Modul> searchResults = suchService.search(searchField);
         model.addAttribute("searchResults", searchResults);
         return "searchresults";
     }

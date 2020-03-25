@@ -18,12 +18,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("dev")
-public class FullTextSearchTest {
+public class SuchServiceTest {
 
     @Autowired
-    HibernateModuleSearch hbSearch;
+    private SuchService suchService;
+
     @Autowired
-    ModulSnapshotRepository modulRepo;
+    private ModulSnapshotRepository modulRepo;
 
     private Modul completeModul;
     private Modul anotherModul;
@@ -83,14 +84,14 @@ public class FullTextSearchTest {
     }
 
     @AfterEach
-    public void cleanUp() {
+    void cleanUp() {
         modulRepo.deleteAll();
     }
 
     @Test
     void fullTextSearchReturnsNoResultWhenNoMatch() {
         String searchinput = "Internet";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.isEmpty());
     }
@@ -98,7 +99,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchReturnsOneResultWhenOneMatch() {
         String searchinput = "Betriebssysteme";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertEquals(1, results.size());
     }
@@ -106,7 +107,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchReturnsTwoResultsWhenTwoMatches() {
         String searchinput = "Betriebssysteme Programmierung";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertEquals(2, results.size());
     }
@@ -114,7 +115,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchFindsGermanTitle() {
         String searchinput = "Betriebssysteme";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
@@ -122,7 +123,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchFindsEnglishTitle() {
         String searchinput = "Operating";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
     }
@@ -130,7 +131,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchfindsInhalteInVeranstaltungsbeschreibung() {
         String searchinput = "Architekturformen";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
         Set<Veranstaltung> veranstaltungen = results.get(0).getVeranstaltungen();
         List<Veranstaltung> results2 = new ArrayList<>(veranstaltungen);
 
@@ -140,7 +141,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchFindsFullWordsFromParts() {
         String searchinput = "Betriebs";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
@@ -148,7 +149,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchFindsSplittedWords() {
         String searchinput = "Operating systems";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
     }
@@ -156,7 +157,7 @@ public class FullTextSearchTest {
     @Test
     void fullTextSearchFindsMultipleWordsFromParts() {
         String searchinput = "Op sys";
-        List<Modul> results = hbSearch.search(searchinput);
+        List<Modul> results = suchService.search(searchinput);
 
         assertEquals(results.get(0).getTitelEnglisch(), completeModul.getTitelEnglisch());
     }
