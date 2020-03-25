@@ -9,11 +9,11 @@ public class PdfModulWrapper {
     private final Modul modul;
 
     public String getStudiengang() {
-        return getSafeString(modul.getStudiengang()) + "\n";
+        return getSafeString(modul.getStudiengang());
     }
 
     public String getModulbeauftragte() {
-        return getSafeString(modul.getModulbeauftragte()) + "\n";
+        return getSafeString(modul.getModulbeauftragte());
     }
 
     static String safeAppend(String base, String toAppend) {
