@@ -32,7 +32,14 @@ public class SearchController {
     }
     */
 
-
+    /**
+     * Searchresults string.
+     *
+     * @param searchField User input in search form on index
+     * @param token       the token of keycloak for permissions
+     * @param model       the model of keycloak for permissions
+     * @return the string "searchresults" for the carried out search
+     */
     @GetMapping("/search")
     public String search(
             @RequestParam String searchField,
