@@ -22,16 +22,6 @@ public class SearchController {
     @Autowired
     private SuchService suchService;
 
-    /*
-    @GetMapping("/searchresults")
-    public String searchresults(KeycloakAuthenticationToken token, Model model) {
-        if (token != null) {
-            model.addAttribute("account", createAccountFromPrincipal(token));
-        }
-        return "searchresults";
-    }
-    */
-
     /**
      * Searchresults string.
      *
