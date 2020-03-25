@@ -16,9 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -145,7 +147,7 @@ public class PdfService {
         return htmlToPdf(html);
     }
 
-    public static String markdownToHtml(String markdown) {
+    public String markdownToHtml(String markdown) {
         MutableDataHolder markdownOptions = new MutableDataSet();
         markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
         Parser parser = Parser.builder(markdownOptions).build();
@@ -156,7 +158,7 @@ public class PdfService {
         return htmlRenderer.render(document);
     }
 
-    private static PDDocument htmlToPdf(String html) {
+    public static PDDocument htmlToPdf(String html) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
 
@@ -210,5 +212,12 @@ public class PdfService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Modul> filterModule(List<Modul> module, Modulkategorie modulkategorie){
+        return module.stream()
+                .filter(m -> m.getModulkategorie().equals(modulkategorie))
+                .sorted(Comparator.comparing(Modul::getTitelDeutsch))
+                .collect(Collectors.toList());
     }
 }
