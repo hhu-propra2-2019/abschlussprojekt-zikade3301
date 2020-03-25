@@ -40,8 +40,8 @@ public class AdministratorController {
                   "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
                 + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
                 + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
-                + "{'form':'Übung','semesterWochenStunden':2}],"
-                + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
+                          + "{'form':'Übung', 'semesterWochenStunden' :4}],"
+                          + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
                 + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
                 + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
                 + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
@@ -53,7 +53,6 @@ public class AdministratorController {
                 + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
 
         antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul));
-       // antragService.getAntragById((long)1).setAntragsteller("Iven");
         //Bis hier nur Input
 
         model.addAttribute("formatter",DateTimeFormatter.ofPattern("yyyy-MM-dd"));

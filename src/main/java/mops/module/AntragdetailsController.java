@@ -58,12 +58,17 @@ public class AntragdetailsController {
         List<Veranstaltungsform> [] veranstaltungsformenGesamt = new LinkedList [veranstaltungen.size()];
         List<Zusatzfeld> [] zusatzfeldGesamt = new LinkedList [veranstaltungen.size()];
 
+        //Befüllen der Listen Arrays mit den werten aus dem Antrag
         for (int i = 0; i < veranstaltungen.size(); i++) {
             List<Veranstaltungsform> veranstaltungsformen = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            // veranstaltungsformen muss immer size 6 haben.
+            while (veranstaltungsformen.size() < 6) {
+                veranstaltungsformen.add(new Veranstaltungsform());
+            }
+
             List<Zusatzfeld> zusatzfeld = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
             veranstaltungsformenGesamt[i] = veranstaltungsformen;
             zusatzfeldGesamt[i] = zusatzfeld;
-
         }
 
         //Verpacken in ein Wrapper Object
@@ -93,7 +98,7 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token) {
 
         //Auspacken des Wrappers
-        for (int i = 0; i < antragAngenommen.veranstaltungen.size() ; i++) {
+        for (int i = 0; i < antragAngenommen.veranstaltungen.size(); i++) {
             antragAngenommen.veranstaltungen.get(i).setVeranstaltungsformen(new HashSet<>(antragAngenommen.veranstaltungsformen[i]));
             antragAngenommen.veranstaltungen.get(i).setZusatzfelder(new HashSet<>(antragAngenommen.zusatzfeld[i]));
         }
