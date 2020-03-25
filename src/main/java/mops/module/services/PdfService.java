@@ -11,7 +11,11 @@ import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,27 +43,9 @@ public class PdfService {
 
     private static final int COUNT_OF_PRE_PAGES = 2;
 
-    private static final String CSS_MODULE =
-            "body {\n"
-                    + "    font-family: 'Helvetica', sans-serif;\n"
-                    + "    overflow: hidden;\n"
-                    + "    word-wrap: break-word;\n"
-                    + "    font-size: 12px;\n"
-                    + "}\n\n"
-                    + "inhaltsverzeichnis, #frontpage {\n"
-                    + "    display: block;\n"
-                    + "    page-break-after: always;\n"
-                    + "    font-size: 14px;\n"
-                    + "}\n\n"
-                    + "a:link {\n"
-                    + "    text-decoration: none;\n"
-                    + "    color: black;\n"
-                    + "}\n\n"
+    private static String CSS_MODULE = getCss();
 
-                    + "#frontpage {\n"
-                    + "    font-size: 16px;\n"
-                    + "      text-align: center;\n"
-                    + "}\n";
+    private static final String pathToPdfResources = "./src/main/resources/static/pdfgeneration";
 
     /**
      * @param module
@@ -111,27 +97,18 @@ public class PdfService {
         complete = PdfConverterExtension.embedCss(complete, CSS_MODULE);
 
         PDDocument document = htmlToPdf(complete);
-        addPageNumbers(document);
         return document;
     }
 
     private static String generateFrontPage() {
         StringBuilder str = new StringBuilder();
-        str.append("<div id=\"frontpage\">\n"
-                +markdownToHtml(
-                "# Modulhandbuch\n"
-                + "## für den\n"
-                + "## Bachelor- und Master-Studiengang Informatik\n"
-                + getLinebreak(22)
-                + "## Institut für Informatik\n"
-                + "## der Mathematisch-Naturwissenschaftliche Fakultät\n"
-                + "## der Heinrich-Heine-Universität\n"
-                + getLinebreak(1)
-                + "## Herausgegeben vom\n"
-                + "## Ausschuss für die Bachelor- und Master-Prüfung\n"
-                + "## im Fach Informatik\n")
-                + "</div>\n");
-
+        try {
+            Path path = Paths.get(pathToPdfResources + "/frontpage.html");
+            List<String> lines = Files.readAllLines(path);
+            lines.stream().map(x -> x + "\n").forEach(str::append);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return str.toString();
     }
 
@@ -147,10 +124,8 @@ public class PdfService {
         }
         str.append("</table>");
         str.append("</inhaltsverzeichnis>");
-        //String html = PdfConverterExtension.embedCss(str.toString(), CSS_INHALTSVERZEICHNIS);
         return str.toString();
     }
-
 
     /**
      * @param modul
@@ -252,42 +227,19 @@ public class PdfService {
                 str.append(zusatzfeld.getInhalt() + "\n");
             }
         }
-
         return str.toString();
     }
 
-    private static void appendPdf(PDDocument dist, PDDocument source) {
+    private static String getCss() {
+        StringBuilder str = new StringBuilder();
         try {
-            pdfMerger.appendDocument(dist, source);
+            Path path = Paths.get(pathToPdfResources + "/handbuch.css");
+            List<String> lines = Files.readAllLines(path);
+            lines.stream().map(x -> x + "\n").forEach(str::append);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void addPageNumbers(PDDocument document) {
-        PDPageTree allPages = document.getPages();
-        PDFont font = PDType1Font.HELVETICA;
-        float fontSize = 8.0f;
-        for (int i = 1; i < allPages.getCount(); i++) {
-            PDPage page = allPages.get(i);
-            String pageNumber = "- " + (i + 1) + " -";
-
-            try {
-                float pageNumberWidth = font.getStringWidth(pageNumber) / 1000 * fontSize;
-                float pageNumberHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * fontSize;
-                float bottomMargin = 30.0f;
-
-                PDPageContentStream footerContentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, true);
-                footerContentStream.beginText();
-                footerContentStream.setFont(font, fontSize);
-                footerContentStream.newLineAtOffset((PDRectangle.A4.getUpperRightX() - pageNumberWidth) / 2, PDRectangle.A4.getLowerLeftY() + bottomMargin + pageNumberHeight);
-                footerContentStream.showText(pageNumber);
-                footerContentStream.endText();
-                footerContentStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        return str.toString();
     }
 
     private static String getLinebreak(int n) {
