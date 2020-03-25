@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -36,26 +37,27 @@ public class AdministratorController {
 
         //Nur Input um zu gucken ob alles auch klappt
 
-        String complete1Modul =
-                  "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
-                + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
-                + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
-                          + "{'form':'Übung', 'semesterWochenStunden' :4}],"
-                          + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
-                + "'literatur':['Alter Schinken'],'verwendbarkeit':['Überall verwendbar'],"
-                + "'voraussetzungenBestehen':['50% der Punkte in der Klausur'],"
-                + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
-                + "'voraussetzungenTeilnahme':['Informatik I'],"
-                + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
-                + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
-                + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
-                + "'modulbeauftragte':['Michael Schöttner'],'gesamtLeistungspunkte':'10CP',"
-                + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
-
-        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul));
+//        String complete1Modul =
+//                "{'titelDeutsch':'Betriebssysteme','titelEnglisch':'Operating systems',"
+//                        + "'veranstaltungen':[{'titel':'Vorlesung Betriebssysteme','leistungspunkte':'10CP'"
+//                        + ",'veranstaltungsformen':[{'form':'Vorlesung','semesterWochenStunden':4},"
+//                        + "{'form':'Übung','semesterWochenStunden':2}],"
+//                        + "'beschreibung':{'inhalte':'Inhalte','lernergebnisse':'Synchronisierung',"
+//                        + "'literatur':'Alter Schinken','verwendbarkeit':'Überall verwendbar',"
+//                        + "'voraussetzungenBestehen':'50% der Punkte in der Klausur',"
+//                        + "'haeufigkeit':'Alle 2 Semester','sprache':'Deutsch'},"
+//                        + "'voraussetzungenTeilnahme':'Informatik I',"
+//                        + "'zusatzfelder':[{'titel':'Zusatzfeld2',"
+//                        + "'inhalt':'Dies hier ist das zweite Zusatzfeld!'},"
+//                        + "{'titel':'Zusatzfeld1','inhalt':'Dies hier ist das erste Zusatzfeld!'}]}],"
+//                        + "'modulbeauftragte':'Michael Schöttner','gesamtLeistungspunkte':'10CP',"
+//                        + "'studiengang':'Informatik','modulkategorie':'WAHLPFLICHT_BA'}";
+//
+//        String antragsteller = ((KeycloakPrincipal) token.getPrincipal()).getName();
+//        antragService.addModulCreationAntrag(JsonService.jsonObjectToModul(complete1Modul), antragsteller);
         //Bis hier nur Input
 
-        model.addAttribute("formatter",DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd")); //TODO: datumformat überdenken
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
 

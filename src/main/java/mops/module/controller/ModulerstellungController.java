@@ -17,7 +17,11 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 
@@ -73,7 +77,7 @@ public class ModulerstellungController {
     @PostMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String addModulCreationAntrag(@RequestParam(name = "modulId") String modulId,
-                                         @RequestBody ModulWrapper modulWrapper,
+                                         ModulWrapper modulWrapper,
                                     Model model,
                                     KeycloakAuthenticationToken token) {
 

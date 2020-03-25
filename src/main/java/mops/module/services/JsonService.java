@@ -5,7 +5,6 @@ import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Collection;
-
 import mops.module.controller.ModulWrapper;
 import mops.module.database.Modul;
 import org.springframework.stereotype.Service;

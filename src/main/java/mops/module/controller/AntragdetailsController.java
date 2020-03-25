@@ -1,4 +1,4 @@
-package mops.module;
+package mops.module.controller;
 
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import mops.module.controller.ModulWrapper;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
@@ -49,30 +50,38 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token,
             Model model) {
 
-        Modul modul = JsonService.jsonObjectToModul(antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
+        Modul modul = JsonService.jsonObjectToModul(
+                antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
 
         //Überführen des Sets Veranstatungen in eine Liste für die th:object funktion bei Thymeleaf
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
 
         //Überführen der Sets Veranstaltungsformen und Zusatzfeld in eine Liste in einem Array.
-        List<Veranstaltungsform> [] veranstaltungsformenGesamt = new LinkedList [veranstaltungen.size()];
-        List<Zusatzfeld> [] zusatzfeldGesamt = new LinkedList [veranstaltungen.size()];
+        List<Veranstaltungsform> [] veranstaltungsformenGesamt =
+                new LinkedList [veranstaltungen.size()];
+        List<Zusatzfeld> [] zusatzfeldGesamt =
+                new LinkedList [veranstaltungen.size()];
 
         //Befüllen der Listen Arrays mit den werten aus dem Antrag
         for (int i = 0; i < veranstaltungen.size(); i++) {
-            List<Veranstaltungsform> veranstaltungsformen = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            List<Veranstaltungsform> veranstaltungsformen =
+                    new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
             // veranstaltungsformen muss immer size 6 haben.
             while (veranstaltungsformen.size() < 6) {
                 veranstaltungsformen.add(new Veranstaltungsform());
             }
 
-            List<Zusatzfeld> zusatzfeld = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
+            List<Zusatzfeld> zusatzfeld =
+                    new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
             veranstaltungsformenGesamt[i] = veranstaltungsformen;
             zusatzfeldGesamt[i] = zusatzfeld;
         }
 
         //Verpacken in ein Wrapper Object
-        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen, veranstaltungsformenGesamt, zusatzfeldGesamt);
+        ModulWrapper antrag = new ModulWrapper(modul, veranstaltungen,
+                veranstaltungsformenGesamt, zusatzfeldGesamt);
+        //TODO: sicherstellen dass nicht doppelt initialisiert
+        antrag.initPrefilled(6, 2);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account",createAccountFromPrincipal(token));
@@ -98,13 +107,16 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token) {
 
         //Auspacken des Wrappers
-        for (int i = 0; i < antragAngenommen.veranstaltungen.size(); i++) {
-            antragAngenommen.veranstaltungen.get(i).setVeranstaltungsformen(new HashSet<>(antragAngenommen.veranstaltungsformen[i]));
-            antragAngenommen.veranstaltungen.get(i).setZusatzfelder(new HashSet<>(antragAngenommen.zusatzfeld[i]));
+        for (int i = 0; i < antragAngenommen.getVeranstaltungen().size(); i++) {
+            antragAngenommen.getVeranstaltungen().get(i).setVeranstaltungsformen(
+                    new HashSet<>(antragAngenommen.getVeranstaltungsformen()[i]));
+            antragAngenommen.getVeranstaltungen().get(i).setZusatzfelder(
+                    new HashSet<>(antragAngenommen.getZusatzfelder()[i]));
         }
-        Set<Veranstaltung> veranstaltungenSet = new HashSet<>(antragAngenommen.veranstaltungen);
+        Set<Veranstaltung> veranstaltungenSet =
+                new HashSet<>(antragAngenommen.getVeranstaltungen());
 
-        Modul modul = antragAngenommen.modul;
+        Modul modul = antragAngenommen.getModul();
         modul.setVeranstaltungen(veranstaltungenSet);
 
         String jsonModulAenderung = JsonService.modulToJsonObject(modul);

@@ -399,11 +399,14 @@
                                                 <span style="font-size: x-large; margin-bottom: 2rem">
                                                     Die Veranstaltung beinhaltet:
                                                 </span>
-                                                <div th:each="veranstaltungsform, j : *{veranstaltungsformen}"
-                                                     th:if="*{veranstaltungsformen[__${j.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}"
-                                                     class="form-check mb-2" style="display: flex">
+<!--                                                TODO: 6tes als Freifeld variabel machen-->
+                                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}"
+                                                     th:unless="${j.index == 5}">
+<!--                                                <div th:each="veranstaltungsform, j : *{veranstaltungsformen}"-->
+<!--                                                     th:if="*{veranstaltungsformen[__${j.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}"-->
+<!--                                                     class="form-check mb-2" style="display: flex">-->
                                                         <input class="form-control ml-1"
-                                                               th:field = "*{veranstaltungsformen[__${j.index}__].form}"
+                                                               th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -413,7 +416,7 @@
                                                                value="">
                                                         <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                                         <input class="form-control ml-1"
-                                                               th:field = "*{veranstaltungsformen[__${j.index}__].semesterWochenStunden}"
+                                                               th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"
                                                                style="max-width: 6rem;
                                                            background: transparent;
                                                            font-size: small;
@@ -425,6 +428,21 @@
                                                             SWS
                                                         </label>
                                                 </div>
+
+                                                <div class="form-check mb-2" style="display: flex">
+                                                    <input class="form-control ml-1"
+                                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 26rem;
+                                                           height: 5rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                                           type="text"
+                                                           value="0"
+                                                           th:field = "*{veranstaltungsformen[__${i.index}__][__${5}__].form}">
+
+                                                </div>
+
                                             </div>
 
 <!--                                        //TODO: Sechstes Feld muss Freitextfeld statt Feld mit SWS sein!-->
@@ -446,7 +464,8 @@
                                                     Weitere Informationen:
                                                 </span>
                                                 <div class="col-12" style="padding: 0;">
-                                                    <div th:each="zusatzfeld, k : *{zusatzfelder}" th:if="*{zusatzfelder[__${k.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}" class="col-6" style="float:left">
+<!--                                                    <div th:each="zusatzfeld, k : *{zusatzfelder}" th:if="*{zusatzfelder[__${k.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}" class="col-6" style="float:left">-->
+                                                    <div class="col-6" style="float:left" th:each="zusatzfeld, k : *{zusatzfelder[__${(i.index)}__]}">
                                                         <div class="form-check mb-2"
                                                              style="padding: 0;
                                                              margin:0.3rem;
@@ -455,7 +474,7 @@
                                                             <div class="col-12" style="padding: 0">
                                                                 <div style="border-bottom: 1px solid white" class="col-12">
                                                                     <input placeholder="Titel Ihres Zusatzfeldes ..."
-                                                                           th:field = "*{zusatzfelder[__${k.index}__].titel}"
+                                                                           th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].titel}"
                                                                            type="text"
                                                                            class="col-11"
                                                                            style="border: none;
@@ -465,7 +484,7 @@
                                                                            checked>
                                                                 </div>
                                                                 <textarea class="form-control ml-1 col-12"
-                                                                          th:field = "*{zusatzfelder[__${k.index}__].inhalt}"
+                                                                          th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].inhalt}"
                                                                           placeholder="Inhalt Ihres Zusatzfeldes ..."
                                                                           style="height: 5rem;
                                                                           border: none;
