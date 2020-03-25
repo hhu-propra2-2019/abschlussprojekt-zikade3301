@@ -1,0 +1,42 @@
+body {
+    font-family: 'Helvetica', sans-serif;
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 12px;
+}
+
+inhaltsverzeichnis, #frontpage {
+    display: block;
+    page-break-after: always;
+    font-size: 14px;
+}
+
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+.frontpage {
+    font-size: 16px;
+    text-align: center;
+}
+
+#frontpage-lower-part {
+    display: block;
+    page-break-after: always;
+    margin-top: 75%;
+}
+
+@page{
+    size: A4;
+    @bottom-center {
+        content: "- "counter(page)" -";
+        font-family: 'Helvetica', sans-serif;
+        font-size:11px;
+    }
+}
+@page:first{
+    @bottom-center {
+        content:"";
+    }
+}
