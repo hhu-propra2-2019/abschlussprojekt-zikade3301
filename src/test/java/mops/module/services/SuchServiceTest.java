@@ -3,10 +3,7 @@ package mops.module.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.generator.ModulFaker;
@@ -26,112 +23,112 @@ public class SuchServiceTest {
     private SuchService suchService;
 
     @Autowired
-    private ModulSnapshotRepository modulRepo;
+    private ModulSnapshotRepository modulRepository;
 
-    private Modul completeModul;
-    private Modul anotherModul;
+    private Modul fakeModulBetriebssysteme;
+    private Modul fakeModulProgrammierung;
+
 
     @BeforeEach
     void init() {
-        modulRepo.deleteAll();
-        completeModul = ModulFaker.generateFakeModul();
-        completeModul.setTitelDeutsch("Betriebssysteme");
-        completeModul.setTitelEnglisch("Operating systems");
-        Veranstaltung veranstaltung = new ArrayList<>(completeModul.getVeranstaltungen()).get(0);
-        Set<Veranstaltung> veranstaltungen = new HashSet<>();
-        veranstaltungen.add(veranstaltung);
-        completeModul.setVeranstaltungen(veranstaltungen);
-        completeModul.refreshMapping();
+        fakeModulBetriebssysteme = ModulFaker.generateFakeModul();
+        fakeModulBetriebssysteme.setTitelDeutsch("Betriebssysteme");
+        fakeModulBetriebssysteme.setTitelEnglisch("Operating systems");
 
-        anotherModul = ModulFaker.generateFakeModul();
-        anotherModul.setTitelDeutsch("Programmierung");
-        anotherModul.setTitelEnglisch("Programming");
+        fakeModulProgrammierung = ModulFaker.generateFakeModul();
+        fakeModulProgrammierung.setTitelDeutsch("Programmierung");
+        fakeModulProgrammierung.setTitelEnglisch("Programming");
 
-        modulRepo.save(completeModul);
-        modulRepo.save(anotherModul);
-
+        modulRepository.save(fakeModulBetriebssysteme);
+        modulRepository.save(fakeModulProgrammierung);
     }
 
     @AfterEach
-    void cleanUp() {
-        modulRepo.deleteAll();
+    void clearDatabase() {
+        modulRepository.deleteAll();
     }
 
     @Test
-    void fullTextSearchReturnsNoResultWhenNoMatch() {
+    void searchTestNoMatchNoResult() {
         String searchinput = "Internet";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.isEmpty());
     }
 
     @Test
-    void fullTextSearchReturnsOneResultWhenOneMatch() {
+    void sarchTestOneMatchOneResult() {
         String searchinput = "Betriebssysteme";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertEquals(1, results.size());
     }
 
     @Test
-    void fullTextSearchReturnsTwoResultsWhenTwoMatches() {
+    void searchTestTwoMatchesTwoResults() {
         String searchinput = "Betriebssysteme Programmierung";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertEquals(2, results.size());
     }
 
     @Test
-    void fullTextSearchFindsGermanTitle() {
+    void searchTestGermanTitle() {
         String searchinput = "Betriebssysteme";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
 
     @Test
-    void fullTextSearchFindsEnglishTitle() {
+    void searchTestEnglishTitle() {
         String searchinput = "Operating";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
     }
 
     @Test
-    void fullTextSearchfindsInhalteInVeranstaltungsbeschreibung() {
-        Veranstaltung veranstaltung = new ArrayList<>(completeModul.getVeranstaltungen()).get(0);
-        String searchinput = veranstaltung.getBeschreibung().getInhalte().split(" ")[0];
+    void searchTestVeranstaltungsbeschreibungInhalte() {
+        Veranstaltung veranstaltung;
+        veranstaltung = fakeModulProgrammierung.getVeranstaltungen().iterator().next();
+        String searchinput = veranstaltung.getBeschreibung().getInhalte();
 
         List<Modul> results = suchService.search(searchinput);
 
-        Set<Veranstaltung> veranstaltungen = results.get(0).getVeranstaltungen();
-        List<Veranstaltung> results2 = new ArrayList<>(veranstaltungen);
-
-        assertTrue(results2.get(0).getBeschreibung().getInhalte().contains(searchinput));
+        assertEquals(results.get(0).getTitelDeutsch(), fakeModulProgrammierung.getTitelDeutsch());
     }
 
     @Test
-    void fullTextSearchFindsFullWordsFromParts() {
+    void searchTestPartialSearchTerm() {
         String searchinput = "Betriebs";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelDeutsch().contains(searchinput));
     }
 
     @Test
-    void fullTextSearchFindsSplittedWords() {
+    void searchTestMultipleSearchTerms() {
         String searchinput = "Operating systems";
+
         List<Modul> results = suchService.search(searchinput);
 
         assertTrue(results.get(0).getTitelEnglisch().contains(searchinput));
     }
 
     @Test
-    void fullTextSearchFindsMultipleWordsFromParts() {
+    void searchTestMultiplePartialSearchTerms() {
         String searchinput = "Op sys";
+
         List<Modul> results = suchService.search(searchinput);
 
-        assertEquals(results.get(0).getTitelEnglisch(), completeModul.getTitelEnglisch());
+        assertEquals(results.get(0).getTitelEnglisch(), fakeModulBetriebssysteme.getTitelEnglisch());
     }
 
 }
