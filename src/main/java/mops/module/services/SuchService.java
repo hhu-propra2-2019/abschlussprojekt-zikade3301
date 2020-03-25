@@ -22,6 +22,7 @@ public class SuchService {
      * This needs to be done once at application start to index data that is already there.
      * Afterwards all entries are automatically indexed.
      */
+    @Transactional
     public void initIndex() {
         FullTextEntityManager fullTextEntityManager;
         fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
