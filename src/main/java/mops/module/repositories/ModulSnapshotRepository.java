@@ -9,11 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModulSnapshotRepository extends CrudRepository<Modul, Long> {
-
-    List<Modul> findAll();
-
     @Query("SELECT m FROM Modul m JOIN m.veranstaltungen v JOIN v.semester s WHERE s = :semester")
     List<Modul> findModuleBySemester(@Param("semester") String semester);
-
 }
-

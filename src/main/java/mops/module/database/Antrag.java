@@ -14,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Getter
 @Setter
 public class Antrag {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
