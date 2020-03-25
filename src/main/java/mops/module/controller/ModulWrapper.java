@@ -33,12 +33,12 @@ public class ModulWrapper {
             veranstaltungen.add(veranstaltung);
             for (int j = 0; j < veranstaltungsformenProVeranstaltung; j++) {
                 Veranstaltungsform vf = new Veranstaltungsform();
-                vf.setVeranstaltung(veranstaltungen.get(i));
+//                vf.setVeranstaltung(veranstaltungen.get(i));
                 veranstaltungsformen[i].add(vf);
             }
             for (int j = 0; j < zusatzfelderProVeranstaltung; j++) {
                 Zusatzfeld zf = new Zusatzfeld();
-                zf.setVeranstaltung(veranstaltungen.get(i));
+//                zf.setVeranstaltung(veranstaltungen.get(i));
                 zusatzfelder[i].add(zf);
             }
         }
@@ -50,20 +50,16 @@ public class ModulWrapper {
         veranstaltungsformen = new LinkedList[veranstaltungen.size()];
         zusatzfelder = new LinkedList[veranstaltungen.size()];
         for (int i = 0; i < veranstaltungen.size(); i++) {
-            if (veranstaltungsformen[i] == null) {
-                veranstaltungsformen[i] = new LinkedList<>();
-            }
-            if (zusatzfelder[i] == null) {
-                zusatzfelder[i] = new LinkedList<>();
-            }
+            veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
             while (veranstaltungsformen[i].size() < veranstaltungsformenProVeranstaltung) {
                 Veranstaltungsform vf = new Veranstaltungsform();
-                vf.setVeranstaltung(veranstaltungen.get(i));
+//                vf.setVeranstaltung(veranstaltungen.get(i));
                 veranstaltungsformen[i].add(vf);
             }
             while (zusatzfelder[i].size() < zusatzfelderProVeranstaltung) {
                 Zusatzfeld z = new Zusatzfeld();
-                z.setVeranstaltung(veranstaltungen.get(i));
+//                z.setVeranstaltung(veranstaltungen.get(i));
                 zusatzfelder[i].add(z);
             }
 

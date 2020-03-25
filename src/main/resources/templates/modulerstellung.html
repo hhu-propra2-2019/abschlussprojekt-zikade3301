@@ -504,8 +504,11 @@
 
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
-                        <button type="submit" class="btn btn-primary mr-1" style="float: right">
+                        <button th:if="${modulId == null}"  type="submit" class="btn btn-primary mr-1" style="float: right">
                             Modulerstellung beantragen
+                        </button>
+                        <button th:unless="${modulId == null}" type="submit" class="btn btn-primary mr-1" style="float: right">
+                            Moduländerung beantragen
                         </button>
                         <button type="button" class="btn btn-secondary mr-1" style="float: right">
                             <a href="/module/modulbeauftragter" style="color: white; text-decoration: none;">
