@@ -55,6 +55,7 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichw
  es das Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modulattribut in searchresults.html übergeben wird.
  Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Link Sammlung angezeigt.
  Die Links leiten den Nutzer weiter auf die Moduldetails._
+ 
 ==== <Name Blackbox n>
 
 _<Blackbox-Template>_
