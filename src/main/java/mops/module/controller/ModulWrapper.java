@@ -10,7 +10,7 @@ import mops.module.database.Zusatzfeld;
 
 @Data
 @AllArgsConstructor
-public class ModulWrapper {
+public class ModulWrapper {  //TODO: in passenderes package verschieben
 
     Modul modul;
     public List<Veranstaltung> veranstaltungen;
