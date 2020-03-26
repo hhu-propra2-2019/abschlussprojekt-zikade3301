@@ -21,16 +21,23 @@ Wichtige Schnittstellen:: _<Beschreibung wichtiger Schnittstellen>_
 
 _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichworten eine Liste von Modulen zu erhalten._
 
- Schnittstelle(n)::
+ Schnittstelle::
 
  _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController, der dann die Methode search im Suchservice aufruft._
 
  Qualitäts-/Leistungsmerkmale::
  _Die Suche soll auch mit Teilworten fertig werden, z.B wenn der Nutzer Architektur eingibt muss die Suche auch Architekturformen finden können._
 
-==== <Name Blackbox 2>
+== Erstellen von Anträgen
 
-_<Blackbox-Template>_
+ Schnittstelle(n)::
+
+ _Die Schnittstellen liegen hier in der Organisation View und der Admin View. Nur von diesen beiden Seiten können nach Authentifizierung
+ des Nutzers Anträge erstellt werden. Die Anträge können zum erstellen von Modulen oder zur_
+
+ Qualitäts-/Leistungsmerkmale::
+
+ __
 
 ==== <Name Blackbox n>
 
