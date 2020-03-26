@@ -1,71 +1,72 @@
 package mops.module.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 import mops.module.database.Modul;
-import mops.module.database.Modulkategorie;
+import mops.module.database.Veranstaltung;
+import mops.module.database.Veranstaltungsform;
 import mops.module.generator.ModulFaker;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 @SpringBootTest
 @ActiveProfiles("dev")
 public class PdfServiceTest {
 
     @Autowired
-    private TemplateEngine templateEngine;
-
-    @Autowired
     private PdfService pdfService;
 
-    @Autowired
-    private HtmlService htmlService;
-
     @Test
-    public void oneModulPdfTest() throws IOException {
+    public void generatePdfModulhandbuchTest() throws IOException {
         List<Modul> module = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            Modul modul =ModulFaker.generateFakeModul();
-            modul.setId((long)i);
+            Modul modul = ModulFaker.generateFakeModul();
+            modul.setId((long) i);
             module.add(modul);
         }
-//        PDDocument document1 = PdfService.generatePdf(module);
-//        document1.save("test.pdf");
-//        System.out.println("PDF Created");
-//        document1.close();
+        ByteArrayOutputStream pdfDocument = pdfService.generatePdf(module);
+        assertThat(pdfDocument.toByteArray().length).isGreaterThan(0);
+        pdfDocument.close();
+    }
 
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/pdfgeneration/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
-        templateEngine.setTemplateResolver(templateResolver);
+    @Test
+    public void markdownToHtmlTest() {
+        String basisText = "Dieser Text sollte eine Überschrift sein!";
+        String markdown = "# " + basisText;
+        String html = HtmlService.markdownToHtml(markdown);
+        assertThat(html).contains("<h1>" + basisText + "</h1>");
+    }
 
-        Context context = new Context();
-        List<PdfModulWrapper> pdfModulWrapperList=module.stream().map(PdfModulWrapper::new).collect(Collectors.toList());
-        context.setVariable("moduls", module);
-        context.setVariable("module", pdfModulWrapperList);
-        context.setVariable("categories", Modulkategorie.values());
-        context.setVariable("pdfService", pdfService);
-        context.setVariable("htmlService", htmlService);
+    @Test
+    public void pdfVeranstaltungWrapperTest() {
+        Veranstaltungsform veranstaltungsform1 = new Veranstaltungsform();
+        veranstaltungsform1.setForm("Vorlesung Betriebssysteme");
+        veranstaltungsform1.setSemesterWochenStunden(4);
 
-        StringWriter writer = new StringWriter();
-        templateEngine.process("modulhandbuch", context, writer);
+        Veranstaltungsform veranstaltungsform2 = new Veranstaltungsform();
+        veranstaltungsform2.setForm("Übung");
+        veranstaltungsform2.setSemesterWochenStunden(0);
 
-        PDDocument document = HtmlService.htmlToPdf(writer.toString());
-        document.save("test.pdf");
-        System.out.println("PDF Created");
-        document.close();
+        Veranstaltung veranstaltung = new Veranstaltung();
+        veranstaltung.setVeranstaltungsformen(
+                new HashSet<>(Arrays.asList(veranstaltungsform1, veranstaltungsform2)));
+
+        PdfVeranstaltungWrapper veranstaltungWrapper = new PdfVeranstaltungWrapper(veranstaltung);
+        Set<String> lehrveranstaltungen = veranstaltungWrapper.getLehrveranstaltungen();
+
+        String expected1 = veranstaltungsform1.getForm() + ", "
+                + veranstaltungsform1.getSemesterWochenStunden() + " SWS";
+        String expected2 = veranstaltungsform2.getForm();
+
+        assertThat(lehrveranstaltungen).contains(expected1, expected2);
     }
 }
