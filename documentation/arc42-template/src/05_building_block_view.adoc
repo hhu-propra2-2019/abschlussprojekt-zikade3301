@@ -5,8 +5,6 @@ Dieser Abschnitt beschreibt die Aufteilung der Anwendung
 
 === Whitebox Gesamtsystem
 
-
-
 _**<Übersichtsdiagramm>**_
 
 Begründung:: _<Erläuternder Text>_
@@ -23,7 +21,7 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichw
 
  Schnittstelle::
 
- _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController, der dann die Methode search im Suchservice aufruft._
+ _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController._
 
  Qualitäts-/Leistungsmerkmale::
  _Die Suche soll auch mit Teilworten fertig werden, z.B wenn der Nutzer Architektur eingibt muss die Suche auch Architekturformen finden können._
@@ -33,11 +31,16 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichw
  Schnittstelle(n)::
 
  _Die Schnittstellen liegen hier in der Organisation View und der Admin View. Nur von diesen beiden Seiten können nach Authentifizierung
- des Nutzers Anträge erstellt werden. Die Anträge können zum erstellen von Modulen oder zur_
+ des Nutzers Anträge erstellt werden. Die Anträge können zum erstellen von Modulen oder zur Änderung eben dieser verwendet werden._
 
  Qualitäts-/Leistungsmerkmale::
 
- __
+ _Anträge sollen zu jeder Zeit erstellbar sein und gespeichert werden._
+
+== PDF Download
+
+ Schnittstelle::
+ _Das komplette Modulhandbuch wird auf der Hauptseite zum Download angeboten._
 
 ==== <Name Blackbox n>
 
