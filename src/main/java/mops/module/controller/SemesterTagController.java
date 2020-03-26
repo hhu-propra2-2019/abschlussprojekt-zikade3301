@@ -1,8 +1,5 @@
 package mops.module.controller;
 
-import mops.module.database.Modul;
-import mops.module.database.Modulkategorie;
-import mops.module.database.Veranstaltung;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +7,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.annotation.security.RolesAllowed;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Controller
@@ -33,10 +27,7 @@ public class SemesterTagController {
                                          KeycloakAuthenticationToken token) {
 
         modulService.tagSemesterForVeranstaltung(SemesterTag, Long.parseLong(idVeranstaltung), Long.parseLong(idModul));
-        model.addAttribute("allModules", modulService.getAllModule());
 
         return "modulbeauftragter";
     }
-
-
 }

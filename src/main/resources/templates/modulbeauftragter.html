@@ -80,20 +80,20 @@
                 <div class="modal-body">
                     <ul style="font-size: large; list-style-type: none">
                         <li th:each="modul : ${allModules}">
-                                <div th:text="${modul.getTitelDeutsch()}" style="color:red">
-                                    Modulname
-                                </div>
-                                <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
-                                    <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
-                                        <li th:text="${veranstaltungen.getTitel()}" class="col-4">Eintrag</li>
-                                        <div class="col-4" style="float: right; display:flex">
+                            <div th:text="${modul.getTitelDeutsch()}" style="color:red">
+                                Modulname
+                            </div>
+                            <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
+                                <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
+                                    <li th:text="${veranstaltungen.getTitel()}" class="col-4">Eintrag</li>
+                                    <div class="col-4" style="float: right; display:flex">
                                         <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
                                         <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
                                         <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
                                         <button type="submit">+</button>
-                                        </div>
-                                    </form>
-                                </ul>
+                                    </div>
+                                </form>
+                            </ul>
                         </li>
                     </ul>
                 </div>
