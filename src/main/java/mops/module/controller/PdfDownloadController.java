@@ -1,5 +1,6 @@
 package mops.module.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -7,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import mops.module.database.Modul;
 import mops.module.services.ModulService;
 import mops.module.services.PdfService;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +22,7 @@ public class PdfDownloadController {
 
     /**
      * Stellt das aktuelle PDF-Modulhandbuch zum Download bereit.
+     *
      * @param response HTTP Response
      */
     @GetMapping("/pdf")
@@ -29,15 +30,15 @@ public class PdfDownloadController {
 
         List<Modul> module = modulService.getAllSichtbareModule();
 
-        PDDocument document1 = pdfService.generatePdf(module);
+        ByteArrayOutputStream pdfDocument = pdfService.generatePdf(module);
 
         response.setContentType("application/pdf");
         response.addHeader("Content-Disposition", "attachment; filename=Modulhandbuch.pdf");
 
         try {
-            document1.save(response.getOutputStream());
+            pdfDocument.writeTo(response.getOutputStream());
             response.getOutputStream().flush();
-            document1.close();
+            pdfDocument.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -11,8 +11,6 @@ import com.vladsch.flexmark.util.data.DataHolder;
 import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,21 +38,14 @@ public class HtmlService {
 
     /**
      * Wandelt einen HTML-String in ein PDF-Dokument um.
+     *
      * @param html HTML-String
      * @return PDF-Dokument
      */
-    public static PDDocument htmlToPdf(String html) {
+    public static ByteArrayOutputStream htmlToPdf(String html) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
 
-        PDDocument pdDocument = null;
-        try {
-            pdDocument = PDDocument.load(outputStream.toByteArray());
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return pdDocument;
+        return outputStream;
     }
 }
