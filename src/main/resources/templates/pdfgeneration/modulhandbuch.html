@@ -58,35 +58,58 @@
             page-break-after: always;
             content: ".";
         }
-
-
-        table {
+        
+        #studienverlaufsplan table {
+            table-layout: fixed;
             width: 100%;
-        }
-
-        table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
 
-        th, td {
+        #studienverlaufsplan th,
+        #studienverlaufsplan td {
             word-wrap: break-word;
             padding: 5px;
             text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
         }
 
-        table#t01 th {
-            background-color: #dce6f2;
+        #studienverlaufsplan .color0 {
+            background-color: #c5d8f0;
+        }
+
+        #studienverlaufsplan .color1 {
+            background-color: #8db3e2;
+        }
+
+        #studienverlaufsplan .color2 {
+            background-color: #558ed5;
+        }
+
+        #studienverlaufsplan .semester-color {
+            background-color: #94b2d6;
+        }
+
+
+        #studienverlaufsplan .down-arrow::after {
+            content: " v";
+        }
+
+        #studienverlaufsplan .down-arrow {
+            color: #ff0000;
+        }
+
+        #studienverlaufsplan .table-header {
+            background-color: #dbe5f1;
             color: black;
             font-size: medium;
         }
 
-        td {
-            background-color: #c5d8f0;
-        }
-
-        td#left {
-            background-color: #94b2d6;
+        #studienverlaufsplan .table-footer {
+            background-color: #17375e;
+            color: white;
+            font-size: medium;
         }
 
     </style>
@@ -158,7 +181,8 @@
             <li style="font-weight: bold;">
                 <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toReadable()}"></a>
             </li>
-            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}" th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
+                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
         </div>
     </ul>
     </li>
@@ -172,42 +196,183 @@
 <!-- =========== Studienverlaufsplan =========== -->
 
 <div id="studienverlaufsplan">
-    <h1>0. Studienverlaufspläne</h1>
-    <h2>Bachelor-Studiengang (Beginn im Wintersemester)</h2>
 
-    <table id="t01">
-        <tr>
+    <h2>0. Studienverlaufspläne</h2>
+    <h3>Bachelor-Studiengang (Beginn im Wintersemester)</h3>
+
+    <!-- Tabelle 1   -->
+
+    <table>
+
+        <!--    Oberste Zeile    -->
+
+        <tr class="table-header">
             <th>
                 Semester
             </th>
             <th colspan="5">
-                Lehrveranstaltungen mit zugehörigen Leistungspunkte
+                Lehrveranstaltungen mit zugehörigen Leistungspunkten
             </th>
         </tr>
+
+        <!--    Inhalt    -->
+
         <tr>
-            <td id="left">1</td>
-            <td>info1</td>
-            <td>info2</td>
-            <td>LA</td>
-            <td></td>
-            <td style="width: 10%">30LP</td>
+            <td class="semester-color">1</td>
+            <td class="color0">Programmierung (10)</td>
+            <td class="color0">Algorithmen und Datenstrukturen (10)</td>
+            <td class="color1">Linearen Algebra (10)</td>
+            <td class="color1"></td>
+            <td class="color1">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Rechnerarchitektur (9) BV+PÜ (4)</td>
+            <td class="color0">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
+            <td class="color0">Einf. Rechnernetze, Datnbanken und Betriebssysteme (5)</td>
+            <td class="color1">Analysis 1 (10)</td>
+            <td class="color1">32 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">3</td>
+            <td class="color0">Softwareentwicklung im Team (Programmierpraktikum II) (8)</td>
+            <td class="color1">Analysis 2 (10)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">28 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">4</td>
+            <td class="color0" rowspan="2">Theoretische Informatik (10)</td>
+            <td class="color1">Angewandte Mathematik (10): Numerik oder Stochastik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Wahlbereich (10)</td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">30 LP</td>
         </tr>
         <tr>
-            <td id="left" rowspan="2">3</td>
-            <td rowspan="2">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
-            <td>Angewandte Mathematik (10): Numerik oder Stochastik ODER</td>
-            <td rowspan="2">Rechnerarchitektur (9) BV+PÜ (4)</td>
-            <td rowspan="2">Theoretische Informatik (10)</td>
-            <td rowspan="2">32 LP</td>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">5</td>
+            <td class="color0" rowspan="2">Wahlbereich (20)</td>
+            <td class="color1">Angewandte Mathematik (10): Stochastik oder Numerik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">28 LP</td>
         </tr>
         <tr>
-            <td>Nebenfach (10)</td>
+            <td class="color2">Nebenfach (10)</td>
         </tr>
+
         <tr>
-            <td id="left"></td>
-            <th colspan="5" style="background-color: #17375e; color: white">
-                Gesamtleistungspunkte: 180 LP
+            <td class="semester-color">6</td>
+            <td class="color0">Bachelorarbeit (15)</td>
+            <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <!--    Unterste Zeile    -->
+
+        <tr>
+            <td class="color0"></td>
+            <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
+        </tr>
+    </table>
+
+    <h3>Bachelor-Studiengang (Beginn im Sommersemester)</h3>
+
+    <!--  Tabelle 2  -->
+
+    <table>
+
+        <!--    Oberste Zeile    -->
+
+        <tr class="table-header">
+            <th>
+                Semester
             </th>
+            <th colspan="5">
+                Lehrveranstaltungen mit zugehörigen Leistungspunkten
+            </th>
+        </tr>
+
+        <!--    Inhalt    -->
+
+        <tr>
+            <td class="semester-color">1</td>
+            <td class="color0">Rechnerarchitektur (9) V+Ü (5)</td>
+            <td class="color0">Einf. Rechnernetze, Datnbanken und Betriebssysteme (5)</td>
+            <td class="color1">Linearen Algebra (10)</td>
+            <td class="color1">Analysis 1 (10)</td>
+            <td class="color1">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Programmierung (10)</td>
+            <td class="color0">Algorithmen und Datenstrukturen (10)</td>
+            <td class="color1">Analysis 2 (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">3</td>
+            <td class="color0" rowspan="2">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
+            <td class="color1">Angewandte Mathematik (10): Numerik oder Stochastik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Rechnerarchitektur (9) BV+PÜ (4)</td>
+            <td class="color0" rowspan="2">Theoretische Informatik (10)</td>
+            <td class="color0" rowspan="2">32 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">4</td>
+            <td class="color0" rowspan="2">Softwareentwicklung im Team (Programmierpraktikum II) (8)</td>
+            <td class="color1">Angewandte Mathematik (10): Stochastik oder Numerik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Wahlbereich (10)</td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">28 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Wahlbereich (20)</td>
+            <td class="color0"></td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Bachelorarbeit (15)</td>
+            <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <!--    Unterste Zeile    -->
+
+        <tr>
+            <td class="color0"></td>
+            <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
         </tr>
     </table>
 </div>
