@@ -27,7 +27,7 @@ public class SuchServiceTest {
 
     private Modul fakeModulBetriebssysteme;
     private Modul fakeModulProgrammierung;
-
+    private Modul fakeInvisibleModulProgrammierung;
 
     @BeforeEach
     void init() {
@@ -39,8 +39,13 @@ public class SuchServiceTest {
         fakeModulProgrammierung.setTitelDeutsch("Programmierung");
         fakeModulProgrammierung.setTitelEnglisch("Programming");
 
+        fakeInvisibleModulProgrammierung = ModulFaker.generateFakeModul();
+        fakeInvisibleModulProgrammierung.setTitelDeutsch("Programmierung");
+        fakeInvisibleModulProgrammierung.setSichtbar(false);
+
         modulRepository.save(fakeModulBetriebssysteme);
         modulRepository.save(fakeModulProgrammierung);
+        modulRepository.save(fakeInvisibleModulProgrammierung);
     }
 
     @AfterEach
@@ -58,8 +63,17 @@ public class SuchServiceTest {
     }
 
     @Test
-    void sarchTestOneMatchOneResult() {
+    void searchTestOneMatchOneResult() {
         String searchinput = "Betriebssysteme";
+
+        List<Modul> results = suchService.search(searchinput);
+
+        assertEquals(1, results.size());
+    }
+
+    @Test
+    void searchTestOnlyVisibleModulesAsResults() {
+        String searchinput = "Programmierung";
 
         List<Modul> results = suchService.search(searchinput);
 

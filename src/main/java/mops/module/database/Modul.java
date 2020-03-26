@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import mops.module.services.IndexWhenVisibleInterceptor;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -21,7 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Getter
 @Setter
-@Indexed
+@Indexed(interceptor = IndexWhenVisibleInterceptor.class)
 public class Modul {
 
     @Id
