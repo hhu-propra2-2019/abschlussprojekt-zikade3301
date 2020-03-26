@@ -42,6 +42,19 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichw
  Schnittstelle::
  _Das komplette Modulhandbuch wird auf der Hauptseite zum Download angeboten._
 
+== Volltextsuche Blackbox
+
+ Suche im Detail::
+
+ _In der index.html gibt es ein Formular mit der ein Request Parameter (searchField) durch eine GET-Anfrage an den SearchController geschickt wird.
+ Die Methode search im Controller ruft dann die Methode search im SearchService auf. Der searchField Parameter wird dabei übergeben.
+ Diese Methode wendet durch Hibernate Search eine Suchanfrage auf die Datenbank an. Hibernate Search hat beim Start des Programms die
+ relevanten Felder indexiert und aktualisiert sich bei neu hinzugefügten (oder geänderten) Modulen selbst.
+ Ausserdem werden beim indexieren alle nicht sichtbaren Module ignoriert.
+ Der Index wird genutzt um mit der Suchanfrage die relevanten Felder in den Modulen zu durchsuchen. Wildcards ermöglichen
+ es das Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modulattribut in searchresults.html übergeben wird.
+ Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Link Sammlung angezeigt.
+ Die Links leiten den Nutzer weiter auf die Moduldetails._
 ==== <Name Blackbox n>
 
 _<Blackbox-Template>_
