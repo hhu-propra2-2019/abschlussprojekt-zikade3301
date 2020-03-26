@@ -22,6 +22,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @Service
 public class PdfService {
 
+    private TemplateEngine templateEngine;
+
     /**
      * Initialisiert die Thymeleaf TemplateEngine.
      * @param templateEngine TemplateEngine
@@ -37,8 +39,6 @@ public class PdfService {
 
         templateEngine.setTemplateResolver(templateResolver);
     }
-
-    private TemplateEngine templateEngine;
 
     /**
      * Geniert das PDF-Modulhandbuch.

@@ -21,6 +21,12 @@ public class HtmlService {
             Extensions.ALL & ~(Extensions.ANCHORLINKS | Extensions.EXTANCHORLINKS_WRAP)
     ).toImmutable();
 
+    /**
+     * Wandelt einen Markdown-String in einen HTML-String um.
+     *
+     * @param markdown Markdown-String
+     * @return HTML-String
+     */
     public static String markdownToHtml(String markdown) {
         MutableDataHolder markdownOptions = new MutableDataSet();
         markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
@@ -32,6 +38,11 @@ public class HtmlService {
         return htmlRenderer.render(document);
     }
 
+    /**
+     * Wandelt einen HTML-String in ein PDF-Dokument um.
+     * @param html HTML-String
+     * @return PDF-Dokument
+     */
     public static PDDocument htmlToPdf(String html) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfConverterExtension.exportToPdf(outputStream, html, "", OPTIONS);
