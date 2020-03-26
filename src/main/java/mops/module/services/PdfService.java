@@ -12,6 +12,7 @@ import com.vladsch.flexmark.util.data.MutableDataHolder;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +27,7 @@ import mops.module.database.Modulkategorie;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
@@ -127,7 +129,10 @@ public class PdfService {
     }
 
     public static List<PdfModulWrapper> filterModuleAfterKategorie(List<PdfModulWrapper> module, Modulkategorie modulkategorie) {
-        return module.stream().filter(m -> m.getModulkategorie() == modulkategorie).collect(Collectors.toList());
+        return module.stream()
+                .filter(m -> m.getModulkategorie() == modulkategorie)
+                .sorted(Comparator.comparing(PdfModulWrapper::getTitelDeutsch))
+                .collect(Collectors.toList());
     }
 
     public static List<Modulkategorie> getUsedKategorien(List<PdfModulWrapper> module) {

@@ -16,27 +16,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/module")
 public class PdfDownloadController {
 
-    /**
-     * @param response
-     */
-    @GetMapping("/pdf")
-    public void getPdf(HttpServletResponse response) {
-
-        List<Modul> module = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            module.add(ModulFaker.generateFakeModul());
-        }
-        PDDocument document1 = PdfService.generatePdf(module);
-
-        response.setContentType("application/pdf");
-        response.addHeader("Content-Disposition", "attachment; filename=Modulhandbuch.pdf");
-
-        try {
-            document1.save(response.getOutputStream());
-            response.getOutputStream().flush();
-            document1.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+//    /**
+//     * @param response
+//     */
+//    @GetMapping("/pdf")
+//    public void getPdf(HttpServletResponse response) {
+//
+//        List<Modul> module = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            module.add(ModulFaker.generateFakeModul());
+//        }
+//        PDDocument document1 = PdfService.generatePdf(module);
+//
+//        response.setContentType("application/pdf");
+//        response.addHeader("Content-Disposition", "attachment; filename=Modulhandbuch.pdf");
+//
+//        try {
+//            document1.save(response.getOutputStream());
+//            response.getOutputStream().flush();
+//            document1.close();
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
 }

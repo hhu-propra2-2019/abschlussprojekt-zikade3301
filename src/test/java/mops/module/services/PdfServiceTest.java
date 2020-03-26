@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.generator.ModulFaker;
@@ -28,6 +29,9 @@ public class PdfServiceTest {
     @Autowired
     private PdfService pdfService;
 
+    @Autowired
+    private HtmlService htmlService;
+
     @Test
     public void oneModulPdfTest() throws IOException {
         List<Modul> module = new ArrayList<>();
@@ -42,21 +46,24 @@ public class PdfServiceTest {
 //        document1.close();
 
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("templates/");
+        templateResolver.setPrefix("templates/pdfgeneration/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
         templateResolver.setCharacterEncoding("UTF-8");
         templateEngine.setTemplateResolver(templateResolver);
 
         Context context = new Context();
+        List<PdfModulWrapper> pdfModulWrapperList=module.stream().map(PdfModulWrapper::new).collect(Collectors.toList());
         context.setVariable("moduls", module);
+        context.setVariable("module", pdfModulWrapperList);
         context.setVariable("categories", Modulkategorie.values());
         context.setVariable("pdfService", pdfService);
+        context.setVariable("htmlService", htmlService);
 
         StringWriter writer = new StringWriter();
         templateEngine.process("modulhandbuch", context, writer);
 
-        PDDocument document = PdfService.htmlToPdf(writer.toString());
+        PDDocument document = HtmlService.htmlToPdf(writer.toString());
         document.save("test.pdf");
         System.out.println("PDF Created");
         document.close();
