@@ -118,12 +118,12 @@ class ModulWrapperServiceTest {
 
     @Test
     void readModulFromWrapperFullRoutineNumberOfVeranstaltungen() {
-        Set<Veranstaltung> veranstaltungenInModul = completeModul.getVeranstaltungen();
+        int numberOfVeranstaltungenInModul = completeModul.getVeranstaltungen().size();
         ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(completeModul);
         Modul unwrappedModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
-        Set<Veranstaltung> veranstaltungenInUnwrappedModul = unwrappedModul.getVeranstaltungen();
-        //TODO: testet dieser Test das richtige?
-        assertThat(veranstaltungenInUnwrappedModul).containsAll(veranstaltungenInModul);
+        int numberOfVeranstaltungenInUnwrappedModul = unwrappedModul.getVeranstaltungen().size();
+        assertThat(numberOfVeranstaltungenInUnwrappedModul)
+                .isEqualTo(numberOfVeranstaltungenInModul);
     }
 
     @Test
