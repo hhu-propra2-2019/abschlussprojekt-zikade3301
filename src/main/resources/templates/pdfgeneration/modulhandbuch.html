@@ -70,13 +70,23 @@
         }
 
         th, td {
-            padding: 30px;
+            word-wrap: break-word;
+            padding: 5px;
             text-align: center;
         }
 
         table#t01 th {
-            background-color: lightcyan;
-            color: white;
+            background-color: #dce6f2;
+            color: black;
+            font-size: medium;
+        }
+
+        td {
+            background-color: #c5d8f0;
+        }
+
+        td#left {
+            background-color: #94b2d6;
         }
 
     </style>
@@ -140,12 +150,16 @@
 
 <div id="table-of-contents">
     <h1>Inhaltsverzeichnis</h1>
-    <ul style="list-style-type: none" id="testnumber" th:each="c : ${categories}">
+    <ul style="list-style-type: none" id="testnumber">
         <li style="font-weight: bold;">
-            <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toReadable()}"></a>
+            <a href="#studienverlaufsplan">0. Studienverlaufspläne</a>
         </li>
-        <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
-                                                                                           th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+        <div th:each="c : ${categories}">
+            <li style="font-weight: bold;">
+                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toReadable()}"></a>
+            </li>
+            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}" th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+        </div>
     </ul>
     </li>
     </ul>
@@ -157,13 +171,13 @@
 
 <!-- =========== Studienverlaufsplan =========== -->
 
-<div id="table">
+<div id="studienverlaufsplan">
     <h1>0. Studienverlaufspläne</h1>
     <h2>Bachelor-Studiengang (Beginn im Wintersemester)</h2>
 
     <table id="t01">
         <tr>
-            <th style="padding: 1px;">
+            <th>
                 Semester
             </th>
             <th colspan="5">
@@ -171,12 +185,30 @@
             </th>
         </tr>
         <tr>
-            <td>1</td>
+            <td id="left">1</td>
             <td>info1</td>
             <td>info2</td>
             <td>LA</td>
             <td></td>
-            <td>30LP</td>
+            <td style="width: 10%">30LP</td>
+        </tr>
+        <tr>
+            <td id="left" rowspan="2">3</td>
+            <td rowspan="2">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
+            <td>Angewandte Mathematik (10): Numerik oder Stochastik ODER</td>
+            <td rowspan="2">Rechnerarchitektur (9) BV+PÜ (4)</td>
+            <td rowspan="2">Theoretische Informatik (10)</td>
+            <td rowspan="2">32 LP</td>
+        </tr>
+        <tr>
+            <td>Nebenfach (10)</td>
+        </tr>
+        <tr>
+            <td id="left"></td>
+            <th colspan="5" style="background-color: #17375e; color: white">
+                Gesamtleistungspunkte: 180 LP
+            </th>
+        </tr>
     </table>
 </div>
 
