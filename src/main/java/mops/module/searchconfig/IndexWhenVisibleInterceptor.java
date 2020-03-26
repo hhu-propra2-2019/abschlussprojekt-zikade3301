@@ -1,4 +1,4 @@
-package mops.module.services;
+package mops.module.searchconfig;
 
 import mops.module.database.Modul;
 import org.hibernate.search.indexes.interceptor.EntityIndexingInterceptor;
