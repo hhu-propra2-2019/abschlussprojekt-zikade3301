@@ -190,7 +190,7 @@ public class ModulServiceDatabaseTest {
         List<Modul> module = modulService.getAllModule();
         Modul dbmodul = module.get(module.size() - 1);
 
-        dbmodul.setModulbeauftragte(new HashSet<>(Arrays.asList("Stefan Harmeling")));
+//        dbmodul.setModulbeauftragte(new HashSet<>(Arrays.asList("Stefan Harmeling")));
 
         antragService.addModulModificationAntrag(dbmodul);
 

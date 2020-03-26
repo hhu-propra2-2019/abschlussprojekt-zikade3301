@@ -1,9 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modulhandbuch</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            overflow: hidden;
+            word-wrap: break-word;
+            font-size: 12px;
+        }
+
+        inhaltsverzeichnis, #frontpage {
+            display: block;
+            page-break-after: always;
+            font-size: 14px;
+        }
+
+        a:link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .frontpage {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        #frontpage-lower-part {
+            display: block;
+            page-break-after: always;
+            margin-top: 75%;
+        }
+
+        @page {
+            size: A4;
+            @bottom-center {
+                content: "- " counter(page) " -";
+                font-family: 'Helvetica', sans-serif;
+                font-size: 11px;
+            }
+        }
+
+        @page :first {
+            @bottom-center {
+                content: "";
+            }
+        }
+
+        #table-of-contents a::after {
+            content: leader('.') target-counter(attr(href), page);
+        }
+
+        #table-of-contents {
+            display: block;
+            page-break-after: always;
+        }
+
+    </style>
+</head>
+<body>
+<div id="frontpage-upper-part" class="frontpage">
+    <h1>Modulhandbuch</h1>
+    <h2>für den</h2>
+    <h2>Bachelor- und Master-Studiengang Informatik</h2>
+</div>
+<div id="frontpage-lower-part" class="frontpage">
+    <h2>Institut für Informatik</h2>
+    <h2>der Mathematisch-Naturwissenschaftliche Fakultät</h2>
+    <h2>der Heinrich-Heine-Universität</h2>
+    <br/>
+    <h2>Herausgegeben vom</h2>
+    <h2>Ausschuss für die Bachelor- und Master-Prüfung</h2>
+    <h2>im Fach Informatik</h2>
+</div>
+<div id="table-of-contents">
+    <h1>Inhaltsverzeichnis</h1>
+    <ul id="testnumber">
+        <ul th:each="c : ${categories}">
+            <li style="font-weight: bold;">
+                <a th:href="'#'+${c.toReadable()}" th:text="${c.toReadable()}"></a>
+            </li>
+            <li th:each="m, itemStat : ${pdfService.filterModule(moduls, c)}"><a th:href="'#'+${m.getId()}"
+                                                                                 th:text="${m.getTitelDeutsch()}"></a>
+        </ul>
+        </li>
+    </ul>
+</div>
 <div th:each="c : ${categories}">
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
-    <h2 th:text="${c.toReadable()}">Pflichtmodule der Informatik (1.–4. Fachsemester)</h2>
+    <h2 th:id="${c.toReadable()}" th:text="${c.toReadable()}">Pflichtmodule der Informatik (1.–4. Fachsemester)</h2>
     <h2 th:text="${c.toReadable()}">Compulsory Modules in Computer Science</h2>
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
-        <h3 th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
+        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
         <h3 th:text="${m.titelEnglisch}">Computer Architecture</h3>
         <h3>Studiengang</h3>
         <span th:text="${m.studiengang}">Bachelor-Studiengang Informatik</span>
@@ -41,3 +130,5 @@
         <span th:text="${m.modulbeauftragte}">Prof. Dr. Stefan Conrad, Prof. Dr. Martin Mauve</span>
     </div>
 </div>
+</body>
+</html>

@@ -1,12 +1,23 @@
 package mops.module.services;
 
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.parser.ParserEmulationProfile;
 import com.vladsch.flexmark.pdf.converter.PdfConverterExtension;
+import com.vladsch.flexmark.profile.pegdown.Extensions;
+import com.vladsch.flexmark.profile.pegdown.PegdownOptionsAdapter;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +129,10 @@ public class PdfService {
     }
 
     public static List<PdfModulWrapper> filterModuleAfterKategorie(List<PdfModulWrapper> module, Modulkategorie modulkategorie) {
-        return module.stream().filter(m -> m.getModulkategorie() == modulkategorie).collect(Collectors.toList());
+        return module.stream()
+                .filter(m -> m.getModulkategorie() == modulkategorie)
+                .sorted(Comparator.comparing(PdfModulWrapper::getTitelDeutsch))
+                .collect(Collectors.toList());
     }
 
     public static List<Modulkategorie> getUsedKategorien(List<PdfModulWrapper> module) {
@@ -155,5 +169,12 @@ public class PdfService {
             e.printStackTrace();
         }
         return str.toString();
+    }
+
+    public List<Modul> filterModule(List<Modul> module, Modulkategorie modulkategorie){
+        return module.stream()
+                .filter(m -> m.getModulkategorie().equals(modulkategorie))
+                .sorted(Comparator.comparing(Modul::getTitelDeutsch))
+                .collect(Collectors.toList());
     }
 }
