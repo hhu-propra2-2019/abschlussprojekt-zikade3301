@@ -8,9 +8,13 @@
 *  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
 *  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
 
-=== _<Bezeichnung Laufzeitszenario 2>_
+== Laufzeitszenario Suche
 
-...
+ Der Nutzer gibt in der Haupseite einen Suchbegriff oder Begriffe ein.
+ Das löst eine GET-Anfrage aus die von dem SearchController bearbeitet wird.
+ Dieser ruft die search Methode im SuchService auf.
+ Die Methode durchsucht mit einer Hibernate Search Query die Datenbank auf den relevanten Feldern und gibt dann eine nachrelevanz sortierte Liste zurück.
+ Der Nutzer wird auf die searchresults Seite weiter geleitet und bekommt die Liste als Links zu den Moduldetails angezeigt.
 
 === _<Bezeichnung Laufzeitszenario n>_
 
