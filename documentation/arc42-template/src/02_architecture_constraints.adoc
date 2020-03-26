@@ -1,16 +1,14 @@
 [[section-architecture-constraints]]
 == Randbedingungen
 
-Dieser Abschnitt beschäftigt sich mit den Randbedingugen welche die Entwurfsentscheidungen einschränken.
-
 === Technisch
 
 [cols="1,2" options="header"]
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _ _ | _ _
-
+| _Abhängigkeit_ | _Das Modulhandbuch hat keine bindenden Abhängigkeiten zu den anderen Systemen von Mops._
+| _Rest Api_ | _Das Modulhandbuch sollte Stammdaten für andere Systeme bereitstellen._
 
 |===
 
@@ -20,7 +18,7 @@ Dieser Abschnitt beschäftigt sich mit den Randbedingugen welche die Entwurfsent
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed Hamed Bakar El Hori, Roman Janke, Elias Kempkens,  Michael Lau,*unterstüzt durch*
+| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed Hamed Bakar El Hori, Roman Janke, Elias Kempkens,  Michael Lau
 | _Zeitplan_ | Beginn der Planung und Entwicklung am 2.03.2020. Vorzeigbare Version bis zum 27.03.2020.
 | _Vorgehensmodell_ |Zur Dokumentation der Architektur kommt arc42 zum Einsatz.
 | _Konfigurations- und Versionsverwaltung_ | Git bei Github

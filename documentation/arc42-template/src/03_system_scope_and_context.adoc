@@ -11,27 +11,18 @@ Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
 [cols="1,2" options="header"]
 |===
 |Randbedingung |Erläuterung
-| _Nicht angemeldete User_ | _ _
-| _Studenten_ | _ _
-| _Organisatoren_ | _ _
-| _Administratoren_ | _ _
+| _Nicht angemeldete User_ | _Nicht angemeldete Nutzer können alle als sichtbar markierte Module einsehen._
+| _Studenten_ | _Stundenten können alle als sichtbar markierte Module einsehen._
+| _Organisatoren_ | _Organisatoren können alle als sichtbar markierte Module einsehen, unsichtbare nur wenn es Ihnen gehört
+oder es Ihnen zugewiesen wurde. Ausserdem können sie Anträge stellen, um Module zu erstellen oder zu verändern.
+Diese müssen zuerst genehmigt werden._
+| _Administratoren_ | _Haben alle Rechte der Organisatoren, aber können Anträge annehmen und die Module für alle freischalten._
 |===
 
 
-
-**<Diagramm und/oder Tabelle>**
-
-**<optional: Erläuterung der externen fachlichen Schnittstellen>**
-
 === Technischer Kontext
 
+- PDF Export wird bereit gestellt um ausgewählte module als Pdf herunterladen zu können.
+- Rest Api soll bereit gestellt werden um Stammdaten für z.B die Belegung bereit zu stellen.
+- Andere Systeme haben Links auf das Modulhandbuch.
 
-
-**<Diagramm oder Tabelle>**
-
-**<optional: Erläuterung der externen technischen Schnittstellen>**
-
-- PDF Export
-- REST API?
-
-**<Mapping fachliche auf technische Schnittstellen>**

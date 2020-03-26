@@ -15,23 +15,18 @@ Enthaltene Bausteine:: _<Beschreibung der enthaltenen Bausteine (Blackboxen)>_
 
 Wichtige Schnittstellen:: _<Beschreibung wichtiger Schnittstellen>_
 
+== Volltextsuche
 
+ Zweck/Verantwortung::
 
-==== <Name Blackbox 1>
+_Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichworten eine Liste von Modulen zu erhalten._
 
+ Schnittstelle(n)::
 
+ _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController, der dann die Methode search im Suchservice aufruft._
 
-_<Zweck/Verantwortung>_
-
-_<Schnittstelle(n)>_
-
-_<(Optional) Qualitäts-/Leistungsmerkmale>_
-
-_<(Optional) Ablageort/Datei(en)>_
-
-_<(Optional) Erfüllte Anforderungen>_
-
-_<(optional) Offene Punkte/Probleme/Risiken>_
+ Qualitäts-/Leistungsmerkmale::
+ _Die Suche soll auch mit Teilworten fertig werden, z.B wenn der Nutzer Architektur eingibt muss die Suche auch Architekturformen finden können._
 
 ==== <Name Blackbox 2>
 
