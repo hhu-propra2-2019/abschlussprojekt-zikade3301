@@ -5,4 +5,7 @@
  Dieses Projekt ist das erste Großprojekt von fast allen Gruppenmitglieder, deshalb ist die mögliche Fehleinschätzung
  der Rescource Zeit sehr groß.
 
-
+ Zu große, langlebige Branches::
+ Oft haben wir versäumt, große Features in kleinen kurzlebigen Branches abzuarbeiten, die dann schnell gereviewt und   
+ gemergt werden können. Stattdessen hatten wir gerade zum Ende der Bearbeitungszeit hin das Problem, dass wir eine Vielzahl  
+ überdimensionierte Branches hatten, deren Mergen problematisch und zeitintensiv wurde.
