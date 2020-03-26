@@ -72,7 +72,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalSemesterLabel">Modal title</h5>
+                    <h3 class="modal-title" id="ModalSemesterLabel">Semestertags hinzufügen</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -103,11 +103,14 @@
                                                       th:text="${semesterTags}">Semester</span>
                                             </span>
                                         </li>
-                                        <div class="col-3" style="float: right; display:flex">
+                                        <div class="col-3" style="display:flex">
                                             <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
                                             <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
                                             <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
-                                            <button type="submit">+</button>
+                                            <button class="btn btn-primary"
+                                                    type="submit">
+                                                <span>+</span>
+                                            </button>
                                         </div>
                                     </form>
                                 </ul>
