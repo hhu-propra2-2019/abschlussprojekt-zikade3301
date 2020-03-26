@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import jdk.internal.module.ModuleReferenceImpl;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -109,4 +111,12 @@ public class ModulService {
         return modulSnapshotRepository.findById(id).orElse(null);
     }
 
+    public void tagSemesterForVeranstaltung(String semesterTag, Long veranstaltungId, Long modulId) {
+
+        Veranstaltung veranstaltung = getModulById(modulId).getVeranstaltungen().stream().filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        Set<String> semesterOld = veranstaltung.getSemester();
+        semesterOld.add(semesterTag);
+
+        modulSnapshotRepository.save(getModulById(modulId));
+    }
 }
