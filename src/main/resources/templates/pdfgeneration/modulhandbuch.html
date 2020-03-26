@@ -32,6 +32,10 @@
             <span th:utext="${v.voraussetzungenBestehen}"></span>
             <h3>Häufigkeit des Angebots, modulare Schiene</h3>
             <span th:utext="${v.haeufigkeit}"></span>
+            <div th:each="z : ${v.zusatzfelder}">
+                <h3 th:text="${z.titel}">Zusatztitel</h3>
+                <span th:utext="${z.inhalt}">Zusatzinhalt</span>
+            </div>
         </div>
         <h3>Modulbeauftragte und hauptamtliche Lehrende</h3>
         <span th:text="${m.modulbeauftragte}">Prof. Dr. Stefan Conrad, Prof. Dr. Martin Mauve</span>

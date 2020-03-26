@@ -6,6 +6,7 @@ import static mops.module.services.PdfModulWrapper.safeAppend;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
@@ -39,31 +40,31 @@ public class PdfVeranstaltungWrapper {
     }
 
     public String getInhalte() {
-        return getSafeString(veranstaltung.getBeschreibung().getInhalte());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getInhalte()));
     }
 
     public String getLernergebnisse() {
-        return getSafeString(veranstaltung.getBeschreibung().getLernergebnisse());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getLernergebnisse()));
     }
 
     public String getLiteratur() {
-        return getSafeString(veranstaltung.getBeschreibung().getLiteratur());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getLiteratur()));
     }
 
     public String getVerwendbarkeit() {
-        return getSafeString(veranstaltung.getBeschreibung().getVerwendbarkeit());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getVerwendbarkeit()));
     }
 
     public String getTeilnahmevoraussetzungen() {
-        return getSafeString(veranstaltung.getVoraussetzungenTeilnahme());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getVoraussetzungenTeilnahme()));
     }
 
     public String getVoraussetzungenBestehen() {
-        return getSafeString(veranstaltung.getBeschreibung().getVoraussetzungenBestehen());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getVoraussetzungenBestehen()));
     }
 
     public String getHaeufigkeit() {
-        return getSafeString(veranstaltung.getBeschreibung().getHaeufigkeit());
+        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getHaeufigkeit()));
     }
 
     public Set<Zusatzfeld> getZusatzfelder() {
@@ -75,6 +76,16 @@ public class PdfVeranstaltungWrapper {
             }
         }
         return zusatzString;*/
-        return veranstaltung.getZusatzfelder();
+        return veranstaltung.getZusatzfelder()
+                .stream()
+                .map(zusatzfeld -> zusatzfeldEnableMarkdown(zusatzfeld))
+                .collect(Collectors.toSet());
+    }
+
+    private static Zusatzfeld zusatzfeldEnableMarkdown(Zusatzfeld zusatzfeld) {
+        Zusatzfeld neuesZusatzfeld = new Zusatzfeld();
+        neuesZusatzfeld.setTitel(zusatzfeld.getTitel());
+        neuesZusatzfeld.setInhalt(HtmlService.markdownToHtml(zusatzfeld.getInhalt()));
+        return neuesZusatzfeld;
     }
 }
