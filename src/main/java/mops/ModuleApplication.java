@@ -10,8 +10,4 @@ public class ModuleApplication {
         SpringApplication.run(ModuleApplication.class, args);
     }
 
-
 }
-
-
-
