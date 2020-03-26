@@ -59,45 +59,17 @@ public class PdfService {
      * @return
      */
     public PDDocument generatePdf(List<Modul> module) {
-        int pageCount = 1 + COUNT_OF_PRE_PAGES;
+        Context context = new Context();
+        List<PdfModulWrapper> pdfModulWrapperList=module.stream().map(PdfModulWrapper::new).collect(Collectors.toList());
+        context.setVariable("moduls", module);
+        context.setVariable("module", pdfModulWrapperList);
+        context.setVariable("categories", getUsedKategorien(pdfModulWrapperList));
+        context.setVariable("pdfService", this);
 
-        Map<Modul, Integer> pageForModul = new HashMap<>();
-        List<Modul> sortedModule = new ArrayList<>();
+        StringWriter writer = new StringWriter();
+        templateEngine.process("modulhandbuch", context, writer);
 
-        int anzahlModulkategorien = Modulkategorie.values().length;
-        for (int i = 0; i < anzahlModulkategorien; i++) {
-            Modulkategorie currentModulkategorie = Modulkategorie.values()[i];
-            module.stream()
-                    .filter(m -> m.getModulkategorie() == currentModulkategorie)
-                    .forEach(sortedModule::add);
-        }
-
-        String alleModule = "";
-        List<Modul> sortedModuleSubList = new ArrayList<>();
-        for (Modul modul : sortedModule) {
-            sortedModuleSubList.add(modul);
-            String html = buildString(sortedModuleSubList);
-            alleModule = html;
-
-            String cssHtml = PdfConverterExtension.embedCss(html, CSS_MODULE);
-
-            pageForModul.put(modul, pageCount);
-            PDDocument toAppend = HtmlService.htmlToPdf(cssHtml);
-            pageCount = toAppend.getNumberOfPages() + COUNT_OF_PRE_PAGES;
-            try {
-                toAppend.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String tableOfContents = getTableOfContents(pageForModul, sortedModule);
-        String frontPage = generateFrontPage();
-
-        String complete = frontPage + tableOfContents + alleModule;
-        complete = PdfConverterExtension.embedCss(complete, CSS_MODULE);
-
-        PDDocument document = HtmlService.htmlToPdf(complete);
+        PDDocument document = HtmlService.htmlToPdf(writer.toString());
         return document;
     }
 
@@ -137,9 +109,11 @@ public class PdfService {
 
     public static List<Modulkategorie> getUsedKategorien(List<PdfModulWrapper> module) {
         List<Modulkategorie> modulkategorien = new ArrayList<>();
-        for(PdfModulWrapper modul : module) {
-            if (!modulkategorien.contains(modul.getModulkategorie())) {
-                modulkategorien.add(modul.getModulkategorie());
+        for (Modulkategorie modulkategorie : Modulkategorie.values()) {
+            if (module.stream()
+                    .filter(modul -> modul.getModulkategorie() == modulkategorie)
+                    .count() > 0) {
+                modulkategorien.add(modulkategorie);
             }
         }
         return modulkategorien;
@@ -153,6 +127,7 @@ public class PdfService {
                 .map(PdfModulWrapper::new).collect(Collectors.toList());
         context.setVariable("module", modulWrapperList);
         context.setVariable("categories", getUsedKategorien(modulWrapperList));
+        context.setVariable("moduls", module);
 
         StringWriter writer = new StringWriter();
         templateEngine.process("modulhandbuch", context, writer);
