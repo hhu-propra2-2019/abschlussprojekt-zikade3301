@@ -4,11 +4,14 @@ services:
     image: postgres
     volumes:
       - database-data:/var/lib/postgresql/data/
-    ports:
-      - "3301:5432"
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=zikade3301
       - POSTGRES_DB=Modulhandbuch
-volumes:
-  database-data:
+  module:
+    build:
+      context: .
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
