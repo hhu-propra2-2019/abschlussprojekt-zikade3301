@@ -11,18 +11,12 @@
             font-size: 12px;
         }
 
-        inhaltsverzeichnis, #frontpage {
-            display: block;
-            page-break-after: always;
-            font-size: 14px;
-        }
-
         a:link {
             text-decoration: none;
             color: black;
         }
 
-        .frontpage {
+        #frontpage {
             font-size: 16px;
             text-align: center;
         }
@@ -31,6 +25,7 @@
             display: block;
             page-break-after: always;
             margin-top: 75%;
+            line-height: 0.5em;
         }
 
         @page {
@@ -53,47 +48,154 @@
         }
 
         #table-of-contents {
+            line-height: 2em;
             display: block;
             page-break-after: always;
+        }
+
+        .blank-page {
+            visibility: hidden;
+            page-break-after: always;
+            content: ".";
+        }
+
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 30px;
+            text-align: center;
+        }
+
+        table#t01 th {
+            background-color: lightcyan;
+            color: white;
         }
 
     </style>
 </head>
 <body>
-<div id="frontpage-upper-part" class="frontpage">
-    <h1>Modulhandbuch</h1>
-    <h2>für den</h2>
-    <h2>Bachelor- und Master-Studiengang Informatik</h2>
+
+<!-- =========== Vorderseite =========== -->
+
+<div id="frontpage">
+    <div id="frontpage-upper-part">
+        <h1>Modulhandbuch</h1>
+        <h2>für den</h2>
+        <h2>Bachelor- und Master-Studiengang Informatik</h2>
+    </div>
+    <div id="frontpage-lower-part">
+        <h2>Institut für Informatik</h2>
+        <h2>der Mathematisch-Naturwissenschaftliche Fakultät</h2>
+        <h2>der Heinrich-Heine-Universität</h2>
+        <br/>
+        <h2>Herausgegeben vom</h2>
+        <h2>Ausschuss für die Bachelor- und Master-Prüfung</h2>
+        <h2>im Fach Informatik</h2>
+    </div>
 </div>
-<div id="frontpage-lower-part" class="frontpage">
-    <h2>Institut für Informatik</h2>
-    <h2>der Mathematisch-Naturwissenschaftliche Fakultät</h2>
-    <h2>der Heinrich-Heine-Universität</h2>
-    <br/>
-    <h2>Herausgegeben vom</h2>
-    <h2>Ausschuss für die Bachelor- und Master-Prüfung</h2>
-    <h2>im Fach Informatik</h2>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page0</div>
+
+<!-- =========== Vorwort =========== -->
+
+<div>
+    <h1>Vorwort</h1>
+    <p>
+        Das Modulhandbuch soll eine Orientierung über den grundständigen Bachelor-Studiengang Informatik und
+        den konsekutiven Master-Studiengang Informatik liefern. Insbesondere soll es die Wahl der Lehrveranstal-
+        tungen erleichtern und die Organisation des Studiums unterstützen.
+    </p>
+    <p>
+        Das Modulhandbuch führt die gängigen Lehrveranstaltungen auf. Es ist jedoch keine vollständige, abschlie-
+        ßende oder endgültige Auflistung. Vielmehr wird das Modulhandbuch kontinuierlich aktualisiert und gibt so
+        die Entwicklung in Forschung und Lehre am Institut für Informatik wieder.
+    </p>
+    <p>
+        Beachten Sie jedoch, dass in allen Fragen zum Studium sowie zum Prüfungswesen die jeweiligen Bachelor-
+        oder Master-Prüfungsordnungen des Fachs Informatik maßgeblich sind.
+    </p>
+    <p>
+        Düsseldorf, im Sommer 2020
+    </p>
+    <p>
+        Der Ausschuss für die Bachelor- und Master-Prüfung im Fach Informatik
+    </p>
 </div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page1</div>
+
+<!-- =========== Inhaltsverzeichnis =========== -->
+
 <div id="table-of-contents">
     <h1>Inhaltsverzeichnis</h1>
-    <ul id="testnumber">
-        <ul th:each="c : ${categories}">
-            <li style="font-weight: bold;">
-                <a th:href="'#'+${c.toReadable()}" th:text="${c.toReadable()}"></a>
-            </li>
-            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
-                                                                                 th:text="${m.titelDeutsch}"></a>
-        </ul>
+    <ul style="list-style-type: none" id="testnumber" th:each="c : ${categories}">
+        <li style="font-weight: bold;">
+            <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toReadable()}"></a>
         </li>
+        <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
+                                                                                           th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+    </ul>
+    </li>
     </ul>
 </div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page2</div>
+
+<!-- =========== Studienverlaufsplan =========== -->
+
+<div id="table">
+    <h1>0. Studienverlaufspläne</h1>
+    <h2>Bachelor-Studiengang (Beginn im Wintersemester)</h2>
+
+    <table id="t01">
+        <tr>
+            <th style="padding: 1px;">
+                Semester
+            </th>
+            <th colspan="5">
+                Lehrveranstaltungen mit zugehörigen Leistungspunkte
+            </th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>info1</td>
+            <td>info2</td>
+            <td>LA</td>
+            <td></td>
+            <td>30LP</td>
+    </table>
+</div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page3</div>
+
+<!-- =========== Module nach Kategorien =========== -->
+
 <div th:each="c : ${categories}">
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
-    <h2 th:id="${c.toReadable()}" th:text="${c.toReadable()}">Pflichtmodule der Informatik (1.–4. Fachsemester)</h2>
-    <h2 th:text="${c.toReadable()}">Compulsory Modules in Computer Science</h2>
+    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toReadable()}">Pflichtmodule der Informatik
+        (1.–4. Fachsemester)</h2>
+    <h2 th:text="${c.toReadable()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
-        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
-        <h3 th:text="${m.titelEnglisch}">Computer Architecture</h3>
+        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}"
+            style="text-indent: 3%">1.4
+            Rechnerarchitektur</h3>
+        <h3 th:text="${m.titelEnglisch}" style="text-indent: 3%">Computer Architecture</h3>
         <h3>Studiengang</h3>
         <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
         <div th:each="v, vitemStat : ${m.veranstaltungen}">
@@ -103,16 +205,23 @@
             <div>
                 <ul th:remove="all-but-first">
                     <li th:each="lv : ${v.lehrveranstaltungen}"
-                        th:text="${lv}">Vorlesung „Rechnerarchitektur“, 2 SWS</li>
+                        th:text="${lv}">Vorlesung „Rechnerarchitektur“, 2 SWS
+                    </li>
                     <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
                 </ul>
             </div>
             <h3>Inhalte</h3>
-            <div th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP) behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:</div>
+            <div th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP)
+                behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:
+            </div>
             <h3>Lernergebnisse/Kompetenzen</h3>
-            <div th:utext="${v.lernergebnisse}">Nach erfolgreicher Teilnahme an den Veranstaltungen dieses Moduls können die Studierenden</div>
+            <div th:utext="${v.lernergebnisse}">Nach erfolgreicher Teilnahme an den Veranstaltungen dieses Moduls können
+                die Studierenden
+            </div>
             <h3>Literatur</h3>
-            <div th:utext="${v.literatur}">Die primären Lehrbücher zu den verschiedenen Bestandteilen dieses Moduls sind:</div>
+            <div th:utext="${v.literatur}">Die primären Lehrbücher zu den verschiedenen Bestandteilen dieses Moduls
+                sind:
+            </div>
             <h3>Verwendbarkeit des Moduls</h3>
             <div th:utext="${v.verwendbarkeit}">Pflichtbereich</div>
             <h3>Teilnahmevoraussetzungen</h3>
