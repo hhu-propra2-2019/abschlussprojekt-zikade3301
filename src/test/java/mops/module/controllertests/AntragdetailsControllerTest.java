@@ -152,17 +152,19 @@ class AntragdetailsControllerTest {
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         Modul modul = ModulFaker.generateFakeModul();
+        ModulWrapper neuerWrapper = new ModulWrapper(modul, null,null,null);
 
         Antrag neuerAntrag = new Antrag();
         neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
 
         when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
 
-
         when(ModulWrapperService.readModulFromWrapper(new ModulWrapper(modul,null,null,null))).thenReturn(modul);
 
-        mvc.perform(post("/antragdetails/3301")).andExpect(status().isOk());
-    }
+     //   mvc.perform(post("/antragdetails/3301")).andExpect(status().isOk());
 
+        mvc.perform(post("/antragdetails/3301",ModulWrapper neu)).andExpect(status().isOk());
+
+    }
  */
 }

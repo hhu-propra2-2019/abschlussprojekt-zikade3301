@@ -1,7 +1,9 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -14,6 +16,7 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsbeschreibung;
+import mops.module.generator.ModulFaker;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
@@ -211,22 +214,56 @@ public class ModulServiceDatabaseTest {
         }
     }
 
+    @Test
+    public void testgetAlleAntrage() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        Modul modul2 = ModulFaker.generateFakeModul();
+        Modul modul3 = ModulFaker.generateFakeModul();
 
-    // TODO - Tests für meine zwei Methoden im Antragsservice
+        antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        antragService.addModulCreationAntrag(modul2, "Beispielantragsteller2");
+        antragService.addModulCreationAntrag(modul3, "Beispielantragsteller3");
 
-    /*
+        List<Antrag> antraege = antragService.getAlleAntraege();
+
+        assertThat(antraege.size()).isEqualTo(3);
+    }
+
     @Test
     public void testgetAlleAntraegeGeordnetDatum() {
 
+        Modul modul1 = ModulFaker.generateFakeModul();
+        Modul modul2 = ModulFaker.generateFakeModul();
+        Modul modul3 = ModulFaker.generateFakeModul();
+
+        antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        antragService.addModulCreationAntrag(modul2, "Beispielantragsteller2");
+        antragService.addModulCreationAntrag(modul3, "Beispielantragsteller3");
+
+        //Sortierung von Alt nach Neu.
+        List<Antrag> antraege = antragService.getAlleAntraegeGeordnetDatum();
+
+        assertEquals(JsonService.modulToJsonObject(modul3), antraege.get(2).getJsonModulAenderung());
     }
-
-
 
     @Test
     public void testgetAlleOffenenAntraegeGeordnetDatumAnzahl() {
 
+        Modul modul1 = ModulFaker.generateFakeModul();
+        Modul modul2 = ModulFaker.generateFakeModul();
+        Modul modul3 = ModulFaker.generateFakeModul();
+
+        antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        antragService.addModulCreationAntrag(modul2, "Beispielantragsteller2");
+        Antrag antrag3 = antragService.addModulCreationAntrag(modul3, "Beispielantragsteller3");
+
+        antragService.approveModulCreationAntrag(antrag3);
+
+        List<Antrag> antraege = antragService.getAlleOffenenAntraegeGeordnetDatum();
+
+        assertThat(antragService.getAlleAntraege().size()).isEqualTo(3);
+        assertThat(antraege.size()).isEqualTo(2);
+        assertEquals(JsonService.modulToJsonObject(modul2), antraege.get(1).getJsonModulAenderung());
+
     }
-
-     */
-
 }

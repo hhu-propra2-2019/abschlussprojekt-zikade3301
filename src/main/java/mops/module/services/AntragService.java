@@ -121,6 +121,8 @@ public class AntragService {
     }
 
     public List<Antrag> getAlleAntraegeGeordnetDatum() {
+        System.out.println(antragRepository.findAll());
+
         return getAlleAntraege().stream().sorted(Comparator.comparing(Antrag::getDatumErstellung))
                 .collect(Collectors.toList());
     }
