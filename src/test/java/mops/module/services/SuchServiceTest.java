@@ -3,6 +3,7 @@ package mops.module.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
@@ -34,6 +35,7 @@ public class SuchServiceTest {
         fakeModulBetriebssysteme = ModulFaker.generateFakeModul();
         fakeModulBetriebssysteme.setTitelDeutsch("Betriebssysteme");
         fakeModulBetriebssysteme.setTitelEnglisch("Operating systems");
+        fakeModulBetriebssysteme.setVeranstaltungen(new HashSet<>());
 
         fakeModulProgrammierung = ModulFaker.generateFakeModul();
         fakeModulProgrammierung.setTitelDeutsch("Programmierung");
