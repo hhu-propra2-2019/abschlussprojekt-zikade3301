@@ -13,32 +13,42 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
 @Setter
+@Indexed
 public class Modul {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String titelDeutsch;
 
+    @Field
     private String titelEnglisch;
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
+    @IndexedEmbedded
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
             orphanRemoval = true)
     private Set<Veranstaltung> veranstaltungen;
 
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 
+    @Field
     private String studiengang;
 
     private Modulkategorie modulkategorie;

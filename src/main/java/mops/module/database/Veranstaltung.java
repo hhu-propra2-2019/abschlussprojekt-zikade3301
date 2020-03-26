@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import mops.module.services.JsonExclude;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 @Entity
 @Getter
@@ -37,12 +40,14 @@ public class Veranstaltung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ContainedIn
     @JsonExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "modul_id")
     private Modul modul;
 
+    @Field
     private String titel;
 
     private String leistungspunkte;
@@ -53,8 +58,11 @@ public class Veranstaltung {
     private Set<Veranstaltungsform> veranstaltungsformen;
 
     @Embedded
+    @IndexedEmbedded
     private Veranstaltungsbeschreibung beschreibung;
 
+    @Field
+    @IndexedEmbedded
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> voraussetzungenTeilnahme;
 
@@ -64,6 +72,7 @@ public class Veranstaltung {
     //Beim Löschen von Veranstaltung werden alle Zusatzfelder mitgelöscht
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "veranstaltung",
             orphanRemoval = true)
+    @IndexedEmbedded
     private Set<Zusatzfeld> zusatzfelder;
 
     public void refreshMapping() {
