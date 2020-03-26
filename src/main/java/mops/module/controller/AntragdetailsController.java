@@ -33,7 +33,7 @@ public class AntragdetailsController {
      * @param id Id des Antrags.
      * @param token Der Token von keycloak für die Berechtigung.
      * @param model Modell für die HTML Datei.
-     * @return HTML antragdetails.
+     * @return View antragdetails.
      */
 
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)

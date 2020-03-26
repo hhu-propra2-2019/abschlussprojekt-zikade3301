@@ -25,7 +25,7 @@ public class ModulbeauftragterController {
     /**
      * Get-Mapping für die "Module bearbeiten"-Seite für die Organisatoren und das Sekretariat.
      * @param model Model für die HTML-Datei.
-     * @param token Keycloak-Token.
+     * @param token Der Token von keycloak für die Berechtigung.
      * @return View für die "Module bearbeiten"-Seite.
      */
     @GetMapping("/modulbeauftragter")

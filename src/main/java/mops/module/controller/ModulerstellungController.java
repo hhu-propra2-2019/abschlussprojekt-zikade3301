@@ -39,7 +39,7 @@ public class ModulerstellungController {
      * von Veranstaltungen.
      * @param veranstaltungsanzahl Anzahl der Veranstaltungen.
      * @param model Modell für die HTML-Datei.
-     * @param token Keycloak-Token.
+     * @param token Der Token von keycloak für die Berechtigung.
      * @return View für die Modulerstellung.
      */
     @GetMapping("/modulerstellung")

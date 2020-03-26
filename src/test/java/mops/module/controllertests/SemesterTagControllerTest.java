@@ -1,11 +1,17 @@
 package mops.module.controllertests;
 
+import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import mops.module.database.Modul;
-import mops.module.database.Modulkategorie;
 import mops.module.generator.ModulFaker;
-import mops.module.services.AntragService;
 import mops.module.services.ModulService;
-import mops.module.services.SuchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +23,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
 @SpringBootTest
@@ -131,7 +128,7 @@ class SemesterTagControllerTest {
     }
 
     @Test
-    void testSemesterTagCallsTagSemesterForVeranstaltung() throws Exception {
+    void testSemesterTagCallsTagVeranstaltungSemester() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
@@ -143,7 +140,12 @@ class SemesterTagControllerTest {
                 .param("inputTag", "SoSe2020")
                 .param("idVeranstaltung", "1")
                 .param("idModul", "3301"));
-                verify(modulServiceMock).tagSemesterForVeranstaltung("SoSe2020", Long.parseLong("1"), Long.parseLong("3301"));
+        verify(modulServiceMock)
+                .tagVeranstaltungSemester(
+                        "SoSe2020",
+                        Long.parseLong("1"),
+                        Long.parseLong("3301")
+                );
     }
 
 

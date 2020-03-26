@@ -4,13 +4,9 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import mops.module.database.Antrag;
-import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
-import mops.module.generator.ModulFaker;
 import mops.module.services.AntragService;
 import mops.module.services.ModulService;
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,9 +33,9 @@ public class IndexController {
     /**
      * Index string.
      *
-     * @param token the token of keycloak for permissions.
-     * @param model the model of keycloak for permissions.
-     * @return the string "index" which is the unsecured page for every user.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @param model Model für die HTML-Datei.
+     * @return View Index
      */
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {

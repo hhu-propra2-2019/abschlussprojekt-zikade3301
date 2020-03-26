@@ -132,6 +132,8 @@ class ModulWrapperServiceTest {
         ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(completeModul);
         Modul unwrappedModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
         Set<Veranstaltung> veranstaltungenInUnwrappedModul = unwrappedModul.getVeranstaltungen();
+
+
         //TODO: testet dieser Test das richtige?
         assertThat(veranstaltungenInUnwrappedModul).containsAll(veranstaltungenInModul);
     }

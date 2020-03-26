@@ -113,9 +113,19 @@ public class ModulService {
         return modulSnapshotRepository.findById(id).orElse(null);
     }
 
-    public void tagSemesterForVeranstaltung(String semesterTag, Long veranstaltungId, Long modulId) {
+    /**
+     * Fügt einer Veranstaltung ein SemesterTag hinzu.
+     *
+     * @param semesterTag     Der SemesterTag, der der Veranstaltung hinzugefügt werden soll
+     * @param veranstaltungId ID der Veranstaltung, die das Tag erhalten soll
+     * @param modulId         ID des Moduls, das die Veranstaltung beinhaltet
+     */
+    public void tagVeranstaltungSemester(String semesterTag, Long veranstaltungId, Long modulId) {
 
-        Veranstaltung veranstaltung = getModulById(modulId).getVeranstaltungen().stream().filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        Veranstaltung veranstaltung = getModulById(modulId)
+                .getVeranstaltungen()
+                .stream()
+                .filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
         Set<String> semesterOld = veranstaltung.getSemester();
         semesterOld.add(semesterTag);
 
