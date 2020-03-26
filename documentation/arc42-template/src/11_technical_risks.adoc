@@ -1,4 +1,8 @@
 [[section-technical-risks]]
 == Risiken und technische Schulden
 
+ Deadline::
+ Dieses Projekt ist das erste Großprojekt von fast allen Gruppenmitglieder, deshalb ist die mögliche Fehleinschätzung
+ der Rescource Zeit sehr groß.
+
 
