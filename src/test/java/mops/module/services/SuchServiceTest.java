@@ -127,8 +127,9 @@ public class SuchServiceTest {
         String searchinput = "Op sys";
 
         List<Modul> results = suchService.search(searchinput);
+        String resultTitle = results.get(0).getTitelEnglisch();
 
-        assertEquals(results.get(0).getTitelEnglisch(), fakeModulBetriebssysteme.getTitelEnglisch());
+        assertEquals(resultTitle, fakeModulBetriebssysteme.getTitelEnglisch());
     }
 
 }
