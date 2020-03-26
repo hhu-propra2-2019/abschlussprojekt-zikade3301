@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -102,5 +101,9 @@ class ModulerstellungControllerTest {
                 });
     }
 
-
+    // TODO POST Mapping Tests
+    //  fehlen noch, weil sie nur mit @RequestBody funktioniert hatten,
+    //  dann allerdings die MappingMethode live nicht mehr lief.
+    //  Entweder funktionieren also die Tests, oder die originale Mapping-Methode.
+    //  Auch @ModelAttribute wurde probiert, wobei dann das DataBinding nicht mehr funktionierte
 }
