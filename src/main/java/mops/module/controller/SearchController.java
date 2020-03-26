@@ -19,12 +19,8 @@ import org.springframework.web.context.annotation.SessionScope;
 @RequestMapping("/module")
 public class SearchController {
 
-    private SuchService suchService;
-
     @Autowired
-    public SearchController(SuchService suchService) {
-        this.suchService = suchService;
-    }
+    private SuchService suchService;
 
     /**
      * Searchresults string.

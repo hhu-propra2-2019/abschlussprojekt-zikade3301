@@ -46,9 +46,10 @@ class IndexControllerTest {
     }
 
 
+    final String expect = "index";
+
     @Test
     void testIndexViewName() throws Exception {
-        final String expect = "index";
         mvc.perform(get("/module/"))
                 .andExpect(view().name(expect));
     }

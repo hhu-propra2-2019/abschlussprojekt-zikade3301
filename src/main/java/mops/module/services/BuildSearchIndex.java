@@ -28,9 +28,7 @@ public class BuildSearchIndex implements ApplicationListener<ApplicationReadyEve
         FullTextEntityManager fullTextEntityManager;
         fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
         try {
-            fullTextEntityManager.createIndexer()
-                    .purgeAllOnStart(true)
-                    .startAndWait();
+            fullTextEntityManager.createIndexer().startAndWait();
         } catch (InterruptedException e) {
             System.err.println("An error occurred trying to build the search index: ");
             e.printStackTrace();
