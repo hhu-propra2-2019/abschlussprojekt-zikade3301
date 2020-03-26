@@ -81,8 +81,8 @@
             <li style="font-weight: bold;">
                 <a th:href="'#'+${c.toReadable()}" th:text="${c.toReadable()}"></a>
             </li>
-            <li th:each="m, itemStat : ${pdfService.filterModule(moduls, c)}"><a th:href="'#'+${m.getId()}"
-                                                                                 th:text="${m.getTitelDeutsch()}"></a>
+            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
+                                                                                 th:text="${m.titelDeutsch}"></a>
         </ul>
         </li>
     </ul>

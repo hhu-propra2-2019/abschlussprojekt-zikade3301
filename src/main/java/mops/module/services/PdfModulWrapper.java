@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 
+/**
+ * Formatiert die Daten aus dem Modulobjekt passend für das PDF-Template.
+ */
 @RequiredArgsConstructor
 public class PdfModulWrapper {
 
@@ -19,11 +22,11 @@ public class PdfModulWrapper {
         return modul.getModulkategorie();
     }
 
-    public String getTitelDeutsch(){
+    public String getTitelDeutsch() {
         return getSafeString(modul.getTitelDeutsch());
     }
 
-    public String getTitelEnglisch(){
+    public String getTitelEnglisch() {
         return getSafeString(modul.getTitelEnglisch());
     }
 
@@ -35,6 +38,10 @@ public class PdfModulWrapper {
         return getSafeString(modul.getModulbeauftragte());
     }
 
+    /**
+     * Gibt die zu gehörigen PdfVeranstaltungsWrapper zurück.
+     * @return Set von PdfVeranstaltungsWrappern
+     */
     public Set<PdfVeranstaltungWrapper> getVeranstaltungen() {
         HashSet<PdfVeranstaltungWrapper> set = new HashSet<>();
         modul.getVeranstaltungen().forEach(v -> set.add(new PdfVeranstaltungWrapper(v)));

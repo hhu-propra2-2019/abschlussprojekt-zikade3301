@@ -3,7 +3,6 @@ package mops.module.services;
 import static mops.module.services.PdfModulWrapper.getSafeString;
 import static mops.module.services.PdfModulWrapper.safeAppend;
 
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,19 +11,29 @@ import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
 
+/**
+ * Formatiert die Daten aus dem Veranstaltungsobjekt passend für das PDF-Template.
+ */
 @RequiredArgsConstructor
 public class PdfVeranstaltungWrapper {
 
     private final Veranstaltung veranstaltung;
 
+    /**
+     * Formatiert "Lehrveranstaltungs"-Strings wie im Modulhandbuch.
+     *
+     * @return Lehrveranstaltungs-Strings
+     */
     public Set<String> getLehrveranstaltungen() {
         Set<String> lehrveranstaltungen = new HashSet<>();
         for (Veranstaltungsform veranstaltungsform : veranstaltung.getVeranstaltungsformen()) {
             String veranstaltungsformString = "";
-            veranstaltungsformString = safeAppend(veranstaltungsformString, veranstaltungsform.getForm());
+            veranstaltungsformString = safeAppend(veranstaltungsformString,
+                    veranstaltungsform.getForm());
 
             if (veranstaltungsform.getSemesterWochenStunden() > 0) {
-                veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden() + " SWS";
+                veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden()
+                        + " SWS";
             }
             lehrveranstaltungen.add(veranstaltungsformString);
         }
@@ -32,50 +41,56 @@ public class PdfVeranstaltungWrapper {
     }
 
     public String getTitel() {
-        return getSafeString(veranstaltung.getTitel());
+        return getSafeString(
+                veranstaltung.getTitel());
     }
 
     public String getLeistungspunkte() {
-        return getSafeString(veranstaltung.getLeistungspunkte());
+        return getSafeString(
+                veranstaltung.getLeistungspunkte());
     }
 
     public String getInhalte() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getInhalte()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getInhalte()));
     }
 
     public String getLernergebnisse() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getLernergebnisse()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getLernergebnisse()));
     }
 
     public String getLiteratur() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getLiteratur()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getLiteratur()));
     }
 
     public String getVerwendbarkeit() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getVerwendbarkeit()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getVerwendbarkeit()));
     }
 
     public String getTeilnahmevoraussetzungen() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getVoraussetzungenTeilnahme()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getVoraussetzungenTeilnahme()));
     }
 
     public String getVoraussetzungenBestehen() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getVoraussetzungenBestehen()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getVoraussetzungenBestehen()));
     }
 
     public String getHaeufigkeit() {
-        return HtmlService.markdownToHtml(getSafeString(veranstaltung.getBeschreibung().getHaeufigkeit()));
+        return HtmlService.markdownToHtml(getSafeString(
+                veranstaltung.getBeschreibung().getHaeufigkeit()));
     }
 
+    /**
+     * Gibt mit Markdown formatierte Zusatzfelder zurück.
+     *
+     * @return Set von Zusatzfeldern
+     */
     public Set<Zusatzfeld> getZusatzfelder() {
-        /*String zusatzString = "";
-        for (Zusatzfeld zusatzfeld : veranstaltung.getZusatzfelder()) {
-            if (zusatzfeld != null && !isNullOrEmpty(zusatzfeld.getTitel()) && !isNullOrEmpty(zusatzfeld.getInhalt())) {
-                zusatzString += "### " + zusatzfeld.getTitel() + "\n";
-                zusatzString += zusatzfeld.getInhalt() + "\n";
-            }
-        }
-        return zusatzString;*/
         return veranstaltung.getZusatzfelder()
                 .stream()
                 .map(zusatzfeld -> zusatzfeldEnableMarkdown(zusatzfeld))
