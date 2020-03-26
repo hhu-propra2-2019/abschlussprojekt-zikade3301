@@ -1,12 +1,12 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import jdk.internal.module.ModuleReferenceImpl;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -121,4 +121,55 @@ public class ModulService {
 
         modulSnapshotRepository.save(getModulById(modulId));
     }
+
+    /**
+     * Gibt die letzten x und die y darauffolgenden Semester als Liste von Strings zurück.
+     *
+     * @param pastCount Anzahl der vergangenen Semester
+     * @param nextCount Anzahl der darauffolgenden Semester (inklusive dem aktuellen Semester)
+     * @return Liste von formatierten Semester-Strings
+     */
+    public static List<String> getPastAndNextSemesters(LocalDateTime when,
+                                                       int pastCount, int nextCount) {
+        List<String> semesterListe = new ArrayList<>();
+
+        for (int i = pastCount * (-1); i < nextCount; i++) {
+            semesterListe.add(getSemesterFromDate(when.plusMonths(6 * i)));
+        }
+        return semesterListe;
+    }
+
+    /**
+     * Gibt das zugehörige Semester zum Datum zurück.
+     *
+     * @param when Datum
+     * @return Formatierter Semester-String
+     */
+    public static String getSemesterFromDate(LocalDateTime when) {
+        int currentYear = when.getYear();
+        LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
+        LocalDateTime wsStart = LocalDateTime.of(currentYear, 10, 1, 0, 0);
+
+        if (when.isBefore(ssStart)) {
+            return "WiSe" + getWinterSemesterYear(currentYear - 1);
+        } else if (when.isAfter(wsStart)) {
+            return "WiSe" + getWinterSemesterYear(currentYear);
+        } else {
+            return "SoSe" + currentYear;
+        }
+    }
+
+    /**
+     * Formatiert den jeweiligen Wintersemester-String.
+     *
+     * @param firstYear Jahr, in dem das Wintersemester beginnt
+     * @return Formatierter Wintersemester-String
+     */
+    public static String getWinterSemesterYear(int firstYear) {
+        String secondYear = Integer.toString(firstYear + 1);
+        secondYear = secondYear.length() > 2
+                ? secondYear.substring(secondYear.length() - 2) : secondYear;
+        return firstYear + "-" + secondYear;
+    }
+
 }

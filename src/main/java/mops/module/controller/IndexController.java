@@ -2,6 +2,7 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -30,6 +31,8 @@ public class IndexController {
     private final ModulService modulService;
     private final AntragService antragService;
 
+    private static final int NUMBER_OF_PAST_SEMESTERS = 1;
+    private static final int NUMBER_OF_NEXT_SEMESTERS = 4;
 
     /**
      * Index string.
@@ -45,14 +48,9 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allCategories", Modulkategorie.values());
-
-        // FAKE DATA
-        Modul modul = ModulFaker.generateFakeModul();
-        modul.refreshMapping();
-        String antragsteller = "fake Name";
-        Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
-        antragService.approveModulCreationAntrag(antrag);
-
+        model.addAttribute("nextSemesters",
+                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
+                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
         return "index";
     }
 
@@ -70,10 +68,34 @@ public class IndexController {
             KeycloakAuthenticationToken token,
             Model model) {
         if (token != null) {
-            model.addAttribute("account",createAccountFromPrincipal(token));
+            model.addAttribute("account", createAccountFromPrincipal(token));
         }
         model.addAttribute("modul", modulService.getModulById(Long.parseLong(id)));
         return "moduldetails";
+    }
+
+    /**
+     * Semesteransicht string.
+     *
+     * @param semester the corresponding semester
+     * @param token   the token of keycloak for permissions.
+     * @param model   the model of keycloak for permissions.
+     * @return the string "index" with modules in the selected semester.
+     */
+    @RequestMapping(value = "/semester/{semester}", method = RequestMethod.GET)
+    public String semesterAnsicht(
+            @PathVariable String semester,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account", createAccountFromPrincipal(token));
+        }
+        model.addAttribute("allModules", modulService.getModuleBySemester(semester));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("nextSemesters",
+                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
+                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
+        return "index";
     }
 
 }

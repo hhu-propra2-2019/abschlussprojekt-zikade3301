@@ -193,9 +193,9 @@ public class ModulServiceDatabaseTest {
         Modul modul2 = JsonService.jsonObjectToModul(completeModul);
 
         modul1.getVeranstaltungen().stream().findFirst().orElse(null)
-                .setSemester(new HashSet<>(Arrays.asList("WiSe2018/19", "SoSe2019")));
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2018-19", "SoSe2019")));
         modul2.getVeranstaltungen().stream().findFirst().orElse(null)
-                .setSemester(new HashSet<>(Arrays.asList("WiSe2019/20")));
+                .setSemester(new HashSet<>(Arrays.asList("WiSe2019-20")));
 
         Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller");
         Antrag antrag2 = antragService.addModulCreationAntrag(modul2, "Beispielantragsteller");
@@ -203,7 +203,7 @@ public class ModulServiceDatabaseTest {
         antragService.approveModulCreationAntrag(antrag1);
         antragService.approveModulCreationAntrag(antrag2);
 
-        List<Modul> dbmodule = modulSnapshotRepository.findModuleBySemester("WiSe2018/19");
+        List<Modul> dbmodule = modulSnapshotRepository.findModuleBySemester("WiSe2018-19");
 
         try {
             assertThat(dbmodule.size()).isEqualTo(1);
