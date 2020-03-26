@@ -1,4 +1,4 @@
-package mops.module.services;
+package mops.module.searchconfig;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

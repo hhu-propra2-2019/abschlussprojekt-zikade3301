@@ -3,6 +3,7 @@ package mops.module.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
@@ -27,20 +28,26 @@ public class SuchServiceTest {
 
     private Modul fakeModulBetriebssysteme;
     private Modul fakeModulProgrammierung;
-
+    private Modul fakeInvisibleModulProgrammierung;
 
     @BeforeEach
     void init() {
         fakeModulBetriebssysteme = ModulFaker.generateFakeModul();
         fakeModulBetriebssysteme.setTitelDeutsch("Betriebssysteme");
         fakeModulBetriebssysteme.setTitelEnglisch("Operating systems");
+        fakeModulBetriebssysteme.setVeranstaltungen(new HashSet<>());
 
         fakeModulProgrammierung = ModulFaker.generateFakeModul();
         fakeModulProgrammierung.setTitelDeutsch("Programmierung");
         fakeModulProgrammierung.setTitelEnglisch("Programming");
 
+        fakeInvisibleModulProgrammierung = ModulFaker.generateFakeModul();
+        fakeInvisibleModulProgrammierung.setTitelDeutsch("Programmierung");
+        fakeInvisibleModulProgrammierung.setSichtbar(false);
+
         modulRepository.save(fakeModulBetriebssysteme);
         modulRepository.save(fakeModulProgrammierung);
+        modulRepository.save(fakeInvisibleModulProgrammierung);
     }
 
     @AfterEach
@@ -58,8 +65,17 @@ public class SuchServiceTest {
     }
 
     @Test
-    void sarchTestOneMatchOneResult() {
+    void searchTestOneMatchOneResult() {
         String searchinput = "Betriebssysteme";
+
+        List<Modul> results = suchService.search(searchinput);
+
+        assertEquals(1, results.size());
+    }
+
+    @Test
+    void searchTestOnlyVisibleModulesAsResults() {
+        String searchinput = "Programmierung";
 
         List<Modul> results = suchService.search(searchinput);
 
