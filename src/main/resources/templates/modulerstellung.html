@@ -60,7 +60,7 @@
                 <div th:each="role: ${account.getRoles()}">
                     <div th:switch="${role}">
                         <a th:case="'orga'" href="/module/modulbeauftragter">Module bearbeiten</a>
-                        <div th:case="'sekretariat'" href="/module/modulbeauftragter">
+                        <div th:case="'sekretariat'">
                             <a href="/module/modulbeauftragter">Module bearbeiten</a>
                             <a href="/module/administrator">Anträge</a>
                         </div>
@@ -140,7 +140,6 @@
                             </div>
                             <br>
 
-                            <!-- TODO hier mehrere-->
                             <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
                                 <label for="modulbeauftragte">Modulbeauftragte</label>
                                 <input type="text"
@@ -399,12 +398,9 @@
                                                 <span style="font-size: x-large; margin-bottom: 2rem">
                                                     Die Veranstaltung beinhaltet:
                                                 </span>
-<!--                                                TODO: 6tes als Freifeld variabel machen-->
+<!--                                                TODO: Freifeld variabel machen statt fest als 6.-->
                                                 <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}"
                                                      th:unless="${j.index == 5}">
-<!--                                                <div th:each="veranstaltungsform, j : *{veranstaltungsformen}"-->
-<!--                                                     th:if="*{veranstaltungsformen[__${j.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}"-->
-<!--                                                     class="form-check mb-2" style="display: flex">-->
                                                         <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
@@ -443,20 +439,6 @@
                                                 </div>
 
                                             </div>
-
-<!--                                        //TODO: Sechstes Feld muss Freitextfeld statt Feld mit SWS sein!-->
-                                            <!--<div class="form-check mb-2" style="display: flex">-->
-                                            <!--    <input class="form-check-input" type="checkbox" value="true"-->
-                                            <!--           th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_checked'">-->
-                                            <!--    <textarea class="form-control ml-1"-->
-                                            <!--              th:name="'veranstaltung' + ${i.index} + '_veranstaltungsform_texarea_inhalt'"-->
-                                            <!--              style=" border-bottom: 1px solid white;-->
-                                            <!--              max-width: 26rem;-->
-                                            <!--              height: 5rem;-->
-                                            <!--              background: transparent;-->
-                                            <!--              font-size: small;-->
-                                            <!--              color: white;"></textarea>-->
-                                            <!--</div>-->
 
                                             <div style="margin-top: 3rem; display: grid;">
                                                 <span class="col-12" style="font-size: x-large">

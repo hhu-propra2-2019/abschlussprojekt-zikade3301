@@ -53,7 +53,7 @@
                 <div th:each="role: ${account.getRoles()}">
                     <div th:switch="${role}">
                         <a th:case="'orga'" href="/module/modulbeauftragter">Module bearbeiten</a>
-                        <div th:case="'sekretariat'" href="/module/modulbeauftragter">
+                        <div th:case="'sekretariat'">
                             <a href="/module/modulbeauftragter">Module bearbeiten</a>
                             <a href="/module/administrator">Anträge</a>
                         </div>

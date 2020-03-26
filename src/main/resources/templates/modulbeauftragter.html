@@ -53,7 +53,7 @@
                 <div th:each="role: ${account.getRoles()}">
                     <div th:switch="${role}">
                         <a th:case="'orga'" href="/module/modulbeauftragter">Module bearbeiten</a>
-                        <div th:case="'sekretariat'" href="/module/modulbeauftragter">
+                        <div th:case="'sekretariat'">
                             <a href="/module/modulbeauftragter">Module bearbeiten</a>
                             <a href="/module/administrator">Anträge</a>
                         </div>
@@ -99,7 +99,6 @@
                                    value="1"
                                    min="1" required>
                         </div>
-<!--                        TODO: nur positive Werte dürfen erlaubt sein!-->
                         <div style="float: right" class="mt-3">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
                             <button type="submit" class="btn btn-primary">Fortfahren</button>
@@ -136,44 +135,7 @@
 
     <hr class="my-4" style="background-color: white">
 
-    <!--    TODO: DESIGN ÜBERARBEITEN-->
-
-    <h3 class="py-4">Bestehendes Modul bearbeiten:</h3>
-
-    <div class="pl-3" th:each="category : ${allCategories}">
-        <p>
-            <a class="btn btn-primary"
-               style="font-weight: bold;
-               font-size: larger;
-               border:none;
-               background-color: transparent;
-               color: dodgerblue"
-               data-toggle="collapse"
-               th:href="'#' + ${category}"
-               role="button"
-               aria-expanded="false"
-               th:attr="aria-controls=${category}">
-                <span th:text="${category.toReadable()}">Modulkategorien</span>
-            </a>
-        </p>
-        <div class="collapse" th:id="${category}">
-            <div class="card card-body pt-0" style="border: none">
-                <ul style="font-size: large; list-style-type: none">
-                    <li th:each="modul : ${allModules}">
-                        <div th:if="${modul.getModulkategorie()} == ${category}">
-                            <span style="width: min-content"
-                                  class="badge badge-dark mr-2"
-                                  th:text="${modul.getGesamtLeistungspunkte()}">CP</span>
-                            <a th:href="@{'/module/modulbearbeitung/' + ${modul.getId()}}"
-                               th:text="${modul.getTitelDeutsch()}">
-                                Modulname
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!--    TODO: BEARBEITBARE MODULE ANZEIGEN-->
 
 </main>
 </body>

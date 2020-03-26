@@ -35,8 +35,7 @@ public class AdministratorController {
     @Secured("ROLE_sekretariat")
     public String administrator(KeycloakAuthenticationToken token, Model model) {
 
-        //TODO: datumformat überdenken
-        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
 

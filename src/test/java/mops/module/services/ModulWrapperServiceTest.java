@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.hasItem;
 
 import java.util.List;
 import java.util.Set;
-import mops.module.controller.ModulWrapper;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.generator.ModulFaker;
+import mops.module.wrapper.ModulWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

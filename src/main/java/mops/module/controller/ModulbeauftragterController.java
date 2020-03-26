@@ -20,14 +20,16 @@ import org.springframework.web.context.annotation.SessionScope;
 @RequestMapping("/module")
 public class ModulbeauftragterController {
 
-    private final ModulService modulService;
-
+    /**
+     * Get-Mapping für die "Module bearbeiten"-Seite für die Organisatoren und das Sekretariat.
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return View für die "Module bearbeiten"-Seite.
+     */
     @GetMapping("/modulbeauftragter")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("allModules", modulService.getAllModule());
-        model.addAttribute("allCategories", Modulkategorie.values());
         return "modulbeauftragter";
     }
 }

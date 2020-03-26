@@ -1,16 +1,12 @@
 package mops.module.services;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
-import mops.module.controller.ModulWrapper;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
-import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.springframework.stereotype.Service;

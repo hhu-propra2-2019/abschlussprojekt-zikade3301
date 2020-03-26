@@ -35,6 +35,10 @@ public class ModulFakerTest {
     private ModulSnapshotRepository modulSnapshotRepository;
     private CustomComparator ignoreDates;
 
+    /**
+     * Erstellt Instanzen von ModulService und AntragService und leert die Testdatenbank
+     * vor jedem Test.
+     */
     @BeforeEach
     public void init() {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);

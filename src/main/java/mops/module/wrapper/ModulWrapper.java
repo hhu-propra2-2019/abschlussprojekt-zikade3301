@@ -1,4 +1,4 @@
-package mops.module.controller;
+package mops.module.wrapper;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import mops.module.database.Zusatzfeld;
 
 @Data
 @AllArgsConstructor
-public class ModulWrapper {  //TODO: in passenderes package verschieben
+public class ModulWrapper {
 
     Modul modul;
     public List<Veranstaltung> veranstaltungen;

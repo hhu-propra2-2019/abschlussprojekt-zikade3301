@@ -243,7 +243,8 @@ public class ModulServiceDatabaseTest {
         //Sortierung von Alt nach Neu.
         List<Antrag> antraege = antragService.getAlleAntraegeGeordnetDatum();
 
-        assertEquals(JsonService.modulToJsonObject(modul3), antraege.get(2).getJsonModulAenderung());
+        assertEquals(JsonService.modulToJsonObject(modul3),
+                antraege.get(0).getJsonModulAenderung());
     }
 
     @Test
@@ -263,7 +264,8 @@ public class ModulServiceDatabaseTest {
 
         assertThat(antragService.getAlleAntraege().size()).isEqualTo(3);
         assertThat(antraege.size()).isEqualTo(2);
-        assertEquals(JsonService.modulToJsonObject(modul2), antraege.get(1).getJsonModulAenderung());
+        assertEquals(JsonService.modulToJsonObject(modul2),
+                antraege.get(0).getJsonModulAenderung());
 
     }
 }

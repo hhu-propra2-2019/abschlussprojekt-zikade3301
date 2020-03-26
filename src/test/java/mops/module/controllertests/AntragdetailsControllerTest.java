@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import mops.module.controller.ModulWrapper;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.generator.ModulFaker;
@@ -142,29 +141,4 @@ class AntragdetailsControllerTest {
                 });
     }
 
-
-    //TODO - Test muss bearbeitet werden
-/*
-    @Test
-    void testAntragAnnehmenViewName() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("sekretariat"));
-
-        Modul modul = ModulFaker.generateFakeModul();
-        ModulWrapper neuerWrapper = new ModulWrapper(modul, null,null,null);
-
-        Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
-
-        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
-
-        when(ModulWrapperService.readModulFromWrapper(new ModulWrapper(modul,null,null,null))).thenReturn(modul);
-
-     //   mvc.perform(post("/antragdetails/3301")).andExpect(status().isOk());
-
-        mvc.perform(post("/antragdetails/3301",ModulWrapper neu)).andExpect(status().isOk());
-
-    }
- */
 }

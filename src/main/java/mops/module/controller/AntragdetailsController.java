@@ -9,6 +9,7 @@ import mops.module.database.Modul;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
 import mops.module.services.ModulWrapperService;
+import mops.module.wrapper.ModulWrapper;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,6 @@ public class AntragdetailsController {
      * @return HTML antragdetails.
      */
 
-    //@SuppressWarnings("uncheccked")  //TODO - Begründen
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
     public String antragdetails(

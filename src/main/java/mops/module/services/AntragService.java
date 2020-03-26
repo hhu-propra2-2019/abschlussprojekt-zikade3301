@@ -120,8 +120,14 @@ public class AntragService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gibt alle Anträge geordnet nach Datum als Liste zurück, wobei der neueste Antrag
+     * das erste Element ist.
+     * @return Die sortierte Liste aller Anträge.
+     */
     public List<Antrag> getAlleAntraegeGeordnetDatum() {
-        return getAlleAntraege().stream().sorted(Comparator.comparing(Antrag::getDatumErstellung))
+        return getAlleAntraege().stream()
+                .sorted(Comparator.comparing(Antrag::getDatumErstellung).reversed())
                 .collect(Collectors.toList());
     }
 

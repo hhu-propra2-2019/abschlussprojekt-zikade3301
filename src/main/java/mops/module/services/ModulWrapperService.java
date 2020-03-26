@@ -3,11 +3,11 @@ package mops.module.services;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-import mops.module.controller.ModulWrapper;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
+import mops.module.wrapper.ModulWrapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +16,11 @@ public class ModulWrapperService {
     public static int VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG = 6;
     public static int ZUSATZFELDER_PRO_VERANSTALTUNG = 2;
 
+    /**
+     * Entpackt aus einem ModulWrapper-Objekt ein Modul-Objekt.
+     * @param modulWrapper Im Formular empfangener ModulWrapper.
+     * @return Ein entsprechendes Modul-Objekt.
+     */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
         for (int i = 0; i < modulWrapper.getVeranstaltungen().size(); i++) {
             modulWrapper.getVeranstaltungen().get(i).setVeranstaltungsformen(
@@ -26,12 +31,18 @@ public class ModulWrapperService {
         Set<Veranstaltung> veranstaltungenSet = new HashSet<>(modulWrapper.getVeranstaltungen());
 
         Modul modul = modulWrapper.getModul();
-//        modul.getVeranstaltungen().clear();     //TODO: verwaiste Veranstaltungen entfernen!
         modul.setVeranstaltungen(veranstaltungenSet);
         modul.refreshMapping();
         return modul;
     }
 
+    /**
+     * Erstellt einen leeren ModulWrapper für ein noch nicht exisitierendes Modul, der entsprechende
+     * Listen von neuen Veranstaltung-, Veranstaltungsform- und Zusatzfeld-Instanzen enthält,
+     * damit über diese im Frontend iteriert und ihre Felder befüllt werden können.
+     * @param veranstaltungsanzahl Anzahl der Veranstaltungen in dem Modul.
+     * @return Das entsprechende ModulWrapper-Objekt.
+     */
     @SuppressWarnings("unchecked")
     public static ModulWrapper initializeEmptyWrapper(int veranstaltungsanzahl) {
 
@@ -60,6 +71,15 @@ public class ModulWrapperService {
         return modulWrapper;
     }
 
+    /**
+     * Erstellt einen ModulWrapper für ein bereits exisitierendes Modul, der auf die
+     * für das Formular festgelegte Größe vergrößerte Listen (s.o.) enthält,
+     * damit über diese im Frontend iteriert und ihre Felder befüllt werden können.
+     * @param modul Das existierende Modul.
+     * @return Das entsprechende ModulWrapper-Objekt, in dem die Listen auf die festgelegte
+     *         Größe durch leere Instanzen erhöht wurden, damit im Frontend die alten
+     *         Listeneinträge durch leere Felder auf die festgelegte Gesamtanzahl vergrößert werden.
+     */
     @SuppressWarnings("unchecked")
     public static ModulWrapper initializePrefilledWrapper(Modul modul) {
 
