@@ -78,24 +78,43 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="accordion mt-3" id="accordion">
                     <ul style="font-size: large; list-style-type: none">
                         <li th:each="modul : ${allModules}">
-                            <div th:text="${modul.getTitelDeutsch()}" style="color:red">
-                                Modulname
+                            <a data-toggle="collapse"
+                               th:href="'#modul'+${modul.getId()}"
+                               aria-expanded="true"
+                               th:aria-controls="'modul'+ ${modul.getId()}">
+                                <span style="color: dodgerblue"
+                                      th:text="${modul.getTitelDeutsch()}">
+                                    Modulname
+                                </span>
+                            </a>
+                            <div th:id="'modul'+ ${modul.getId()}"
+                                 class="collapse"
+                                 data-parent="#accordion">
+                                <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
+                                    <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
+                                        <li class="col-9">
+                                            <span th:text="${veranstaltungen.getTitel()}">Eintrag</span>
+                                            <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
+                                                <span style="width: min-content"
+                                                      class="badge badge-danger mr-2"
+                                                      th:text="${semesterTags}">Semester</span>
+                                            </span>
+                                        </li>
+                                        <div class="col-3" style="float: right; display:flex">
+                                            <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
+                                            <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
+                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
+                                            <button type="submit">+</button>
+                                        </div>
+                                    </form>
+                                </ul>
                             </div>
-                            <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
-                                <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
-                                    <li th:text="${veranstaltungen.getTitel()}" class="col-4">Eintrag</li>
-                                    <div class="col-4" style="float: right; display:flex">
-                                        <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
-                                        <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
-                                        <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
-                                        <button type="submit">+</button>
-                                    </div>
-                                </form>
-                            </ul>
                         </li>
                     </ul>
+                    </div>
                 </div>
             </div>
         </div>

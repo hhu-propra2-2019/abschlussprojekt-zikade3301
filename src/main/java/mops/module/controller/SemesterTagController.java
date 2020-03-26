@@ -19,8 +19,7 @@ public class SemesterTagController {
 
     @PostMapping("/semesterTag")
     @Secured("ROLE_sekretariat")
-    public String addModulCreationAntrag(@RequestParam(name = "inputTag", required = true)
-                                                 String SemesterTag,
+    public String addModulCreationAntrag(@RequestParam(name = "inputTag", required = true) String SemesterTag,
                                          @RequestParam(name = "idVeranstaltung") String idVeranstaltung,
                                          @RequestParam(name = "idModul") String idModul,
                                          Model model,
@@ -28,6 +27,6 @@ public class SemesterTagController {
 
         modulService.tagSemesterForVeranstaltung(SemesterTag, Long.parseLong(idVeranstaltung), Long.parseLong(idModul));
 
-        return "modulbeauftragter";
+        return "redirect:/module/modulbeauftragter";
     }
 }
