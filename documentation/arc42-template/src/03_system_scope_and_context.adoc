@@ -13,16 +13,15 @@ Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
 |Randbedingung |Erläuterung
 | _Nicht angemeldete User_ | _Nicht angemeldete Nutzer können alle als sichtbar markierte Module einsehen._
 | _Studenten_ | _Stundenten können alle als sichtbar markierte Module einsehen._
-| _Organisatoren_ | _Organisatoren können alle als sichtbar markierte Module einsehen, unsichtbare nur wenn es Ihnen gehört
-oder es Ihnen zugewiesen wurde. Ausserdem können sie Anträge stellen, um Module zu erstellen oder zu verändern.
-Diese müssen zuerst genehmigt werden._
-| _Administratoren_ | _Haben alle Rechte der Organisatoren, aber können Anträge annehmen und die Module für alle freischalten._
+| _Organisatoren_ | _Organisatoren können alle als sichtbar markierte Module einsehen sowie Anträge stellen, um Module zu erstellen oder zu verändern.
+Diese werden nicht direkt gelistet, sondern erfordern zunächst eine Freischaltung durch Administratoren._
+| _Administratoren_ | _Haben alle Rechte der Organisatoren, können aber zusätzlich Modulerstellungsanträge annehmen und über Semestertags festlegen, in welchen Semestern ein Modul (oder ein Teil eines Moduls) angeboten werden soll._
 |===
 
 
 === Technischer Kontext
 
-- PDF Export wird bereit gestellt um ausgewählte module als Pdf herunterladen zu können.
-- Rest Api soll bereit gestellt werden um Stammdaten für z.B die Belegung bereit zu stellen.
+- PDF Export wird bereitgestellt, um ausgewählte Module als PDF herunterladen zu können.
+- Rest API soll bereitgestellt werden, um Stammdaten für z.B die Belegung bereit zu stellen.
 - Andere Systeme haben Links auf das Modulhandbuch.
 
