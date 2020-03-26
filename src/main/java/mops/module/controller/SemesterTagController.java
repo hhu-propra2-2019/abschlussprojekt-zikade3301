@@ -1,6 +1,7 @@
 package mops.module.controller;
 
 import mops.module.database.Modul;
+import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -32,7 +33,7 @@ public class SemesterTagController {
                                          KeycloakAuthenticationToken token) {
 
         modulService.tagSemesterForVeranstaltung(SemesterTag, Long.parseLong(idVeranstaltung), Long.parseLong(idModul));
-
+        model.addAttribute("allModules", modulService.getAllModule());
 
         return "modulbeauftragter";
     }
