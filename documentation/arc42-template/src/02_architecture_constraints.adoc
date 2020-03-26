@@ -18,7 +18,7 @@
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed Hamed Bakar El Hori, Roman Janke, Elias Kempkens,  Michael Lau
+| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed Hamed Bakar El Hori, Roman Janke, Michael Motzko, Elias Kempkens,  Michael Lau, 
 | _Zeitplan_ | Beginn der Planung und Entwicklung am 2.03.2020. Vorzeigbare Version bis zum 27.03.2020.
 | _Vorgehensmodell_ |Zur Dokumentation der Architektur kommt arc42 zum Einsatz.
 | _Konfigurations- und Versionsverwaltung_ | Git bei Github
@@ -36,7 +36,7 @@
 |Konventionen |Erläuterung, Hintergrund
 | _Architekturdokumentation_ | Mit Hilfe des arc42-Templates
 | _Kodierrichtlinien für Java_ | geprüft mit Hilfe von CheckStyle
-| _Sprache (Deutsch vs. Englisch)_ | *Bennenung von Klassen und Komentierung durch Java docs in Deutsch.* ???
-Hintergrund: Das System soll an einer Deutschen Hochschule verwendet werden, aufgrund dessen sollen Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden.
+| _Sprache (Deutsch vs. Englisch)_ | *Benennung von Klassen und Kommentierung durch Java docs auf Deutsch.* 
+Hintergrund: Das System soll an einer Deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden.
 
 |===
