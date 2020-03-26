@@ -3,17 +3,9 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import mops.module.controller.ModulWrapper;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
-import mops.module.database.Veranstaltung;
-import mops.module.database.Veranstaltungsform;
-import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
 import mops.module.services.ModulWrapperService;
@@ -43,7 +35,7 @@ public class AntragdetailsController {
      * @return HTML antragdetails.
      */
 
-    @SuppressWarnings("uncheccked")  //TODO - Begründen
+    //@SuppressWarnings("uncheccked")  //TODO - Begründen
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
     public String antragdetails(
@@ -53,7 +45,7 @@ public class AntragdetailsController {
 
         Modul modul = JsonService.jsonObjectToModul(
                 antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
-        ModulWrapper antrag = ModulWrapperService.initializePrefilledModulWrapper(modul);
+        ModulWrapper antrag = ModulWrapperService.initializePrefilledWrapper(modul);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account", createAccountFromPrincipal(token));

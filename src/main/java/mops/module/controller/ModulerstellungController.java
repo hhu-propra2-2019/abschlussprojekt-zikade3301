@@ -51,7 +51,8 @@ public class ModulerstellungController {
             Model model,
             KeycloakAuthenticationToken token) {
 
-        ModulWrapper modulWrapper = ModulWrapperService.initializeEmptyWrapper(veranstaltungsanzahl);
+        ModulWrapper modulWrapper =
+                ModulWrapperService.initializeEmptyWrapper(veranstaltungsanzahl);
 
         model.addAttribute("modulWrapper", modulWrapper);
         model.addAttribute("account", createAccountFromPrincipal(token));
@@ -74,16 +75,17 @@ public class ModulerstellungController {
                                          Model model,
                                          KeycloakAuthenticationToken token) {
 
+        String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
+        model.addAttribute("account", createAccountFromPrincipal(token));
+
         if (modulId.equals("")) {
             Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
-            String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
 
             Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
-            if (token.getAccount().getRoles().contains("ROLE_sekretariat")) {
+            if (token.getAccount().getRoles().contains("sekretariat")) {
                 antragService.approveModulCreationAntrag(antrag);
                 return "modulbeauftragter";
             }
-            model.addAttribute("account", createAccountFromPrincipal(token));
 
             return "modulbeauftragter";
         } else {
@@ -96,16 +98,14 @@ public class ModulerstellungController {
             Modul diffModul = ModulService.calculateModulDiffs(altesModul, neuesModul);
 
             if (diffModul != null) {
-                String antragsteller = ((KeycloakPrincipal) token.getPrincipal()).getName();
                 Antrag antrag = antragService.addModulModificationAntrag(neuesModul, antragsteller);
-                if (token.getAccount().getRoles().contains("ROLE_sekretariat")) { //TODO: bug fixen, if gibt immer false
+                if (token.getAccount().getRoles().contains("sekretariat")) {
                     antragService.approveModulModificationAntrag(antrag);
                     return "modulbeauftragter";
                 }
             } //else {
             //return "error"; //TODO: Fehlerseite wenn Antrag ohne Änderungen abgeschickt wurde
             //}
-            model.addAttribute("account", createAccountFromPrincipal(token));
 
             return "modulbeauftragter";
         }
@@ -128,7 +128,7 @@ public class ModulerstellungController {
             KeycloakAuthenticationToken token) {
         model.addAttribute("account", createAccountFromPrincipal(token));
         Modul modul = modulService.getModulById(Long.parseLong(id));
-        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledModulWrapper(modul);
+        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
 
         model.addAttribute("modulWrapper", modulWrapper);
         model.addAttribute("modulId", id);
