@@ -2,18 +2,18 @@
 ==	Einführung und Ziele
 
 - MOPS.module ist ein dynamisches Modulhandbuch
-- Das Modulhandbuch ist integriert in MOPS
+- Das Modulhandbuch ist integrierer Bestandteil von MOPS
 - Es ermöglicht eine einfache Suche und Filterung der angebotenen Module
 - Das Einfügen, Ändern und Löschen von Modulen ist einfach gestaltet
 - Die Modulübersicht ist als PDF-Datei exportierbar
 - Auch kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
-- Ziel ist nicht ein vollständiges Belegungssystem, sondern es werden aktuelle Informationen zu den angebotenen Modulen dargestellt
+- Ziel ist nicht ein vollständiges Belegungssystem, sondern die Darstellung aktueller Informationen zu angebotenen Modulen.
 
 
 === Aufgabenstellung
 
 Im Modulhandbuch werden die Beschreibungen für Veranstaltungen angegeben.
-Die Beschreibungen werden von den Dozierenden angelegt und werden von einer Verantwortlichen geprüft und dann freigeschaltet.
+Diese werden von Dozierenden angelegt und von einer Verantwortlichen geprüft sowie freigeschaltet.
 
 IMPORTANT: Für die automatische Bearbeitung von Klausurzulassungen muss sichergestellt werden, dass Änderungen an den Veranstaltungen nachvollziehbar bleiben.
 Wenn wir uns zum Beispiel entscheiden, die Veranstaltung "Foobar" in "Barfoo" umzubenennen, aber im Wesentlichen die Veranstaltung dieselbe ist, dann muss in der neuen Veranstaltung die Information erhalten bleiben, dass alle Zulassungen der alten Veranstaltungen in der neuen Veranstaltung gültig bleiben.
@@ -36,7 +36,7 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 |===
 |Qualitätszeile |Motivation und Erläuterung
 |_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein._
-| _Sicherheit_ | _Die Eingeflegten Daten sind nur von authorisierten Nutzern einzusehen_
+| _Sicherheit_ | _Die Eingepflegten Daten sind nur von authorisierten Nutzern einzusehen_
 
 |===
 
