@@ -44,13 +44,6 @@ class AntragdetailsControllerTest {
                 .alwaysDo(print())
                 .apply(springSecurity())
                 .build();
-    }
-
-    @Test
-    void testAntragdetailsViewName() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         Modul neuesModul = ModulFaker.generateFakeModul();
 
@@ -58,7 +51,13 @@ class AntragdetailsControllerTest {
         neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
 
         when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
+    }
 
+    @Test
+    void testAntragdetailsViewName() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         mvc.perform(get("/module/antragdetails/3301"))
                 .andExpect(view().name("antragdetails"));
@@ -87,13 +86,6 @@ class AntragdetailsControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
 
-        Modul neuesModul = ModulFaker.generateFakeModul();
-
-        Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
-
-        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
-
         assertThrows(java.lang.AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/antragdetails/3301"))
@@ -107,13 +99,6 @@ class AntragdetailsControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("student"));
 
-        Modul neuesModul = ModulFaker.generateFakeModul();
-
-        Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
-
-        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
-
         assertThrows(java.lang.AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/antragdetails/3301"))
@@ -123,13 +108,6 @@ class AntragdetailsControllerTest {
 
     @Test
     void testAntragdetailsNoAccessIfNotLoggedIn() throws Exception {
-
-        Modul modul = ModulFaker.generateFakeModul();
-
-        Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
-
-        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {

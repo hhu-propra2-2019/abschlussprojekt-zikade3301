@@ -100,17 +100,22 @@ class ModulWrapperServiceTest {
 
     @Test
     void initializePrefilledWrapperKeepsExistingVeranstaltungsformen() {
-        Modul completeModul = ModulFaker.generateFakeModul();
         Veranstaltung veranstaltungInModul = completeModul.getVeranstaltungen()
                 .stream().findFirst().orElse(null);
         completeModul.getVeranstaltungen().removeIf(v -> v != veranstaltungInModul);
         Set<Veranstaltungsform> veranstaltungsformenInModul =
                 veranstaltungInModul.getVeranstaltungsformen();
+
+        long i = 1;
+        for (Veranstaltungsform v : veranstaltungsformenInModul) {
+            v.setId(i);
+            i++;
+        }
+
         ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(completeModul);
         List<Veranstaltungsform> veranstaltungsformenInWrapper =
                 modulWrapper.getVeranstaltungsformen()[0];
 
-        //TODO: testet dieser Test das richtige?
         for (Veranstaltungsform veranstaltungsform : veranstaltungsformenInModul) {
             org.hamcrest.MatcherAssert.assertThat(veranstaltungsformenInWrapper,
                     hasItem(veranstaltungsform));
@@ -135,8 +140,12 @@ class ModulWrapperServiceTest {
         Modul unwrappedModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
         Set<Veranstaltung> veranstaltungenInUnwrappedModul = unwrappedModul.getVeranstaltungen();
 
+        long i = 1;
+        for (Veranstaltung v : veranstaltungenInModul) {
+            v.setId(i);
+            i++;
+        }
 
-        //TODO: testet dieser Test das richtige?
         assertThat(veranstaltungenInUnwrappedModul).containsAll(veranstaltungenInModul);
     }
 

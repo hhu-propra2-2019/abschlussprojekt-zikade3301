@@ -28,7 +28,7 @@ public class ModulService {
      *
      * @param oldModul Altes Modul
      * @param newModul Neues Modul
-     * @return Ein Änderungsmodul, bei dem ein Feld ohne Änderung den Wert null hat bedeutet und
+     * @return Ein Änderungsmodul, bei dem ein Feld ohne Änderung den Wert null hat und
      *         ein Feld mit einem Wert den neuen Wert nach der Änderung enthält.
      */
     public static Modul calculateModulDiffs(Modul oldModul, Modul newModul) {
@@ -126,6 +126,9 @@ public class ModulService {
                 .getVeranstaltungen()
                 .stream()
                 .filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        if (veranstaltung == null) {
+            throw new IllegalArgumentException("Ungültige ID der Veranstaltung!");
+        }
         Set<String> semesterOld = veranstaltung.getSemester();
         semesterOld.add(semesterTag);
 

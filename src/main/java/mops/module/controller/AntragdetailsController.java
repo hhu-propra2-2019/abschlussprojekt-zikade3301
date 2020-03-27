@@ -45,11 +45,11 @@ public class AntragdetailsController {
 
         Modul modul = JsonService.jsonObjectToModul(
                 antragService.getAntragById(id).getJsonModulAenderung());
-        ModulWrapper antrag = ModulWrapperService.initializePrefilledWrapper(modul);
+        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("antrag", antrag);
+        model.addAttribute("antrag", modulWrapper);
 
         return "antragdetails";
     }

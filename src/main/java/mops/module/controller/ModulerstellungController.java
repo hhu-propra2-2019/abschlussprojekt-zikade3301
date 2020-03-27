@@ -3,6 +3,8 @@ package mops.module.controller;
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import javax.annotation.security.RolesAllowed;
+
+import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.services.AntragService;
@@ -17,21 +19,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.annotation.RequestScope;
 import org.springframework.web.context.annotation.SessionScope;
 
 
 @Controller
 @SessionScope
+@RequiredArgsConstructor
 @RequestMapping("/module")
 public class ModulerstellungController {
 
 
-    private AntragService antragService;
+    private final AntragService antragService;
 
-    @Autowired
-    public ModulerstellungController(AntragService antragService) {
-        this.antragService = antragService;
-    }
 
     /**
      * Get-Mapping für das Generieren eines Modulerstellungsformulars für die eingegebene Anzahl
