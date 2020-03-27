@@ -6,7 +6,6 @@ import javax.annotation.security.RolesAllowed;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.services.AntragService;
-import mops.module.services.ModulService;
 import mops.module.services.ModulWrapperService;
 import mops.module.wrapper.ModulWrapper;
 import org.keycloak.KeycloakPrincipal;
@@ -30,7 +29,7 @@ public class ModulerstellungController {
     private AntragService antragService;
 
     @Autowired
-    public ModulerstellungController(AntragService antragService, ModulService modulService) {
+    public ModulerstellungController(AntragService antragService) {
         this.antragService = antragService;
     }
 
