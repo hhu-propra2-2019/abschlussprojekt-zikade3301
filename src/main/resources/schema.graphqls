@@ -8,7 +8,7 @@ type Modul {
   titelDeutsch: String
   titelEnglisch: String
   veranstaltungen: [Veranstaltung]
-  modulbeauftragte: [String]
+  modulbeauftragte: String
   gesamtLeistungspunkte: String
   studiengang: String
   modulkategorie: Modulkategorie
@@ -27,7 +27,7 @@ type Veranstaltung {
   leistungspunkte: String
   veranstaltungsformen: [Veranstaltungsform]
   beschreibung: Veranstaltungsbeschreibung
-  voraussetzungenTeilnahme: [String]
+  voraussetzungenTeilnahme: String
   semester: [String]
   zusatzfelder: [Zusatzfeld]
 }
@@ -47,9 +47,9 @@ type Zusatzfeld {
 type Veranstaltungsbeschreibung {
   inhalte: String
   lernergebnisse: String
-  literatur: [String]
-  verwendbarkeit: [String]
-  voraussetzungenBestehen: [String]
+  literatur: String
+  verwendbarkeit: String
+  voraussetzungenBestehen: String
   haeufigkeit: String
   sprache: String
 }
