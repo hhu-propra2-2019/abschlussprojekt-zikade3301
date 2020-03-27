@@ -40,11 +40,16 @@
             <li>
                 <a href="/module/">Übersicht</a>
             </li>
-            <li>
-                <a href="/module/modulbeauftragter">Module bearbeiten</a>
-            </li>
-            <li>
-                <a href="/module/administrator">Anträge</a>
+            <li th:if="${account}">
+                <div th:each="role: ${account.getRoles()}">
+                    <div th:switch="${role}">
+                        <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
+                        <div th:case="'sekretariat'">
+                            <a href="/module/modulbeauftragter">Module bearbeiten</a>
+                            <a href="/module/administrator">Anträge</a>
+                        </div>
+                    </div>
+                </div>
             </li>
         </ul>
     </nav>
@@ -53,46 +58,105 @@
 
     <form action="#" th:action="@{'/module/antragdetails/' + ${antragId}}"  method="post" th:object="${antrag}">
 
+        <input type="hidden" name="modulId" th:field="*{modul.id}">
+
+
         <!-- AUSWAHL DES TITELS -->
-        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
-            <label for="titelDeutsch" class="col-1">Titel</label>
+        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">                 <!-- hier fehlt for -->
+            <label class="col-1">Titel</label>
+
             <input type="text"
                    style="border: none;
                                    border-bottom: 1px solid dimgray;
                                    border-radius: inherit;"
+
                    class="form-control col-5"
-                   id="titelDeutsch"
-                   placeholder="Titel des Moduls" required  th:field="*{modul.titelDeutsch}">
+                   th:id="titelDeutsch"
+                   placeholder="Titel des Moduls" required
+                   th:field ="*{modul.titelDeutsch}"
+                   th:if="${antrag.modul.titelDeutsch == altesModul.modul.titelDeutsch}">
+
+            <input type="text"
+                   style="border: none;
+                                   color: red;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
+
+                   class="form-control col-5"
+                   th:id="titelDeutsch"
+                   placeholder="Titel des Moduls" required
+                   th:field ="*{modul.titelDeutsch}"
+                   th:unless="${antrag.modul.titelDeutsch == altesModul.modul.titelDeutsch}">
+
+
             <div class="ml-1 col-1">&nbsp;</div>
             <input type="text"
                    style="border: none;
                                    border-bottom: 1px solid dimgray;
                                    border-radius: inherit;"
                    class="form-control col-5"
-                   id="titleEnglish"
-                   placeholder="Englischer Titel des Moduls" required  th:field="*{modul.titelEnglisch}">
+                   th:id="titleEnglish"
+                   placeholder="Englischer Titel des Moduls" required
+                   th:field ="*{modul.titelEnglisch}"
+                   th:if="${antrag.modul.titelEnglisch == altesModul.modul.titelEnglisch}">
+
+            <input type="text"
+                   style="border: none;
+                                   color: red;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
+                   class="form-control col-5"
+                   th:id="titleEnglish"
+                   placeholder="Englischer Titel des Moduls" required
+                   th:field ="*{modul.titelEnglisch}"
+                   th:unless="${antrag.modul.titelEnglisch == altesModul.modul.titelEnglisch}">
         </div>
 
         <!-- AUSWAHL Studiengang -->
         <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
-            <label for="studiengang" class="col-2">Studiengang</label>
+            <label th:for="studiengang" class="col-2">Studiengang</label>
             <input type="text"
                    style="color: lightslategrey;
                                        border: none;
                                        border-bottom: 1px solid dimgray;
                                        border-radius: inherit;"
                    class="form-control col-4"
-                   id="studiengang"
-                   placeholder="Studiengang" required th:field="*{modul.studiengang}">
-        </div>
+                   th:id="studiengang"
+                   placeholder="Studiengang" required
+                   th:field ="*{modul.studiengang}"
+                   th:if="${antrag.modul.studiengang == altesModul.modul.studiengang}">
+
+            <input type="text"
+                   style="
+                                       color: red;
+                                       border: none;
+                                       border-bottom: 1px solid dimgray;
+                                       border-radius: inherit;"
+                   class="form-control col-4"
+                   th:id="studiengang"
+                   placeholder="Studiengang" required
+                   th:field ="*{modul.studiengang}"
+                   th:unless="${antrag.modul.studiengang == altesModul.modul.studiengang}">        </div>
 
         <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
-            <label for="modulbeauftragte">Modulbeauftragte</label>
+            <label th:for="modulbeauftragte">Modulbeauftragte</label>
             <input type="text"
                    style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
                    class="form-control"
-                   id="modulbeauftragte"
-                   placeholder="Modulbeauftragte der Veranstaltung" required th:field="*{modul.modulbeauftragte}">
+                   th:id="modulbeauftragte"
+                   placeholder="Modulbeauftragte der Veranstaltung" required
+                   th:field ="*{modul.modulbeauftragte}"
+                   th:if="${antrag.modul.modulbeauftragte == altesModul.modul.modulbeauftragte}">
+
+            <input type="text"
+                   style="color: red; float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
+                   class="form-control"
+                   th:id="modulbeauftragte"
+                   placeholder="Modulbeauftragte der Veranstaltung" required
+                   th:field ="*{modul.modulbeauftragte}"
+                   th:unless="${antrag.modul.modulbeauftragte == altesModul.modul.modulbeauftragte}">
+
+
         </div>
 
         <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE-->
@@ -134,7 +198,7 @@
                                      border-radius: unset;
                                      background-color: white"
                      th:each="veranstaltung,iter : *{veranstaltungen}">
-
+                    <input type ="hidden" th:field = "*{veranstaltungen[__${iter.index}__].id}">
                     <div class="card-header" th:id="'veranstaltung'+ ${iter.index}+'heading'" style="background-color: white;">
                         <h2 class="mb-0">
                             <a data-toggle="collapse"
@@ -170,7 +234,24 @@
                                                            border-bottom: 1px solid white;
                                                            border-radius: unset;"
                                            aria-label="Veranstaltungstitel"
-                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].titel}">
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].titel}"
+                                           th:if="${antrag.veranstaltungen[__${iter.index}__].titel == altesModul.veranstaltungen[__${iter.index}__].titel}">
+
+
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                           color: red;
+                                                           font-size: larger;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;"
+                                           aria-label="Veranstaltungstitel"
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].titel}"
+                                           th:unless ="${antrag.veranstaltungen[__${iter.index}__].titel == altesModul.veranstaltungen[__${iter.index}__].titel}">
+
                                     <div style="color: white; font-size: small;">Veranstaltungstitel</div>
                                 </div>
 
@@ -183,7 +264,23 @@
                                                            color: white;"
                                            class="form-control"
                                            aria-label="XXXXXX"
-                                           aria-describedby="basic-addon2" th:field = "*{veranstaltungen[__${iter.index}__].leistungspunkte}">
+                                           aria-describedby="basic-addon2"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].leistungspunkte}"
+                                           th:if ="${antrag.veranstaltungen[__${iter.index}__].leistungspunkte == altesModul.veranstaltungen[__${iter.index}__].leistungspunkte}">
+
+                                    <input type="text"
+                                           style="background: transparent;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;
+                                                           color: red;"
+                                           class="form-control"
+                                           aria-label="XXXXXX"
+                                           aria-describedby="basic-addon2"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].leistungspunkte}"
+                                           th:unless ="${antrag.veranstaltungen[__${iter.index}__].leistungspunkte == altesModul.veranstaltungen[__${iter.index}__].leistungspunkte}">
+
+
                                     <div style="color: white; font-size: small;">Leistungspunkte</div>
                                 </div>
                             </div>
@@ -199,7 +296,22 @@
                                                                border-bottom: 1px solid white;
                                                                border-radius: unset;"
                                            aria-label="haeufigkeit"
-                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}">
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}"
+                                           th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit == altesModul.veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}">
+
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                               color: red;
+                                                               font-size: larger;
+                                                               border: none;
+                                                               border-bottom: 1px solid white;
+                                                               border-radius: unset;"
+                                           aria-label="haeufigkeit"
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}"
+                                           th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit == altesModul.veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}">
                                     <div style="color: white; font-size: small;">Häufigkeit</div>
                                 </div>
                                 <div class="input-group mb-3 col-4 pl-0" style="display: block">
@@ -212,7 +324,23 @@
                                                                border-bottom: 1px solid white;
                                                                border-radius: unset;"
                                            aria-label="sprache"
-                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.sprache}">
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.sprache}"
+                                           th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.sprache == altesModul.veranstaltungen[__${iter.index}__].beschreibung.sprache}">
+
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                               color: red;
+                                                               font-size: larger;
+                                                               border: none;
+                                                               border-bottom: 1px solid white;
+                                                               border-radius: unset;"
+                                           aria-label="sprache"
+                                           aria-describedby="basic-addon1"
+                                           th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.sprache}"
+                                           th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.sprache == altesModul.veranstaltungen[__${iter.index}__].beschreibung.sprache}">
+
                                     <div style="color: white; font-size: small;">Sprache</div>
                                 </div>
                             </div>
@@ -233,7 +361,21 @@
                                                            border-radius: unset;
                                                            margin-bottom: 1rem;
                                                            height: 10rem;
-                                                           color: white;" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.inhalte}"></textarea>
+                                                           color: white;"
+                                          th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.inhalte}"
+                                          th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.inhalte == altesModul.veranstaltungen[__${iter.index}__].beschreibung.inhalte}"></textarea>
+
+
+                                <textarea class="form-control col-12 pl-0"
+                                          aria-label="XXYXXY"
+                                          style="background: transparent;
+                                                           border-radius: unset;
+                                                           margin-bottom: 1rem;
+                                                           height: 10rem;
+                                                           color: red;"
+                                          th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.inhalte}"
+                                          th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.inhalte == altesModul.veranstaltungen[__${iter.index}__].beschreibung.inhalte}"></textarea>
+
                             </div>
 
                             <div class="input-group">
@@ -250,7 +392,17 @@
                                           style="background: transparent;
                                                            border-radius: unset;
                                                            margin-bottom: 3rem;
-                                                           color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"></textarea>
+                                                           color: white;" required
+                                          th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"
+                                          th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse == altesModul.veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"></textarea>
+
+                                <textarea class="form-control col-12 pl-0"
+                                          style="background: transparent;
+                                                           border-radius: unset;
+                                                           margin-bottom: 3rem;
+                                                           color: red;" required
+                                          th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"
+                                          th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse == altesModul.veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"></textarea>
                             </div>
 
                             <div class="col-12 pl-0" style="display: inline-block;">
@@ -268,7 +420,16 @@
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
-                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.literatur}"></textarea>
+                                                               color: white;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.literatur}"
+                                              th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.literatur == altesModul.veranstaltungen[__${iter.index}__].beschreibung.literatur}"></textarea>
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: red;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.literatur}"
+                                              th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.literatur == altesModul.veranstaltungen[__${iter.index}__].beschreibung.literatur}"></textarea>
                                 </div>
 
                                 <div class="input-group col-6">
@@ -285,7 +446,17 @@
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
-                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"></textarea>
+                                                               color: white;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"
+                                              th:if ="${antrag.veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme == altesModul.veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"></textarea>
+
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: red;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"
+                                              th:unless ="${antrag.veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme == altesModul.veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"></textarea>
                                 </div>
                             </div>
 
@@ -305,7 +476,19 @@
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
-                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"></textarea>
+                                                               color: white;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"
+                                              th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit == altesModul.veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"></textarea>
+
+                                    <textarea class="form-control col-12 pl-0"
+                                              aria-label="XXYXXY"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: red;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"
+                                              th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit == altesModul.veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"></textarea>
+
                                 </div>
 
                                 <div class="input-group col-6">
@@ -322,7 +505,18 @@
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
-                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"></textarea>
+                                                               color: white;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"
+                                              th:if ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen == altesModul.veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"></textarea>
+
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: white;" required
+                                              th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"
+                                              th:unless ="${antrag.veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen == altesModul.veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"></textarea>
+
                                 </div>
                             </div>
 
@@ -341,7 +535,20 @@
                                                            color: white;"
                                            type="text"
                                            value=""
-                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}">
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}"
+                                           th:if ="${antrag.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form == altesModul.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}"></textarea>
+
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: red;"
+                                           type="text"
+                                           value=""
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}"
+                                           th:unless ="${antrag.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form == altesModul.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}"></textarea>
+
                                     <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
                                     <input class="form-control ml-1"
                                            style="max-width: 6rem;
@@ -352,7 +559,21 @@
                                            value="0"
                                            min="0"
                                            required
-                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}" >
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}"
+                                           th:if ="${antrag.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}"></textarea>
+
+
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: red;"
+                                           type="number"
+                                           value="0"
+                                           min="0"
+                                           required
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}"
+                                           th:unless ="${antrag.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}"></textarea>
                                     <label style="font-size: larger; margin-left: 0.5rem">
                                         SWS
                                     </label>
@@ -368,8 +589,21 @@
                                                            color: white;"
                                            type="text"
                                            value="0"
-                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${5}__].form}">
+                                           th:field ="*{veranstaltungsformen[__${iter.index}__][__${5}__].form}"
+                                           th:if="${antrag.veranstaltungsformen[__${iter.index}__][__${5}__].form == altesModul.veranstaltungsformen[__${iter.index}__][__${5}__].form}">
 
+
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 26rem;
+                                                           height: 5rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: red;"
+                                           type="text"
+                                           value="0"
+                                           th:field ="*{veranstaltungsformen[__${iter.index}__][__${5}__].form}"
+                                           th:unless="${antrag.veranstaltungsformen[__${iter.index}__][__${5}__].form == altesModul.veranstaltungsformen[__${iter.index}__][__${5}__].form}">
                                 </div>
 
                             </div>
