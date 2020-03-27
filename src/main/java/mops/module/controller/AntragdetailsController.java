@@ -73,9 +73,17 @@ public class AntragdetailsController {
 
         Modul modul = ModulWrapperService.readModulFromWrapper(antragAngenommen);
 
-        Antrag antrag = antragService.getAntragById(id);
-        antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
-        antragService.approveModulCreationAntrag(antrag);
+        if (modul.getId() == null) {
+            Antrag antrag = antragService.getAntragById(id);
+            antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
+            antragService.approveModulCreationAntrag(antrag);
+        } else {
+            Antrag antrag = antragService.getAntragById(id);
+
+            antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
+
+            antragService.approveModulModificationAntrag(antrag);
+        }
 
         model.addAttribute("account",createAccountFromPrincipal(token));
         return "redirect:/module/administrator";
