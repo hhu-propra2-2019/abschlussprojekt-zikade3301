@@ -42,9 +42,7 @@ public class SemesterTagController {
                                          Model model,
                                          KeycloakAuthenticationToken token) {
 
-        if (token != null) {
-            model.addAttribute("account", createAccountFromPrincipal(token));
-        }
+        model.addAttribute("account", createAccountFromPrincipal(token));
 
         modulService.tagVeranstaltungSemester(
                 semesterTag,
