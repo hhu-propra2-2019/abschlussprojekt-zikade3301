@@ -136,7 +136,18 @@ public class ModulService {
         modulSnapshotRepository.save(getModulById(modulId));
     }
 
-    public void deleteTagVeranstaltungSemester(String semesterTag, Long veranstaltungId, Long modulId) {
+
+    /**
+     * Löscht ein gewünschtes SemesterTag einer Veranstlatung.
+     *
+     * @param semesterTag     Der SemesterTag, der gelöscht werden soll
+     * @param veranstaltungId ID der Veranstaltung, die das Tag beinhaltet
+     * @param modulId         ID des Moduls, das die Veranstaltung beinhaltet
+     */
+    public void deleteTagVeranstaltungSemester(
+            String semesterTag,
+            Long veranstaltungId,
+            Long modulId) {
 
         Veranstaltung veranstaltung = getModulById(modulId)
                 .getVeranstaltungen()

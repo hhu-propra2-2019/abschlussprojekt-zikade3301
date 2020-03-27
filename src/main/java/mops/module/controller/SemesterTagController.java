@@ -22,7 +22,7 @@ public class SemesterTagController {
     private ModulService modulService;
 
     /**
-     * Add modul creation antrag string.
+     * Controller, der das Request für die Erstellung eines SemesterTags entgegennimmt.
      *
      * @param semesterTag     Der SemesterTag, der der Veranstaltung hinzugefügt werden soll
      * @param idVeranstaltung ID der Veranstaltung, die das Tag erhalten soll
@@ -33,14 +33,12 @@ public class SemesterTagController {
      */
     @PostMapping("/semesterTag/create")
     @Secured("ROLE_sekretariat")
-    public String addSemesterTagToVeranstaltung(@RequestParam(name = "inputTag", required = true)
-                                                 String semesterTag,
-                                         @RequestParam(name = "idVeranstaltung")
-                                                 String idVeranstaltung,
-                                         @RequestParam(name = "idModul")
-                                                 String idModul,
-                                         Model model,
-                                         KeycloakAuthenticationToken token) {
+    public String addSemesterTagToVeranstaltung(
+            @RequestParam(name = "inputTag", required = true) String semesterTag,
+            @RequestParam(name = "idVeranstaltung") String idVeranstaltung,
+            @RequestParam(name = "idModul") String idModul,
+            Model model,
+            KeycloakAuthenticationToken token) {
 
         model.addAttribute("account", createAccountFromPrincipal(token));
 
@@ -52,17 +50,24 @@ public class SemesterTagController {
         return "redirect:/module/modulbeauftragter";
     }
 
-
+    /**
+     * Controller, der das Request für das Löschen eines SemesterTags entgegennimmt.
+     *
+     * @param tagToDelete              Der SemesterTag, der gelöscht werden soll
+     * @param idVeranstaltungTagDelete ID der Veranstaltung, die das Tag beinhaltet
+     * @param idModulTagDelte          ID des Moduls, das die Veranstaltung beinhaltet
+     * @param model                    Model für die HTML-Datei.
+     * @param token                    Der Token von keycloak für die Berechtigung.
+     * @return the string
+     */
     @PostMapping("/semesterTag/delete")
     @Secured("ROLE_sekretariat")
-    public String removeSemesterTagToVeranstaltung(@RequestParam(name = "tagToDelete", required = true)
-                                                 String tagToDelete,
-                                         @RequestParam(name = "idVeranstaltungTagDelete")
-                                                 String idVeranstaltungTagDelete,
-                                         @RequestParam(name = "idModulTagDelte")
-                                                 String idModulTagDelte,
-                                         Model model,
-                                         KeycloakAuthenticationToken token) {
+    public String removeSemesterTagToVeranstaltung(
+            @RequestParam(name = "tagToDelete", required = true) String tagToDelete,
+            @RequestParam(name = "idVeranstaltungTagDelete") String idVeranstaltungTagDelete,
+            @RequestParam(name = "idModulTagDelte") String idModulTagDelte,
+            Model model,
+            KeycloakAuthenticationToken token) {
 
         model.addAttribute("account", createAccountFromPrincipal(token));
 

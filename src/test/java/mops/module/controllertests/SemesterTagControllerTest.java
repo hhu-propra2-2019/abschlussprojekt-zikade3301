@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Collections;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.generator.ModulFaker;
@@ -25,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collections;
 
 
 @SpringBootTest
@@ -51,9 +51,17 @@ class SemesterTagControllerTest {
 
         Modul testmodul = ModulFaker.generateFakeModul();
         testmodul.setId((long) 3301);
-        Veranstaltung testVeranstaltung = testmodul.getVeranstaltungen().stream().findFirst().orElse(null);
-        testVeranstaltung.setId(1L);
-        testVeranstaltung.setSemester(Collections.singleton("SoSe1995"));
+        Veranstaltung testVeranstaltung = testmodul
+                .getVeranstaltungen()
+                .stream()
+                .findFirst()
+                .orElse(null);
+        if (testVeranstaltung == null) {
+            setUp();
+        } else {
+            testVeranstaltung.setId(1L);
+            testVeranstaltung.setSemester(Collections.singleton("SoSe1995"));
+        }
     }
 
     private final String expect = "redirect:/module/modulbeauftragter";
