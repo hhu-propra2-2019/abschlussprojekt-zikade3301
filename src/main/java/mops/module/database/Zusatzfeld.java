@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import mops.module.services.JsonExclude;
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
 
 @Entity
 @Data
@@ -18,14 +20,17 @@ public class Zusatzfeld {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String titel;
 
     @Column(length = 10000)
+    @Field
     private String inhalt;
 
+    @ContainedIn
     @JsonExclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
-    private Modul modul;
+    private Veranstaltung veranstaltung;
 
 }

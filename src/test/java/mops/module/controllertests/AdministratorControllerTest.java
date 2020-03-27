@@ -14,17 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("dev")
 class AdministratorControllerTest {
 
     @Autowired
     private WebApplicationContext context;
     private MockMvc mvc;
+
 
     @BeforeEach
     void setUp() {
@@ -87,5 +90,4 @@ class AdministratorControllerTest {
                     mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
                 });
     }
-
 }

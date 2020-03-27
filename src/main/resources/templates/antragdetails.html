@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>index</title>
+    <th:block th:fragment="headcontent">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </th:block>
+</head>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <ul>
+            <li class="active">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle"
+                            style="width: 100%;
+                            border-radius: 0;
+                            text-align: left;
+                            background: transparent;
+                            color: dimgray;
+                            border: none"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                        Semesterauswahl
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
+                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="/module/">Übersicht</a>
+            </li>
+            <li>
+                <a href="/module/modulbeauftragter">Module bearbeiten</a>
+            </li>
+            <li>
+                <a href="/module/administrator">Anträge</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main th:fragment="bodycontent">
+
+    <form action="#" th:action="@{'/module/antragdetails/' + ${antragId}}"  method="post" th:object="${antrag}">
+
+        <!-- AUSWAHL DES TITELS -->
+        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
+            <label for="titelDeutsch" class="col-1">Titel</label>
+            <input type="text"
+                   style="border: none;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
+                   class="form-control col-5"
+                   id="titelDeutsch"
+                   placeholder="Titel des Moduls" required  th:field="*{modul.titelDeutsch}">
+            <div class="ml-1 col-1">&nbsp;</div>
+            <input type="text"
+                   style="border: none;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
+                   class="form-control col-5"
+                   id="titleEnglish"
+                   placeholder="Englischer Titel des Moduls" required  th:field="*{modul.titelEnglisch}">
+        </div>
+
+        <!-- AUSWAHL Studiengang -->
+        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
+            <label for="studiengang" class="col-2">Studiengang</label>
+            <input type="text"
+                   style="color: lightslategrey;
+                                       border: none;
+                                       border-bottom: 1px solid dimgray;
+                                       border-radius: inherit;"
+                   class="form-control col-4"
+                   id="studiengang"
+                   placeholder="Studiengang" required th:field="*{modul.studiengang}">
+        </div>
+
+        <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
+            <label for="modulbeauftragte">Modulbeauftragte</label>
+            <input type="text"
+                   style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
+                   class="form-control"
+                   id="modulbeauftragte"
+                   placeholder="Modulbeauftragte der Veranstaltung" required th:field="*{modul.modulbeauftragte}">
+        </div>
+
+        <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE-->
+        <div style="display: inline-flex;">
+            <div class="mt-3 mb-3 col-4" style="float: left">
+                <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>         <!-- Als Text oder als number? -->
+                <input type="text"
+                       style="float: right"
+                       class="form-control col-md-4 col-sm-4"
+                       id="gesamtLeistungspunkte"
+                       placeholder="CP" required th:field="*{modul.gesamtLeistungspunkte}">
+            </div>
+            <div class="mt-3 mb-3 col-8" style="float: left">
+                <label for="modulkategorie">Modulkategorie</label>
+                <select
+                        style="float: right"
+                        class="form-control col-md-8 col-sm-8"
+                        id="modulkategorie" required th:field="*{modul.modulkategorie}">
+                    <option selected hidden value="">Modulkategorie Wählen</option>
+                    <option value="PFLICHT_INFO">Informatik Pflichtmodul</option>
+                    <option value="PFLICHT_MATHE">Mathematik Pflichtmodul</option>
+                    <option value="NEBENFACH">Nebenfach</option>
+                    <option value="PRAXIS">Praxis- und Berufsorientierung</option>
+                    <option value="WAHLPFLICHT_BA">Wahlpflichtbereich (B.Sc.)</option>
+                    <option value="WAHLPFLICHT_MA">Wahlpflichtbereich (M.Sc.)</option>
+                    <option value="BACHELORARBEIT">Bachelorarbeit</option>
+                    <option value="PROJEKTARBEIT">Projektarbeit</option>
+                    <option value="MASTERARBEIT">Masterarbeit</option>
+                    <option value="SONSTIGE">Sonstige</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- VERANSTALTUNGEN WERDEN IN EINER SCHLEIFE AUFGELISTET -->
+        <div>
+            <div class="accordion mt-3" id="accordion">
+                <div class="card"
+                     style="border: none;
+                                     border-radius: unset;
+                                     background-color: white"
+                     th:each="veranstaltung,iter : *{veranstaltungen}">
+
+                    <div class="card-header" th:id="'veranstaltung'+ ${iter.index}+'heading'" style="background-color: white;">
+                        <h2 class="mb-0">
+                            <a data-toggle="collapse"
+                               th:href="'#veranstaltung'+${iter.index}"
+                               aria-expanded="true"
+                               th:aria-controls="'veranstaltung'+ ${iter.index}">
+                                <svg style="color: lightslategrey;" class="bi bi-caret-right-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                                </svg>
+                                <span style="font-size: medium; font-weight: bold; color: lightslategrey; text-decoration: none"
+                                      th:text="${iter.index+1}+'. Veranstaltung'">
+                                                    Veranstaltungsnummer
+                                </span>
+                            </a>
+                        </h2>
+                    </div>
+
+                    <!-- FORMULAR FÜR EINE VERANSTALTUNG -->
+                    <div th:id="'veranstaltung'+ ${iter.index}"
+                         class="collapse"
+                         th:aria-labelledby="'veranstaltung'+ ${iter.index}+'heading'"
+                         data-parent="#accordion">
+                        <div class="card-body" style="background-color: lightslategrey; color: white;">
+
+                            <div class="mt-3 mb-3" style="display: flex;">
+                                <div class="input-group mb-3 col-8 pl-0" style="display: block">
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                           color: white;
+                                                           font-size: larger;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;"
+                                           aria-label="Veranstaltungstitel"
+                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].titel}">
+                                    <div style="color: white; font-size: small;">Veranstaltungstitel</div>
+                                </div>
+
+                                <div class="input-group mb-3 col-3" style="display: block">
+                                    <input type="text"
+                                           style="background: transparent;
+                                                           border: none;
+                                                           border-bottom: 1px solid white;
+                                                           border-radius: unset;
+                                                           color: white;"
+                                           class="form-control"
+                                           aria-label="XXXXXX"
+                                           aria-describedby="basic-addon2" th:field = "*{veranstaltungen[__${iter.index}__].leistungspunkte}">
+                                    <div style="color: white; font-size: small;">Leistungspunkte</div>
+                                </div>
+                            </div>
+
+                            <div class="input-group col-8 pl-0">
+                                <div class="input-group mb-3 col-8 pl-0" style="display: block">
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                               color: white;
+                                                               font-size: larger;
+                                                               border: none;
+                                                               border-bottom: 1px solid white;
+                                                               border-radius: unset;"
+                                           aria-label="haeufigkeit"
+                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.haeufigkeit}">
+                                    <div style="color: white; font-size: small;">Häufigkeit</div>
+                                </div>
+                                <div class="input-group mb-3 col-4 pl-0" style="display: block">
+                                    <input type="text"
+                                           class="form-control"
+                                           style="background: transparent;
+                                                               color: white;
+                                                               font-size: larger;
+                                                               border: none;
+                                                               border-bottom: 1px solid white;
+                                                               border-radius: unset;"
+                                           aria-label="sprache"
+                                           aria-describedby="basic-addon1" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.sprache}">
+                                    <div style="color: white; font-size: small;">Sprache</div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend col-12 pl-0" >
+                                    <span class="input-group-text pl-0"
+                                          style="background: transparent;
+                                          color: white;
+                                          font-size: larger;
+                                          border: none;" >
+                                        Veranstaltungsinhalte
+                                    </span>
+                                </div>
+                                <textarea class="form-control col-12 pl-0"
+                                          aria-label="XXYXXY"
+                                          style="background: transparent;
+                                                           border-radius: unset;
+                                                           margin-bottom: 1rem;
+                                                           height: 10rem;
+                                                           color: white;" th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.inhalte}"></textarea>
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend col-12 pl-0">
+                                    <span class="input-group-text pl-0"
+                                          style="background: transparent;
+                                          color: white;
+                                          font-size: larger;
+                                          border: none;">
+                                        Lernergebnisse
+                                    </span>
+                                </div>
+                                <textarea class="form-control col-12 pl-0"
+                                          style="background: transparent;
+                                                           border-radius: unset;
+                                                           margin-bottom: 3rem;
+                                                           color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.lernergebnisse}"></textarea>
+                            </div>
+
+                            <div class="col-12 pl-0" style="display: inline-block;">
+                                <div class="input-group col-6 pl-0" style="float: left">
+                                    <div class="input-group-prepend col-12 pl-0">
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Literatur
+                                        </span>
+                                    </div>
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.literatur}"></textarea>
+                                </div>
+
+                                <div class="input-group col-6">
+                                    <div class="input-group-prepend col-12 pl-0">
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Voraussetzungen für eine Teilnahme
+                                        </span>
+                                    </div>
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].voraussetzungenTeilnahme}"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12 pl-0" style="display: inline-block;">
+                                <div class="input-group col-6 pl-0" style="float: left">
+                                    <div class="input-group-prepend col-12 pl-0">
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Verwendbarkeit
+                                        </span>
+                                    </div>
+                                    <textarea class="form-control col-12 pl-0"
+                                              aria-label="XXYXXY"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.verwendbarkeit}"></textarea>
+                                </div>
+
+                                <div class="input-group col-6">
+                                    <div class="input-group-prepend col-12 pl-0">
+                                        <span class="input-group-text pl-0"
+                                              style="background: transparent;
+                                              color: white;
+                                              font-size: larger;
+                                              border: none;">
+                                            Voraussetzungen zum Bestehen
+                                        </span>
+                                    </div>
+                                    <textarea class="form-control col-12 pl-0"
+                                              style="background: transparent;
+                                                               border-radius: unset;
+                                                               margin-bottom: 3rem;
+                                                               color: white;" required th:field = "*{veranstaltungen[__${iter.index}__].beschreibung.voraussetzungenBestehen}"></textarea>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span style="font-size: x-large; margin-bottom: 2rem">
+                                    Die Veranstaltung beinhaltet:
+                                </span>
+                                <!-- TODO: Freifeld variabel machen statt fest als 6.-->
+                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform,iter2 : *{veranstaltungsformen[__${(iter.index)}__]}"
+                                     th:unless="${iter2.index == 5}">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 15rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value=""
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].form}">
+                                    <span style="font-size: larger; color: white; margin-left: 0.5rem">mit</span>
+                                    <input class="form-control ml-1"
+                                           style="max-width: 6rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="number"
+                                           value="0"
+                                           min="0"
+                                           required
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].semesterWochenStunden}" >
+                                    <label style="font-size: larger; margin-left: 0.5rem">
+                                        SWS
+                                    </label>
+                                </div>
+
+                                <div class="form-check mb-2" style="display: flex">
+                                    <input class="form-control ml-1"
+                                           style=" border-bottom: 1px solid white;
+                                                           max-width: 26rem;
+                                                           height: 5rem;
+                                                           background: transparent;
+                                                           font-size: small;
+                                                           color: white;"
+                                           type="text"
+                                           value="0"
+                                           th:field = "*{veranstaltungsformen[__${iter.index}__][__${5}__].form}">
+
+                                </div>
+
+                            </div>
+
+                            <div style="margin-top: 3rem; display: grid;">
+                                <span class="col-12" style="font-size: x-large">
+                                    Weitere Informationen:
+                                </span>
+                                <div class="col-12" style="padding: 0;">
+                                    <div  th:each="zusatzfeld, k : *{zusatzfelder[__${iter.index}__]} "class="col-6" style="float:left">
+                                        <div class="form-check mb-2"
+                                             style="padding: 0;
+                                                             margin:0.3rem;
+                                                             border: 1px solid white;
+                                                             border-radius: 10px">
+                                            <div class="col-12" style="padding: 0">
+                                                <div style="border-bottom: 1px solid white" class="col-12">
+                                                    <input placeholder="Titel Ihres Zusatzfeldes ..."
+                                                           th:field = "*{zusatzfelder[__${iter.index}__][__${k.index}__].titel}"
+                                                           type="text"
+                                                           class="col-11"
+                                                           style="border: none;
+                                                                           font-size: larger;
+                                                                           color: white;
+                                                                           background: transparent;">
+                                                </div>
+                                                <textarea class="form-control ml-1 col-12"
+                                                          th:field = "*{zusatzfelder[__${iter.index}__][__${k.index}__].inhalt}"
+                                                          placeholder="Inhalt Ihres Zusatzfeldes ..."
+                                                          style="height: 5rem;
+                                                                          border: none;
+                                                                          background: transparent;
+                                                                          font-size: small;
+                                                                          color: white;"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
+        <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
+            <button type="submit" class="btn btn-primary mr-1" style="float: right">Antrag annehmen</button>
+            <button type="button" class="btn btn-secondary mr-1" style="float: right">
+                <a href="/module/administrator" style="color: white; text-decoration: none;">
+                    Abbrechen
+                </a>
+            </button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

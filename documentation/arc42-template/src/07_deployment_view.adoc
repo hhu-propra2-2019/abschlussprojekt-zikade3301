@@ -6,7 +6,6 @@
 === Infrastruktur Ebene 1
 
 
-
 _**<Übersichtsdiagramm>**_
 
 Begründung:: _<Erläuternder Text>_

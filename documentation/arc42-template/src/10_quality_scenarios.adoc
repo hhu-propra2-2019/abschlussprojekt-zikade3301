@@ -14,7 +14,15 @@
 
 |===
 |Nr. | Szenario
-| _1_ | _ _
-
+| _1_ | _Der Nutzer des Modulhandbuchs findet durch die Suche sofort das gewünschte Modul._
+| _2_ | _Das Herunterladen des Modulhandbuchs (im PDF Format) ist ohne Schwierigkeiten möglich._
+| _3_ | _Die Navigation durch das Modulhandbuch ist schnell und übersichtlich._
+| _4_ | _Änderung an den Modulen können modular vorgenommen werden._
+| _5_ | _Falls der Admin ältere, nicht mehr sichtbare Module einsehen möchte, kann er dies tun, denn alle Module werden grundsätzlich aufbewahrt._
+| _6_ | _Ein Organisator kann immer einen Antrag stellen, da er sich nicht um die älteren Anträge von ihm oder anderen Organisatoren kümmern muss._
+| _7_ | _Sicherheit ist gewährleistet durch rollenbedingte Zugriffsrechte._
+| _8_ | _Die Module können beim Betrachten nach Semestern gefiltert werden._
+| _9_ | _Die Module können einzeln in einer Detailansicht betrachtet werden._
+| _10_ | _Die Module können einzeln aber auch gebündelt über die zur Verfügung gestellte API abgerufen werden._
 
 |===

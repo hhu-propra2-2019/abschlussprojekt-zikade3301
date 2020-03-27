@@ -2,6 +2,8 @@ package mops.module.database;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -13,32 +15,41 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import mops.module.searchconfig.IndexWhenVisibleInterceptor;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
 @Setter
+@Indexed(interceptor = IndexWhenVisibleInterceptor.class)
 public class Modul {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String titelDeutsch;
 
+    @Field
     private String titelEnglisch;
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
-            orphanRemoval = true)
+    //TODO: orphan removal wurde entfernt, Lösung für Löschen veralteter Veranstaltungen finden
+    @IndexedEmbedded
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Veranstaltung> veranstaltungen;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> modulbeauftragte;
+    @Field
+    private String modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 
+    @Field
     private String studiengang;
 
     private Modulkategorie modulkategorie;
@@ -51,17 +62,14 @@ public class Modul {
     @DateTimeFormat(pattern = "dd.MM.yyyy, HH:mm:ss")
     private LocalDateTime datumAenderung;
 
-    //Beim Löschen von Modul werden alle Zusatzfelder mitgelöscht, siehe oben
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul",
-            orphanRemoval = true)
-    private Set<Zusatzfeld> zusatzfelder;
-
     /**
      * Ruft setVeranstaltungen & setZusatzfelder auf, um das Mapping zu erneuern.
      */
     public void refreshMapping() {
         this.setVeranstaltungen(this.getVeranstaltungen());
-        this.setZusatzfelder(this.getZusatzfelder());
+        for (Veranstaltung v : veranstaltungen) {
+            v.refreshMapping();
+        }
     }
 
     /**
@@ -92,18 +100,4 @@ public class Modul {
         this.veranstaltungen = veranstaltungen;
     }
 
-    /**
-     * Überschreibt die Setter & erneuert die Links für die Zusatzfelder.
-     *
-     * @param zusatzfelder Schon vorhandenes Set von Zusatzfelder
-     */
-    public void setZusatzfelder(Set<Zusatzfeld> zusatzfelder) {
-        if (zusatzfelder == null) {
-            return;
-        }
-        for (Zusatzfeld zusatzfeld : zusatzfelder) {
-            zusatzfeld.setModul(this);
-        }
-        this.zusatzfelder = zusatzfelder;
-    }
 }

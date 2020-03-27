@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 class ModulbeauftragterControllerTest {
 
@@ -38,15 +40,29 @@ class ModulbeauftragterControllerTest {
 
     @Test
     void testModulbeauftragterViewName() throws Exception {
-        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("orga"));
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(view().name(expect));
     }
 
     @Test
-    void testModulbeauftragterStatusLoggedIn() throws Exception {
-        SecurityContextHolder.getContext().setAuthentication(generateAuthenticationToken("orga"));
+    void testModulbeauftragterAccessForOrganizers() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        mvc.perform(get("/module/modulbeauftragter"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testModulbeauftragterAccessForAdministrator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         mvc.perform(get("/module/modulbeauftragter"))
                 .andExpect(status().isOk());
@@ -65,18 +81,6 @@ class ModulbeauftragterControllerTest {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
-
-        assertThrows(java.lang.AssertionError.class,
-                () -> {
-                    mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
-                });
-    }
-
-    @Test
-    void testModulbeauftragterNoAccessForAdministrator() throws Exception {
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(generateAuthenticationToken("sekretariat"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {

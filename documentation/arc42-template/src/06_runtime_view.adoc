@@ -8,9 +8,38 @@
 *  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
 *  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
 
-=== _<Bezeichnung Laufzeitszenario 2>_
+== Laufzeitszenario Suche
 
-...
+ Der Nutzer gibt in der Haupseite einen oder mehrere Suchbegriffe ein.
+ Das löst eine GET-Anfrage aus, die von dem SearchController entgegengenommen wird.
+ Dieser ruft die search Methode im SuchService auf.
+ Die Methode durchsucht mit einer Hibernate Search Query die Datenbank innerhalb der relevanten Felder und gibt dann eine nach Relevanz sortierte Liste zurück.
+ Der Nutzer wird auf die searchresults Seite weitergeleitet und bekommt die Liste als Links zu den Moduldetails angezeigt.
+
+== Laufzeitszenario PDF-Download
+
+ Der Nutzer klickt in der Hauptseite auf den PDF-Knopf neben der Suchleiste.
+ Dies löst eine GET-Request aus, die vom PdfDownloadController entgegengenommen wird.
+ Dieser ruft über den ModulService alle zur Zeit sichtbaren Module ab und gibt diese an den PdfService weiter.
+ Der PdfService wandelt die Module nun mit Hilfe von Thymeleaf in ein formatiertes HTML-Dokument um, indem auch schon das Inhaltsverzeichnis automatisch generiert wurde.
+ Das HTML-Dokument wird anschließend mit Hilfe der flexmark-Bibliothek in ein PDF-Dokument umgewandelt und als ByteStrom an den Controller zurückgegeben, welcher dem Nutzer dann dieses PDF-Dokument zum Download zur Verfügung stellt.
+
+== Laufzeitszenario REST-API
+
+ Der API-Nutzer stellt eine HTTP GET Request an /module/api und spezifiziert die Suchanfrage im Parameter query.
+ GraphQL prüft die Anfrage und ruft (bei valider Request) mit Hilfe des ModulServices die angeforderten Daten ab.
+ Diese werden in JSON-Form dem Nutzer zurückgegeben.
+
+== Laufzeitszenario Anträge für Erstellung
+
+Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und klickt auf "Modul hinzufügen".
+Er wählt die Anzahl der Veranstaltungen aus, die das Modul haben soll.
+Es öffnet sich ein Formular mit den entsprechenden Eingabefeldern und aufklappbaren Veranstaltungs-Formularen.
+Die eingegebenen Formulardaten werden an den ModulerstellungController als GET-Request gesendet, ....
+
+== Laufzeitszenario Anträge für Bearbeitung
+
+....
 
 === _<Bezeichnung Laufzeitszenario n>_
 

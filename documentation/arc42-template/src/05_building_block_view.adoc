@@ -5,8 +5,6 @@ Dieser Abschnitt beschreibt die Aufteilung der Anwendung
 
 === Whitebox Gesamtsystem
 
-
-
 _**<Übersichtsdiagramm>**_
 
 Begründung:: _<Erläuternder Text>_
@@ -15,27 +13,106 @@ Enthaltene Bausteine:: _<Beschreibung der enthaltenen Bausteine (Blackboxen)>_
 
 Wichtige Schnittstellen:: _<Beschreibung wichtiger Schnittstellen>_
 
+== Volltextsuche
 
+ Zweck/Verantwortung::
 
-==== <Name Blackbox 1>
+_Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stichworten eine Liste von Modulen zu erhalten._
 
+ Schnittstelle::
 
+ _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController._
 
-_<Zweck/Verantwortung>_
+ Qualitäts-/Leistungsmerkmale::
+ _Die Suche soll auch mit Teilworten fertig werden; sucht der Nutzer also nach dem Keyword "Architektur", so muss die Suche auch den Eintrag "Architekturformen" finden können._
 
-_<Schnittstelle(n)>_
+== Erstellen von Anträgen
 
-_<(Optional) Qualitäts-/Leistungsmerkmale>_
+ Schnittstelle(n)::
 
-_<(Optional) Ablageort/Datei(en)>_
+ _Die Schnittstellen liegen hier in der View der Modulbeauftragten und der Admin View. Nur von diesen beiden Seiten können nach Authentifizierung des Nutzers Anträge erstellt werden. Die Anträge können zum Erstellen von Modulen oder zur Änderung ebendieser verwendet werden._
 
-_<(Optional) Erfüllte Anforderungen>_
+ Qualitäts-/Leistungsmerkmale::
 
-_<(optional) Offene Punkte/Probleme/Risiken>_
+ _Anträge sollen zu jeder Zeit erstellbar sein und gespeichert werden._
 
-==== <Name Blackbox 2>
+== PDF Download
 
-_<Blackbox-Template>_
+ Schnittstelle::
+ _Das komplette Modulhandbuch wird auf der Hauptseite zum Download angeboten._
+
+ Qualitäts-/Leistungsmerkmale::
+
+ _Das aktuelle Modulhandbuch im PDF-Format soll zu jeder Zeit in ansehnlicher Formatierung verfügbar sein._
+
+== REST-API
+
+ Schnittstelle::
+ _Die aktuellen Module werden per HTTP GET-Request zur Verfügung gestellt._
+
+ Qualitäts-/Leistungsmerkmale::
+
+ _Die Modulinformationen sollen zu jeder Zeit in korrekt formatiertem JSON für den API-Nutzer abrufbar sein. Der Nutzer soll genau spezifizieren können, welche Informationen er benötigt._
+
+== Volltextsuche Blackbox
+
+ Suche im Detail::
+
+ _In der index.html gibt es ein Formular, mit dem ein Request Parameter (searchField) durch eine GET-Anfrage an den SearchController geschickt wird.
+ Die Methode search() im Controller ruft dann die Methode search() im SearchService auf. Der searchField Parameter wird dabei übergeben.
+ Diese Methode wendet durch Hibernate Search eine Suchanfrage auf die Datenbank an. Hibernate Search hat beim Start des Programms die relevanten Felder indexiert und aktualisiert sich bei neu hinzugefügten (oder geänderten) Modulen selbst.
+ Außerdem werden beim Indexieren alle nicht sichtbaren Module ignoriert.
+ Der Index wird genutzt, um mit der Suchanfrage die relevanten Felder in den Modulen zu durchsuchen. Wildcards ermöglichen, dass Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modellattribut in searchresults.html übergeben wird.
+ Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Linksammlung angezeigt.
+ Die Links leiten den Nutzer weiter auf die Moduldetails._
+
+== PDF-Download Blackbox
+
+ PDF-Generierung im Detail::
+
+ _In der index.html gibt es neben der Suchleiste einen PDF-Knopf, mit dem per GET-Request auf /module/pdf die PDF-Generierung des aktuellen Modulhandbuchs gestartet wird.
+ Im PdfDownloadController wird nun über den ModulService ..._
+
+== REST-API Blackbox
+
+ REST-API im Detail::
+
+ _Über /module/api ist die Schnittstelle verfügbar, bei der über query die genauen Attribute spezifiziert werden, die der Nutzer abrufen möchte.
+ GraphQL fängt diese Anfrage über den GraphQLProvider ab und prüft ob die Anfrage korrekt gestellt wurde.
+ Die möglichen Anfragen wurden dabei in der schema.graphqls Datei spezifiziert und können über das ebenso eingebundene GraphiQL über /module/graphiql erkundet werden.
+ Ist die Anfrage fehlerhaft, so gibt GraphQL eine Fehlermeldung zurück.
+ Bei korrekt gestellter Anfrage sammelt GraphQL über die GraphQlDataFetchers die angeforderten Informationen und nutzt dabei den ModulService, welcher die Daten aus der Datenbank ausliest.
+ Die vom ModulService zurückgegebenen Modulobjekte werden mit Hilfe der schema.graphqls und eigenst definierter GraphQL-scalars (LocalDateTime und Modulkategorie) in einen JSON-String umgewandelt.
+ Dieser String wird dem Nutzer dann in der HTTP-Response zurückgegeben._
+
+== Anträge für Erstellung Blackbox
+
+Anträge für Erstellung im Detail::
+
+_Als Organisatoren eingeloggte Nutzer können unter dem Reiter "Module bearbeiten" Anträge zur Erstellung oder Bearbeitung von Modulen hinzufügen.
+Für die Erstellung eines Antrags für ein neues Modul wird hierfür zunächst der Button "Modul hinzufügen" angeklickt, anschließend öffnet sich ein Bootstrap-Modal, in welchem der Nutzer die Anzahl der Veranstaltungen in dem neuen Modul angeben muss.
+Die kleinste mögliche Eingabe für dieses Input-Feld ist hierbei 1. Beim Bestätigen des "Fortfahren"-Buttons wird ein GET-Request an den ModulerstellungController mit der entsprechenden Veranstaltungsanzahl gesendet.
+In der Controller-Methode wird anschließend durch die initializeEmptyWrapper()-Methode ein ModulWrapper erstellt, der neben einer leeren Instanz der Modul-Entity die variabel großen Unterfelder und Unter-Unterfelder von Modul (Veranstaltungen und innerhalb von Veranstaltung Veranstaltungsformen und Zusatzfelder) erweitert durch leere Instanzen auf die im ModulWrapperService festgelegten Standardgrößen dieser Unter-Unterfelder enthält.
+Bei der anschließenden Weitergabe dieses Wrappers an modulerstellung.html wird dann ein leeres Formular durch Iteration mittels Thymeleaf über die im ModulWrapper enthaltenen Listen generiert, das dadurch die festgelegte Anzahl an ausfüllbaren Input-Feldern hat.
+Anschließend wird das durch Thymeleaf in den jeweiligen Feldern befüllte ModulWrapper-Objekt per POST-Request wieder an den ModulerstellungController zurückgegeben und mithilfe der readModulFromWrapper()-Methode wieder entpackt, die Unter- und Unter-Unterfelder korrekt auf die eingegebenen Daten gesetzt und das so erstellte Modul-Objekt mithilfe von AntragService verpackt in einen Antrag in der Datenbank gespeichert.
+Der Antrag ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
+Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt, das Modul in der Datenbank gespeichert und auf sichtbar gesetzt._
+
+== Anträge für Bearbeitung Blackbox
+
+Anträge für Bearbeitung im Detail::
+
+_Für die Erstellung eines Änderungsantrags für ein existierendes Modul wird aus einer Liste der sichtbaren Module ein Modul angeklickt.
+Beim Anklicken des Moduls wird ein GET-Request an den ModulerstellungController mit der entsprechenden Modul-ID gesendet.
+Es wird aus der Datenbank das entsprechende Modul ausgegeben und an die Methode initializePrefilledWrapper() weitergegeben.
+In dieser wird ähnlich dem oben beschriebenen Vorgehen ein ModulWrapper mit auf in ModulWrapperService festgelegte Größen Listen mit leeren Instanzen aufgefüllt, wobei im Unterschied zur initializeEmptyWrapper()-Methode die existierenden Einträge in den Listen erhalten bleiben und ihnen leere Instanzen angehangen werden, bis die Listen die richtige Größe haben.
+Dieser Wrapper wird neben der Modul-ID wieder an die selbe html-Datei wie bei der Erstellung gegeben und öffnet das selbe Formular, allerdings sind in diesem Fall die Felder (bis auf die auffüllenden leeren Listen-Einträge) vorausgefüllt.
+Zusammen mit der Modul-ID wird der abgeänderte ModulWrapper per POST-Request an den ModulerstellungController zurückgeschickt.
+Da es sich um einen Änderungsantrag handelt, müssen nun die Änderungen zum alten Modul festgestellt werden.
+Hierzu wird zunächst mithilfe der ID das alte Modul aus der Datenbank geholt und das neue Modul mit Hilfe von readModulFromWrapper() aus dem ModulWrapper ausgelesen.
+Anschließend werden mithilfe von calculateModulDiffs() aus ModulService die beiden Module auf relevante (d.h. nicht z.B. automatisch generierte Zeitstempel betreffende) Unterschiede untersucht und in Form eines Differenzmoduls (d.h. einer Modul-Instanz, bei der Felder ohne Unterschiede den Wert null und Felder mit Änderungen den Wert nach der Änderung haben) ausgibt.
+Wenn in diesem Differenzmodul Änderungen festgestellt wurden, wird der Änderungsantrag in der Datenbank gespeichert und ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
+Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt und das Modul in der Datenbank geupdatet._
 
 ==== <Name Blackbox n>
 

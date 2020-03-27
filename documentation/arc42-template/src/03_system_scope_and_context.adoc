@@ -1,8 +1,7 @@
 [[section-system-scope-and-context]]
 == Kontextabgrenzung
 
-Dieser Abschnitt beschreibt das Umfeld des Modulhandbuches im Rahmen von Mops.
-Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
+Dieser Abschnitt beschreibt das Umfeld des Modulhandbuches im Rahmen von MOPS, für wen es da ist, und mit welchen Fremdsystemen es interagiert.
 
 
 === Fachlicher Kontext
@@ -11,27 +10,17 @@ Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
 [cols="1,2" options="header"]
 |===
 |Randbedingung |Erläuterung
-| _Nicht angemeldete User_ | _ _
-| _Studenten_ | _ _
-| _Organisatoren_ | _ _
-| _Administratoren_ | _ _
+| _Nicht angemeldete User_ | _Nicht angemeldete Nutzer können alle als sichtbar markierten Module einsehen und das aktuelle Modulhandbuch als PDF herunterladen._
+| _Studenten_ | _Studenten können alle als sichtbar markierten Module einsehen._
+| _Organisatoren_ | _Organisatoren können alle als sichtbar markierte Module einsehen sowie Anträge stellen, um Module zu erstellen oder zu verändern.
+Diese werden nicht direkt gelistet, sondern erfordern zunächst eine Freischaltung durch Administratoren._
+| _Administratoren_ | _Haben alle Rechte der Organisatoren, können aber zusätzlich Modulerstellungsanträge annehmen, die Sichtbarkeit ändern und über Semestertags festlegen, in welchen Semestern ein Modul (oder ein Teil eines Moduls) angeboten werden soll._
 |===
 
 
-
-**<Diagramm und/oder Tabelle>**
-
-**<optional: Erläuterung der externen fachlichen Schnittstellen>**
-
 === Technischer Kontext
 
+- Der PDF Export wird bereitgestellt, um ausgewählte Module als PDF herunterladen zu können.
+- Die REST API wird bereitgestellt, um beispielsweise Stammdaten für die Belegung bereit zu stellen.
+- Andere Systeme können Verlinkungen auf das Modulhandbuch verwenden.
 
-
-**<Diagramm oder Tabelle>**
-
-**<optional: Erläuterung der externen technischen Schnittstellen>**
-
-- PDF Export
-- REST API?
-
-**<Mapping fachliche auf technische Schnittstellen>**

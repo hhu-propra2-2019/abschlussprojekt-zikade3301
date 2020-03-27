@@ -3,3 +3,10 @@
 
 Dieser Abschnitt stellt die wichtigsten Ziele und Lösungsansätze gegenüber.
 
+== Ziele und Lösungen
+
+Dozenten können Module erstellen oder einzelne Aspekte des Moduls ändern.
+Der Administrator bekommt diese Anträge und kann diese bestätigen oder abändern und dann bestätigen.
+Erst nachdem der Administrator den Antrag genehmigt hat, wird das Modul für die Nutzer angezeigt.
+Der Nutzer kann mit einer Volltextsuche Module finden sowie das vollständige Modulhandbuch im PDF-Format herunterladen.
+Es gibt eine dynamische Semesterübersicht, die anzeigt, welche Module in dem ausgewählten Semester verfügbar sind.
