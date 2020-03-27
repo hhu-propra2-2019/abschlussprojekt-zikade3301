@@ -2,6 +2,7 @@ package mops.module.services;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
@@ -22,19 +23,21 @@ public class ModulWrapperService {
      * @return Ein entsprechendes Modul-Objekt.
      */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
+        Set<Veranstaltung> veranstaltungenInWrapper = getVeranstaltungenAsSet(modulWrapper);
+        Modul modul = modulWrapper.getModul();
+        modul.setVeranstaltungen(veranstaltungenInWrapper);
+        modul.refreshMapping();
+        return modul;
+    }
+
+    private static Set<Veranstaltung> getVeranstaltungenAsSet(ModulWrapper modulWrapper) {
         for (int i = 0; i < modulWrapper.getVeranstaltungen().size(); i++) {
             modulWrapper.getVeranstaltungen().get(i).setVeranstaltungsformen(
                     new HashSet<>(modulWrapper.getVeranstaltungsformen()[i]));
             modulWrapper.getVeranstaltungen().get(i).setZusatzfelder(
                     new HashSet<>(modulWrapper.getZusatzfelder()[i]));
         }
-        Set<Veranstaltung> veranstaltungenInWrapper =
-                new HashSet<>(modulWrapper.getVeranstaltungen());
-
-        Modul modul = modulWrapper.getModul();
-        modul.setVeranstaltungen(veranstaltungenInWrapper);
-        modul.refreshMapping();
-        return modul;
+        return new HashSet<>(modulWrapper.getVeranstaltungen());
     }
 
     /**
@@ -47,29 +50,43 @@ public class ModulWrapperService {
     @SuppressWarnings("unchecked")
     public static ModulWrapper initializeEmptyWrapper(int veranstaltungsanzahl) {
 
-        Modul modul = new Modul();
-        ModulWrapper modulWrapper = new ModulWrapper(modul,
-                null, null, null);
-        modulWrapper.veranstaltungen = new LinkedList<>();
-        modulWrapper.veranstaltungsformen = new LinkedList[veranstaltungsanzahl];
-        modulWrapper.zusatzfelder = new LinkedList[veranstaltungsanzahl];
+        List<Veranstaltung> veranstaltungen = new LinkedList<>();
+        List<Veranstaltungsform>[] veranstaltungsformen = new LinkedList[veranstaltungsanzahl];
+        List<Zusatzfeld>[] zusatzfelder = new LinkedList[veranstaltungsanzahl];
 
+        addEmptyVeranstaltungen(veranstaltungen, veranstaltungsanzahl);
+        addEmptyVeranstaltungsformen(veranstaltungsformen, veranstaltungsanzahl);
+        addEmptyZusatzfelder(zusatzfelder, veranstaltungsanzahl);
+
+        return new ModulWrapper(new Modul(), veranstaltungen, veranstaltungsformen, zusatzfelder);
+    }
+
+    private static void addEmptyVeranstaltungen(
+            List<Veranstaltung> veranstaltungen, int veranstaltungsanzahl) {
         for (int i = 0; i < veranstaltungsanzahl; i++) {
-            modulWrapper.veranstaltungsformen[i] = new LinkedList<>();
-            modulWrapper.zusatzfelder[i] = new LinkedList<>();
-            Veranstaltung veranstaltung = new Veranstaltung();
-            modulWrapper.veranstaltungen.add(veranstaltung);
+            veranstaltungen.add(new Veranstaltung());
+        }
+    }
+
+
+    private static void addEmptyVeranstaltungsformen(
+            List<Veranstaltungsform>[] veranstaltungsformen, int veranstaltungsanzahl) {
+        for (int i = 0; i < veranstaltungsanzahl; i++) {
+            veranstaltungsformen[i] = new LinkedList<>();
             for (int j = 0; j < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG; j++) {
-                Veranstaltungsform vf = new Veranstaltungsform();
-                modulWrapper.veranstaltungsformen[i].add(vf);
-            }
-            for (int j = 0; j < ZUSATZFELDER_PRO_VERANSTALTUNG; j++) {
-                Zusatzfeld zf = new Zusatzfeld();
-                modulWrapper.zusatzfelder[i].add(zf);
+                veranstaltungsformen[i].add(new Veranstaltungsform());
             }
         }
+    }
 
-        return modulWrapper;
+    private static void addEmptyZusatzfelder(
+            List<Zusatzfeld>[] zusatzfelder, int veranstaltungsanzahl) {
+        for (int i = 0; i < veranstaltungsanzahl; i++) {
+            zusatzfelder[i] = new LinkedList<>();
+            for (int j = 0; j < ZUSATZFELDER_PRO_VERANSTALTUNG; j++) {
+                zusatzfelder[i].add(new Zusatzfeld());
+            }
+        }
     }
 
     /**
@@ -84,32 +101,36 @@ public class ModulWrapperService {
     @SuppressWarnings("unchecked")
     public static ModulWrapper initializePrefilledWrapper(Modul modul) {
 
-        ModulWrapper modulWrapper = new ModulWrapper(modul,
-                null, null, null);
+        List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
+        List<Veranstaltungsform>[] veranstaltungsformen = new LinkedList[veranstaltungen.size()];
+        List<Zusatzfeld>[] zusatzfelder = new LinkedList[veranstaltungen.size()];
 
-        if (modul.getVeranstaltungen() != null) {
-            modulWrapper.veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
-        } else {
-            modulWrapper.veranstaltungen = new LinkedList<>();
-        }
-        modulWrapper.veranstaltungsformen = new LinkedList[modulWrapper.veranstaltungen.size()];
-        modulWrapper.zusatzfelder = new LinkedList[modulWrapper.veranstaltungen.size()];
-        for (int i = 0; i < modulWrapper.veranstaltungen.size(); i++) {
-            modulWrapper.veranstaltungsformen[i] =
-                    new LinkedList<>(modulWrapper.veranstaltungen.get(i).getVeranstaltungsformen());
-            modulWrapper.zusatzfelder[i] =
-                    new LinkedList<>(modulWrapper.veranstaltungen.get(i).getZusatzfelder());
-            while (modulWrapper.veranstaltungsformen[i].size()
-                    < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
-                Veranstaltungsform vf = new Veranstaltungsform();
-                modulWrapper.veranstaltungsformen[i].add(vf);
-            }
-            while (modulWrapper.zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
-                Zusatzfeld z = new Zusatzfeld();
-                modulWrapper.zusatzfelder[i].add(z);
+        fillUpWithEmptyVeranstaltungsformen(veranstaltungsformen, veranstaltungen);
+        fillUpWithEmptyZusatzfelder(zusatzfelder, veranstaltungen);
+
+        return new ModulWrapper(modul, veranstaltungen, veranstaltungsformen, zusatzfelder);
+    }
+
+    private static void fillUpWithEmptyVeranstaltungsformen(
+            List<Veranstaltungsform>[] veranstaltungsformen, List<Veranstaltung> veranstaltungen) {
+        for (int i = 0; i < veranstaltungen.size(); i++) {
+            veranstaltungsformen[i] =
+                    new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+            while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
+                veranstaltungsformen[i].add(new Veranstaltungsform());
             }
         }
-        return modulWrapper;
+    }
+
+    private static void fillUpWithEmptyZusatzfelder(
+            List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
+        for (int i = 0; i < veranstaltungen.size(); i++) {
+            zusatzfelder[i] =
+                    new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
+            while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
+                zusatzfelder[i].add(new Zusatzfeld());
+            }
+        }
     }
 
 }
