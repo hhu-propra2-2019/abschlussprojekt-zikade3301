@@ -76,7 +76,12 @@ public class ModulService {
         return false;
     }
 
-// TODO - Test für nun public Methode schreiben
+    /**Diese Methode wendet Änderungen in Form eines Antrages auf ein Modul an.
+     *
+     * @param modul auf das die Änderungen aus dem Antrag angewendet werden sollen.
+     * @param antrag der die Änderungen beinhaltet.
+     */
+
     public static void applyAntragOnModul(Modul modul, Antrag antrag) {
         Modul modulChanges = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
