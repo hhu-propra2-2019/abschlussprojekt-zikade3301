@@ -2,6 +2,7 @@ package mops.module.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +42,8 @@ public class PdfService {
         context.setVariable("module", pdfModulWrapperList);
         context.setVariable("categories", getUsedKategorien(pdfModulWrapperList));
         context.setVariable("pdfService", this);
+        context.setVariable("currentSemester",
+                ModulService.getSemesterFromDate(LocalDateTime.now(), true));
 
         StringWriter writer = new StringWriter();
         templateEngine.process("pdfgeneration/modulhandbuch", context, writer);

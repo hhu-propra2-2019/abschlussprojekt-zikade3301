@@ -69,7 +69,7 @@
         #studienverlaufsplan th,
         #studienverlaufsplan td {
             word-wrap: break-word;
-            padding: 5px;
+            padding: 4px;
             text-align: center;
             border: 1px solid black;
             border-collapse: collapse;
@@ -143,25 +143,20 @@
 
 <div>
     <h1>Vorwort</h1>
-    <p>
-        Das Modulhandbuch soll eine Orientierung über den grundständigen Bachelor-Studiengang Informatik und
+    <p>Das Modulhandbuch soll eine Orientierung über den grundständigen Bachelor-Studiengang Informatik und
         den konsekutiven Master-Studiengang Informatik liefern. Insbesondere soll es die Wahl der Lehrveranstal-
         tungen erleichtern und die Organisation des Studiums unterstützen.
     </p>
-    <p>
-        Das Modulhandbuch führt die gängigen Lehrveranstaltungen auf. Es ist jedoch keine vollständige, abschlie-
+    <p>Das Modulhandbuch führt die gängigen Lehrveranstaltungen auf. Es ist jedoch keine vollständige, abschlie-
         ßende oder endgültige Auflistung. Vielmehr wird das Modulhandbuch kontinuierlich aktualisiert und gibt so
         die Entwicklung in Forschung und Lehre am Institut für Informatik wieder.
     </p>
-    <p>
-        Beachten Sie jedoch, dass in allen Fragen zum Studium sowie zum Prüfungswesen die jeweiligen Bachelor-
+    <p>Beachten Sie jedoch, dass in allen Fragen zum Studium sowie zum Prüfungswesen die jeweiligen Bachelor-
         oder Master-Prüfungsordnungen des Fachs Informatik maßgeblich sind.
     </p>
-    <p>
-        Düsseldorf, im Sommer 2020
+    <p>Düsseldorf, im <span th:text="${currentSemester}">Sommer 2020</span>
     </p>
-    <p>
-        Der Ausschuss für die Bachelor- und Master-Prüfung im Fach Informatik
+    <p>Der Ausschuss für die Bachelor- und Master-Prüfung im Fach Informatik
     </p>
 </div>
 
@@ -229,7 +224,7 @@
         <tr>
             <td class="semester-color">2</td>
             <td class="color0">Rechnerarchitektur (9) BV+PÜ (4)</td>
-            <td class="color0">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
+            <td class="color0">Professionelle Software-entwicklung (Programmier-praktikum I) (8)</td>
             <td class="color0">Einf. Rechnernetze, Datnbanken und Betriebssysteme (5)</td>
             <td class="color1">Analysis 1 (10)</td>
             <td class="color1">32 LP</td>
@@ -237,7 +232,7 @@
 
         <tr>
             <td class="semester-color">3</td>
-            <td class="color0">Softwareentwicklung im Team (Programmierpraktikum II) (8)</td>
+            <td class="color0">Softwareentwick-lung im Team (Programmier-praktikum II) (8)</td>
             <td class="color1">Analysis 2 (10)</td>
             <td class="color1">Nebenfach (10)</td>
             <td class="color0"></td>
@@ -282,7 +277,7 @@
         <!--    Unterste Zeile    -->
 
         <tr>
-            <td class="color0"></td>
+            <td class="semester-color"></td>
             <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
         </tr>
     </table>
@@ -326,7 +321,7 @@
 
         <tr>
             <td class="semester-color" rowspan="2">3</td>
-            <td class="color0" rowspan="2">Professionelle Softwareentwicklung (Programmierpraktikum I) (8)</td>
+            <td class="color0" rowspan="2">Professionelle Software-entwicklung (Programmier-praktikum I) (8)</td>
             <td class="color1">Angewandte Mathematik (10): Numerik oder Stochastik <span class="down-arrow">oder</span>
             </td>
             <td class="color0" rowspan="2">Rechnerarchitektur (9) BV+PÜ (4)</td>
@@ -339,7 +334,7 @@
 
         <tr>
             <td class="semester-color" rowspan="2">4</td>
-            <td class="color0" rowspan="2">Softwareentwicklung im Team (Programmierpraktikum II) (8)</td>
+            <td class="color0" rowspan="2">Softwareentwick-lung im Team (Programmier-praktikum II) (8)</td>
             <td class="color1">Angewandte Mathematik (10): Stochastik oder Numerik <span class="down-arrow">oder</span>
             </td>
             <td class="color0" rowspan="2">Wahlbereich (10)</td>
@@ -371,7 +366,7 @@
         <!--    Unterste Zeile    -->
 
         <tr>
-            <td class="color0"></td>
+            <td class="semester-color"></td>
             <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
         </tr>
     </table>
