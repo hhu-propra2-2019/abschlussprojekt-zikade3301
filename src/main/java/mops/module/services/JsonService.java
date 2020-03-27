@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Collection;
 import mops.module.database.Modul;
+import mops.module.wrapper.ModulWrapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +28,10 @@ public class JsonService {
 
     public static String modulToJsonObject(Modul modul) {
         return gson.toJson(modul);
+    }
+
+    public static String modulWrapperToJsonObject(ModulWrapper modulwrapper) {
+        return gson.toJson(modulwrapper);
     }
 
     public static Modul jsonObjectToModul(String json) {

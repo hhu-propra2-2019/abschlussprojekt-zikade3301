@@ -2,6 +2,7 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Modulkategorie;
 import mops.module.services.AntragService;
@@ -26,13 +27,15 @@ public class IndexController {
     private final ModulService modulService;
     private final AntragService antragService;
 
+    private static final int NUMBER_OF_PAST_SEMESTERS = 1;
+    private static final int NUMBER_OF_NEXT_SEMESTERS = 4;
 
     /**
      * Index string.
      *
-     * @param token the token of keycloak for permissions.
-     * @param model the model of keycloak for permissions.
-     * @return the string "index" which is the unsecured page for every user.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @param model Model für die HTML-Datei.
+     * @return View Index
      */
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
@@ -41,6 +44,9 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("nextSemesters",
+                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
+                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
         return "index";
     }
 
@@ -58,10 +64,34 @@ public class IndexController {
             KeycloakAuthenticationToken token,
             Model model) {
         if (token != null) {
-            model.addAttribute("account",createAccountFromPrincipal(token));
+            model.addAttribute("account", createAccountFromPrincipal(token));
         }
         model.addAttribute("modul", modulService.getModulById(Long.parseLong(id)));
         return "moduldetails";
+    }
+
+    /**
+     * Semesteransicht string.
+     *
+     * @param semester the corresponding semester
+     * @param token   the token of keycloak for permissions.
+     * @param model   the model of keycloak for permissions.
+     * @return the string "index" with modules in the selected semester.
+     */
+    @RequestMapping(value = "/semester/{semester}", method = RequestMethod.GET)
+    public String semesterAnsicht(
+            @PathVariable String semester,
+            KeycloakAuthenticationToken token,
+            Model model) {
+        if (token != null) {
+            model.addAttribute("account", createAccountFromPrincipal(token));
+        }
+        model.addAttribute("allModules", modulService.getModuleBySemester(semester));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("nextSemesters",
+                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
+                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
+        return "index";
     }
 
 }

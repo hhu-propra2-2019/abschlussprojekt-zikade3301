@@ -7,11 +7,13 @@ import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticatio
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
@@ -30,6 +32,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider
@@ -37,6 +40,10 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
         auth.authenticationProvider(keycloakAuthenticationProvider);
     }
+
+    @Autowired
+    Environment environment;
+
 
     @Bean
     @Override
@@ -64,6 +71,14 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .hasRole("monitoring")
                 .anyRequest()
                 .permitAll();
+
+        String[] allProfiles = environment.getActiveProfiles();
+        if (allProfiles.length != 0) {
+            String activeProfile = allProfiles[0];
+            if (activeProfile.trim().equalsIgnoreCase("dev")) {
+                http.csrf().disable();
+            }
+        }
     }
 
     /**

@@ -8,9 +8,18 @@
 
         <!-- Links, Skripts, Styles hier einfügen! -->
         <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous">
+        </script>
     </th:block>
 </head>
 <body>
@@ -43,19 +52,42 @@
             <li>
                 <a href="/module/">Übersicht</a>
             </li>
-                <li th:if="${account}">
-                    <div th:each="role: ${account.getRoles()}">
-                        <div th:switch="${role}">
-                            <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
-                            <a th:case="'sekretariat'" href="/module/administrator">Anträge</a>
-                        </div>
-                    </div>
-                </li>
+            <li>
+                <a href="/module/modulbeauftragter">Module bearbeiten</a>
+            </li>
+            <li>
+                <a href="/module/administrator">Anträge</a>
+            </li>
         </ul>
 
     </nav>
 </header>
-    <h1>DAS IST DIE SEITE FÜR FRAU RENNWANZ!</h1>
+<main th:fragment="bodycontent">
+
+    <div th:each="antrag : ${allAntraege}">
+        <p>
+            <a class="btn btn-primary"
+               style="font-weight: bold;
+               font-size: larger;
+               border:none;
+               background-color: transparent;
+               color: dodgerblue"
+               data-toggle="collapse"
+               th:href="'#' + ${antrag}"
+               role="button"
+               aria-expanded="false"
+               th:attr="aria-controls=${antrag}">
+                <span style="width: min-content"
+                      class="badge badge-dark mr-2"
+                      th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</span>
+                <a th:href="@{'/module/antragdetails/' + ${antrag.getId()}}"
+                   th:text="${antrag.getAntragsteller()}">
+                    Antragsteller
+                </a>
+
+            </a>
+        </p>
+    </div>
 </main>
 </body>
 </html>
