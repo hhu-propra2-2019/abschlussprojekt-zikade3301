@@ -6,7 +6,9 @@ import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("dev")
 public class JsonServiceTest {
 
     @Test

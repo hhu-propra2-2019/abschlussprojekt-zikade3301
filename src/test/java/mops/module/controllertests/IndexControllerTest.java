@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.services.ModulService;
@@ -18,12 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 
 @SpringBootTest
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 class IndexControllerTest {
 
@@ -94,6 +98,36 @@ class IndexControllerTest {
         when(modulService.getModulById((long) 3301)).thenReturn(testModul);
 
         mvc.perform(get("/module/moduldetails/3301"))
+                .andExpect(content().string(containsString("Testmodul")));
+    }
+
+    @Test
+    void testSemesterAnsichtViewName() throws Exception {
+        final String expect = "index";
+
+        when(modulService.getModuleBySemester("WiSe2019-20")).thenReturn(new ArrayList<>());
+
+        mvc.perform(get("/module/semester/WiSe2019-20"))
+                .andExpect(view().name(expect));
+    }
+
+    @Test
+    void testSemesterAnsichtStatus() throws Exception {
+        when(modulService.getModuleBySemester("WiSe2019-20")).thenReturn(new ArrayList<>());
+
+        mvc.perform(get("/module/semester/WiSe2019-20"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testSemesterAnsichtShowsCorrectData() throws Exception {
+        Modul testModul = new Modul();
+        testModul.setTitelDeutsch("Testmodul");
+        testModul.setModulkategorie(Modulkategorie.PFLICHT_INFO);
+
+        when(modulService.getModuleBySemester("WiSe2019-20")).thenReturn(Arrays.asList(testModul));
+
+        mvc.perform(get("/module/semester/WiSe2019-20"))
                 .andExpect(content().string(containsString("Testmodul")));
     }
 }

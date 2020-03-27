@@ -50,19 +50,10 @@ public class SuchService {
 
         javax.persistence.Query persistenceQuery =
                 fullTextEntityManager.createFullTextQuery(query, Modul.class);
+
         List<Modul> results = persistenceQuery.getResultList();
 
-        removeNotVisibleModules(results);
-
         return results;
-    }
-
-    private void removeNotVisibleModules(List<Modul> results) {
-        for (Modul result : results) {
-            if (result.getSichtbar() == null || !result.getSichtbar()) {
-                results.remove(result);
-            }
-        }
     }
 
 }

@@ -3,6 +3,7 @@ package mops.module.database;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -31,7 +32,6 @@ public class Veranstaltung {
      */
     public Veranstaltung() {
         veranstaltungsformen = new HashSet<>();
-        voraussetzungenTeilnahme = new HashSet<>();
         semester = new HashSet<>();
         zusatzfelder = new HashSet<>();
     }
@@ -62,9 +62,8 @@ public class Veranstaltung {
     private Veranstaltungsbeschreibung beschreibung;
 
     @Field
-    @IndexedEmbedded
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> voraussetzungenTeilnahme;
+    @Column(length = 10000)
+    private String voraussetzungenTeilnahme;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> semester;
