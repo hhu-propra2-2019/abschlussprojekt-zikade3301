@@ -6,20 +6,22 @@
  Allgemein::
 
  _Die Funktionen unserer Anwendung werden durch JUnit 5 Tests gewährleistet.
- Diese befinden sich im src/test Ordner. Die Funktion der Methoden, Datenbank und korrekte Darstellung des HTML-Codes,
- wurde getestet._
+ Diese befinden sich im src/test Ordner. Die Methoden, die Datenbank und eine korrekte Darstellung des HTML-Codes
+ wurden getestet._
 
  Suche::
 
- _Die Suche ist in hohem Umfang Testbar.
+ _Die Suche ist in hohem Umfang testbar.
  Beispiele für die Testszenarios sind ganze Worte oder nur Teilworte.
- Ob die Methoden im Controller angesprochen werden und das die HTML-Seiten korrekt funktionieren.
- Es wurde auch sichergestellt das die nicht sichbaren Module nicht als Suchergebnisse angezeigt werden.
- Sie sind nicht ganz so schnell, da bei jedem Testvorgang in der SuchServiceTest Klasse die H2 Datenbank gestartet wird._
+ Konkret wird getestet, ob die Methoden im Controller angesprochen werden und dass die HTML-Seiten korrekt funktionieren.
+ Es wurde auch sichergestellt, dass die nicht sichtbaren Module nicht als Suchergebnisse angezeigt werden.
+ Die Testmethoden sind nicht ganz so schnell, da bei jedem Testvorgang in der SuchServiceTestklasse die H2 Datenbank gestartet wird._
 
-=== _<Konzept 2>_
+=== Benutzeroberfläche
 
-_<Erklärung>_
+Allgemein:: 
+
+_Die Benutzeroberfläche besteht überwiegend aus HTML, wobei dieses durch InlineCSS und Bootstrapklassen ergänzt wurde. Auch wurde JavaScript vereinzelt verwendet. Die Views sind rollenbedingt ersichtlich. Nichteingeloggte User und Studenten können lediglich die Indexseite sehen, die eine Auflistung aller sichtbaren Module bereitstellt. Die Verwendung der Suchleiste sowie der Filterfunktion wird ihnen ebenfalls über die Benutzeroberfläche zugänglich gemacht. User mit der Rolle "orga" können darüber auf die Seite "Modulbeauftragter" zugreifen, die in der Navigation unter "Module bearbeiten" erreichbar ist; dort können sie Anträge stellen, die die Aufnahme eines neuen Moduls in das Modulhandbuch beinhalten. Für die Erstellung eines Antrages müssen sie bereits sämtliche modulbezogenen Daten in ein Formular eintragen. Dieses ist auf der Seite "Modulerstellung" zu finden, auf die automatisch weitergeleitet wird, nachdem die Anzahl der Veranstaltungen in ein Modal erfolgreich eingetragen wurde. User mit der Rolle "sekretariat" können in der Ansicht "Modulbeauftragter" zusätzlich Semestertags für Veranstaltungen eines Moduls vergeben, die signalisiern, wann eine Veranstaltung stattfindet. Dies geschieht über den Button "Semesterplanung"._
 
 ...
 
