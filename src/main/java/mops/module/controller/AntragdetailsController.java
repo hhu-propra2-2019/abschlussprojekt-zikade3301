@@ -4,6 +4,7 @@ package mops.module.controller;
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import java.lang.reflect.Field;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -89,6 +90,7 @@ public class AntragdetailsController {
                 e.printStackTrace();
             }
         }
+        System.out.println("ModulID" + modulNeu.getVeranstaltungen().stream().collect(Collectors.toList()).get(0).getVeranstaltungsformen().stream().collect(Collectors.toList()).get(0).getId());
 
         ModulService.applyAntragOnModul(modulNeu,antrag);
 

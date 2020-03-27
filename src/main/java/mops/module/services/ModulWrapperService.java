@@ -1,9 +1,12 @@
 package mops.module.services;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
@@ -102,6 +105,7 @@ public class ModulWrapperService {
     public static ModulWrapper initializePrefilledWrapper(Modul modul) {
 
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
+        sortVernstaltungListById(veranstaltungen);
         List<Veranstaltungsform>[] veranstaltungsformen = new LinkedList[veranstaltungen.size()];
         List<Zusatzfeld>[] zusatzfelder = new LinkedList[veranstaltungen.size()];
 
@@ -113,9 +117,14 @@ public class ModulWrapperService {
 
     private static void fillUpWithEmptyVeranstaltungsformen(
             List<Veranstaltungsform>[] veranstaltungsformen, List<Veranstaltung> veranstaltungen) {
+        System.out.println("Veranstaltungsanzahl "+ veranstaltungen.size());
         for (int i = 0; i < veranstaltungen.size(); i++) {
-            veranstaltungsformen[i] =
-                    new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+
+            veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
+
+            System.out.println("in Veranstaltungsformen" + veranstaltungsformen[i].get(0).getId());
+
+            sortVernstaltungsformListById(veranstaltungsformen[i]);
             while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
                 veranstaltungsformen[i].add(new Veranstaltungsform());
             }
@@ -125,12 +134,25 @@ public class ModulWrapperService {
     private static void fillUpWithEmptyZusatzfelder(
             List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
-            zusatzfelder[i] =
-                    new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
+            zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
+            sortZusatzfeldListById(zusatzfelder[i]);
             while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
                 zusatzfelder[i].add(new Zusatzfeld());
             }
         }
     }
 
+    private static void sortVernstaltungListById(
+            List<Veranstaltung> veranstaltungen) {
+        veranstaltungen.sort(Comparator.comparing(Veranstaltung::getId));
+    }
+
+    private static void sortVernstaltungsformListById(
+            List<Veranstaltungsform> veranstaltungsformen) {
+        veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId));
+    }
+
+    private static void  sortZusatzfeldListById(List<Zusatzfeld> zusatzfelder) {
+        zusatzfelder.sort(Comparator.comparing(Zusatzfeld::getId));
+    }
 }

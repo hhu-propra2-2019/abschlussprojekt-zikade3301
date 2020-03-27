@@ -403,7 +403,8 @@
 <!--                                                TODO: Freifeld variabel machen statt fest als 6.-->
                                                 <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}"
                                                      th:unless="${j.index == 5}">
-                                                        <input class="form-control ml-1"
+                                                    <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
+                                                    <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
@@ -438,6 +439,8 @@
                                                            type="text"
                                                            value="0"
                                                            th:field = "*{veranstaltungsformen[__${i.index}__][__${5}__].form}">
+                                                    <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${5}__].id}">
+
                                                 </div>
 
                                             </div>
@@ -449,6 +452,7 @@
                                                 <div class="col-12" style="padding: 0;">
 <!--                                                    <div th:each="zusatzfeld, k : *{zusatzfelder}" th:if="*{zusatzfelder[__${k.index}__].veranstaltung == (veranstaltungen[__${i.index}__])}" class="col-6" style="float:left">-->
                                                     <div class="col-6" style="float:left" th:each="zusatzfeld, k : *{zusatzfelder[__${(i.index)}__]}">
+                                                        <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].id}">
                                                         <div class="form-check mb-2"
                                                              style="padding: 0;
                                                              margin:0.3rem;

@@ -525,8 +525,10 @@
                                     Die Veranstaltung beinhaltet:
                                 </span>
                                 <!-- TODO: Freifeld variabel machen statt fest als 6.-->
-                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform,iter2 : *{veranstaltungsformen[__${(iter.index)}__]}"
+                                <div class="form-check mb-2" style="display: flex"
+                                     th:each="veranstaltungsform,iter2 : *{veranstaltungsformen[__${(iter.index)}__]}"
                                      th:unless="${iter2.index == 5}">
+                                    <input type ="hidden" th:field = "*{veranstaltungsformen[__${iter.index}__][__${iter2.index}__].id}">
                                     <input class="form-control ml-1"
                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
@@ -604,7 +606,9 @@
                                            value="0"
                                            th:field ="*{veranstaltungsformen[__${iter.index}__][__${5}__].form}"
                                            th:unless="${antrag.veranstaltungsformen[__${iter.index}__][__${5}__].form == altesModul.veranstaltungsformen[__${iter.index}__][__${5}__].form}">
+                                    <input type ="hidden" th:field = "*{veranstaltungsformen[__${iter.index}__][__${5}__].id}">
                                 </div>
+
 
                             </div>
 
@@ -614,6 +618,7 @@
                                 </span>
                                 <div class="col-12" style="padding: 0;">
                                     <div  th:each="zusatzfeld, k : *{zusatzfelder[__${iter.index}__]} "class="col-6" style="float:left">
+                                        <input type ="hidden" th:field = "*{zusatzfelder[__${iter.index}__][__${k.index}__].id}">
                                         <div class="form-check mb-2"
                                              style="padding: 0;
                                                              margin:0.3rem;
