@@ -12,7 +12,9 @@ import mops.module.generator.ModulFaker;
 import mops.module.wrapper.ModulWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("dev")
 class ModulWrapperServiceTest {
 
     private Modul completeModul;

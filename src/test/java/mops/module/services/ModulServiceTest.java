@@ -16,7 +16,9 @@ import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("dev")
 public class ModulServiceTest {
     private ModulService modulService;
 
