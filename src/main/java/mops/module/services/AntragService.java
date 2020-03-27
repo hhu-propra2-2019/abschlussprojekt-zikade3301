@@ -2,6 +2,7 @@ package mops.module.services;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -139,4 +140,46 @@ public class AntragService {
     public Antrag getAntragById(Long id) {
         return antragRepository.findById(id).orElse(null);
     }
+
+    public LinkedList<Modul> getAllVersionsOfModulOldestFirst(Long id) {
+        List<Antrag> relevantApprovedAntraege = getAllApprovedAntraegeForModulOldestFirst(id);
+        LinkedList<Modul> modulVersions = new LinkedList<>();
+        for (int i = 1; i < relevantApprovedAntraege.size(); i++) {
+            //initiale Version (Creation-Antrag)
+            Modul versionI = JsonService.jsonObjectToModul(
+                    relevantApprovedAntraege.get(0).getJsonModulAenderung());
+            //für Schleifendurchgang i jeweils alle Modification-Antraege bis zum i-ten anwenden
+            for (int j = 0; j < i; j++) {
+                ModulService.applyAntragOnModul(versionI, relevantApprovedAntraege.get(j));
+            }
+            modulVersions.add(versionI);
+        }
+        //aktuelle Version
+        Modul currentModul = modulSnapshotRepository.findById(id).orElse(null);
+        modulVersions.add(currentModul);
+        return modulVersions;
+    }
+
+    private List<Antrag> getAllApprovedAntraegeForModulOldestFirst(Long id) {
+        return getAllAntraegeForModul(id).stream()
+                .filter(a -> a.getDatumGenehmigung() != null)
+                .sorted(Comparator.comparing(Antrag::getDatumGenehmigung))
+                .collect(Collectors.toList());
+    }
+
+    private List<Antrag> getAllAntraegeForModul(Long id) {
+        if (!modulSnapshotRepository.findById(id).isPresent()) {
+            throw new IllegalArgumentException(
+                    "Versionierung nicht möglich, da Modul-Id nicht existiert");
+        }
+        List<Antrag> relevantApprovedAntraege = getAlleAntraege().stream()
+                .filter(a -> a.getModulId().equals(id))
+                .collect(Collectors.toList());
+        if (relevantApprovedAntraege.size() < 1) {
+            throw new IllegalArgumentException(
+                    "Initialer Antrag des Moduls in Versionierung nicht gefunden");
+        }
+        return relevantApprovedAntraege;
+    }
+
 }

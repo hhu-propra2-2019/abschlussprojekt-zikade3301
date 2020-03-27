@@ -2,12 +2,14 @@ package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -268,4 +270,104 @@ public class ModulServiceDatabaseTest {
                 antraege.get(0).getJsonModulAenderung());
 
     }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestThrowsExceptionWhenInvalidId() {
+        modulSnapshotRepository.deleteAll();
+        antragRepository.deleteAll();
+        Modul modul = ModulFaker.generateFakeModul();
+        modul.setId(3301L);
+
+        assertThrows(Exception.class,
+                () -> antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestThrowsExceptionWhenAntragMissing() {
+        modulSnapshotRepository.deleteAll();
+        antragRepository.deleteAll();
+        Modul modul = modulSnapshotRepository.save(ModulFaker.generateFakeModul());
+
+        assertThrows(Exception.class,
+                () -> antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestWhenNoPreviousVersions() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        modul1.setTitelDeutsch("initialer Titel");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        LinkedList<Modul> versionen =
+                antragService.getAllVersionsOfModulOldestFirst(modul2.getId());
+
+        assertThat(versionen.get(0).getTitelDeutsch()).isEqualTo("initialer Titel");
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestModulTitel() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        modul1.setTitelDeutsch("initialer Titel");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        modul2.setTitelDeutsch("zweiter Titel");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Beispielantragsteller");
+        Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
+
+        modul3.setTitelDeutsch("dritter Titel");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Beispielantragsteller");
+        Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
+
+        LinkedList<Modul> versionen =
+                antragService.getAllVersionsOfModulOldestFirst(modul4.getId());
+
+        assertThat(versionen.get(0).getTitelDeutsch()).isEqualTo("initialer Titel");
+        assertThat(versionen.get(1).getTitelDeutsch()).isEqualTo("zweiter Titel");
+        assertThat(versionen.get(2).getTitelDeutsch()).isEqualTo("dritter Titel");
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestVeranstaltungTitel() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        Veranstaltung veranstaltungInModul = modul1.getVeranstaltungen()
+                .stream().findFirst().orElse(null);
+        modul1.getVeranstaltungen().removeIf(v -> v != veranstaltungInModul);
+
+        Veranstaltung veranstaltung1 = modul1.getVeranstaltungen().stream()
+                .findFirst().orElse(null);
+        veranstaltung1.setTitel("initialer Titel");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1,
+                "Beispielantragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        Veranstaltung veranstaltung2 = modul2.getVeranstaltungen().stream()
+                .findFirst().orElse(null);
+        veranstaltung2.setTitel("zweiter Titel");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2,
+                "Beispielantragsteller");
+        Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
+
+        Veranstaltung veranstaltung3 = modul3.getVeranstaltungen().stream()
+                .findFirst().orElse(null);
+        veranstaltung3.setTitel("dritter Titel");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3,
+                "Beispielantragsteller");
+        Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
+
+        LinkedList<Modul> versionen = antragService.getAllVersionsOfModulOldestFirst(
+                modul4.getId());
+
+        String titel1 = versionen.get(0).getVeranstaltungen()
+                .stream().findFirst().orElse(null).getTitel();
+        String titel2 = versionen.get(1).getVeranstaltungen()
+                .stream().findFirst().orElse(null).getTitel();
+        String titel3 = versionen.get(2).getVeranstaltungen()
+                .stream().findFirst().orElse(null).getTitel();
+        assertThat(titel1).isEqualTo("initialer Titel");
+        assertThat(titel2).isEqualTo("zweiter Titel");
+        assertThat(titel3).isEqualTo("dritter Titel");
+    }
+
 }

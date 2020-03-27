@@ -28,10 +28,11 @@ public class ModulWrapperService {
             modulWrapper.getVeranstaltungen().get(i).setZusatzfelder(
                     new HashSet<>(modulWrapper.getZusatzfelder()[i]));
         }
-        Set<Veranstaltung> veranstaltungenSet = new HashSet<>(modulWrapper.getVeranstaltungen());
+        Set<Veranstaltung> veranstaltungenInWrapper =
+                new HashSet<>(modulWrapper.getVeranstaltungen());
 
         Modul modul = modulWrapper.getModul();
-        modul.setVeranstaltungen(veranstaltungenSet);
+        modul.setVeranstaltungen(veranstaltungenInWrapper);
         modul.refreshMapping();
         return modul;
     }
