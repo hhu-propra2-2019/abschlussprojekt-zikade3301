@@ -1,8 +1,7 @@
 [[section-system-scope-and-context]]
 == Kontextabgrenzung
 
-Dieser Abschnitt beschreibt das Umfeld des Modulhandbuches im Rahmen von Mops.
-Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
+Dieser Abschnitt beschreibt das Umfeld des Modulhandbuches im Rahmen von MOPS, für wen es da ist, und mit welchen Fremdsystemen es interagiert.
 
 
 === Fachlicher Kontext
@@ -11,17 +10,17 @@ Für wen ist es da, und mit welchen Fremdsystemen interagiert es.
 [cols="1,2" options="header"]
 |===
 |Randbedingung |Erläuterung
-| _Nicht angemeldete User_ | _Nicht angemeldete Nutzer können alle als sichtbar markierte Module einsehen und das aktuelle Modulhandbuch als PDF herunterladen._
-| _Studenten_ | _Studenten können alle als sichtbar markierte Module einsehen._
+| _Nicht angemeldete User_ | _Nicht angemeldete Nutzer können alle als sichtbar markierten Module einsehen und das aktuelle Modulhandbuch als PDF herunterladen._
+| _Studenten_ | _Studenten können alle als sichtbar markierten Module einsehen._
 | _Organisatoren_ | _Organisatoren können alle als sichtbar markierte Module einsehen sowie Anträge stellen, um Module zu erstellen oder zu verändern.
 Diese werden nicht direkt gelistet, sondern erfordern zunächst eine Freischaltung durch Administratoren._
-| _Administratoren_ | _Haben alle Rechte der Organisatoren, können aber zusätzlich Modulerstellungsanträge annehmen und über Semestertags festlegen, in welchen Semestern ein Modul (oder ein Teil eines Moduls) angeboten werden soll._
+| _Administratoren_ | _Haben alle Rechte der Organisatoren, können aber zusätzlich Modulerstellungsanträge annehmen, die Sichtbarkeit ändern und über Semestertags festlegen, in welchen Semestern ein Modul (oder ein Teil eines Moduls) angeboten werden soll._
 |===
 
 
 === Technischer Kontext
 
-- PDF Export wird bereitgestellt, um ausgewählte Module als PDF herunterladen zu können.
-- Rest API soll bereitgestellt werden, um Stammdaten für z.B die Belegung bereit zu stellen.
-- Andere Systeme haben Links auf das Modulhandbuch.
+- Der PDF Export wird bereitgestellt, um ausgewählte Module als PDF herunterladen zu können.
+- Die REST API wird bereitgestellt, um beispielsweise Stammdaten für die Belegung bereit zu stellen.
+- Andere Systeme können Verlinkungen auf das Modulhandbuch verwenden.
 

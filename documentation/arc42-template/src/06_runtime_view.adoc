@@ -30,6 +30,17 @@
  GraphQL prüft die Anfrage und ruft (bei valider Request) mit Hilfe des ModulServices die angeforderten Daten ab.
  Diese werden in JSON-Form dem Nutzer zurückgegeben.
 
+== Laufzeitszenario Anträge für Erstellung
+
+Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und klickt auf "Modul hinzufügen".
+Er wählt die Anzahl der Veranstaltungen aus, die das Modul haben soll.
+Es öffnet sich ein Formular mit den entsprechenden Eingabefeldern und aufklappbaren Veranstaltungs-Formularen.
+Die eingegebenen Formulardaten werden an den ModulerstellungController als GET-Request gesendet, ....
+
+== Laufzeitszenario Anträge für Bearbeitung
+
+....
+
 === _<Bezeichnung Laufzeitszenario n>_
 
 ...

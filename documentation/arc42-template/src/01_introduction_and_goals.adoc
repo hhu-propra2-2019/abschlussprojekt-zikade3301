@@ -2,12 +2,12 @@
 ==	Einführung und Ziele
 
 - MOPS.module ist ein dynamisches Modulhandbuch
-- Das Modulhandbuch ist integrierer Bestandteil von MOPS
+- Das Modulhandbuch ist integrierter Bestandteil von MOPS
 - Es ermöglicht eine einfache Suche und Filterung der angebotenen Module
 - Das Einfügen, Ändern und Löschen von Modulen ist einfach gestaltet
 - Die Modulübersicht ist als PDF-Datei exportierbar
-- Auch kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
-- Ziel ist nicht ein vollständiges Belegungssystem, sondern die Darstellung aktueller Informationen zu angebotenen Modulen.
+- Außerdem kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
+- Ziel ist nicht ein vollständiges Belegungssystem, sondern die Darstellung aktueller Informationen zu angebotenen Modulen
 
 
 === Aufgabenstellung
@@ -34,9 +34,9 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 
 [cols="1,2" options="header"]
 |===
-|Qualitätszeile |Motivation und Erläuterung
-|_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein._
-| _Sicherheit_ | _Die Eingepflegten Daten sind nur von authorisierten Nutzern einzusehen_
+|Qualitätsziele |Motivation und Erläuterung
+|_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein_
+| _Sicherheit_ | _Die eingepflegten Daten sind nur von authorisierten Nutzern einzusehen_
 
 |===
 
@@ -49,7 +49,7 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 |Rolle |Kontakt |Erwartungshaltung
 | _Studierende_ | _Teammitglieder_ | _Übersichtliche Darstellung von Modulen, Such- und Filterfunktion_
 | _Modulbeauftragte_ | _Jens Bendiposto_ | _Haben einfaches Formular zur Erstellung und Änderung von Modulen_
-| _Sekretariat_ | _Fr Rennwanz_ | _Übersichtliche Ansicht der Änderungen, Änderungen an Modulen bleiben nachvollziehbar,
+| _Sekretariat_ | _Frau Rennwanz_ | _Übersichtliche Ansicht der Änderungen, Änderungen an Modulen bleiben nachvollziehbar,
 insbesondere kann eingesehen werden, ob Klausurzulassungen für alte Module für ein aktuelles Modul gültig sind_
 | _Belegungsteam für MOPS_ | _--_ | _Können Moduldaten über REST-API auslesen_
 |===
