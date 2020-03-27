@@ -20,13 +20,19 @@ public class PdfVeranstaltungWrapper {
     private final Veranstaltung veranstaltung;
 
     /**
-     * Formatiert "Lehrveranstaltungs"-Strings wie im Modulhandbuch.
+     * Formatiert "Lehrveranstaltungs"-Strings, die aufgezählt dargestellt werden sollen.
      *
-     * @return Lehrveranstaltungs-Strings
+     * @return Menge von Lehrveranstaltungs-Strings
      */
-    public Set<String> getLehrveranstaltungen() {
+    public Set<String> getLehrveranstaltungenEnumeration() {
         Set<String> lehrveranstaltungen = new HashSet<>();
-        for (Veranstaltungsform veranstaltungsform : veranstaltung.getVeranstaltungsformen()) {
+
+        Set<Veranstaltungsform> veranstaltungsformEnumeration = veranstaltung
+                .getVeranstaltungsformen()
+                .stream()
+                .filter(v -> v.getSemesterWochenStunden() >= 0)
+                .collect(Collectors.toSet());
+        for (Veranstaltungsform veranstaltungsform : veranstaltungsformEnumeration) {
             String veranstaltungsformString = "";
             veranstaltungsformString = safeAppend(veranstaltungsformString,
                     veranstaltungsform.getForm());
@@ -38,6 +44,29 @@ public class PdfVeranstaltungWrapper {
             lehrveranstaltungen.add(veranstaltungsformString);
         }
         return lehrveranstaltungen;
+    }
+
+    /**
+     * Formatiert den Freitext-Teil des Lehrveranstaltungsabschnitts mit Markdown-Support.
+     * Wenn das Feld komplett leer ist, wird ein Spiegelstrich zurückgegeben.
+     * @return Formatierter String
+     */
+    public String getLehrveranstaltungenFreeText() {
+        if (veranstaltung.getVeranstaltungsformen().isEmpty()) {
+            return "—";
+        }
+
+        Veranstaltungsform veranstaltungsformFreeText = veranstaltung
+                .getVeranstaltungsformen()
+                .stream()
+                .filter(v -> v.getSemesterWochenStunden() == -1)
+                .findFirst().orElse(null);
+
+        if (veranstaltungsformFreeText != null) {
+            return HtmlService.markdownToHtml(veranstaltungsformFreeText.getForm());
+        } else {
+            return "";
+        }
     }
 
     public String getTitel() {
