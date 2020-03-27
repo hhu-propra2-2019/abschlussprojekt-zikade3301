@@ -33,9 +33,9 @@ public class IndexController {
     /**
      * Index string.
      *
-     * @param token the token of keycloak for permissions.
-     * @param model the model of keycloak for permissions.
-     * @return the string "index" which is the unsecured page for every user.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @param model Model für die HTML-Datei.
+     * @return View Index
      */
     @GetMapping("/")
     public String index(KeycloakAuthenticationToken token, Model model) {
