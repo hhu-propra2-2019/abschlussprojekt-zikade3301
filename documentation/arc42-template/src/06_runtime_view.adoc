@@ -35,11 +35,14 @@
 Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und klickt auf "Modul hinzufügen".
 Er wählt die Anzahl der Veranstaltungen aus, die das Modul haben soll.
 Es öffnet sich ein Formular mit den entsprechenden Eingabefeldern und aufklappbaren Veranstaltungs-Formularen.
-Die eingegebenen Formulardaten werden an den ModulerstellungController als GET-Request gesendet, ....
+Die eingegebenen Formulardaten werden an den ModulerstellungController als POST-Request gesendet und werden mit Hilfe des AntragService als Antrag in der Datenbank gespeichert, bzw. im Fall dass es sich beim Nutzer um einen Administrator handelt direkt automatisch genehmigt und das Modul als sichtbares Modul in der Datenbank hinzugefügt.
 
 == Laufzeitszenario Anträge für Bearbeitung
 
-....
+Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und wählt in der nach Modulkategorien gruppierten Ansicht aller sichtbaren Module ein Modul zur Bearbeitung aus.
+Es wird ein GET-Request mit einer Pfad-Variable mit der ID des entsprechenden Moduls an den ModulerstellungController gesendet.
+Es öffnet sich ein Formular mit durch die aktuellen Informationen in der Datenbank vorausgefüllten Eingabefeldern und ebenfalls vorausgefüllten aufklappbaren Veranstaltungs-Formularen.
+Die eingegebenen Formulardaten werden an den ModulerstellungController als POST-Request gesendet und werden mit Hilfe des AntragService als Antrag in der Datenbank gespeichert, bzw. im Fall dass es sich beim Nutzer um einen Administrator handelt, direkt automatisch genehmigt und das Modul wird in der Datenbank geupdatet.
 
 === _<Bezeichnung Laufzeitszenario n>_
 
