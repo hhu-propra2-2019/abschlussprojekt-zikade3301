@@ -2,14 +2,12 @@ package mops.module.controllertests;
 
 import static mops.module.controllertests.AuthenticationTokenGenerator.generateAuthenticationToken;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import mops.module.database.Antrag;
 import mops.module.services.AntragService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +30,6 @@ class AdministratorControllerTest {
     private WebApplicationContext context;
     private MockMvc mvc;
 
-    @MockBean
-    private AntragService antragService;
 
     @BeforeEach
     void setUp() {
