@@ -6,6 +6,7 @@ import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
+import mops.module.database.Modulkategorie;
 import mops.module.services.AntragService;
 import mops.module.services.ModulService;
 import mops.module.services.ModulWrapperService;
@@ -75,6 +76,8 @@ public class ModulerstellungController {
 
         String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
         model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("allModules", modulService.getAllModule());
 
         //Erstellung
         if (modulId.equals("")) {
