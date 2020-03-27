@@ -5,6 +5,22 @@
 
 === Infrastruktur Ebene 1
 
+== Testbarkeit
+
+ Allgemein::
+
+ _Die Funktionen unserer Anwendung werden durch JUnit 5 Tests gewährleistet.
+ Diese befinden sich im src/test Ordner. Die Funktion der Methoden, Datenbank und korrekte Darstellung des HTML-Codes,
+ wurde getestet._
+
+ Suche::
+
+ _Die Suche ist in hohem Umfang Testbar.
+ Beispiele für die Testszenarios sind ganze Worte oder nur Teilworte.
+ Ob die Methoden im Controller angesprochen werden und das die HTML-Seiten korrekt funktionieren.
+ Es wurde auch sichergestellt das die nicht sichbaren Module nicht als Suchergebnisse angezeigt werden.
+ Sie sind nicht ganz so schnell, da bei jedem Testvorgang in der SuchServiceTest Klasse die H2 Datenbank gestartet wird._
+
 
 
 _**<Übersichtsdiagramm>**_
