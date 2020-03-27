@@ -37,7 +37,7 @@ public class IndexController {
      * @param model the model of keycloak for permissions.
      * @return the string "index" which is the unsecured page for every user.
      */
-    @GetMapping("/")
+    @GetMapping("")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
