@@ -158,7 +158,13 @@ public class ModulService {
         }
         Set<String> semesterOld = veranstaltung.getSemester();
 
-        semesterOld.stream().filter(tag -> tag.equals(semesterTag)).forEach(semesterOld::remove);
+        Iterator<String> iterator = semesterOld.iterator();
+        while (iterator.hasNext()) {
+            String element = iterator.next();
+            if (element.equals(semesterTag)) {
+                iterator.remove();
+            }
+        }
 
         modulSnapshotRepository.save(getModulById(modulId));
     }

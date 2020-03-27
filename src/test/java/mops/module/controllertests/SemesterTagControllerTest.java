@@ -220,6 +220,7 @@ class SemesterTagControllerTest {
                 .param("tagToDelete", "SoSe1995")
                 .param("idVeranstaltungTagDelete", "1")
                 .param("idModulTagDelte", "3301"));
+
         verify(modulServiceMock)
                 .deleteTagVeranstaltungSemester(
                         "SoSe1995",
