@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import mops.module.database.Modul;
+import mops.module.database.Veranstaltung;
 import mops.module.generator.ModulFaker;
 import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Collections;
 
 
 @SpringBootTest
@@ -39,17 +42,21 @@ class SemesterTagControllerTest {
     ModulService modulServiceMock;
 
 
-
     @BeforeEach
     void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
                 .alwaysDo(print())
                 .apply(springSecurity())
                 .build();
+
+        Modul testmodul = ModulFaker.generateFakeModul();
+        testmodul.setId((long) 3301);
+        Veranstaltung testVeranstaltung = testmodul.getVeranstaltungen().stream().findFirst().orElse(null);
+        testVeranstaltung.setId(1L);
+        testVeranstaltung.setSemester(Collections.singleton("SoSe1995"));
     }
 
     private final String expect = "redirect:/module/modulbeauftragter";
-
 
 
 
@@ -59,10 +66,7 @@ class SemesterTagControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        Modul testmodul = ModulFaker.generateFakeModul();
-        testmodul.setId((long) 3301);
-
-        mvc.perform(post("/module/semesterTag")
+        mvc.perform(post("/module/semesterTag/create")
                 .param("inputTag", "SoSe2020")
                 .param("idVeranstaltung", "1")
                 .param("idModul", "3301"))
@@ -73,12 +77,9 @@ class SemesterTagControllerTest {
     @Test
     void testSemesterTagNoAccessIfNotLoggedIn() throws Exception {
 
-        Modul testmodul = ModulFaker.generateFakeModul();
-        testmodul.setId((long) 3301);
-
         assertThrows(AssertionError.class,
                 () -> {
-                    mvc.perform(post("/module/semesterTag")
+                    mvc.perform(post("/module/semesterTag/create")
                             .param("inputTag", "SoSe2020")
                             .param("idVeranstaltung", "1")
                             .param("idModul", "3301"))
@@ -93,12 +94,9 @@ class SemesterTagControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
 
-        Modul testmodul = ModulFaker.generateFakeModul();
-        testmodul.setId((long) 3301);
-
         assertThrows(AssertionError.class,
                 () -> {
-                    mvc.perform(post("/module/semesterTag")
+                    mvc.perform(post("/module/semesterTag/create")
                             .param("inputTag", "SoSe2020")
                             .param("idVeranstaltung", "1")
                             .param("idModul", "3301"))
@@ -113,12 +111,9 @@ class SemesterTagControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
 
-        Modul testmodul = ModulFaker.generateFakeModul();
-        testmodul.setId((long) 3301);
-
         assertThrows(AssertionError.class,
                 () -> {
-                    mvc.perform(post("/module/semesterTag")
+                    mvc.perform(post("/module/semesterTag/create")
                             .param("inputTag", "SoSe2020")
                             .param("idVeranstaltung", "1")
                             .param("idModul", "3301"))
@@ -133,10 +128,7 @@ class SemesterTagControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        Modul testmodul = ModulFaker.generateFakeModul();
-        testmodul.setId((long) 3301);
-
-        mvc.perform(post("/module/semesterTag")
+        mvc.perform(post("/module/semesterTag/create")
                 .param("inputTag", "SoSe2020")
                 .param("idVeranstaltung", "1")
                 .param("idModul", "3301"));
@@ -148,5 +140,84 @@ class SemesterTagControllerTest {
                 );
     }
 
+    @Test
+    void testSemesterTagDeleteAccessForAdministrator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
+
+        mvc.perform(post("/module/semesterTag/delete")
+                .param("tagToDelete", "SoSe1995")
+                .param("idVeranstaltungTagDelete", "1")
+                .param("idModulTagDelte", "3301"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name(expect));
+    }
+
+    @Test
+    void testSemesterTagDeleteNoAccessIfNotLoggedIn() throws Exception {
+
+        assertThrows(AssertionError.class,
+                () -> {
+                    mvc.perform(post("/module/semesterTag/delete")
+                            .param("tagToDelete", "SoSe1995")
+                            .param("idVeranstaltungTagDelete", "1")
+                            .param("idModulTagDelte", "3301"))
+                            .andExpect(status().is3xxRedirection())
+                            .andExpect(view().name(expect));
+                });
+    }
+
+    @Test
+    void testSemesterTagDeleteNoAccessForOrganizers() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        assertThrows(AssertionError.class,
+                () -> {
+                    mvc.perform(post("/module/semesterTag/delete")
+                            .param("tagToDelete", "SoSe1995")
+                            .param("idVeranstaltungTagDelete", "1")
+                            .param("idModulTagDelte", "3301"))
+                            .andExpect(status().is3xxRedirection())
+                            .andExpect(view().name(expect));
+                });
+    }
+
+    @Test
+    void testSemesterTagDeleteNoAccessForStudents() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("studentin"));
+
+        assertThrows(AssertionError.class,
+                () -> {
+                    mvc.perform(post("/module/semesterTag/delete")
+                            .param("tagToDelete", "SoSe1995")
+                            .param("idVeranstaltungTagDelete", "1")
+                            .param("idModulTagDelte", "3301"))
+                            .andExpect(status().is3xxRedirection())
+                            .andExpect(view().name(expect));
+                });
+    }
+
+    @Test
+    void testSemesterTagDeleteCallsDeleteTagVeranstaltungSemester() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
+
+        mvc.perform(post("/module/semesterTag/delete")
+                .param("tagToDelete", "SoSe1995")
+                .param("idVeranstaltungTagDelete", "1")
+                .param("idModulTagDelte", "3301"));
+        verify(modulServiceMock)
+                .deleteTagVeranstaltungSemester(
+                        "SoSe1995",
+                        Long.parseLong("1"),
+                        Long.parseLong("3301")
+                );
+    }
 
 }
