@@ -33,6 +33,7 @@ public class ModulbeauftragterController {
     public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allModules", modulService.getAllModule());
+        model.addAttribute("allCategories", Modulkategorie.values());
         return "modulbeauftragter";
     }
 }
