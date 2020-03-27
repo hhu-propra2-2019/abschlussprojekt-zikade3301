@@ -65,7 +65,7 @@
 <main th:fragment="bodycontent">
 
     <div th:each="antrag : ${allAntraege}">
-        <p>
+        <p style="margin-bottom: 0;">
             <a class="btn btn-primary"
                style="font-weight: bold;
                font-size: larger;
@@ -80,11 +80,18 @@
                 <span style="width: min-content"
                       class="badge badge-dark mr-2"
                       th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</span>
-                <a th:href="@{'/module/antragdetails/' + ${antrag.getId()}}"
-                   th:text="${antrag.getAntragsteller()}">
-                    Antragsteller
-                </a>
-
+                <span th:if="${antrag.getModulId() == null}">
+                    <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}"
+                       th:text="${antrag.getAntragsteller()}">
+                        Antragsteller
+                    </a>
+                </span>
+                <span th:unless="${antrag.getModulId() == null}">
+                    <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}"
+                       th:text="${antrag.getAntragsteller()}">
+                        Antragsteller
+                    </a>
+                </span>
             </a>
         </p>
     </div>

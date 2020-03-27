@@ -31,58 +31,72 @@ public class AntragdetailsController {
     private final AntragService antragService;
     private final ModulService modulService;
 
-    /** Antragdetails Mapping.
+    /** Mappen eines Creationantrages.
      *
      * @param id Id des Antrags.
      * @param token Der Token von keycloak für die Berechtigung.
      * @param model Modell für die HTML Datei.
      * @return View antragdetails.
      */
-
-    @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/kreationsAntragsDetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
-    public String antragdetails(
+    public String kreationsAntragsDetails(
             @PathVariable long id,
             KeycloakAuthenticationToken token,
             Model model) {
 
+        Antrag antrag =  antragService.getAntragById(id);
+
+        Modul modulAusAntrag = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
+        ModulWrapper modulAntragWrapper = ModulWrapperService
+                .initializePrefilledWrapper(modulAusAntrag);
+
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("antragId", id);
+        model.addAttribute("altesModul", modulAntragWrapper);
+        model.addAttribute("antrag", modulAntragWrapper);
+
+        return "antragdetails";
+    }
+
+    /** Mappen eines Modificationatrages.
+     * Es werden die Änderungen aus dem Antrag auf eine Kopie des Moduls angewandt
+     * um auf der HTML Seite unterschiede kenntlich machen zu können.
+     *
+     * @param id Id des Antrags.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @param model Modell für die HTML Datei.
+     * @return View antragdetails.
+     */
+    @RequestMapping(value = "/modifikationsAntragsdetails/{id}", method = RequestMethod.GET)
+    @Secured("ROLE_sekretariat")
+    public String modifikationsAntragsdetails(
+            @PathVariable long id,
+            KeycloakAuthenticationToken token,
+            Model model) {
 
         Antrag antrag =  antragService.getAntragById(id);
-        Long modulIdDesAntrages = antrag.getModulId();
-
-        //Der Fall Creation
-        if (modulIdDesAntrages == null) {
-            Modul modulAusAntrag = JsonService.jsonObjectToModul(
-                    antrag.getJsonModulAenderung());
-
-            ModulWrapper modulAntragWrapper = ModulWrapperService.initializePrefilledWrapper(modulAusAntrag);
-
-            model.addAttribute("altesModul", modulAntragWrapper);
-            //Damit man die selbe html ohne unterschiede verwenden kann.
-            model.addAttribute("antrag", modulAntragWrapper);
-
-            return "antragdetails";
-        }
-        //Der Fall Modifikation
-        Modul modulAlt = modulService.getModulById(modulIdDesAntrages);
+        Modul modulAlt = modulService.getModulById(antrag.getModulId());
         Modul modulNeu = new Modul();
-        //Versuch ModulAlt zu kopieren
+
+        //ModulAlt kopieren
+        //TODO - eventuell auslagern
         for (Field field : modulAlt.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-
             try {
                 field.set(modulNeu, field.get(modulAlt));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
+
         ModulService.applyAntragOnModul(modulNeu,antrag);
 
         ModulWrapper modulAltWrapper = ModulWrapperService.initializePrefilledWrapper(modulAlt);
         ModulWrapper modulNeuWrapper = ModulWrapperService.initializePrefilledWrapper(modulNeu);
 
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("antragId", id);
         model.addAttribute("altesModul", modulAltWrapper);
         model.addAttribute("antrag", modulNeuWrapper);
 
