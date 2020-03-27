@@ -69,26 +69,41 @@
                             <div th:id="'modul'+ ${modul.getId()}"
                                  class="collapse"
                                  data-parent="#accordion">
-                                <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
-                                    <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
-                                        <li class="col-9">
-                                            <span th:text="${veranstaltungen.getTitel()}">Eintrag</span>
-                                            <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
-                                                <span style="width: min-content"
-                                                      class="badge badge-danger mr-2"
-                                                      th:text="${semesterTags}">Semester</span>
-                                            </span>
-                                        </li>
-                                        <div class="col-3" style="display:flex">
-                                            <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
-                                            <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
-                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
-                                            <button class="btn btn-primary"
-                                                    type="submit">
-                                                <span>+</span>
-                                            </button>
-                                        </div>
-                                    </form>
+                                <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}" style="display: flex">
+                                    <li class="col-9" style="display: flex;">
+                                        <span th:text="${veranstaltungen.getTitel()}">Eintrag</span>
+                                        <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
+                                            <form style="margin-left: 2px" action="#" th:action="@{/module/semesterTag/delete}" method="post">
+                                            <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltungTagDelete" name="idVeranstaltungTagDelete">
+                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModulTagDelte" name="idModulTagDelte">
+                                                <span style="width: min-content; display: flex"
+                                                      class="badge badge-danger mr-2">
+                                                    <span th:text="${semesterTags}">Semester</span>
+                                                    <input type="hidden" th:value="${semesterTags}" name="tagToDelete" id="tagToDelete" class="form-control">
+                                                    <button type="submit" style="background-color: transparent; color: white; border: none;">
+                                                        <svg class="bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                          <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                                                          <path fill-rule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                                                          <path fill-rule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clip-rule="evenodd"/>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </form>
+                                        </span>
+                                    </li>
+                                    <div class="col-3">
+                                        <form action="#" th:action="@{/module/semesterTag/create}" method="post" style="display: flex">
+                                            <div style="display:flex">
+                                                <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
+                                                <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
+                                                <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
+                                                <button class="btn btn-primary"
+                                                        type="submit">
+                                                    <span>+</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </ul>
                             </div>
                         </li>

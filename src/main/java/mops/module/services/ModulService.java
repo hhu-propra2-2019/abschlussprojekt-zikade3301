@@ -3,6 +3,7 @@ package mops.module.services;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -131,6 +132,39 @@ public class ModulService {
         }
         Set<String> semesterOld = veranstaltung.getSemester();
         semesterOld.add(semesterTag);
+
+        modulSnapshotRepository.save(getModulById(modulId));
+    }
+
+
+    /**
+     * Löscht ein gewünschtes SemesterTag einer Veranstlatung.
+     *
+     * @param semesterTag     Der SemesterTag, der gelöscht werden soll
+     * @param veranstaltungId ID der Veranstaltung, die das Tag beinhaltet
+     * @param modulId         ID des Moduls, das die Veranstaltung beinhaltet
+     */
+    public void deleteTagVeranstaltungSemester(
+            String semesterTag,
+            Long veranstaltungId,
+            Long modulId) {
+
+        Veranstaltung veranstaltung = getModulById(modulId)
+                .getVeranstaltungen()
+                .stream()
+                .filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        if (veranstaltung == null) {
+            throw new IllegalArgumentException("Ungültige ID der Veranstaltung!");
+        }
+        Set<String> semesterOld = veranstaltung.getSemester();
+
+        Iterator<String> iterator = semesterOld.iterator();
+        while (iterator.hasNext()) {
+            String element = iterator.next();
+            if (element.equals(semesterTag)) {
+                iterator.remove();
+            }
+        }
 
         modulSnapshotRepository.save(getModulById(modulId));
     }
