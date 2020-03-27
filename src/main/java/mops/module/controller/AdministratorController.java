@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
-@SessionScope
 @RequiredArgsConstructor
 @RequestMapping("/module")
 public class AdministratorController {
