@@ -46,4 +46,11 @@ public class ArchUnitTests {
             }
         }
     }
+
+    //@ArchTest
+    //static final ArchRule controllerIsAnnotatedWithSessionScope = classes()
+    //        .that()
+    //        .haveNameMatching(".*Controller")
+    //        .should()
+    //        .beAnnotatedWith(SessionScope.class);
 }

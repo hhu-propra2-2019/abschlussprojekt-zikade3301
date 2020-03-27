@@ -3,15 +3,25 @@
       th:replace="~{mopslayout :: html(name='Modulhandbuch', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}">
 <head>
     <meta charset="utf-8">
-    <title>Meine Module</title>
+    <title>Modulerstellung</title>
     <th:block th:fragment="headcontent">
-        <!-- Links, Skripts, Styles hier einfügen! -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+                integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+                integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+                crossorigin="anonymous">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+                integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+                crossorigin="anonymous">
+        </script>
     </th:block>
 </head>
 <body>
 <header>
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-        <!-- Navigation als ungeordnete Liste mit einfachen Links hier einfügen! -->
         <ul>
             <li class="active">
                 <div class="dropdown">
@@ -42,8 +52,11 @@
             <li th:if="${account}">
                 <div th:each="role: ${account.getRoles()}">
                     <div th:switch="${role}">
-                        <a th:case="'orga'" href="/module/modulbeauftragter">Meine Module</a>
-                        <a th:case="'sekretariat'" href="/module/administrator">Anträge</a>
+                        <a th:case="'orga'" href="/module/modulbeauftragter">Module bearbeiten</a>
+                        <div th:case="'sekretariat'">
+                            <a href="/module/modulbeauftragter">Module bearbeiten</a>
+                            <a href="/module/administrator">Anträge</a>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -53,8 +66,147 @@
 </header>
 
 <main th:fragment="bodycontent">
-    <!-- Restlichen Inhalt hier einfügen! -->
-    <h1>Das sollten Modulverantwortliche sehen</h1>
+
+    <!-- Modal, um Module für Semester zu aktivieren -->
+    <div class="modal fade" id="ModalSemester" tabindex="-1" role="dialog" aria-labelledby="ModalSemesterLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalSemesterLabel">Semestertags hinzufügen</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion mt-3" id="accordion">
+                    <ul style="font-size: large; list-style-type: none">
+                        <li th:each="modul : ${allModules}">
+                            <a data-toggle="collapse"
+                               th:href="'#modul'+${modul.getId()}"
+                               aria-expanded="true"
+                               th:aria-controls="'modul'+ ${modul.getId()}">
+                                <span style="color: dodgerblue"
+                                      th:text="${modul.getTitelDeutsch()}">
+                                    Modulname
+                                </span>
+                            </a>
+                            <div th:id="'modul'+ ${modul.getId()}"
+                                 class="collapse"
+                                 data-parent="#accordion">
+                                <ul th:each="veranstaltungen : ${modul.getVeranstaltungen()}">
+                                    <form action="#" th:action="@{/module/semesterTag}" method="post" style="display: flex">
+                                        <li class="col-9">
+                                            <span th:text="${veranstaltungen.getTitel()}">Eintrag</span>
+                                            <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
+                                                <span style="width: min-content"
+                                                      class="badge badge-danger mr-2"
+                                                      th:text="${semesterTags}">Semester</span>
+                                            </span>
+                                        </li>
+                                        <div class="col-3" style="display:flex">
+                                            <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
+                                            <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
+                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
+                                            <button class="btn btn-primary"
+                                                    type="submit">
+                                                <span>+</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal, um neue Module zu erstellen -->
+    <div class="modal fade" id="ModalforModul" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Neues Modul erstellen</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: black; padding: 1rem">
+
+                    <form method='get' action='/module/modulerstellung'>
+                        <div style="font-weight: bold">
+                            Wie viele unabhängige Modulteile soll das Modul beinhalten?
+                        </div>
+                        <div>
+                            Beachten Sie, dass diese Modulteile unabhängig voneinander belegt werden
+                            können und eine definierte Anzahl an Leistungspunkten haben.
+                        </div>
+                        <div class="mt-3 mb-3">
+                            <input type="number"
+                                   style="float: right;
+                                   border: none;
+                                   border-bottom: 1px solid dimgray;
+                                   border-radius: inherit;"
+                                   name="veranstaltungsanzahl"
+                                   class="form-control col-md-8 col-sm-8"
+                                   id="veranstaltungsanzahl"
+                                   value="1"
+                                   min="1" required>
+                        </div>
+                        <div style="float: right" class="mt-3">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                            <button type="submit" class="btn btn-primary">Fortfahren</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex">
+        <div class="mt-3 mb-2 col-sm-12 col-md-4 col-lg-3">
+            <button
+                    type="button"
+                    id="createNewModul"
+                    class="btn btn-outline-primary"
+                    style="width: inherit;"
+                    data-toggle="modal"
+                    data-target="#ModalforModul">
+                <div class="mr-1"
+                     style="background-color: dodgerblue;
+                     border-radius: 20px;
+                     width: fit-content;
+                     height: fit-content;
+                     font-size: small;
+                     float: left;">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" style="fill: white">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                    </svg>
+                </div>
+                <div>Modul hinzufügen</div>
+            </button>
+        </div>
+
+        <div th:if="${account}"  class="mt-3 mb-2 col-sm-12 col-md-4 col-lg-3">
+            <div th:each="role: ${account.getRoles()}">
+                <div th:switch="${role}">
+                    <div th:case="'sekretariat'">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalSemester">
+                            Semesterplanung
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-4" style="background-color: white">
+
+    <!--    TODO: BEARBEITBARE MODULE ANZEIGEN-->
 
 </main>
 </body>

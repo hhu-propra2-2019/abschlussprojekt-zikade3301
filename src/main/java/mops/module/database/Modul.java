@@ -2,8 +2,11 @@ package mops.module.database;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,31 +15,41 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import mops.module.searchconfig.IndexWhenVisibleInterceptor;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
 @Setter
+@Indexed(interceptor = IndexWhenVisibleInterceptor.class)
 public class Modul {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Field
     private String titelDeutsch;
 
+    @Field
     private String titelEnglisch;
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
     //TODO: orphan removal wurde entfernt, Lösung für Löschen veralteter Veranstaltungen finden
+    @IndexedEmbedded
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Veranstaltung> veranstaltungen;
 
+    @Field
     private String modulbeauftragte;
 
     private String gesamtLeistungspunkte;
 
+    @Field
     private String studiengang;
 
     private Modulkategorie modulkategorie;

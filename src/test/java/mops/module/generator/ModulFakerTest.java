@@ -3,7 +3,6 @@ package mops.module.generator;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import mops.module.database.Antrag;
@@ -36,6 +35,10 @@ public class ModulFakerTest {
     private ModulSnapshotRepository modulSnapshotRepository;
     private CustomComparator ignoreDates;
 
+    /**
+     * Erstellt Instanzen von ModulService und AntragService und leert die Testdatenbank
+     * vor jedem Test.
+     */
     @BeforeEach
     public void init() {
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
@@ -59,7 +62,7 @@ public class ModulFakerTest {
     public void generateFakeModulTest() {
         Modul modul = ModulFaker.generateFakeModul();
 
-        antragService.addModulCreationAntrag(modul);
+        antragService.addModulCreationAntrag(modul, "Beispielantragsteller");
         List<Antrag> antraege = antragService.getAlleAntraege();
         antraege.stream().forEach(antragService::approveModulCreationAntrag);
 

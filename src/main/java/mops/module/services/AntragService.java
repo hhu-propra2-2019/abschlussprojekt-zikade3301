@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,7 +41,8 @@ public class AntragService {
      *
      * @param newModul Neues Modul mit korrekter ID!
      */
-    public void addModulModificationAntrag(Modul newModul) throws IllegalArgumentException {
+    public Antrag addModulModificationAntrag(Modul newModul, String antragsteller)
+            throws IllegalArgumentException {
         Modul oldModul = modulSnapshotRepository.findById(newModul.getId()).orElse(null);
         if (oldModul == null) {
             throw new IllegalArgumentException("Fehlerhaftes Modul!");
@@ -54,10 +56,10 @@ public class AntragService {
             diffModul.setDatumAenderung(LocalDateTime.now());
             Antrag antrag = modulToAntrag(diffModul);
             antrag.setDatumErstellung(LocalDateTime.now());
-            antrag.setAntragsteller("Anonym");
+            antrag.setAntragsteller(antragsteller);
             antragRepository.save(antrag);
+            return antrag;
         }
-
     }
 
     /**
@@ -65,15 +67,16 @@ public class AntragService {
      *
      * @param newModul Neues Modul
      */
-    public void addModulCreationAntrag(Modul newModul) {
+    public Antrag addModulCreationAntrag(Modul newModul, String antragsteller) {
         newModul.setId(null);
         newModul.setDatumErstellung(LocalDateTime.now());
         newModul.setDatumAenderung(LocalDateTime.now());
 
         Antrag antrag = modulToAntrag(newModul);
         antrag.setDatumErstellung(LocalDateTime.now());
-        antrag.setAntragsteller("Anonym");
+        antrag.setAntragsteller(antragsteller);
         antragRepository.save(antrag);
+        return antrag;
     }
 
     /**
@@ -81,7 +84,7 @@ public class AntragService {
      *
      * @param antrag Muss ein Modul beinhalten, das schon existiert
      */
-    public void approveModulModificationAntrag(Antrag antrag) {
+    public Modul approveModulModificationAntrag(Antrag antrag) {
         Modul oldModul = modulSnapshotRepository.findById(antrag.getModulId()).orElse(null);
         if (oldModul == null) {
             throw new IllegalArgumentException(
@@ -89,26 +92,27 @@ public class AntragService {
         }
         ModulService.applyAntragOnModul(oldModul, antrag);
         oldModul.refreshMapping();
-        modulSnapshotRepository.save(oldModul);
+        Modul modul = modulSnapshotRepository.save(oldModul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
         antragRepository.save(antrag);
+        return modul;
     }
 
     /**
      * Fügt einen Antrag zur Erstellung eines neuen Moduls hinzu.
-     * @param antrag Antrag mit neuem Modul, indem die Modul id null ist
+     * @param antrag Antrag mit neuem Modul, in dem die Modul id null ist
      */
-    public void approveModulCreationAntrag(Antrag antrag) {
+    public Modul approveModulCreationAntrag(Antrag antrag) {
         Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
-
         neuesmodul.refreshMapping();
 
-        modulSnapshotRepository.save(neuesmodul);
+        Modul modul = modulSnapshotRepository.save(neuesmodul);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
-        antrag.setModulId(neuesmodul.getId());
+        antrag.setModulId(modul.getId());
         antragRepository.save(antrag);
+        return modul;
     }
 
     public List<Antrag> getAlleAntraege() {
@@ -116,4 +120,23 @@ public class AntragService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gibt alle Anträge geordnet nach Datum als Liste zurück, wobei der neueste Antrag
+     * das erste Element ist.
+     * @return Die sortierte Liste aller Anträge.
+     */
+    public List<Antrag> getAlleAntraegeGeordnetDatum() {
+        return getAlleAntraege().stream()
+                .sorted(Comparator.comparing(Antrag::getDatumErstellung).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Antrag> getAlleOffenenAntraegeGeordnetDatum() {
+        return getAlleAntraegeGeordnetDatum().stream().filter(x -> x.getDatumGenehmigung() == null)
+                .collect(Collectors.toList());
+    }
+
+    public Antrag getAntragById(Long id) {
+        return antragRepository.findById(id).orElse(null);
+    }
 }

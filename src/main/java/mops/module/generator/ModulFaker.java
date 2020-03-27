@@ -1,7 +1,6 @@
 package mops.module.generator;
 
 import com.github.javafaker.Faker;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import mops.module.database.Modul;
@@ -15,7 +14,7 @@ public class ModulFaker {
     private static final String[] semester = {"SoSe2019", "WiSe2019-20"};
 
     /**
-     * Generiert fake Modul zu testen.
+     * Generiert fake Module für das Testing.
      *
      * @return
      */
@@ -36,13 +35,20 @@ public class ModulFaker {
         double randomNumber = Math.random() * 5;
         String personen = "";
         for (int i = 0; i < randomNumber; i++) {
-            personen += faker.harryPotter().character();
+            if (i != 0) {
+                personen += (", ");
+            }
+            personen += (faker.harryPotter().character());
         }
         fakeModul.setModulbeauftragte(personen);
     }
 
     private static void generateMultipleVeranstaltungen(Modul fakeModul) {
         double randomNumber = Math.random() * 5;
+        // MINDESTENS EINE VERANSTALTUNG IST NOTWENDIG!
+        if(randomNumber == 0.0) {
+            fakeModul.addVeranstaltung(generateFakeVeranstaltung());
+        }
         for (int i = 0; i < randomNumber; i++) {
             fakeModul.addVeranstaltung(generateFakeVeranstaltung());
         }
@@ -50,13 +56,12 @@ public class ModulFaker {
 
     private static Veranstaltung generateFakeVeranstaltung() {
         Veranstaltung fakeVeranstaltung = new Veranstaltung();
-        Veranstaltungsbeschreibung fakeBeshcreibung = generateFakeBeschreibung();
+        Veranstaltungsbeschreibung fakeBeschreibung = generateFakeBeschreibung();
         fakeVeranstaltung.setTitel(faker.book().title());
         fakeVeranstaltung.setLeistungspunkte("5CP");
-        fakeVeranstaltung.setBeschreibung(fakeBeshcreibung);
+        fakeVeranstaltung.setBeschreibung(fakeBeschreibung);
         generateMultipleVeranstaltungsform(fakeVeranstaltung);
-        fakeVeranstaltung.setVoraussetzungenTeilnahme("- " + faker.book().title()
-                + "\n- " + faker.book().title());
+        fakeVeranstaltung.setVoraussetzungenTeilnahme(faker.elderScrolls().quote());
         fakeVeranstaltung.setSemester(chooseSetRandom(semester));
         return fakeVeranstaltung;
     }
@@ -68,10 +73,9 @@ public class ModulFaker {
         fakeBeschreibung.setLernergebnisse(faker.elderScrolls().quote());
         fakeBeschreibung.setHaeufigkeit("Einmal im leben");
         fakeBeschreibung.setSprache(faker.country().name());
-        fakeBeschreibung.setLiteratur("- " + faker.book().title()
-                + "\n- " + faker.book().title());
-        fakeBeschreibung.setVerwendbarkeit("- " + faker.elderScrolls().quote());
-        fakeBeschreibung.setVoraussetzungenBestehen("- " + faker.elderScrolls().quote());
+        fakeBeschreibung.setLiteratur(faker.elderScrolls().quote());
+        fakeBeschreibung.setVerwendbarkeit(faker.elderScrolls().quote());
+        fakeBeschreibung.setVoraussetzungenBestehen(faker.elderScrolls().quote());
         return fakeBeschreibung;
     }
 
