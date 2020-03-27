@@ -17,21 +17,20 @@ Wichtige Schnittstellen:: _<Beschreibung wichtiger Schnittstellen>_
 
  Zweck/Verantwortung::
 
-_Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichworten eine Liste von Modulen zu erhalten._
+_Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stichworten, eine Liste von Modulen zu erhalten._
 
  Schnittstelle::
 
  _Die Schnittstelle für den Nutzer ist die Suchleiste, also die GET Anfrage an den SearchController._
 
  Qualitäts-/Leistungsmerkmale::
- _Die Suche soll auch mit Teilworten fertig werden, z.B wenn der Nutzer Architektur eingibt muss die Suche auch Architekturformen finden können._
+ _Die Suche soll auch mit Teilworten fertig werden; sucht der Nutzer also nach dem Keyword "Architektur", so muss die Suche auch den Eintrag "Architekturformen" finden können._
 
 == Erstellen von Anträgen
 
  Schnittstelle(n)::
 
- _Die Schnittstellen liegen hier in der Organisation View und der Admin View. Nur von diesen beiden Seiten können nach Authentifizierung
- des Nutzers Anträge erstellt werden. Die Anträge können zum erstellen von Modulen oder zur Änderung eben dieser verwendet werden._
+ _Die Schnittstellen liegen hier in der View der Modulbeauftragten und der Admin View. Nur von diesen beiden Seiten können nach Authentifizierung des Nutzers Anträge erstellt werden. Die Anträge können zum Erstellen von Modulen oder zur Änderung eben dieser verwendet werden._
 
  Qualitäts-/Leistungsmerkmale::
 
@@ -46,14 +45,12 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben durch das eingeben von Stichw
 
  Suche im Detail::
 
- _In der index.html gibt es ein Formular mit der ein Request Parameter (searchField) durch eine GET-Anfrage an den SearchController geschickt wird.
+ _In der index.html gibt es ein Formular, mit dem ein Request Parameter (searchField) durch eine GET-Anfrage an den SearchController geschickt wird.
  Die Methode search im Controller ruft dann die Methode search im SearchService auf. Der searchField Parameter wird dabei übergeben.
- Diese Methode wendet durch Hibernate Search eine Suchanfrage auf die Datenbank an. Hibernate Search hat beim Start des Programms die
- relevanten Felder indexiert und aktualisiert sich bei neu hinzugefügten (oder geänderten) Modulen selbst.
- Ausserdem werden beim indexieren alle nicht sichtbaren Module ignoriert.
- Der Index wird genutzt um mit der Suchanfrage die relevanten Felder in den Modulen zu durchsuchen. Wildcards ermöglichen
- es das Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modulattribut in searchresults.html übergeben wird.
- Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Link Sammlung angezeigt.
+ Diese Methode wendet durch Hibernate Search eine Suchanfrage auf die Datenbank an. Hibernate Search hat beim Start des Programms die relevanten Felder indexiert und aktualisiert sich bei neu hinzugefügten (oder geänderten) Modulen selbst.
+ Ausserdem werden beim Indexieren alle nicht sichtbaren Module ignoriert.
+ Der Index wird genutzt, um mit der Suchanfrage die relevanten Felder in den Modulen zu durchsuchen. Wildcards ermöglichen, dass Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modulattribut in searchresults.html übergeben wird.
+ Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Linksammlung angezeigt.
  Die Links leiten den Nutzer weiter auf die Moduldetails._
  
 ==== <Name Blackbox n>
