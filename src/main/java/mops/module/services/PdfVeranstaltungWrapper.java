@@ -81,8 +81,8 @@ public class PdfVeranstaltungWrapper {
     }
 
     public String getHaeufigkeit() {
-        return HtmlService.markdownToHtml(getSafeString(
-                veranstaltung.getBeschreibung().getHaeufigkeit()));
+        return getSafeString(
+                veranstaltung.getBeschreibung().getHaeufigkeit());
     }
 
     /**
