@@ -107,6 +107,7 @@ public class AntragService {
     public Modul approveModulCreationAntrag(Antrag antrag) {
         Modul modulFromJson = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
         modulFromJson.refreshMapping();
+        modulFromJson.setSichtbar(true);
 
         Modul modul = modulSnapshotRepository.save(modulFromJson);
 
