@@ -13,3 +13,6 @@
  Erfahrung::
  _Die geringe Erfahrung mit manchen Technologien wie z.B. Tests mit Junit 5 oder Controllertests mit MockMVC.
  Das Einbinden mancher Bibliotheken und deren Methoden war eine Herausforderung._
+
+ Testbarkeit::
+ _Einige Methoden der PDF-Generierung waren kaum bis garnicht testbar und erschwerten somit die Qualitätskontrolle unserer Anwendung._

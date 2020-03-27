@@ -41,6 +41,19 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
  Schnittstelle::
  _Das komplette Modulhandbuch wird auf der Hauptseite zum Download angeboten._
 
+ Qualitäts-/Leistungsmerkmale::
+
+ _Das aktuelle PDF-Modulhandbuch soll zu jeder Zeit verfügbar sein in ansehnlicher Formatierung._
+
+== REST-API
+
+ Schnittstelle::
+ _Die aktuellen Module werden per HTTP GET Request zur Verfügung gestellt._
+
+ Qualitäts-/Leistungsmerkmale::
+
+ _Die Modulinformationen sollen zu jeder Zeit in korrekt formatiertem JSON für den API-Nutzer abrufbar sein. Der Nutzer soll genau spezifizieren können, welche Informationen er benötigt._
+
 == Volltextsuche Blackbox
 
  Suche im Detail::
@@ -52,6 +65,26 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
  Der Index wird genutzt, um mit der Suchanfrage die relevanten Felder in den Modulen zu durchsuchen. Wildcards ermöglichen, dass Teilworte erkannt werden. Die Methode gibt eine Liste zurück, welche als Modulattribut in searchresults.html übergeben wird.
  Der Nutzer wird dann auch auf searchresults weitergeleitet und bekommt die Liste als Linksammlung angezeigt.
  Die Links leiten den Nutzer weiter auf die Moduldetails._
+
+== PDF-Download Blackbox
+
+ PDF-Generierung im Detail::
+
+ _In der index.html gibt es neben der Suchleiste einen PDF-Knopf, mit dem per GET-Request auf /module/pdf die PDF-Generierung des aktuellen Modulhandbuchs gestartet wird.
+ Im PdfDownloadController wird nun über den ModulService_
+
+== REST-API Blackbox
+
+ REST-API im Detail::
+
+ _Über /module/api ist die Schnittstelle verfügbar, bei der über query die genauen Attribute spezifiziert werden, die der Nutzer abrufen möchte.
+ GraphQL fängt diese Anfrage über den GraphQlProvider ab und prüft ob die Anfrage korrekt gestellt wurde.
+ Die möglichen Anfragen wurden dabei in der schema.graphqls Datei spezifiziert und können über das ebenso eingebundene GraphiQL über /module/graphiql erkundet werden.
+ Ist die Anfrage fehlerhaft, so gibt GraphQL eine Fehlermeldung zurück.
+ Bei korrekt gestellter Anfrage sammelt GraphQL über die GraphQlDataFetchers die angeforderten Informationen und nutzt dabei den ModulService welcher die Daten aus der Datenbank ausliest.
+ Die vom ModulService zurückgegebenen Modulobjekte werden mit Hilfe der schema.graphqls und eigenst definierter GraphQL-scalars (LocalDateTime und Modulkategorie) in einen JSON-String umgewandelt.
+ Dieser String wird dem Nutzer dann in der HTTP-Response zurückgegeben._
+
  
 ==== <Name Blackbox n>
 

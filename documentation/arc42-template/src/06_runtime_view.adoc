@@ -16,6 +16,20 @@
  Die Methode durchsucht mit einer Hibernate Search Query die Datenbank innerhalb der relevanten Felder und gibt dann eine nach Relevanz sortierte Liste zurück.
  Der Nutzer wird auf die searchresults Seite weitergeleitet und bekommt die Liste als Links zu den Moduldetails angezeigt.
 
+== Laufzeitszenario PDF-Download
+
+ Der Nutzer klickt in der Hauptseite auf den PDF-Knopf neben der Suchleiste.
+ Dies löst eine GET-Request aus, die vom PdfDownloadController entgegengenommen wird.
+ Dieser ruft über den ModulService alle zur Zeit sichtbaren Module ab und gibt diese an den PdfService weiter.
+ Der PdfService wandelt die Module nun mit Hilfe von Thymeleaf in ein formatiertes HTML-Dokument um, indem auch schon das Inhaltsverzeichnis automatisch generiert wurde.
+ Das HTML-Dokument wird anschließend mit Hilfe der flexmark-Bibliothek in ein PDF-Dokument umgewandelt und als ByteStrom an den Controller zurückgegeben, welcher dem Nutzer dann dieses PDF-Dokument zum Download zur Verfügung stellt.
+
+== Laufzeitszenario REST-API
+
+ Der API-Nutzer stellt eine HTTP GET Request an /module/api und spezifiziert die Suchanfrage im Parameter query.
+ GraphQL prüft die Anfrage und ruft (bei valider Request) mit Hilfe des ModulServices die angeforderten Daten ab.
+ Diese werden in JSON-Form dem Nutzer zurückgegeben.
+
 === _<Bezeichnung Laufzeitszenario n>_
 
 ...
