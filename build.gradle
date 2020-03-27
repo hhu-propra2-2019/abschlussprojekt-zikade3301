@@ -55,6 +55,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.vladsch.flexmark:flexmark-all:0.60.2'
     compile 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'com.h2database:h2'
     implementation 'org.hibernate:hibernate-search-orm:5.11.5.Final'
