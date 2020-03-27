@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -15,8 +14,6 @@ import mops.module.database.Modul;
 import mops.module.generator.ModulFaker;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
-import mops.module.services.ModulService;
-import mops.module.services.ModulWrapperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +35,6 @@ class AntragdetailsControllerTest {
 
     @MockBean
     private AntragService antragService;
-    private ModulService modulService;
-    private ModulWrapperService modulWrapperService;
 
     @BeforeEach
     void setUp() {
