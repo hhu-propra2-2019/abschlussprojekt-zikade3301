@@ -3,11 +3,13 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import java.lang.reflect.Field;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import mops.module.services.ModulWrapperService;
 import mops.module.wrapper.ModulWrapper;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -27,6 +29,7 @@ import org.springframework.web.context.annotation.SessionScope;
 public class AntragdetailsController {
 
     private final AntragService antragService;
+    private final ModulService modulService;
 
     /** Antragdetails Mapping.
      *
@@ -43,13 +46,45 @@ public class AntragdetailsController {
             KeycloakAuthenticationToken token,
             Model model) {
 
-        Modul modul = JsonService.jsonObjectToModul(
-                antragService.getAntragById(id).getJsonModulAenderung());
-        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
-
-        model.addAttribute("antragId", id);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("antrag", modulWrapper);
+        model.addAttribute("antragId", id);
+
+        Antrag antrag =  antragService.getAntragById(id);
+        Long modulIdDesAntrages = antrag.getModulId();
+
+        //Der Fall Creation
+        if (modulIdDesAntrages == null) {
+            Modul modulAusAntrag = JsonService.jsonObjectToModul(
+                    antrag.getJsonModulAenderung());
+
+            ModulWrapper modulAntragWrapper = ModulWrapperService.initializePrefilledWrapper(modulAusAntrag);
+
+            model.addAttribute("altesModul", modulAntragWrapper);
+            //Damit man die selbe html ohne unterschiede verwenden kann.
+            model.addAttribute("antrag", modulAntragWrapper);
+
+            return "antragdetails";
+        }
+        //Der Fall Modifikation
+        Modul modulAlt = modulService.getModulById(modulIdDesAntrages);
+        Modul modulNeu = new Modul();
+        //Versuch ModulAlt zu kopieren
+        for (Field field : modulAlt.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+
+            try {
+                field.set(modulNeu, field.get(modulAlt));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        ModulService.applyAntragOnModul(modulNeu,antrag);
+
+        ModulWrapper modulAltWrapper = ModulWrapperService.initializePrefilledWrapper(modulAlt);
+        ModulWrapper modulNeuWrapper = ModulWrapperService.initializePrefilledWrapper(modulNeu);
+
+        model.addAttribute("altesModul", modulAltWrapper);
+        model.addAttribute("antrag", modulNeuWrapper);
 
         return "antragdetails";
     }
