@@ -53,9 +53,14 @@ werden der View alle offenen und nach Datum geordneten Anträge in Form einer Li
 Aus dieser Liste wählt sich der Administrator den gewünschten zu bearbeitenden Antrag und löst eine Request-Anfrage aus, die von dem AntragdetailsController je nach Art des Antrages, Modifikations- oder Kreationsantrag,
 entgegengenommen wird.
 
-==== Erstellung (Kreation)
+=== Erstellung (Kreation)
 Handelt es sich um einen Kreationsantrag, wird der View mit Hilfe des JsonServices das Modul aus dem Antrag ,verpackt in einem ModulWrapper, übergeben.
+Mit Hilfe von Thymeleaf wird dem Administrator nun das ausgefüllte Modul angezeigt. Ihm ist es möglich einzelne Felder zu verändern oder löschen.
+Anschließen wird per Klick auf den Button "Antrag annehmen" eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitt wird.
+Das Modul, inklusiver aller Änderungen, wird aus dem AntragWrapper Objekt entpackt und anschließend in den ursprünglichen Antrag gesetzt.
+Dieser und das beinhaltete Modul werden dann mit Hilfe des Antrag Services in der Datenbank abgespeichert und der Administrator
+wird auf die Übersichtseite der Anträge ( administrator.html) redirected.
 
 
-==== Bearbeitung (Modifikation)
+=== Bearbeitung (Modifikation)
 
