@@ -1,29 +1,42 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
+import mops.module.database.Veranstaltung;
+import mops.module.generator.ModulFaker;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+@SpringBootTest
 @ActiveProfiles("dev")
 public class ModulServiceTest {
     private ModulService modulService;
 
+
     private AntragRepository antragRepository;
     private ModulSnapshotRepository modulSnapshotRepository;
+
+    private Modul modulforTagging;
+    private Veranstaltung veranstaltungForTagging;
+
 
     private String modul1;
     private String modul2;
@@ -40,6 +53,18 @@ public class ModulServiceTest {
         antragRepository = mock(AntragRepository.class);
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         modulService = new ModulService(antragRepository, modulSnapshotRepository);
+
+        modulforTagging = ModulFaker.generateFakeModul();
+        modulforTagging.setId(3301L);
+
+        veranstaltungForTagging = modulforTagging
+                .getVeranstaltungen()
+                .stream()
+                .findFirst()
+                .orElse(null);
+        veranstaltungForTagging.setId(3300L);
+
+        modulSnapshotRepository.save(modulforTagging);
 
         modul1 = "{\"id\":5,\"veranstaltungen\":[{\"id\":3}],"
                 + "\"modulkategorie\":\"MASTERARBEIT\"}";
@@ -132,5 +157,38 @@ public class ModulServiceTest {
         List<String> expected = Arrays.asList("WiSe2018-19", "SoSe2019", "WiSe2019-20",
                 "SoSe2020", "WiSe2020-21");
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void addSemesterTag() {
+
+        when(modulSnapshotRepository.findById(modulforTagging.getId())).thenReturn(
+                Optional.ofNullable(modulforTagging)
+        );
+
+        modulService.tagVeranstaltungSemester(
+                "SoSe1995",
+                veranstaltungForTagging.getId(),
+                modulforTagging.getId()
+        );
+
+        assertThat(veranstaltungForTagging.getSemester()).contains("SoSe1995");
+    }
+
+    @Test
+    public void deleteSemesterTag() {
+
+        veranstaltungForTagging.setSemester(Collections.singleton("SoSe1998"));
+        when(modulSnapshotRepository.findById(modulforTagging.getId())).thenReturn(
+                Optional.ofNullable(modulforTagging)
+        );
+
+        modulService.deleteTagVeranstaltungSemester(
+                "SoSe1998",
+                veranstaltungForTagging.getId(),
+                modulforTagging.getId()
+        );
+
+        assertThat(veranstaltungForTagging.getSemester()).doesNotContain("SoSe1998");
     }
 }
