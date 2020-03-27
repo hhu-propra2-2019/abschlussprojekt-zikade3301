@@ -7,9 +7,9 @@ public enum Modulkategorie {
 
 
     /**
-     * Ändert die Modulkategorie zu einer menschlich lesbareren Bezeichnung.
+     * Ändert die Modulkategorie zu einer menschlich lesbaren Bezeichnung.
      *
-     * @return Die deutsche lesbarere Version der Modulkategorie
+     * @return Die deutsche lesbare Version der Modulkategorie
      */
     public String toReadable() {
 
@@ -29,9 +29,9 @@ public enum Modulkategorie {
 
     /**
      * Ändert für das Modulhandbuch die Modulkategorie
-     * zu einer menschlich lesbareren deutschen Bezeichnung.
+     * zu einer menschlich lesbaren deutschen Bezeichnung.
      *
-     * @return Die deutsche lesbarere Version der Modulkategorie
+     * @return Die deutsche lesbare Version der Modulkategorie
      */
     public String toPdfReadableGerman() {
 
@@ -51,9 +51,9 @@ public enum Modulkategorie {
 
     /**
      * Ändert für das Modulhandbuch die Modulkategorie
-     * zu einer menschlich lesbareren englischen Bezeichnung.
+     * zu einer menschlich lesbaren englischen Bezeichnung.
      *
-     * @return Die deutsche lesbarere Version der Modulkategorie
+     * @return Die deutsche lesbare Version der Modulkategorie
      */
     public String toPdfReadableEnglish() {
         switch (this) {
