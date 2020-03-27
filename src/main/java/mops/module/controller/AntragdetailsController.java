@@ -39,17 +39,17 @@ public class AntragdetailsController {
     @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
     public String antragdetails(
-            @PathVariable String id,
+            @PathVariable long id,
             KeycloakAuthenticationToken token,
             Model model) {
 
         Modul modul = JsonService.jsonObjectToModul(
-                antragService.getAntragById(Long.parseLong(id)).getJsonModulAenderung());
-        ModulWrapper antrag = ModulWrapperService.initializePrefilledWrapper(modul);
+                antragService.getAntragById(id).getJsonModulAenderung());
+        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
 
         model.addAttribute("antragId", id);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("antrag", antrag);
+        model.addAttribute("antrag", modulWrapper);
 
         return "antragdetails";
     }
@@ -66,14 +66,14 @@ public class AntragdetailsController {
     @PostMapping("/antragdetails/{id}")
     @Secured("ROLE_sekretariat")
     public String antragAnnehmen(
-            @PathVariable String id,
+            @PathVariable long id,
             ModulWrapper antragAngenommen,
             Model model,
             KeycloakAuthenticationToken token) {
 
         Modul modul = ModulWrapperService.readModulFromWrapper(antragAngenommen);
 
-        Antrag antrag = antragService.getAntragById(Long.parseLong(id));
+        Antrag antrag = antragService.getAntragById(id);
         antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
         antragService.approveModulCreationAntrag(antrag);
 

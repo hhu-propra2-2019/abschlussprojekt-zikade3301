@@ -1,0 +1,7 @@
+[[section-design-decisions]]
+== Entwurfsentscheidungen
+
+Die Grundidee war für uns, dass im Frontend auf unsere Services zugegriffen wird. Die Services
+stellen dann Anfragen an die Datenbank; Daten, die durch diese Anfragen aus der Datenbank kommen werden dann zum Frontend
+durchgereicht.
+

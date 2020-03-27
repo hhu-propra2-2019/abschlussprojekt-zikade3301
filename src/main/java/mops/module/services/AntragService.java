@@ -104,10 +104,10 @@ public class AntragService {
      * @param antrag Antrag mit neuem Modul, in dem die Modul id null ist
      */
     public Modul approveModulCreationAntrag(Antrag antrag) {
-        Modul neuesmodul = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
-        neuesmodul.refreshMapping();
+        Modul modulFromJson = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
+        modulFromJson.refreshMapping();
 
-        Modul modul = modulSnapshotRepository.save(neuesmodul);
+        Modul modul = modulSnapshotRepository.save(modulFromJson);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
         antrag.setModulId(modul.getId());

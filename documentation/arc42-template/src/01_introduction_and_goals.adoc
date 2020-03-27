@@ -1,0 +1,55 @@
+[[section-introduction-and-goals]]
+==	Einführung und Ziele
+
+- MOPS.module ist ein dynamisches Modulhandbuch
+- Das Modulhandbuch ist integrierer Bestandteil von MOPS
+- Es ermöglicht eine einfache Suche und Filterung der angebotenen Module
+- Das Einfügen, Ändern und Löschen von Modulen ist einfach gestaltet
+- Die Modulübersicht ist als PDF-Datei exportierbar
+- Auch kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
+- Ziel ist nicht ein vollständiges Belegungssystem, sondern die Darstellung aktueller Informationen zu angebotenen Modulen.
+
+
+=== Aufgabenstellung
+
+Im Modulhandbuch werden die Beschreibungen für Veranstaltungen angegeben.
+Diese werden von Dozierenden angelegt und von einer Verantwortlichen geprüft sowie freigeschaltet.
+
+IMPORTANT: Für die automatische Bearbeitung von Klausurzulassungen muss sichergestellt werden, dass Änderungen an den Veranstaltungen nachvollziehbar bleiben.
+Wenn wir uns zum Beispiel entscheiden, die Veranstaltung "Foobar" in "Barfoo" umzubenennen, aber im Wesentlichen die Veranstaltung dieselbe ist, dann muss in der neuen Veranstaltung die Information erhalten bleiben, dass alle Zulassungen der alten Veranstaltungen in der neuen Veranstaltung gültig bleiben.
+
+Beschreibungen sollten wie im aktuellen Modulhandbuch strukturiert sein, aber auch zusätzliche Informationen darstellen können.
+Die einzelnen Informationsblöcke sollen separat befüllt werden und in der REST Schnittstelle (siehe unten) auch separat zugreifbar sein.
+Es soll Markdown als Textformat für Freitexte verwendet werden.
+
+Das Modulhandbuch muss als PDF Dokument exportiert werden können.
+
+Für jedes Semester sollen Teile des Handbuchs auswählbar sein, die in dem Semester stattfinden.
+
+Eine HTML Variante des Modulhandbuchs soll zusammen mit der Information, welche Veranstaltungen in welchem Semester stattfinden eine Planungsmöglichkeit für Studierende mit einer Volltext-Such/Filterfunktion liefern.
+
+Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, über die die Veranstaltungs-Stammdaten abgerufen werden können.
+
+=== Qualitätsziele
+
+[cols="1,2" options="header"]
+|===
+|Qualitätszeile |Motivation und Erläuterung
+|_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein._
+| _Sicherheit_ | _Die Eingepflegten Daten sind nur von authorisierten Nutzern einzusehen_
+
+|===
+
+=== Stakeholder
+
+
+
+[cols="1,1,2" options="header"]
+|===
+|Rolle |Kontakt |Erwartungshaltung
+| _Studierende_ | _Teammitglieder_ | _Übersichtliche Darstellung von Modulen, Such- und Filterfunktion_
+| _Modulbeauftragte_ | _Jens Bendiposto_ | _Haben einfaches Formular zur Erstellung und Änderung von Modulen_
+| _Sekretariat_ | _Fr Rennwanz_ | _Übersichtliche Ansicht der Änderungen, Änderungen an Modulen bleiben nachvollziehbar,
+insbesondere kann eingesehen werden, ob Klausurzulassungen für alte Module für ein aktuelles Modul gültig sind_
+| _Belegungsteam für MOPS_ | _--_ | _Können Moduldaten über REST-API auslesen_
+|===
