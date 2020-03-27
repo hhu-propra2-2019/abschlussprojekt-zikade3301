@@ -45,6 +45,10 @@ public class ModulFaker {
 
     private static void generateMultipleVeranstaltungen(Modul fakeModul) {
         double randomNumber = Math.random() * 5;
+        // MINDESTENS EINE VERANSTALTUNG IST NOTWENDIG!
+        if(randomNumber == 0.0) {
+            fakeModul.addVeranstaltung(generateFakeVeranstaltung());
+        }
         for (int i = 0; i < randomNumber; i++) {
             fakeModul.addVeranstaltung(generateFakeVeranstaltung());
         }
