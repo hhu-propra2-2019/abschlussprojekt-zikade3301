@@ -7,9 +7,9 @@ public enum Modulkategorie {
 
 
     /**
-     * Ändert die Modulkategorie zu einer menschlich lesbareren Bezeichnung.
+     * Ändert die Modulkategorie zu einer menschlich lesbaren Bezeichnung.
      *
-     * @return Die deutsche lesbarere Version der Modulkategorie
+     * @return Die deutsche lesbare Version der Modulkategorie
      */
     public String toReadable() {
 
@@ -27,6 +27,12 @@ public enum Modulkategorie {
         }
     }
 
+    /**
+     * Ändert für das Modulhandbuch die Modulkategorie
+     * zu einer menschlich lesbaren deutschen Bezeichnung.
+     *
+     * @return Die deutsche lesbare Version der Modulkategorie
+     */
     public String toPdfReadableGerman() {
 
         switch (this) {
@@ -43,6 +49,12 @@ public enum Modulkategorie {
         }
     }
 
+    /**
+     * Ändert für das Modulhandbuch die Modulkategorie
+     * zu einer menschlich lesbaren englischen Bezeichnung.
+     *
+     * @return Die deutsche lesbare Version der Modulkategorie
+     */
     public String toPdfReadableEnglish() {
         switch (this) {
             case PFLICHT_INFO: return "Compulsory Modules in Computer Science";
