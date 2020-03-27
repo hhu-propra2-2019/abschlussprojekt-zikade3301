@@ -78,8 +78,8 @@
     </nav>
 </header>
 <main th:fragment="bodycontent">
-<div style="overflow-x: auto; white-space: nowrap; display: inline-flex">
-    <form class="form-group" method="GET" th:action="@{/module/search}">
+<div style="display: inline-flex; width: 100%">
+    <form class="form-group" method="GET" th:action="@{/module/search}" style="width: 80%">
         <div class="input-group mb-2">
             <div class="input-group-prepend">
                 <button type="submit" class="btn btn-primary" style="font-size: small">
@@ -95,7 +95,7 @@
         </div>
     </form>
 
-    <form method="GET" th:action="@{/module/pdf}">
+    <form method="GET" th:action="@{/module/pdf}" style="margin-left: 2%; width: 18%">
         <button type="submit" id="pdf-button">
             <i class="fa fa-file-pdf-o" style="font-size:48px;color:red"></i>
         </button>
