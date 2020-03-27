@@ -1,9 +1,6 @@
 package mops.module.api;
 
 import graphql.schema.DataFetcher;
-import mops.module.repositories.AntragRepository;
-import mops.module.repositories.ModulSnapshotRepository;
-import mops.module.services.AntragService;
 import mops.module.services.ModulService;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +8,9 @@ import org.springframework.stereotype.Component;
 public class GraphQlDataFetchers {
 
     private ModulService modulService;
-    private AntragService antragService;
 
-    public GraphQlDataFetchers(AntragRepository antragRepository,
-                               ModulSnapshotRepository modulSnapshotRepository) {
-        modulService = new ModulService(antragRepository, modulSnapshotRepository);
-        antragService = new AntragService(antragRepository, modulSnapshotRepository);
+    public GraphQlDataFetchers(ModulService modulService) {
+        this.modulService = modulService;
     }
 
     /**

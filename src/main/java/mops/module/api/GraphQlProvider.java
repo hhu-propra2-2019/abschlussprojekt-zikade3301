@@ -44,10 +44,9 @@ public class GraphQlProvider {
     /**
      * Liest die Schemata ein.
      *
-     * @throws IOException Fehler, falls die Datei nicht eingelesen werden kann.
      */
     @PostConstruct
-    public void init() throws IOException {
+    public void init() {
         ResourceLoader resourceLoader = new DefaultResourceLoader();
         Resource resource = resourceLoader.getResource("classpath:schema.graphqls");
         GraphQLSchema graphQlSchema = buildSchema(resourceToString(resource));

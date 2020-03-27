@@ -58,7 +58,6 @@ public class ApiTests {
         testmodul2 = "{'datumErstellung':{'date':{'year':2011,'month':11,'day':11},"
                 + "'time':{'hour':11,'minute':11,'second':11,'nano':0}}}";
         Modul modul1 = JsonService.jsonObjectToModul(testmodul1);
-        Modul modul2 = JsonService.jsonObjectToModul(testmodul2);
 
         GraphQlDataFetchers graphQlDataFetchers = mock(GraphQlDataFetchers.class);
         when(graphQlDataFetchers.getModulByIdDataFetcher()).thenReturn(
@@ -66,12 +65,7 @@ public class ApiTests {
         when(graphQlDataFetchers.getAllModuleDataFetcher()).thenReturn(
                 dataFetchingEnvironment -> Arrays.asList(modul1));
         mockedGraphQlProvider = new GraphQlProvider(graphQlDataFetchers);
-        try {
-            mockedGraphQlProvider.init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        mockedGraphQlProvider.init();
     }
 
     @BeforeEach
