@@ -174,7 +174,7 @@
         </li>
         <div th:each="c : ${categories}">
             <li style="font-weight: bold;">
-                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toReadable()}"></a>
+                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a>
             </li>
             <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
                                                                                                th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
@@ -380,9 +380,9 @@
 
 <div th:each="c : ${categories}">
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
-    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toReadable()}">Pflichtmodule der Informatik
+    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toPdfReadableGerman()}">Pflichtmodule der Informatik
         (1.–4. Fachsemester)</h2>
-    <h2 th:text="${c.toReadable()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
+    <h2 th:text="${c.toPdfReadableEnglish()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
         <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}"
             style="text-indent: 3%">1.4
