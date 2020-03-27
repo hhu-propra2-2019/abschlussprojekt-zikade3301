@@ -4,11 +4,13 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
+import mops.module.database.Veranstaltung;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,8 @@ public class ModulService {
      *
      * @param oldModul Altes Modul
      * @param newModul Neues Modul
-     * @return
+     * @return Ein Änderungsmodul, bei dem ein Feld ohne Änderung den Wert null hat und
+     *         ein Feld mit einem Wert den neuen Wert nach der Änderung enthält.
      */
     public static Modul calculateModulDiffs(Modul oldModul, Modul newModul) {
         Modul changes = new Modul();
@@ -53,7 +56,7 @@ public class ModulService {
                                             Modul changes, Field field) {
         field.setAccessible(true);
 
-        if ("datumAenderung".equals((String) field.getName())) {
+        if ("datumAenderung".equals(field.getName())) {
             return false;
         }
 
@@ -110,6 +113,27 @@ public class ModulService {
         return modulSnapshotRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Fügt einer Veranstaltung ein SemesterTag hinzu.
+     *
+     * @param semesterTag     Der SemesterTag, der der Veranstaltung hinzugefügt werden soll
+     * @param veranstaltungId ID der Veranstaltung, die das Tag erhalten soll
+     * @param modulId         ID des Moduls, das die Veranstaltung beinhaltet
+     */
+    public void tagVeranstaltungSemester(String semesterTag, Long veranstaltungId, Long modulId) {
+
+        Veranstaltung veranstaltung = getModulById(modulId)
+                .getVeranstaltungen()
+                .stream()
+                .filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        if (veranstaltung == null) {
+            throw new IllegalArgumentException("Ungültige ID der Veranstaltung!");
+        }
+        Set<String> semesterOld = veranstaltung.getSemester();
+        semesterOld.add(semesterTag);
+
+        modulSnapshotRepository.save(getModulById(modulId));
+    }
 
     /**
      * Gibt die letzten x und die y darauffolgenden Semester als Liste von Strings zurück.

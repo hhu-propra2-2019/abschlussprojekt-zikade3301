@@ -27,8 +27,8 @@ public class SearchController {
      *
      * @param searchField Benutzer Eingabe für das Such Formular
      * @param token       Token von Keycloak der den Zugriff auf eine Seite regelt
-     * @param model       Model von Keycloak das den Zugriff auf eine Seite regelt
-     * @return            Gibt den String "searchresuls" als Ergebnis der Suche zurück.
+     * @param model       Model für die HTML-Datei.
+     * @return            View Searchresults
      */
     @GetMapping("/search")
     public String search(
