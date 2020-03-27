@@ -71,7 +71,12 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
  PDF-Generierung im Detail::
 
  _In der index.html gibt es neben der Suchleiste einen PDF-Knopf, mit dem per GET-Request auf /module/pdf die PDF-Generierung des aktuellen Modulhandbuchs gestartet wird.
- Im PdfDownloadController wird nun über den ModulService ..._
+ Im PdfDownloadController wird nun über den ModulService die aktuelle Liste aller sichtbaren Module abgerufen und vom PdfDownloadController an die Methode generatePdf des PdfServices weitergegeben.
+ Diese Funktion wandelt die Modulobjekte nun in PdfModulWrapper-Objekte um, sodass alle benötigten Zeichenketten direkt von Thymeleaf ausgelesen werden können.
+ Die PdfModulWrapper-Liste sowie die Modulkategorien, als auch das aktuelle Semester werden per Context dann an die Thymeleaf TemplateEngine weitergegeben, welche dann mit Hilfe des HTML-Templates modulhandbuch.html das Modulhandbuch zuerst im HTML-Format baut. Dabei wird auch ein Inhaltsverzeichnis automatisch generiert und alle Felder des Modulhandbuchs automatisch befüllt, wobei - analog zur Webansicht - innerhalb von Modulen mehrere Unterveranstaltungen existieren können.
+ Attribute aus den Modulobjekten, welche auch Markdown-Support bieten sollen, werden vor der Injektion mit Hilfe des PdfModulWrappers bzw. des PdfVeranstaltungWrappers mit Verweis auf die statische markdownToHTML-Funktion des htmlServices in valides HTML umgewandelt.
+ Nach der Generierung des vollständigen HTML-Dokumentes wird dieses an die htmlToPdf-Methode aus dem htmlService übergeben, welche mit Hilfe des flexmark-Paketes dieses dann in einen PDF-Bytestrom umwandelt.
+ Dieser ByteStrom wird zu guter Letzt dem PdfDownloadController zurückgegeben und dieser stellt dem Benutzer dann das fertige PDF-Modulhandbuch zum Download zur Verfügung und schließt den Strom wieder._
 
 == REST-API Blackbox
 
