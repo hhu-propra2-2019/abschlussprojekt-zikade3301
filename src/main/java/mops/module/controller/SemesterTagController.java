@@ -31,9 +31,9 @@ public class SemesterTagController {
      * @param token           Der Token von keycloak für die Berechtigung.
      * @return View Modulbeauftragter
      */
-    @PostMapping("/semesterTag")
+    @PostMapping("/semesterTag/create")
     @Secured("ROLE_sekretariat")
-    public String addModulCreationAntrag(@RequestParam(name = "inputTag", required = true)
+    public String addSemesterTagToVeranstaltung(@RequestParam(name = "inputTag", required = true)
                                                  String semesterTag,
                                          @RequestParam(name = "idVeranstaltung")
                                                  String idVeranstaltung,
@@ -49,7 +49,28 @@ public class SemesterTagController {
                 Long.parseLong(idVeranstaltung),
                 Long.parseLong(idModul)
         );
+        return "redirect:/module/modulbeauftragter";
+    }
 
+
+    @PostMapping("/semesterTag/delete")
+    @Secured("ROLE_sekretariat")
+    public String removeSemesterTagToVeranstaltung(@RequestParam(name = "tagToDelete", required = true)
+                                                 String tagToDelete,
+                                         @RequestParam(name = "idVeranstaltungTagDelete")
+                                                 String idVeranstaltungTagDelete,
+                                         @RequestParam(name = "idModulTagDelte")
+                                                 String idModulTagDelte,
+                                         Model model,
+                                         KeycloakAuthenticationToken token) {
+
+        model.addAttribute("account", createAccountFromPrincipal(token));
+
+        modulService.deleteTagVeranstaltungSemester(
+                tagToDelete,
+                Long.parseLong(idVeranstaltungTagDelete),
+                Long.parseLong(idModulTagDelte)
+        );
         return "redirect:/module/modulbeauftragter";
     }
 }
