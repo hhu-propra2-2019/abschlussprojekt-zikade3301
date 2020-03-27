@@ -1,12 +1,14 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import mops.module.database.Antrag;
@@ -171,5 +173,22 @@ public class ModulServiceTest {
         );
 
         assertThat(veranstaltungForTagging.getSemester()).contains("SoSe1995");
+    }
+
+    @Test
+    public void deleteSemesterTag() {
+
+        veranstaltungForTagging.setSemester(Collections.singleton("SoSe1998"));
+        when(modulSnapshotRepository.findById(modulforTagging.getId())).thenReturn(
+                Optional.ofNullable(modulforTagging)
+        );
+
+        modulService.deleteTagVeranstaltungSemester(
+                "SoSe1998",
+                veranstaltungForTagging.getId(),
+                modulforTagging.getId()
+        );
+
+        assertThat(veranstaltungForTagging.getSemester()).doesNotContain("SoSe1998");
     }
 }
