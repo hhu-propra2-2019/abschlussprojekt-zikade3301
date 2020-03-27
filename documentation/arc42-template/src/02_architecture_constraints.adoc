@@ -9,6 +9,7 @@
 |Randbedingung |Erläuterung, Hintergrund
 | _Freiheit von Abhängigkeiten_ | _Das Modulhandbuch hat keine bindenden Abhängigkeiten zu den anderen Systemen von MOPS_
 | _REST API_ | _Das Modulhandbuch sollte Stammdaten für andere Systeme bereitstellen_
+|_Keycloak_ | _Die Authentifizierung der jeweiligen Accounts wird über Keycloak verwaltet_
 
 |===
 
@@ -18,11 +19,11 @@
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed Hamed Bakar El Hori, Roman Janke, Michael Motzko, Elias Kempkens,  Michael Lau
+| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed ElHori, Roman Janke, Elias Kempkens,  Michael Lau, Michael Motzko
 | _Zeitplan_ | Beginn der Planung und Entwicklung am 02.03.2020. Vorzeigbare Version bis zum 27.03.2020.
 | _Vorgehensmodell_ |Zur Dokumentation der Architektur kommt arc42 zum Einsatz
-| _Konfigurations- und Versionsverwaltung_ | Git bei Github
-| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj
+| _Konfigurations- und Versionsverwaltung_ | gradle, Github
+| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj und Mockito
 
 |===
 
@@ -37,7 +38,10 @@
 | _Architekturdokumentation_ | Mithilfe des arc42-Templates
 | _Kodierrichtlinien für Java_ | Geprüft mit Hilfe von CheckStyle
 | _Continous Integration (CI)_ | Lässt alle Tests mithilfe von GitHub Actions durchlaufen und blockiert somit den Merge von fehlerhaftem Code
-| _Sprache (Deutsch vs. Englisch)_ | *Benennung von Klassen und Kommentierung durch Javadoc auf Deutsch.*
+| _Sprache (Deutsch vs. Englisch)_ |
+*Benennung von Klassen und Kommentierung durch Javadoc und Datenbank Entitäten auf Deutsch
+Package Namen auf Englisch*
+
 Hintergrund: Das System soll an einer deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden.
 
 |===

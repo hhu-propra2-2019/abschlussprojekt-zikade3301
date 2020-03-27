@@ -44,3 +44,18 @@ Die eingegebenen Formulardaten werden an den ModulerstellungController als GET-R
 === _<Bezeichnung Laufzeitszenario n>_
 
 ...
+....
+
+== Laufzeitszenario Beabeitung von Anträgen
+
+Ein Administrator klickt auf den "Anträge"- Reiter in der Navigationsbar. Dies löst eine GET-Anfrage aus, die von dem AdministratorController entgegengenommen wird. Mit Hilfe des Antrags Services
+werden der View alle offenen und nach Datum geordneten Anträge in Form einer Liste angezeigt.
+Aus dieser Liste wählt sich der Administrator den gewünschten zu bearbeitenden Antrag und löst eine Request-Anfrage aus, die von dem AntragdetailsController je nach Art des Antrages, Modifikations- oder Kreationsantrag,
+entgegengenommen wird.
+
+==== Erstellung (Kreation)
+Handelt es sich um einen Kreationsantrag, wird der View mit Hilfe des JsonServices das Modul aus dem Antrag ,verpackt in einem ModulWrapper, übergeben.
+
+
+==== Bearbeitung (Modifikation)
+
