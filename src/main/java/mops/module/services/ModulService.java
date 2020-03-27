@@ -76,8 +76,8 @@ public class ModulService {
         return false;
     }
 
-
-    static void applyAntragOnModul(Modul modul, Antrag antrag) {
+// TODO - Test für nun public Methode schreiben
+    public static void applyAntragOnModul(Modul modul, Antrag antrag) {
         Modul modulChanges = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
         for (Field field : modul.getClass().getDeclaredFields()) {
