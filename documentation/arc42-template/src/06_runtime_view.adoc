@@ -1,0 +1,21 @@
+[[section-runtime-view]]
+== Laufzeitsicht
+
+
+
+=== _<Bezeichnung Laufzeitszenario 1>_
+
+*  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
+*  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
+
+== Laufzeitszenario Suche
+
+ Der Nutzer gibt in der Haupseite einen oder mehrere Suchbegriffe ein.
+ Das löst eine GET-Anfrage aus, die von dem SearchController entgegengenommen wird.
+ Dieser ruft die search Methode im SuchService auf.
+ Die Methode durchsucht mit einer Hibernate Search Query die Datenbank innerhalb der relevanten Felder und gibt dann eine nach Relevanz sortierte Liste zurück.
+ Der Nutzer wird auf die searchresults Seite weitergeleitet und bekommt die Liste als Links zu den Moduldetails angezeigt.
+
+=== _<Bezeichnung Laufzeitszenario n>_
+
+...
