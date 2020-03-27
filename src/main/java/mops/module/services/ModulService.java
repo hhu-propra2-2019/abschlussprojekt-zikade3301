@@ -187,16 +187,40 @@ public class ModulService {
      * @return Formatierter Semester-String
      */
     public static String getSemesterFromDate(LocalDateTime when) {
+        return getSemesterFromDate(when, false);
+    }
+
+    /**
+     * Gibt das zugehörige Semester mit entsprechender Formatierung zum Datum zurück.
+     *
+     * @param when         Datum
+     * @param formalFormat bool, ob Semester knapp (z.B. WiSe2019-20)
+     *                     oder formal (z.B. Winter 2019) ausgegeben werden soll
+     * @return Formatierter Semester-String
+     */
+    public static String getSemesterFromDate(LocalDateTime when, boolean formalFormat) {
         int currentYear = when.getYear();
         LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
         LocalDateTime wsStart = LocalDateTime.of(currentYear, 10, 1, 0, 0);
 
         if (when.isBefore(ssStart)) {
-            return "WiSe" + getWinterSemesterYear(currentYear - 1);
+            if (formalFormat) {
+                return "Winter " + (currentYear - 1);
+            } else {
+                return "WiSe" + getWinterSemesterYear(currentYear - 1);
+            }
         } else if (when.isAfter(wsStart)) {
-            return "WiSe" + getWinterSemesterYear(currentYear);
+            if (formalFormat) {
+                return "Winter " + currentYear;
+            } else {
+                return "WiSe" + getWinterSemesterYear(currentYear);
+            }
         } else {
-            return "SoSe" + currentYear;
+            if (formalFormat) {
+                return "Sommer " + currentYear;
+            } else {
+                return "SoSe" + currentYear;
+            }
         }
     }
 
