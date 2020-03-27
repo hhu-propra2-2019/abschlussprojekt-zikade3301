@@ -52,17 +52,12 @@
             <li>
                 <a href="/module/">Übersicht</a>
             </li>
-                <li th:if="${account}">
-                    <div th:each="role: ${account.getRoles()}">
-                        <div th:switch="${role}">
-                            <a th:case="'orga'" href="/module/modulbeauftragter">Module bearbeiten</a>
-                            <div th:case="'sekretariat'">
-                                <a href="/module/modulbeauftragter">Module bearbeiten</a>
-                                <a href="/module/administrator">Anträge</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+            <li>
+                <a href="/module/modulbeauftragter">Module bearbeiten</a>
+            </li>
+            <li>
+                <a href="/module/administrator">Anträge</a>
+            </li>
         </ul>
 
     </nav>
