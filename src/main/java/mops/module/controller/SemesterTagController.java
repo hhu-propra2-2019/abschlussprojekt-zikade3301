@@ -51,14 +51,14 @@ public class SemesterTagController {
     }
 
     /**
-     * Controller, der das Request für das Löschen eines SemesterTags entgegennimmt.
+     * Controller, der den Request für das Löschen eines SemesterTags entgegennimmt.
      *
      * @param tagToDelete              Der SemesterTag, der gelöscht werden soll
      * @param idVeranstaltungTagDelete ID der Veranstaltung, die das Tag beinhaltet
      * @param idModulTagDelte          ID des Moduls, das die Veranstaltung beinhaltet
      * @param model                    Model für die HTML-Datei.
      * @param token                    Der Token von keycloak für die Berechtigung.
-     * @return the string
+     * @return View Modulbeauftragter
      */
     @PostMapping("/semesterTag/delete")
     @Secured("ROLE_sekretariat")
