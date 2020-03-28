@@ -150,6 +150,22 @@ public class ModulWrapperService {
         }
     }
 
+    //Einfach rauslöschen aller leeren Felder ?
+    // Wenn ein neues veranstaltungsformfeld hinzugefügt wird beim bearbeiten, hat es noch keine ID,
+    //Würde jetzt also wieder rausgelöscht werden, oder?
+
+    //Bei zwei neu angeegten und einem veränderten landet nur ein neues und das veränderte bei der Annahme
+
+
+    //IDEE neu hinzugefügte veranstaltungsformen haben keine id. müssen aber auch nicht sortiert werden weil sie
+    //auf jedenfall neu sein. Die, die eine Idee haben sollten sortiert werden.
+
+    //Fragen:
+    // Was ist wenn man den INput aus einem bestehenden Form rauslöscht?
+
+        //    veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId,
+        //    Comparator.nullsLast(Comparator.naturalOrder())));
+
     private static void sortVernstaltungListById(
             List<Veranstaltung> veranstaltungen) {
         veranstaltungen.removeAll(Collections.singleton(null));
