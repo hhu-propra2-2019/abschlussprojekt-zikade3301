@@ -109,14 +109,15 @@ class AntragdetailsControllerTest {
                 });
     }
 
-    //TODO
+    //TODO Methode modifikationsAntragsdetails in AntragdetailsController ruft modulService(getModulById()) auf.
+    // Das muss für Tests auch gemockt werden
     @Test
     void testModificationAntragdetailsViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+        mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
                 .andExpect(view().name("antragdetails"));
     }
 
@@ -126,7 +127,7 @@ class AntragdetailsControllerTest {
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+        mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
                 .andExpect(status().isOk());
     }
 
@@ -138,7 +139,7 @@ class AntragdetailsControllerTest {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
                             .andExpect(status().isOk());
                 });
     }
@@ -151,7 +152,7 @@ class AntragdetailsControllerTest {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
                             .andExpect(status().isOk());
                 });
     }
@@ -161,7 +162,7 @@ class AntragdetailsControllerTest {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
                             .andExpect(status().isOk());
                 });
     }
