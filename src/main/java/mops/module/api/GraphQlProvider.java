@@ -18,6 +18,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import mops.module.database.Modulkategorie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -27,14 +28,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 @Component
+@RequiredArgsConstructor
 public class GraphQlProvider {
 
     private GraphQL graphQL;
-    private GraphQlDataFetchers graphQlDataFetchers;
-
-    public GraphQlProvider(GraphQlDataFetchers graphQlDataFetchers) {
-        this.graphQlDataFetchers = graphQlDataFetchers;
-    }
+    private final GraphQlDataFetchers graphQlDataFetchers;
 
     @Bean
     public GraphQL graphQL() {

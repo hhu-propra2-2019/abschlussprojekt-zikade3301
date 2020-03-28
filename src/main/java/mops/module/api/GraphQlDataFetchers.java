@@ -1,17 +1,15 @@
 package mops.module.api;
 
 import graphql.schema.DataFetcher;
+import lombok.RequiredArgsConstructor;
 import mops.module.services.ModulService;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class GraphQlDataFetchers {
 
-    private ModulService modulService;
-
-    public GraphQlDataFetchers(ModulService modulService) {
-        this.modulService = modulService;
-    }
+    private final ModulService modulService;
 
     /**
      * Ruft das zur ID zugehörige Modul aus dem Repository ab und gibt es zurück.
