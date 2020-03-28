@@ -36,6 +36,18 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
  _Anträge sollen zu jeder Zeit erstellbar sein und gespeichert werden._
 
+== Annehmen von Anträgen
+
+Schnittstelle(n)::
+
+ _Die Schnittstellen liegen hier in der View des Administrators Nur von dieser beiden Seite aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
+ Es kann sich um das Annehmen von Modifikations Anträgen, also einer bearbeitung eines bereits bestehenden Moduls, und um Kreations Anträge, also das neu erstellen eines Moduls, handeln._
+
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Anträge sollen zu jeder Zeit annehmbar sein. Der Administrator hat die Möglichkeit Bestandteile zu bearbeiten_
+
 == PDF Download
 
  Schnittstelle::
@@ -118,6 +130,69 @@ Hierzu wird zunächst mithilfe der ID das alte Modul aus der Datenbank geholt un
 Anschließend werden mithilfe von calculateModulDiffs() aus ModulService die beiden Module auf relevante (d.h. nicht z.B. automatisch generierte Zeitstempel betreffende) Unterschiede untersucht und in Form eines Differenzmoduls (d.h. einer Modul-Instanz, bei der Felder ohne Unterschiede den Wert null und Felder mit Änderungen den Wert nach der Änderung haben) ausgibt.
 Wenn in diesem Differenzmodul Änderungen festgestellt wurden, wird der Änderungsantrag in der Datenbank gespeichert und ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
 Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt und das Modul in der Datenbank geupdatet._
+
+
+== Annahme von Anträgen für Erstellung Blackbox
+
+*Reiter Anträge -> AdministratorController* ::
+Durch drücken auf den Reiter "Anträge", angemeldet mit der Rolle "Sekretariat"
+, wird ein GET-Request ausgelöst welcher im AdministratorController von der Methode administrator behandelt wird.
+Diese Methode fügt dem Model drei verschiedene Objekte hinzu. Ein Datetime Formatter Objekt um in der Liste der offenen Anträge das
+Erstellungsdatum der Anträge einheitlich darzustellen, ein Account Objekt für den Zugang zu Keycloak und somit die Authentifizierung als
+Rolle Sekretariat und eine Liste aller offenen Anträge geordnet nach dem Erstellungsdatum. Für diese wird im antragService
+die Methode getAlleOffenenAntraegeGeordnetDatum aufgerufen die über die Methoden getAlleAntraegeGeordnetDatum und getAlleAntraege durch das antragRepository
+auf die Datenbank zugreift.
+Anschließend wird die html administrator returnd.
+*adminstrator.html -> AntragdetailsController*::
+Die administrator.html Seite zeigt dem Nutzer nun eine geordnete Liste aller offenen Anträge mit zugehörigem Erstellungsdatum und
+dem Namen des Antragstellers. Je nachdem ob es sich um einen Modifikations- oder Kreations Antrag handelt wird durch das Bestätigen eines Links
+eine Request Methode im AntragdetaislController angesprochen. Mit übergeben wird die ID des Antrages als Pathvariabel.
+
+*AntragdetailsController Kreation -> angtragdetails.html*::
+Mit Hilfe der übergebenen Antragsid wird aus dem antragService durch die Methode getAntragByid() der zugehörige Antrag ausgelesen.
+Das bearbeitete Modul, welches sich in dem Antragsobjekt als Json befindet, wird mithilfe der jsonObjectToModul Methode aus dem JsonService
+in einem Modul "modulAusAntrag" abgespeichert. Für die Umsetzung der Anzeige aller Felder aus dem Modul im Frontend wird
+das Modul anschließend in einem ModulWrapper verpackt. Dies geschieht durch Aufruf der Methode initializePrefilledWrapper() aus dem ModulWrapperService.
+Diese Methode befüllt ein ModulWrapper Objekt mit dem Modul und jeweils einem Array an Listen von Veranstaltungen,
+Veranstaltungsformen und Zusatzfeldern.
+Dieses Wrapper Objekt wird neben der Antrags ID, dem Account für Keycloak und erneut dem Wrapper Objekt dem Model übergeben.
+Das Wrapper Objekt wird zweifach übergeben da Kreation und Modifikation sich auf dieselbe html Datei ( antragdetails.html) beziehen
+und bei der Modifikation zwei Modul Wrapper mithilfe von Thymeleaf verglichen werden.
+Anschließend wird die html antragdetails returned.
+
+*AntragdetailsController Modifikation -> antragdetails.html*::
+Der Fall der Modifikation wird im AntragdetailsController ähnlich wie der Fall der Kreation gehandhabt.
+Da im Frontend allerdings Änderungen zwischen dem Modul vor und nach Ausführung der Änderungen angezeigt werden sollen wird in diesem
+Fall das Alte Modul kopiert und die Änderungen aus dem Antrag mithilfe der Methode applyAntragOnModul aus dem Modulservice angewendet.
+Dem Model werden dann der Account für Keycloak, die Antragsid und die beiden Modul Wrapper objekte hinzugefügt.
+
+*antragdetails.html -> AntragdetailsController*::
+In der antragdetails.html wird dem User nun das übergebene ModulWrapper Objekt angezeigt.
+Mit Hilfe von th:object und th:field werden Änderungen direkt im ModulWrapper Objekt abgespeichert. Für den Fall der Modifikation
+werden Unterschiede zwischen der alten und neuen Version durch eine th:if Abfrage farblich makiert.
+Nachdem der Antrag geprüft und gegebene Falls verändert wurde, schickt der Nutzer durch Bestätigen
+des "Antrag annehmen" Buttons einen Post-Request der im AntragdetailsController entgegengenommen wird.
+Dieser beinhaltet die antragsId als Pathvariable und das ModulWrapper Objekt mit allen Änderungen.
+
+*AntragdetailsController -> Speicherung in der Datenbank*::
+In der PostMapping Methode antragAnnehmen wird zuerst das Modul mit Hilfe der Methode readModulFromWrapper aus dem
+ModulWrapperService ausgepackt. Durch diese Methode werden die Arrays an Listen wieder in Sets in dem modul abgespeichert welches dann
+returnt wird.
+Der ursprüngliche Antrag wird nun mithilfe der übergebenen Antragsid  und
+der Methode getAntragById aus dem antragService in einem Antrags Objekt abgespeichert.
+Das Modul wird mithilfe der Methode setJsonModulAenderung und modulToJsonObject aus dem Json Service wieder im Antrag abgespeichert.
+Wenn es sich um eine Kreation handelt, das Modul also noch keine ID hat, weil es nicht in der Datenbank steht (auto generated ID),
+wird die Methode approveModulCreationAntrag aus dem AntragService aufgerufen.
+In dieser Methode wird nun das Modul, welches noch in Form eines Json im Antrag steckt mithilfe des JsonServices in ein Modul
+abgespeichert. Anschließend wird das Modul durch das modulSnapshotRepository in der Datenbank abgespeichert, das Genehmigungsdatum
+und die ModulId im Antrag gesetzt und auch dieser durch das antragRepository abgespeichert.
+
+Handelt es sich um eine Modifikation wird die Methode approveModifikationAntrag aus dem antragService aufgerufen.
+Diese Methode überträgt die Änderungen aus dem Antrag auf das alte Modul, welche in der Datenbank gespeichert ist, setzt das Datum der Genehmigung im Antrag, und speichert anschließend
+auch den Antrag mit Hilfe des antragRepositorys in der Datenbank.
+
+Anschließend wird der Nutzer aus die administrator.html, also die Übersicht aller offenen Anträge, redirected.
+
 
 ==== <Name Blackbox n>
 
