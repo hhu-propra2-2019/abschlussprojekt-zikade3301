@@ -40,13 +40,13 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
 Schnittstelle(n)::
 
- _Die Schnittstellen liegen hier in der View des Administrators nur von diese beiden Seiten aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
+ _Die Schnittstellen liegen hier in der View des Administrators nur von diesen beiden Seiten aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
  Es kann sich um das Annehmen von Modifikations Anträgen, also einer Bearbeitung eines bereits bestehenden Moduls, und um Kreations Anträge, also das neu erstellen eines Moduls, handeln._
 
 
 Qualitäts-/Leistungsmerkmale::
 
- _Anträge sollen zu jeder Zeit annehmbar sein. Der Administrator hat die Möglichkeit Bestandteile zu bearbeiten_
+ _Anträge sollen zu jeder Zeit annehmbar sein. Der Administrator hat die Möglichkeit Bestandteile zu bearbeiten._
 
 == PDF Download
 
@@ -139,17 +139,17 @@ Durch drücken auf den Reiter "Anträge", angemeldet mit der Rolle "Sekretariat"
 , wird ein GET-Request ausgelöst welcher im AdministratorController von der Methode administrator behandelt wird.
 Diese Methode fügt dem Model drei verschiedene Objekte hinzu. Ein Datetime Formatter Objekt um in der Liste der offenen Anträge das
 Erstellungsdatum der Anträge einheitlich darzustellen, ein Account Objekt für den Zugang zu Keycloak und somit die Authentifizierung als
-Rolle Sekretariat und eine Liste aller offenen Anträge geordnet nach dem Erstellungsdatum. Für diese wird im antragService
-die Methode getAlleOffenenAntraegeGeordnetDatum aufgerufen die über die Methoden getAlleAntraegeGeordnetDatum und getAlleAntraege durch das antragRepository
+Rolle Sekretariat und eine Liste aller offenen Anträge geordnet nach dem Erstellungsdatum. Für diese wird im AntragService
+die Methode getAlleOffenenAntraegeGeordnetDatum aufgerufen die über die Methoden getAlleAntraegeGeordnetDatum und getAlleAntraege durch das AntragRepository
 auf die Datenbank zugreift.
-Anschließend wird die html administrator returnd.
+Anschließend wird die html administrator returned.
 *adminstrator.html -> AntragdetailsController*::
 Die administrator.html Seite zeigt dem Nutzer nun eine geordnete Liste aller offenen Anträge mit zugehörigem Erstellungsdatum und
 dem Namen des Antragstellers. Je nachdem ob es sich um einen Modifikations- oder Kreations Antrag handelt wird durch das Bestätigen eines Links
 eine Request Methode im AntragdetaislController angesprochen. Mit übergeben wird die ID des Antrages als Pathvariabel.
 
 *AntragdetailsController Kreation -> angtragdetails.html*::
-Mit Hilfe der übergebenen Antragsid wird aus dem antragService durch die Methode getAntragByid() der zugehörige Antrag ausgelesen.
+Mit Hilfe der übergebenen Antragsid wird aus dem AntragService durch die Methode getAntragByid() der zugehörige Antrag ausgelesen.
 Das bearbeitete Modul, welches sich in dem Antragsobjekt als Json befindet, wird mithilfe der jsonObjectToModul Methode aus dem JsonService
 in einem Modul "modulAusAntrag" abgespeichert. Für die Umsetzung der Anzeige aller Felder aus dem Modul im Frontend wird
 das Modul anschließend in einem ModulWrapper verpackt. Dies geschieht durch Aufruf der Methode initializePrefilledWrapper() aus dem ModulWrapperService.
@@ -164,7 +164,7 @@ Anschließend wird die html antragdetails returned.
 Der Fall der Modifikation wird im AntragdetailsController ähnlich wie der Fall der Kreation gehandhabt.
 Da im Frontend allerdings Änderungen zwischen dem Modul vor und nach Ausführung der Änderungen angezeigt werden sollen wird in diesem
 Fall das Alte Modul kopiert und die Änderungen aus dem Antrag mithilfe der Methode applyAntragOnModul aus dem Modulservice angewendet.
-Dem Model werden dann der Account für Keycloak, die Antragsid und die beiden Modul Wrapper objekte hinzugefügt.
+Dem Model werden dann der Account für Keycloak, die Antragsid und die beiden Modul Wrapper Objekte hinzugefügt.
 
 *antragdetails.html -> AntragdetailsController*::
 In der antragdetails.html wird dem User nun das übergebene ModulWrapper Objekt angezeigt.
