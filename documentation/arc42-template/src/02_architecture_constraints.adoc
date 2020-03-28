@@ -19,11 +19,11 @@
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed ElHori, Roman Janke, Elias Kempkens,  Michael Lau, Michael Motzko
+| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed El Hori, Roman Janke, Elias Kempkens,  Michael Lau, Michael Motzko
 | _Zeitplan_ | Beginn der Planung und Entwicklung am 02.03.2020. Vorzeigbare Version bis zum 27.03.2020.
 | _Vorgehensmodell_ |Zur Dokumentation der Architektur kommt arc42 zum Einsatz
-| _Konfigurations- und Versionsverwaltung_ | gradle, Github
-| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj und Mockito
+| _Konfigurations- und Versionsverwaltung_ | Gradle, Github
+| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj, Mockito und zum testen der Datenbankfunktion wurde eine H2-Datenbank verwendet
 
 |===
 
