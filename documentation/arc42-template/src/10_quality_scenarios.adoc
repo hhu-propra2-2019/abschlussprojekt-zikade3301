@@ -23,5 +23,6 @@
 | _7_ | _Sicherheit ist gewährleistet durch rollenbedingte Zugriffsrechte._
 | _8_ | _Die Module können beim Betrachten nach Semestern gefiltert werden._
 | _9_ | _Die Module können einzeln in einer Detailansicht betrachtet werden._
+| _10_ | _Die Module können einzeln aber auch gebündelt über die zur Verfügung gestellte API abgerufen werden._
 
 |===
