@@ -101,8 +101,18 @@ public class ModulService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Gibt alle sichtbaren Module, die ungleich null sind, zurück.
+     *
+     * @return alle sichtbaren Module, die ungleich null sind
+     */
     public List<Modul> getAllSichtbareModule() {
-        return getAllModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
+        return getAllModule()
+                .stream()
+                .filter(m -> m.getSichtbar() != null)
+                .filter(Modul::getSichtbar)
+                .collect(Collectors.toList());
     }
 
     public List<Modul> getModuleBySemester(String semester) {
@@ -242,6 +252,11 @@ public class ModulService {
     }
 
 
+    /**
+     * Ändert die Sichtbarkeit eines Moduls.
+     *
+     * @param modulId Id des Moduls, dessen Sichtbarkeit sich ändern soll
+     */
     public void changeVisibility(long modulId) {
 
         Boolean status = getModulById(modulId).getSichtbar();
