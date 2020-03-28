@@ -3,6 +3,8 @@ package mops.module.wrapper;
 import static mops.module.wrapper.PdfModulWrapper.getSafeString;
 import static mops.module.wrapper.PdfModulWrapper.safeAppend;
 
+
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,17 +33,15 @@ public class PdfVeranstaltungWrapper {
         Set<Veranstaltungsform> veranstaltungsformEnumeration = veranstaltung
                 .getVeranstaltungsformen()
                 .stream()
-                .filter(v -> v.getSemesterWochenStunden() >= 0)
+                .filter(v -> v.getSemesterWochenStunden() > 0)
                 .collect(Collectors.toSet());
         for (Veranstaltungsform veranstaltungsform : veranstaltungsformEnumeration) {
             String veranstaltungsformString = "";
             veranstaltungsformString = safeAppend(veranstaltungsformString,
                     veranstaltungsform.getForm());
 
-            if (veranstaltungsform.getSemesterWochenStunden() > 0) {
-                veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden()
-                        + " SWS";
-            }
+            veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden()
+                    + " SWS";
             lehrveranstaltungen.add(veranstaltungsformString);
         }
         return lehrveranstaltungen;
@@ -52,22 +52,19 @@ public class PdfVeranstaltungWrapper {
      * Wenn das Feld komplett leer ist, wird ein Spiegelstrich zurückgegeben.
      * @return Formatierter String
      */
-    public String getLehrveranstaltungenFreeText() {
+    public Set<String> getLehrveranstaltungenFreeText() {
         if (veranstaltung.getVeranstaltungsformen().isEmpty()) {
-            return "—";
+            return new HashSet<>(Arrays.asList("—"));
         }
 
-        Veranstaltungsform veranstaltungsformFreeText = veranstaltung
+        Set<String> veranstaltungsformFreeText = veranstaltung
                 .getVeranstaltungsformen()
                 .stream()
-                .filter(v -> v.getSemesterWochenStunden() == -1)
-                .findFirst().orElse(null);
+                .filter(v -> v.getSemesterWochenStunden() == 0)
+                .map(v -> HtmlService.markdownToHtml(v.getForm()))
+                .collect(Collectors.toSet());
 
-        if (veranstaltungsformFreeText != null) {
-            return HtmlService.markdownToHtml(veranstaltungsformFreeText.getForm());
-        } else {
-            return "";
-        }
+        return veranstaltungsformFreeText;
     }
 
     public String getTitel() {

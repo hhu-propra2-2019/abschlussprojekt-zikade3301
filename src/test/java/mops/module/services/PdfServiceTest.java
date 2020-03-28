@@ -55,7 +55,7 @@ public class PdfServiceTest {
 
         Veranstaltungsform veranstaltungsform2 = new Veranstaltungsform();
         veranstaltungsform2.setForm("Übung");
-        veranstaltungsform2.setSemesterWochenStunden(0);
+        veranstaltungsform2.setSemesterWochenStunden(2);
 
         Veranstaltung veranstaltung = new Veranstaltung();
         veranstaltung.setVeranstaltungsformen(
@@ -66,7 +66,8 @@ public class PdfServiceTest {
 
         String expected1 = veranstaltungsform1.getForm() + ", "
                 + veranstaltungsform1.getSemesterWochenStunden() + " SWS";
-        String expected2 = veranstaltungsform2.getForm();
+        String expected2 = veranstaltungsform2.getForm() + ", "
+                + veranstaltungsform2.getSemesterWochenStunden() + " SWS";
 
         assertThat(lehrveranstaltungen).contains(expected1, expected2);
     }
@@ -76,14 +77,14 @@ public class PdfServiceTest {
         Veranstaltungsform veranstaltungsform = new Veranstaltungsform();
         String freitext = "Dieser Freitext soll als Markdown geparsed werden!";
         veranstaltungsform.setForm("## " + freitext);
-        veranstaltungsform.setSemesterWochenStunden(-1);
+        veranstaltungsform.setSemesterWochenStunden(0);
 
         Veranstaltung veranstaltung = new Veranstaltung();
         veranstaltung.setVeranstaltungsformen(new HashSet<>(Arrays.asList(veranstaltungsform)));
 
         PdfVeranstaltungWrapper veranstaltungWrapper = new PdfVeranstaltungWrapper(veranstaltung);
-        String lehrveranstaltungstext = veranstaltungWrapper.getLehrveranstaltungenFreeText();
+        Set<String> lehrveranstaltungstext = veranstaltungWrapper.getLehrveranstaltungenFreeText();
 
-        assertThat(lehrveranstaltungstext).contains("<h2>" + freitext + "</h2>");
+        assertThat(lehrveranstaltungstext).contains("<h2>" + freitext + "</h2>\n");
     }
 }

@@ -402,7 +402,9 @@
                     <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
                 </ul>
             </div>
-            <div th:utext="${v.lehrveranstaltungenFreeText}">Vorlesung „Rechnerarchitektur“, 2 SWS</div>
+            <div th:each="freeText : ${v.lehrveranstaltungenFreeText}">
+                <div th:utext="${freeText}">Vorlesung „Rechnerarchitektur“, 2 SWS</div>
+            </div>
             <h3>Inhalte</h3>
             <div th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP)
                 behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:
