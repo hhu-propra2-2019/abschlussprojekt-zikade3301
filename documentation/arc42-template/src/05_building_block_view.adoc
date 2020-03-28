@@ -61,6 +61,13 @@ _Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/M
 Usern mit der Rolle "Administrator" wird hier der Button mit dem Label "Semesterplanung" eingeblendet, der beim Anklicken ein Modal öffnet.
 Innerhalb des Modals sind sämtliche Module mit ihren aktuellen Semestertags aufgelistet und können bearbeitet werden._
 
+== Sichtbarkeit von Modulen bearbeiten
+
+Schnittstelle::
+_Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/Modulbeauftragter").
+Usern mit der Rolle "Administrator" wird hier der Button mit dem Label "Modulsichtbarkeit" eingeblendet, der beim Anklicken ein Modal öffnet.
+Im Modal sind sämtliche Module innerhalb ihrer Modulkategorie mit ihrem aktuellen Sichtbarkeitsstatus aufgelistet und können durch ein Klicken auf diesen geändert werden._
+
 Qualitäts-/Leistungsmerkmale::
 
  _Semestertags sollen nur von der Rolle Administrator gesetzt oder entfernt werden können._
@@ -134,7 +141,7 @@ Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in d
 
 Semestertags bearbeiten im Detail::
 
-_Um Semestertags anzulegen wird in der Ansicht "/Modulbeauftragter" auf den Button "Semesterplanung" geklickt und
+_Um Semestertags anzulegen, wird in der Ansicht "/Modulbeauftragter" auf den Button "Semesterplanung" geklickt und
 in ein Inputfeld auf Höhe der einzelnen Veranstaltung der entsprechende Tagtext eingegeben (bspw. "SoSe2020").
 Durch das Klicken auf den Button mit dem Label "+" wird ein Formular via Post-Request an "/module/semesterTag/create" geschickt.
 Das Formular beinhaltet neben dem String auch den Inhalt zweier HTML-Tags mit dem Attribut "type=hidden", die somit unsichtbar für den User sind.
@@ -152,6 +159,19 @@ Die Variablen werden über @RequestParam in lokalen Variablen zwischengespeicher
 Dort wird zunächst die entsprechende Veranstaltung über die ID gesucht, in der anschließend sämtliche Semestertags bis auf dem zu entfernenden in der Variable "semesterNew" zwischengespeichert werden.
 Diese Variable wird der Veranstaltung nun als neues Set an Semestertags gesetzt. Nachdem das Modul mit seinen Änderungen gespeichert wird, erfolgt auch hier
 abschließend ein Redirect auf "/module/modulbeauftragter" durch den Controller._
+
+== Sichtbarkeit von Modulen bearbeiten Blackbox
+
+Sichtbarkeit von Modulen bearbeiten im Detail::
+
+_Um den Sichtbarkeitsstatus eines Moduls abzuändern, wird in der Ansicht "/Modulbeauftragter" auf den Button "Modulsichtbarkeit" und
+anschließend auf einen Button geklickt, der den aktuellen Modulsichtbarkeitsstatus beinhaltet. Es folgt ein PostRequest auf "/module/setModulVisibility",
+dem über ein HTML-Tag in Kombination mit Thymeleaf die ModulID des entsprechenden Moduls mitgegeben wird. Durch das Attribut "type=hidden" ist der HTML-Tag dem User verborgen.
+Im ModulVisibilityController wird der Request von der Methode "changeVisibilityOfModules" entgegengenommen und die mitgegebene ModulID über @RequestParam in der lokalen Variable "modulToChange" gespeichert.
+Hier wird nun die Methode "changeVisibility" des ModulService aufgerufen und die in "long" geparste Version der Variablen "modulToChange" mitgegeben.
+Innerhalb dieser Methode wird nun der aktuelle Sichtbarkeitsstatus über die ModulID gesucht und in der Boolean-Variable "status" gespeichert; es folgt
+eine If-Abfrage, die den neuen Wert des Status' auf true setzt, wenn zuvor "null" oder "false" gesetzt war und andererseits auf false setzt. Anschließend wird das
+Modul gespeichert und es erfolgt ein Redirect auf "/module/modulbeauftragter" durch den Controller._
 
 
 
