@@ -29,7 +29,6 @@ public class ModulWrapperService {
      */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
         Set<Veranstaltung> veranstaltungenInWrapper = getVeranstaltungenAsSet(modulWrapper);
-        removeInvalidListEntriesFromVeranstaltungenSet(veranstaltungenInWrapper);
         Modul modul = modulWrapper.getModul();
         modul.setVeranstaltungen(veranstaltungenInWrapper);
         modul.refreshMapping();
@@ -123,9 +122,7 @@ public class ModulWrapperService {
     public static ModulWrapper initializePrefilledWrapper(Modul modul) {
 
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
-        if(modul.getId()!=null) {
-            sortVernstaltungListById(veranstaltungen);
-        }
+        sortVernstaltungListById(veranstaltungen);
         List<Veranstaltungsform>[] veranstaltungsformen = new List[veranstaltungen.size()];
         List<Zusatzfeld>[] zusatzfelder = new List[veranstaltungen.size()];
 
@@ -137,16 +134,14 @@ public class ModulWrapperService {
 
     private static void fillUpWithEmptyVeranstaltungsformen(
             List<Veranstaltungsform>[] veranstaltungsformen, List<Veranstaltung> veranstaltungen) {
-        System.out.println("Veranstaltungsanzahl "+ veranstaltungen.size());
+//        System.out.println("Veranstaltungsanzahl "+ veranstaltungen.size());
         for (int i = 0; i < veranstaltungen.size(); i++) {
 
             veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
 
-            System.out.println("in Veranstaltungsformen" + veranstaltungsformen[i].get(0).getId());
+//            System.out.println("in Veranstaltungsformen" + veranstaltungsformen[i].get(0).getId());
 
-            if(veranstaltungen.get(i).getId()!=null) {
-                sortVernstaltungsformListById(veranstaltungsformen[i]);
-            }
+            sortVernstaltungsformListById(veranstaltungsformen[i]);
             while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
                 veranstaltungsformen[i].add(new Veranstaltungsform());
             }
@@ -157,9 +152,7 @@ public class ModulWrapperService {
             List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
             zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
-            if(veranstaltungen.get(i).getId()!=null) {
-                sortZusatzfeldListById(zusatzfelder[i]);
-            }
+            sortZusatzfeldListById(zusatzfelder[i]);
             while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
                 zusatzfelder[i].add(new Zusatzfeld());
             }
@@ -184,21 +177,24 @@ public class ModulWrapperService {
 
     private static void sortVernstaltungListById(
             List<Veranstaltung> veranstaltungen) {
-        veranstaltungen.removeAll(Collections.singleton(null));
-        veranstaltungen.removeIf(x -> x.getId()==null);
-        veranstaltungen.sort(Comparator.comparing(Veranstaltung::getId));
+        veranstaltungen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltung::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+//        veranstaltungen.removeAll(Collections.singleton(null));
+//        veranstaltungen.removeIf(x -> x.getId()==null);
+//        veranstaltungen.sort(Comparator.comparing(Veranstaltung::getId));
     }
 
     private static void sortVernstaltungsformListById(
             List<Veranstaltungsform> veranstaltungsformen) {
-        veranstaltungsformen.removeAll(Collections.singleton(null));
-        veranstaltungsformen.removeIf(x -> x.getId()==null);
-        veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId));
+        veranstaltungsformen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltungsform::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+//        veranstaltungsformen.removeAll(Collections.singleton(null));
+//        veranstaltungsformen.removeIf(x -> x.getId()==null);
+//        veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId));
     }
 
     private static void  sortZusatzfeldListById(List<Zusatzfeld> zusatzfelder) {
-        zusatzfelder.removeAll(Collections.singleton(null));
-        zusatzfelder.removeIf(x -> x.getId()==null);
-        zusatzfelder.sort(Comparator.comparing(Zusatzfeld::getId));
+        zusatzfelder.sort(Comparator.nullsLast(Comparator.comparing(Zusatzfeld::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+//        zusatzfelder.removeAll(Collections.singleton(null));
+//        zusatzfelder.removeIf(x -> x.getId()==null);
+//        zusatzfelder.sort(Comparator.comparing(Zusatzfeld::getId));
     }
 }
