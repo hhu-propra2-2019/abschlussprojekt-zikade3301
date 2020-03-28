@@ -5,15 +5,12 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 import java.time.format.DateTimeFormatter;
 import lombok.RequiredArgsConstructor;
 import mops.module.services.AntragService;
-import mops.module.services.JsonService;
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
 @RequiredArgsConstructor

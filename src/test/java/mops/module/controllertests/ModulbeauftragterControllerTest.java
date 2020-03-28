@@ -69,7 +69,7 @@ class ModulbeauftragterControllerTest {
     }
 
     @Test
-    void testModulbeauftragterNoAccessIfNotLoggedIn() throws Exception {
+    void testModulbeauftragterNoAccessIfNotLoggedIn() {
         assertThrows(java.lang.AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/modulbeauftragter")).andExpect(view().name(expect));
@@ -77,7 +77,7 @@ class ModulbeauftragterControllerTest {
     }
 
     @Test
-    void testModulbeauftragterNoAccessForStudents() throws Exception {
+    void testModulbeauftragterNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
