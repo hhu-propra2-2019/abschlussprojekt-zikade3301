@@ -29,10 +29,26 @@ public class ModulWrapperService {
      */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
         Set<Veranstaltung> veranstaltungenInWrapper = getVeranstaltungenAsSet(modulWrapper);
+        removeInvalidListEntriesFromVeranstaltungenSet(veranstaltungenInWrapper);
         Modul modul = modulWrapper.getModul();
         modul.setVeranstaltungen(veranstaltungenInWrapper);
         modul.refreshMapping();
         return modul;
+    }
+
+    private static void removeInvalidListEntriesFromVeranstaltungenSet(
+            Set<Veranstaltung> veranstaltungenInWrapper) {
+        for (Veranstaltung v : veranstaltungenInWrapper) {
+            if (v.getVeranstaltungsformen() != null) {
+                v.getVeranstaltungsformen().removeIf(vf -> vf.getForm() == null);
+                v.getVeranstaltungsformen().removeIf(vf -> vf.getForm().equals(""));
+            }
+            if (v.getZusatzfelder() != null) {
+                v.getZusatzfelder().removeIf(vf -> vf.getTitel() == null || vf.getInhalt() == null);
+                v.getZusatzfelder()
+                        .removeIf(zf -> zf.getTitel().equals("") || zf.getInhalt().equals(""));
+            }
+        }
     }
 
     private static Set<Veranstaltung> getVeranstaltungenAsSet(ModulWrapper modulWrapper) {
@@ -149,6 +165,22 @@ public class ModulWrapperService {
             }
         }
     }
+
+    //Einfach rauslöschen aller leeren Felder ?
+    // Wenn ein neues veranstaltungsformfeld hinzugefügt wird beim bearbeiten, hat es noch keine ID,
+    //Würde jetzt also wieder rausgelöscht werden, oder?
+
+    //Bei zwei neu angeegten und einem veränderten landet nur ein neues und das veränderte bei der Annahme
+
+
+    //IDEE neu hinzugefügte veranstaltungsformen haben keine id. müssen aber auch nicht sortiert werden weil sie
+    //auf jedenfall neu sein. Die, die eine Idee haben sollten sortiert werden.
+
+    //Fragen:
+    // Was ist wenn man den INput aus einem bestehenden Form rauslöscht?
+
+        //    veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId,
+        //    Comparator.nullsLast(Comparator.naturalOrder())));
 
     private static void sortVernstaltungListById(
             List<Veranstaltung> veranstaltungen) {

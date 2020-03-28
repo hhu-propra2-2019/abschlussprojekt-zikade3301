@@ -142,6 +142,14 @@ public class AntragService {
         return antragRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Gibt alle Versionen für das Modul mit der angebenen id als Liste aus.
+     * @param id Die id eines in der Datenbank existierenden (d.h. genehmigten) Moduls.
+     * @return Eine Liste aller Versionen des Moduls, wobei der erste Listeneintrag das Modul
+     *         im initialen Erstellungsantrag ist und der letzte Listeneintrag das Modul im
+     *         aktuellen Status ist. Da der Sichtbarkeitsstatus nicht über Anträge funktioniert,
+     *         ist die Sichtbarkeit aller Versionen immer null.
+     */
     public LinkedList<Modul> getAllVersionsOfModulOldestFirst(Long id) {
         List<Antrag> relevantApprovedAntraege = getAllApprovedAntraegeForModulOldestFirst(id);
         LinkedList<Modul> modulVersions = new LinkedList<>();
