@@ -40,8 +40,8 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
 Schnittstelle(n)::
 
- _Die Schnittstellen liegen hier in der View des Administrators Nur von dieser beiden Seite aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
- Es kann sich um das Annehmen von Modifikations Anträgen, also einer bearbeitung eines bereits bestehenden Moduls, und um Kreations Anträge, also das neu erstellen eines Moduls, handeln._
+ _Die Schnittstellen liegen hier in der View des Administrators nur von diese beiden Seiten aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
+ Es kann sich um das Annehmen von Modifikations Anträgen, also einer Bearbeitung eines bereits bestehenden Moduls, und um Kreations Anträge, also das neu erstellen eines Moduls, handeln._
 
 
 Qualitäts-/Leistungsmerkmale::
