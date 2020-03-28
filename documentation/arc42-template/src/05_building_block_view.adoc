@@ -54,6 +54,17 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
  _Die Modulinformationen sollen zu jeder Zeit in korrekt formatiertem JSON für den API-Nutzer abrufbar sein. Der Nutzer soll genau spezifizieren können, welche Informationen er benötigt._
 
+== Semestertags bearbeiten
+
+Schnittstelle::
+_Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/Modulbeauftragter").
+Usern mit der Rolle "Administrator" wird hier der Button mit dem Label "Semesterplanung" eingeblendet, der beim Anklicken ein Modal öffnet.
+Innerhalb des Modals sind sämtliche Module mit ihren aktuellen Semestertags aufgelistet und können bearbeitet werden._
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Semestertags sollen nur von der Rolle Administrator gesetzt oder entfernt werden können._
+
 == Volltextsuche Blackbox
 
  Suche im Detail::
@@ -118,6 +129,32 @@ Hierzu wird zunächst mithilfe der ID das alte Modul aus der Datenbank geholt un
 Anschließend werden mithilfe von calculateModulDiffs() aus ModulService die beiden Module auf relevante (d.h. nicht z.B. automatisch generierte Zeitstempel betreffende) Unterschiede untersucht und in Form eines Differenzmoduls (d.h. einer Modul-Instanz, bei der Felder ohne Unterschiede den Wert null und Felder mit Änderungen den Wert nach der Änderung haben) ausgibt.
 Wenn in diesem Differenzmodul Änderungen festgestellt wurden, wird der Änderungsantrag in der Datenbank gespeichert und ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
 Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt und das Modul in der Datenbank geupdatet._
+
+== Semestertags bearbeiten Blackbox
+
+Semestertags bearbeiten im Detail::
+
+_Um Semestertags anzulegen wird in der Ansicht "/Modulbeauftragter" auf den Button "Semesterplanung" geklickt und
+in ein Inputfeld auf Höhe der einzelnen Veranstaltung der entsprechende Tagtext eingegeben (bspw. "SoSe2020").
+Durch das Klicken auf den Button mit dem Label "+" wird ein Formular via Post-Request an "/module/semesterTag/create" geschickt.
+Das Formular beinhaltet neben dem String auch den Inhalt zweier HTML-Tags mit dem Attribut "type=hidden", die somit unsichtbar für den User sind.
+In diesen beiden HTML-Tags befinden sich über Thymeleaf eingebundene Variablen, die die ModulID und VeranstaltungsID der Veranstaltung beinhalten,
+für die ein Semestertag gesetzt werden soll. Im SemesterTagController wird der PostRequest von der Methode addSemesterTagToVeranstaltung entgegengenommen.
+Hier werden die mitgesendeten Variablen über @RequestParam in den lokalen Variablen "semesterTag", "idVeranstaltung" und "idModul" gespeichert.
+Anschließend wird die Methode "tagVeranstaltungSemester" aus dem ModulService mit diesen Variablen aufgerufen.
+Hier wird die Veranstaltung über die ID gesucht und ihre aktuellen Semestertags in der Variable "semesterOld" zwischengespeichert.
+Der Variable wird nun das Tag aus "semesterTag" hinzugefügt und das gesamte Modul gespeichert.
+Abschließend erfolgt ein Redirect auf "/module/modulbeauftragter" durch den Controller. Das Löschen von Semestertags
+erfolgt in der selben Benutzeroberfläche. Alle aktuellen Tags werden hinter dem Veranstaltungsnamen angezeigt und beinhalten einen Button, der ein PostRequest
+an "/module/semesterTag/delete" auslöst. Das Formular, das hier übergeben wird beinhaltet die VeranstaltungsID sowie den Semestertaginhalt und die ModulID.
+All diese Werte werden dem Request über HTML-Tags in Kombination mit Thymeleaf mitgegeben, die durch "type=hidden" dem User verborgen sind. Im Controller wird der Request von der Methode "removeSemesterTagToVeranstaltung" entgegengenommen.
+Die Variablen werden über @RequestParam in lokalen Variablen zwischengespeichert und dazu genutzt, die Methode "deleteTagVeranstaltungSemester" aus dem ModulService aufzurufen.
+Dort wird zunächst die entsprechende Veranstaltung über die ID gesucht, in der anschließend sämtliche Semestertags bis auf dem zu entfernenden in der Variable "semesterNew" zwischengespeichert werden.
+Diese Variable wird der Veranstaltung nun als neues Set an Semestertags gesetzt. Nachdem das Modul mit seinen Änderungen gespeichert wird, erfolgt auch hier
+abschließend ein Redirect auf "/module/modulbeauftragter" durch den Controller._
+
+
+
 
 ==== <Name Blackbox n>
 
