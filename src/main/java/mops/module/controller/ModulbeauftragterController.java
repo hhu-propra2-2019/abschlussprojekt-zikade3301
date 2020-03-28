@@ -32,6 +32,7 @@ public class ModulbeauftragterController {
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String module(KeycloakAuthenticationToken token, Model model) {
         model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
         return "modulbeauftragter";
     }
