@@ -13,14 +13,14 @@ Es gibt eine dynamische Semesterübersicht, die anzeigt, welche Module in dem au
 
 |===
 |Ziele | Lösungen
-| _Klare Rollen- und Aufgabenaufteilung_ | Dozenten können Module erstellen oder einzelne Aspekte des Moduls ändern.
+| _Klare Rollen- und Aufgabenaufteilung_ | Nutzer könne nach den gewünschten Informationen suchen, einsehen und herunterladen.
+Dozenten können Module erstellen oder einzelne Aspekte des Moduls ändern.
 Der Administrator bekommt diese Anträge und kann diese bestätigen oder abändern und dann bestätigen.
 Erst nachdem der Administrator den Antrag genehmigt hat, wird das Modul für die Nutzer angezeigt.
-
-| _Gute User Experience_ | Der Nutzer kann mit einer Volltextsuche Module finden sowie das vollständige Modulhandbuch im PDF-Format herunterladen.
-
-|_Sicherheit_ | Durch Keycloak wird der Zugriff auf Funktionen nur Rollenbasiert gewährt
-
-| _Dynamische Semesteransicht_ | Eine Filterfunktion ermöglicht dem Nutzer eine dynamische Ansicht der Module.
+| _Gute User Experience_ | Der Nutzer kann mit einer Volltextsuche Module finden sowie das vollständige Modulhandbuch im PDF-Format herunterladen. Hierfür wird Hibernate Search und PDFBox verwendet.
+|_Sicherheit_ | Durch Keycloak wird der Zugriff auf Funktionen nur Rollenbasiert gewährt.
+| _Dynamische Semesteransicht_ | Eine Filterfunktion ermöglicht dem Nutzer eine dynamische Ansicht der Module. Die Module haben ein Attribut Semster, nachdem gefiltert werden kann.
+| _Dynamische Änderung derModule_ | Geänderte Module oder hinzugefügte Module sind, nachdem sie akzeptiert wurden, sofort einsehbar und stehen zum Download bereit.
+| Rest Api | Andere Anwendungen von MOPS z.B. die Belegung, kann über die Rest Api die für sie relevanten Informationen abrufen. Diese werden bei uns in einem Json übergeben.
 
 |===
