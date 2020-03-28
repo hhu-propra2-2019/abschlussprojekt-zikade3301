@@ -241,9 +241,17 @@ public class ModulService {
         return firstYear + "-" + secondYear;
     }
 
+
     public void changeVisibility(long modulId) {
 
-        System.out.println(modulId);
+        Boolean status = getModulById(modulId).getSichtbar();
+
+        if (status == null || !status) {
+            getModulById(modulId).setSichtbar(true);
+        } else {
+            getModulById(modulId).setSichtbar(false);
+        }
+        modulSnapshotRepository.save(getModulById(modulId));
     }
 
 }
