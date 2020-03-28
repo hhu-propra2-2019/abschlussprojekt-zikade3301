@@ -12,29 +12,6 @@
 <header>
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
         <ul>
-            <li class="active">
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle"
-                            style="width: 100%;
-                            border-radius: 0;
-                            text-align: left;
-                            background: transparent;
-                            color: dimgray;
-                            border: none"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                        Semesterauswahl
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS/SS</a>
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">WS</a>
-                        <a style="background: white; color: dimgray" class="dropdown-item" href="#">SS</a>
-                    </div>
-                </div>
-            </li>
             <li>
                 <a href="/module/">Übersicht</a>
             </li>
@@ -50,10 +27,8 @@
                 </div>
             </li>
         </ul>
-
     </nav>
 </header>
-
 
 <main th:fragment="bodycontent">
     <ul th:each="result: ${searchResults}">

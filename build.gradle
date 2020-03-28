@@ -55,6 +55,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.vladsch.flexmark:flexmark-all:0.60.2'
     compile 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'com.h2database:h2'
     implementation 'org.hibernate:hibernate-search-orm:5.11.5.Final'
@@ -71,6 +72,9 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     implementation('org.postgresql:postgresql')
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.graphql-java:graphql-java:11.0'
+    implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0'
+    runtime 'com.graphql-java-kickstart:graphiql-spring-boot-starter:6.0.1'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
