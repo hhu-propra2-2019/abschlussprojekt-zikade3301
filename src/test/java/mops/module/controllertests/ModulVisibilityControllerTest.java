@@ -9,13 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import mops.module.database.Modul;
-import mops.module.generator.ModulFaker;
-import mops.module.repositories.ModulSnapshotRepository;
 import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -120,6 +116,4 @@ class ModulVisibilityControllerTest {
         verify(modulServiceMock)
                 .changeVisibility(3301L);
     }
-
-
 }
