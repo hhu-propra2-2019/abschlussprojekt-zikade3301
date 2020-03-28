@@ -67,8 +67,8 @@ wird auf die Übersichtseite der Anträge ( administrator.html) redirected.
 === Bearbeitung (Modifikation)
 Handelt es sich um einen Modifikationsantrag werden der View zwei Module, jeweils eingepackt in einen Modulwrapper, übergeben.
 Ein Modul ist das alte, vor den Änderungen die von einem Modulbeaufragten beantragt wurden, und eines das neue, also das Modul wie es nach
-den Änderungen aussehen würde. Mit Hilfe von Thymeleaf wir dem Administrator nun das ausgefüllte  neue Modul angezeigt. Unterschiede zwischen dem alten und neuen
-werden farblich makiert. Dem Administrator ist es nun noch Möglich Änderungen vorzunehmen und den Antrag anschließend mit "Antrag annehmen" anzunehmen.
+den Änderungen aussehen würde. Mit Hilfe von Thymeleaf wird dem Administrator nun das ausgefüllte  neue Modul angezeigt. Unterschiede zwischen dem alten und neuen
+werden farblich makiert. Dem Administrator ist es nun noch möglich Änderungen vorzunehmen und den Antrag anschließend mit "Antrag annehmen" anzunehmen.
 Hiermit wird eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitet wird.
 Das Modul, inklusiver aller Änderungen, wird aus dem AntragWrapper Objekt entpackt und anschließend in den ursprünglichen Antrag gesetzt.
 Dieser und das beinhaltete Modul werden dann mit Hilfe des Antrag Services in der Datenbank abgespeichert und der Administrator
