@@ -78,17 +78,7 @@ public class AntragdetailsController {
         Antrag antrag =  antragService.getAntragById(id);
         Modul modulAlt = modulService.getModulById(antrag.getModulId());
         Modul modulNeu = new Modul();
-
-        //ModulAlt kopieren
-        //TODO - eventuell auslagern
-        for (Field field : modulAlt.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            try {
-                field.set(modulNeu, field.get(modulAlt));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        ModulService.kopiereModul(modulAlt, modulNeu);
 
         ModulService.applyAntragOnModul(modulNeu,antrag);
 
