@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
+import mops.module.wrapper.PdfModulWrapper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;

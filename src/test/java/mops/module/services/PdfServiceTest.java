@@ -13,6 +13,7 @@ import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.generator.ModulFaker;
+import mops.module.wrapper.PdfVeranstaltungWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

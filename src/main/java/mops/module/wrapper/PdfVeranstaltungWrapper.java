@@ -1,7 +1,7 @@
-package mops.module.services;
+package mops.module.wrapper;
 
-import static mops.module.services.PdfModulWrapper.getSafeString;
-import static mops.module.services.PdfModulWrapper.safeAppend;
+import static mops.module.wrapper.PdfModulWrapper.getSafeString;
+import static mops.module.wrapper.PdfModulWrapper.safeAppend;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
+import mops.module.services.HtmlService;
 
 /**
  * Formatiert die Daten aus dem Veranstaltungsobjekt passend für das PDF-Template.
