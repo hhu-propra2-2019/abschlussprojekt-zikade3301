@@ -241,4 +241,9 @@ public class ModulService {
         return firstYear + "-" + secondYear;
     }
 
+    public void changeVisibility(long modulId) {
+
+        System.out.println(modulId);
+    }
+
 }
