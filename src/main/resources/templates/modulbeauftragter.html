@@ -54,81 +54,80 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                        <div th:each="category : ${allCategories}">
-                            <p>
-                                <a class="btn btn-primary"
-                                   style="font-weight: bold;
-                                   font-size: larger;
-                                   border:none;
-                                   background-color: transparent;
-                                   color: dodgerblue"
-                                   data-toggle="collapse"
-                                   th:href="'#modulVisibility'+ ${category}"
-                                   role="button"
-                                   aria-expanded="false"
-                                   th:attr="aria-controls='modulVisibility'+ ${category}">
-                                    <span th:text="${category.toReadable()}">Modulkategorien</span>
-                                </a>
-                            </p>
-                            <div class="collapse" th:id="'modulVisibility'+ ${category}">
-                                <div class="card card-body pt-0" style="border: none">
-                                    <ul style="font-size: large; list-style-type: none; display: grid; padding-left: 0">
-                                        <li th:each="modul : ${allModules}" style="display: inline-table">
-                                            <div th:if="${modul.getModulkategorie()} == ${category}">
-                                                <form action="#" th:action="@{/module/setModulVisibility}" method="post">
-                                                    <input type="hidden" th:value="${modul.getId()}" id="modulToChange" name="modulToChange">
+                    <div th:each="category : ${allCategories}">
+                        <p>
+                            <a class="btn btn-primary"
+                               style="font-weight: bold;
+                               font-size: larger;
+                               border:none;
+                               background-color: transparent;
+                               color: dodgerblue"
+                               data-toggle="collapse"
+                               th:href="'#modulVisibility'+ ${category}"
+                               role="button"
+                               aria-expanded="false"
+                               th:attr="aria-controls='modulVisibility'+ ${category}">
+                                <span th:text="${category.toReadable()}">Modulkategorien</span>
+                            </a>
+                        </p>
+                        <div class="collapse" th:id="'modulVisibility'+ ${category}">
+                            <div class="card card-body pt-0" style="border: none">
+                                <ul style="font-size: large; list-style-type: none; display: grid; padding-left: 0">
+                                    <li th:each="modul : ${allModules}" style="display: inline-table">
+                                        <div th:if="${modul.getModulkategorie()} == ${category}">
+                                            <form action="#" th:action="@{/module/setModulVisibility}" method="post">
+                                                <input type="hidden" th:value="${modul.getId()}" id="modulToChange" name="modulToChange">
 
-                                                    <div style="display: flex">
-                                                        <div class="col-3">
-                                                            <span th:switch="${modul.getSichtbar()}">
-                                                                <span th:case="true">
-                                                                    <button class="btn btn-success"
-                                                                            type="submit"
-                                                                            style="font-size: x-small;
-                                                                            min-width: 100%;">
-                                                                        <span>
-                                                                            Sichtbar
-                                                                        </span>
-                                                                    </button>
-                                                                </span>
-                                                                <span th:case="false">
-                                                                    <button class="btn btn-danger"
-                                                                            type="submit"
-                                                                            style="font-size: x-small;
-                                                                            min-width: 100%;">
-                                                                        <span>
-                                                                            Unsichtbar
-                                                                        </span>
-                                                                    </button>
-                                                                </span>
-                                                                <span th:case="null">
-                                                                    <button class="btn btn-warning"
-                                                                            type="submit"
-                                                                            style="font-size: x-small;
-                                                                            min-width: 100%;">
-                                                                        <span>
-                                                                            Noch kein Status
-                                                                        </span>
-                                                                    </button>
-                                                                </span>
+                                                <div style="display: flex">
+                                                    <div class="col-3">
+                                                        <span th:switch="${modul.getSichtbar()}">
+                                                            <span th:case="true">
+                                                                <button class="btn btn-success"
+                                                                        type="submit"
+                                                                        style="font-size: x-small;
+                                                                        min-width: 100%;">
+                                                                    <span>
+                                                                        Sichtbar
+                                                                    </span>
+                                                                </button>
                                                             </span>
-                                                        </div>
-
-
-                                                        <div class="col-9">
-                                                            <span style="color: dodgerblue"
-                                                                  th:text="${modul.getTitelDeutsch()}">
-                                                                Modulname
+                                                            <span th:case="false">
+                                                                <button class="btn btn-danger"
+                                                                        type="submit"
+                                                                        style="font-size: x-small;
+                                                                        min-width: 100%;">
+                                                                    <span>
+                                                                        Unsichtbar
+                                                                    </span>
+                                                                </button>
                                                             </span>
-                                                        </div>
+                                                            <span th:case="null">
+                                                                <button class="btn btn-warning"
+                                                                        type="submit"
+                                                                        style="font-size: x-small;
+                                                                        min-width: 100%;">
+                                                                    <span>
+                                                                        Noch kein Status
+                                                                    </span>
+                                                                </button>
+                                                            </span>
+                                                        </span>
                                                     </div>
-                                                </form>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
+
+                                                    <div class="col-9">
+                                                        <span style="color: dodgerblue"
+                                                              th:text="${modul.getTitelDeutsch()}">
+                                                            Modulname
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

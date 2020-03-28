@@ -66,6 +66,24 @@ Qualitäts-/Leistungsmerkmale::
 
  _Die Modulinformationen sollen zu jeder Zeit in korrekt formatiertem JSON für den API-Nutzer abrufbar sein. Der Nutzer soll genau spezifizieren können, welche Informationen er benötigt._
 
+== Semestertags bearbeiten
+
+Schnittstelle::
+_Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/Modulbeauftragter").
+Usern mit der Rolle "Administrator" wird hier der Button mit dem Label "Semesterplanung" eingeblendet, der beim Anklicken ein Modal öffnet.
+Innerhalb des Modals sind sämtliche Module mit ihren aktuellen Semestertags aufgelistet und können bearbeitet werden._
+
+== Sichtbarkeit von Modulen bearbeiten
+
+Schnittstelle::
+_Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/Modulbeauftragter").
+Usern mit der Rolle "Administrator" wird hier der Button mit dem Label "Modulsichtbarkeit" eingeblendet, der beim Anklicken ein Modal öffnet.
+Im Modal sind sämtliche Module innerhalb ihrer Modulkategorie mit ihrem aktuellen Sichtbarkeitsstatus aufgelistet und können durch ein Klicken auf diesen geändert werden._
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Semestertags sollen nur von der Rolle Administrator gesetzt oder entfernt werden können._
+
 == Volltextsuche Blackbox
 
  Suche im Detail::
@@ -131,7 +149,6 @@ Anschließend werden mithilfe von calculateModulDiffs() aus ModulService die bei
 Wenn in diesem Differenzmodul Änderungen festgestellt wurden, wird der Änderungsantrag in der Datenbank gespeichert und ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
 Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt und das Modul in der Datenbank geupdatet._
 
-
 == Annahme von Anträgen für Erstellung Blackbox
 
 *Reiter Anträge -> AdministratorController* ::
@@ -193,6 +210,41 @@ auch den Antrag mit Hilfe des antragRepositorys in der Datenbank.
 
 Anschließend wird der Nutzer aus die administrator.html, also die Übersicht aller offenen Anträge, redirected.
 
+== Semestertags bearbeiten Blackbox
+
+Semestertags bearbeiten im Detail::
+
+_Um Semestertags anzulegen, wird in der Ansicht "/Modulbeauftragter" auf den Button "Semesterplanung" geklickt und
+in ein Inputfeld auf Höhe der einzelnen Veranstaltung der entsprechende Tagtext eingegeben (bspw. "SoSe2020").
+Durch das Klicken auf den Button mit dem Label "+" wird ein Formular via Post-Request an "/module/semesterTag/create" geschickt.
+Das Formular beinhaltet neben dem String auch den Inhalt zweier HTML-Tags mit dem Attribut "type=hidden", die somit unsichtbar für den User sind.
+In diesen beiden HTML-Tags befinden sich über Thymeleaf eingebundene Variablen, die die ModulID und VeranstaltungsID der Veranstaltung beinhalten,
+für die ein Semestertag gesetzt werden soll. Im SemesterTagController wird der PostRequest von der Methode addSemesterTagToVeranstaltung entgegengenommen.
+Hier werden die mitgesendeten Variablen über @RequestParam in den lokalen Variablen "semesterTag", "idVeranstaltung" und "idModul" gespeichert.
+Anschließend wird die Methode "tagVeranstaltungSemester" aus dem ModulService mit diesen Variablen aufgerufen.
+Hier wird die Veranstaltung über die ID gesucht und ihre aktuellen Semestertags in der Variable "semesterOld" zwischengespeichert.
+Der Variable wird nun das Tag aus "semesterTag" hinzugefügt und das gesamte Modul gespeichert.
+Abschließend erfolgt ein Redirect auf "/module/modulbeauftragter" durch den Controller. Das Löschen von Semestertags
+erfolgt in der selben Benutzeroberfläche. Alle aktuellen Tags werden hinter dem Veranstaltungsnamen angezeigt und beinhalten einen Button, der ein PostRequest
+an "/module/semesterTag/delete" auslöst. Das Formular, das hier übergeben wird beinhaltet die VeranstaltungsID sowie den Semestertaginhalt und die ModulID.
+All diese Werte werden dem Request über HTML-Tags in Kombination mit Thymeleaf mitgegeben, die durch "type=hidden" dem User verborgen sind. Im Controller wird der Request von der Methode "removeSemesterTagToVeranstaltung" entgegengenommen.
+Die Variablen werden über @RequestParam in lokalen Variablen zwischengespeichert und dazu genutzt, die Methode "deleteTagVeranstaltungSemester" aus dem ModulService aufzurufen.
+Dort wird zunächst die entsprechende Veranstaltung über die ID gesucht, in der anschließend sämtliche Semestertags bis auf dem zu entfernenden in der Variable "semesterNew" zwischengespeichert werden.
+Diese Variable wird der Veranstaltung nun als neues Set an Semestertags gesetzt. Nachdem das Modul mit seinen Änderungen gespeichert wird, erfolgt auch hier
+abschließend ein Redirect auf "/module/modulbeauftragter" durch den Controller._
+
+== Sichtbarkeit von Modulen bearbeiten Blackbox
+
+Sichtbarkeit von Modulen bearbeiten im Detail::
+
+_Um den Sichtbarkeitsstatus eines Moduls abzuändern, wird in der Ansicht "/Modulbeauftragter" auf den Button "Modulsichtbarkeit" und
+anschließend auf einen Button geklickt, der den aktuellen Modulsichtbarkeitsstatus beinhaltet. Es folgt ein PostRequest auf "/module/setModulVisibility",
+dem über ein HTML-Tag in Kombination mit Thymeleaf die ModulID des entsprechenden Moduls mitgegeben wird. Durch das Attribut "type=hidden" ist der HTML-Tag dem User verborgen.
+Im ModulVisibilityController wird der Request von der Methode "changeVisibilityOfModules" entgegengenommen und die mitgegebene ModulID über @RequestParam in der lokalen Variable "modulToChange" gespeichert.
+Hier wird nun die Methode "changeVisibility" des ModulService aufgerufen und die in "long" geparste Version der Variablen "modulToChange" mitgegeben.
+Innerhalb dieser Methode wird nun der aktuelle Sichtbarkeitsstatus über die ModulID gesucht und in der Boolean-Variable "status" gespeichert; es folgt
+eine If-Abfrage, die den neuen Wert des Status' auf true setzt, wenn zuvor "null" oder "false" gesetzt war und andererseits auf false setzt. Anschließend wird das
+Modul gespeichert und es erfolgt ein Redirect auf "/module/modulbeauftragter" durch den Controller._
 
 ==== <Name Blackbox n>
 
