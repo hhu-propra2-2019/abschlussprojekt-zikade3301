@@ -5,10 +5,6 @@ Dieser Abschnitt stellt die wichtigsten Ziele und Lösungsansätze gegenüber.
 
 == Ziele und Lösungen
 
-ÜBERARBEITEN
-
-Es gibt eine dynamische Semesterübersicht, die anzeigt, welche Module in dem ausgewählten Semester verfügbar sind.
-
 [cols="1,2" options="header"]
 
 |===

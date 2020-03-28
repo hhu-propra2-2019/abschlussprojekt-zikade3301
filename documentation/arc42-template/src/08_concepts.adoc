@@ -36,9 +36,3 @@ nachdem die Anzahl der Veranstaltungen in ein Modal erfolgreich eingetragen wurd
 User mit der Rolle "sekretariat" können in der Ansicht "Modulbeauftragter" zusätzlich Semestertags für Veranstaltungen eines Moduls vergeben,
 die signalisiern, wann eine Veranstaltung stattfindet.
 Dies geschieht über den Button "Semesterplanung"._
-
-...
-
-=== _<Konzept n>_
-
-_<Erklärung>_
