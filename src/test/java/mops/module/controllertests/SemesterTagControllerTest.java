@@ -83,7 +83,7 @@ class SemesterTagControllerTest {
     }
 
     @Test
-    void testSemesterTagNoAccessIfNotLoggedIn() throws Exception {
+    void testSemesterTagNoAccessIfNotLoggedIn() {
 
         assertThrows(AssertionError.class,
                 () -> {
@@ -97,7 +97,7 @@ class SemesterTagControllerTest {
     }
 
     @Test
-    void testSemesterTagNoAccessForOrganizers() throws Exception {
+    void testSemesterTagNoAccessForOrganizers() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -114,7 +114,7 @@ class SemesterTagControllerTest {
     }
 
     @Test
-    void testSemesterTagNoAccessForStudents() throws Exception {
+    void testSemesterTagNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
