@@ -107,6 +107,7 @@ public class AntragService {
         Modul modulFromJson = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
         modulFromJson.refreshMapping();
 
+        modulFromJson.setSichtbar(true);
         Modul modul = modulSnapshotRepository.save(modulFromJson);
 
         antrag.setDatumGenehmigung(LocalDateTime.now());
