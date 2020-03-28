@@ -21,7 +21,21 @@
 
 Allgemein:: 
 
-_Die Benutzeroberfläche besteht überwiegend aus HTML, wobei dieses durch InlineCSS und Bootstrapklassen ergänzt wurde. Auch wurde JavaScript vereinzelt verwendet. Die Views sind rollenbedingt ersichtlich. Nichteingeloggte User und Studenten können lediglich die Indexseite sehen, die eine Auflistung aller sichtbaren Module bereitstellt. Die Verwendung der Suchleiste sowie der Filterfunktion wird ihnen ebenfalls über die Benutzeroberfläche zugänglich gemacht. User mit der Rolle "orga" können darüber auf die Seite "Modulbeauftragter" zugreifen, die in der Navigation unter "Module bearbeiten" erreichbar ist; dort können sie Anträge stellen, die die Aufnahme eines neuen Moduls in das Modulhandbuch beinhalten. Für die Erstellung eines Antrages müssen sie bereits sämtliche modulbezogenen Daten in ein Formular eintragen. Dieses ist auf der Seite "Modulerstellung" zu finden, auf die automatisch weitergeleitet wird, nachdem die Anzahl der Veranstaltungen in ein Modal erfolgreich eingetragen wurde. User mit der Rolle "sekretariat" können in der Ansicht "Modulbeauftragter" zusätzlich Semestertags für Veranstaltungen eines Moduls vergeben, die signalisiern, wann eine Veranstaltung stattfindet. Dies geschieht über den Button "Semesterplanung"._
+_Die Benutzeroberfläche besteht überwiegend aus HTML, wobei dieses durch InlineCSS und Bootstrapklassen ergänzt wurde.
+Auch wurde JavaScript vereinzelt verwendet.
+Die Views sind rollenbedingt ersichtlich.
+Nichteingeloggte User und Studenten können lediglich die Indexseite sehen,
+die eine Auflistung aller sichtbaren Module bereitstellt.
+Die Verwendung der Suchleiste sowie der Filterfunktion wird ihnen ebenfalls über die Benutzeroberfläche zugänglich gemacht.
+User mit der Rolle "orga" können darüber auf die Seite "Modulbeauftragter" zugreifen,
+die in der Navigation unter "Module bearbeiten" erreichbar ist; dort können sie Anträge stellen,
+die die Aufnahme eines neuen Moduls in das Modulhandbuch beinhalten.
+Für die Erstellung eines Antrages müssen sie bereits sämtliche modulbezogenen Daten in ein Formular eintragen.
+Dieses ist auf der Seite "Modulerstellung" zu finden, auf die automatisch weitergeleitet wird,
+nachdem die Anzahl der Veranstaltungen in ein Modal erfolgreich eingetragen wurde.
+User mit der Rolle "sekretariat" können in der Ansicht "Modulbeauftragter" zusätzlich Semestertags für Veranstaltungen eines Moduls vergeben,
+die signalisiern, wann eine Veranstaltung stattfindet.
+Dies geschieht über den Button "Semesterplanung"._
 
 ...
 
