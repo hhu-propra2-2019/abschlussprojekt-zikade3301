@@ -13,6 +13,7 @@ import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.generator.ModulFaker;
+import mops.module.wrapper.PdfVeranstaltungWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,26 +48,43 @@ public class PdfServiceTest {
     }
 
     @Test
-    public void pdfVeranstaltungWrapperTest() {
+    public void getLehrveranstaltungenEnumerationTest() {
         Veranstaltungsform veranstaltungsform1 = new Veranstaltungsform();
         veranstaltungsform1.setForm("Vorlesung Betriebssysteme");
         veranstaltungsform1.setSemesterWochenStunden(4);
 
         Veranstaltungsform veranstaltungsform2 = new Veranstaltungsform();
         veranstaltungsform2.setForm("Übung");
-        veranstaltungsform2.setSemesterWochenStunden(0);
+        veranstaltungsform2.setSemesterWochenStunden(2);
 
         Veranstaltung veranstaltung = new Veranstaltung();
         veranstaltung.setVeranstaltungsformen(
                 new HashSet<>(Arrays.asList(veranstaltungsform1, veranstaltungsform2)));
 
         PdfVeranstaltungWrapper veranstaltungWrapper = new PdfVeranstaltungWrapper(veranstaltung);
-        Set<String> lehrveranstaltungen = veranstaltungWrapper.getLehrveranstaltungen();
+        Set<String> lehrveranstaltungen = veranstaltungWrapper.getLehrveranstaltungenEnumeration();
 
         String expected1 = veranstaltungsform1.getForm() + ", "
                 + veranstaltungsform1.getSemesterWochenStunden() + " SWS";
-        String expected2 = veranstaltungsform2.getForm();
+        String expected2 = veranstaltungsform2.getForm() + ", "
+                + veranstaltungsform2.getSemesterWochenStunden() + " SWS";
 
         assertThat(lehrveranstaltungen).contains(expected1, expected2);
+    }
+
+    @Test
+    public void getLehrveranstaltungenFreeTextTest() {
+        Veranstaltungsform veranstaltungsform = new Veranstaltungsform();
+        String freitext = "Dieser Freitext soll als Markdown geparsed werden!";
+        veranstaltungsform.setForm("## " + freitext);
+        veranstaltungsform.setSemesterWochenStunden(0);
+
+        Veranstaltung veranstaltung = new Veranstaltung();
+        veranstaltung.setVeranstaltungsformen(new HashSet<>(Arrays.asList(veranstaltungsform)));
+
+        PdfVeranstaltungWrapper veranstaltungWrapper = new PdfVeranstaltungWrapper(veranstaltung);
+        Set<String> lehrveranstaltungstext = veranstaltungWrapper.getLehrveranstaltungenFreeText();
+
+        assertThat(lehrveranstaltungstext).contains("<h2>" + freitext + "</h2>\n");
     }
 }

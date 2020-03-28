@@ -1,4 +1,4 @@
-package mops.module.services;
+package mops.module.wrapper;
 
 import java.util.HashSet;
 import java.util.Set;

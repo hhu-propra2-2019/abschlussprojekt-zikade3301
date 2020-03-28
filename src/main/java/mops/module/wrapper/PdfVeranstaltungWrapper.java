@@ -1,8 +1,10 @@
-package mops.module.services;
+package mops.module.wrapper;
 
-import static mops.module.services.PdfModulWrapper.getSafeString;
-import static mops.module.services.PdfModulWrapper.safeAppend;
+import static mops.module.wrapper.PdfModulWrapper.getSafeString;
+import static mops.module.wrapper.PdfModulWrapper.safeAppend;
 
+
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
+import mops.module.services.HtmlService;
 
 /**
  * Formatiert die Daten aus dem Veranstaltungsobjekt passend für das PDF-Template.
@@ -20,24 +23,48 @@ public class PdfVeranstaltungWrapper {
     private final Veranstaltung veranstaltung;
 
     /**
-     * Formatiert "Lehrveranstaltungs"-Strings wie im Modulhandbuch.
+     * Formatiert "Lehrveranstaltungs"-Strings, die aufgezählt dargestellt werden sollen.
      *
-     * @return Lehrveranstaltungs-Strings
+     * @return Menge von Lehrveranstaltungs-Strings
      */
-    public Set<String> getLehrveranstaltungen() {
+    public Set<String> getLehrveranstaltungenEnumeration() {
         Set<String> lehrveranstaltungen = new HashSet<>();
-        for (Veranstaltungsform veranstaltungsform : veranstaltung.getVeranstaltungsformen()) {
+
+        Set<Veranstaltungsform> veranstaltungsformEnumeration = veranstaltung
+                .getVeranstaltungsformen()
+                .stream()
+                .filter(v -> v.getSemesterWochenStunden() > 0)
+                .collect(Collectors.toSet());
+        for (Veranstaltungsform veranstaltungsform : veranstaltungsformEnumeration) {
             String veranstaltungsformString = "";
             veranstaltungsformString = safeAppend(veranstaltungsformString,
                     veranstaltungsform.getForm());
 
-            if (veranstaltungsform.getSemesterWochenStunden() > 0) {
-                veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden()
-                        + " SWS";
-            }
+            veranstaltungsformString += ", " + veranstaltungsform.getSemesterWochenStunden()
+                    + " SWS";
             lehrveranstaltungen.add(veranstaltungsformString);
         }
         return lehrveranstaltungen;
+    }
+
+    /**
+     * Formatiert den Freitext-Teil des Lehrveranstaltungsabschnitts mit Markdown-Support.
+     * Wenn das Feld komplett leer ist, wird ein Spiegelstrich zurückgegeben.
+     * @return Formatierter String
+     */
+    public Set<String> getLehrveranstaltungenFreeText() {
+        if (veranstaltung.getVeranstaltungsformen().isEmpty()) {
+            return new HashSet<>(Arrays.asList("—"));
+        }
+
+        Set<String> veranstaltungsformFreeText = veranstaltung
+                .getVeranstaltungsformen()
+                .stream()
+                .filter(v -> v.getSemesterWochenStunden() == 0)
+                .map(v -> HtmlService.markdownToHtml(v.getForm()))
+                .collect(Collectors.toSet());
+
+        return veranstaltungsformFreeText;
     }
 
     public String getTitel() {
@@ -81,8 +108,8 @@ public class PdfVeranstaltungWrapper {
     }
 
     public String getHaeufigkeit() {
-        return HtmlService.markdownToHtml(getSafeString(
-                veranstaltung.getBeschreibung().getHaeufigkeit()));
+        return getSafeString(
+                veranstaltung.getBeschreibung().getHaeufigkeit());
     }
 
     /**

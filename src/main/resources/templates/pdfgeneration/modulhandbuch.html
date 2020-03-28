@@ -396,11 +396,14 @@
             <h3>Lehrveranstaltungen</h3>
             <div>
                 <ul th:remove="all-but-first">
-                    <li th:each="lv : ${v.lehrveranstaltungen}"
+                    <li th:each="lv : ${v.lehrveranstaltungenEnumeration}"
                         th:text="${lv}">Vorlesung „Rechnerarchitektur“, 2 SWS
                     </li>
                     <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
                 </ul>
+            </div>
+            <div th:each="freeText : ${v.lehrveranstaltungenFreeText}">
+                <div th:utext="${freeText}">Vorlesung „Rechnerarchitektur“, 2 SWS</div>
             </div>
             <h3>Inhalte</h3>
             <div th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP)
@@ -421,7 +424,7 @@
             <h3>Voraussetzungen für die Vergabe von Leistungspunkten</h3>
             <div th:utext="${v.voraussetzungenBestehen}"></div>
             <h3>Häufigkeit des Angebots, modulare Schiene</h3>
-            <div th:utext="${v.haeufigkeit}"></div>
+            <div th:text="${v.haeufigkeit}"></div>
             <div th:each="z : ${v.zusatzfelder}">
                 <h3 th:text="${z.titel}">Zusatztitel</h3>
                 <div th:utext="${z.inhalt}">Zusatzinhalt</div>
