@@ -38,14 +38,11 @@ public class ModulVisibilityController {
             Model model,
             KeycloakAuthenticationToken token) {
 
-        System.out.println(modulToChange);
-
         modulService.changeVisibility(
                 Long.parseLong(modulToChange)
         );
 
         model.addAttribute("account", createAccountFromPrincipal(token));
-
 
         return "redirect:/module/modulbeauftragter";
     }
