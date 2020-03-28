@@ -157,27 +157,27 @@ class SemesterTagControllerTest {
         mvc.perform(post("/module/semesterTag/delete")
                 .param("tagToDelete", "SoSe1995")
                 .param("idVeranstaltungTagDelete", "1")
-                .param("idModulTagDelte", "3301"))
+                .param("idModulTagDelete", "3301"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(expect));
     }
 
     @Test
-    void testSemesterTagDeleteNoAccessIfNotLoggedIn() throws Exception {
+    void testSemesterTagDeleteNoAccessIfNotLoggedIn() {
 
         assertThrows(AssertionError.class,
                 () -> {
                     mvc.perform(post("/module/semesterTag/delete")
                             .param("tagToDelete", "SoSe1995")
                             .param("idVeranstaltungTagDelete", "1")
-                            .param("idModulTagDelte", "3301"))
+                            .param("idModulTagDelete", "3301"))
                             .andExpect(status().is3xxRedirection())
                             .andExpect(view().name(expect));
                 });
     }
 
     @Test
-    void testSemesterTagDeleteNoAccessForOrganizers() throws Exception {
+    void testSemesterTagDeleteNoAccessForOrganizers() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -187,14 +187,14 @@ class SemesterTagControllerTest {
                     mvc.perform(post("/module/semesterTag/delete")
                             .param("tagToDelete", "SoSe1995")
                             .param("idVeranstaltungTagDelete", "1")
-                            .param("idModulTagDelte", "3301"))
+                            .param("idModulTagDelete", "3301"))
                             .andExpect(status().is3xxRedirection())
                             .andExpect(view().name(expect));
                 });
     }
 
     @Test
-    void testSemesterTagDeleteNoAccessForStudents() throws Exception {
+    void testSemesterTagDeleteNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
@@ -204,7 +204,7 @@ class SemesterTagControllerTest {
                     mvc.perform(post("/module/semesterTag/delete")
                             .param("tagToDelete", "SoSe1995")
                             .param("idVeranstaltungTagDelete", "1")
-                            .param("idModulTagDelte", "3301"))
+                            .param("idModulTagDelete", "3301"))
                             .andExpect(status().is3xxRedirection())
                             .andExpect(view().name(expect));
                 });
@@ -219,7 +219,7 @@ class SemesterTagControllerTest {
         mvc.perform(post("/module/semesterTag/delete")
                 .param("tagToDelete", "SoSe1995")
                 .param("idVeranstaltungTagDelete", "1")
-                .param("idModulTagDelte", "3301"));
+                .param("idModulTagDelete", "3301"));
 
         verify(modulServiceMock)
                 .deleteTagVeranstaltungSemester(

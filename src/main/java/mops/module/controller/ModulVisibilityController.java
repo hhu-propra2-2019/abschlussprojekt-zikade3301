@@ -2,6 +2,7 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import lombok.RequiredArgsConstructor;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -13,14 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/module")
 public class ModulVisibilityController {
 
-    private ModulService modulService;
-
-    public ModulVisibilityController(ModulService modulService) {
-        this.modulService = modulService;
-    }
+    private final ModulService modulService;
 
 
     /**

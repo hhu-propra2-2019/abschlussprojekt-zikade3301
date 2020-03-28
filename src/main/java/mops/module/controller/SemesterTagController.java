@@ -2,6 +2,7 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import lombok.RequiredArgsConstructor;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.security.access.annotation.Secured;
@@ -14,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/module")
+@RequiredArgsConstructor
 public class SemesterTagController {
 
-
-    private ModulService modulService;
-
-    public SemesterTagController(ModulService modulService) {
-        this.modulService = modulService;
-    }
+    private final ModulService modulService;
 
     /**
      * Controller, der das Request für die Erstellung eines SemesterTags entgegennimmt.
