@@ -37,7 +37,7 @@ public class IndexController {
      * @param model Model für die HTML-Datei.
      * @return View Index
      */
-    @GetMapping("/")
+    @GetMapping("")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
