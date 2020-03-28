@@ -29,10 +29,26 @@ public class ModulWrapperService {
      */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
         Set<Veranstaltung> veranstaltungenInWrapper = getVeranstaltungenAsSet(modulWrapper);
+        removeInvalidListEntriesFromVeranstaltungenSet(veranstaltungenInWrapper);
         Modul modul = modulWrapper.getModul();
         modul.setVeranstaltungen(veranstaltungenInWrapper);
         modul.refreshMapping();
         return modul;
+    }
+
+    private static void removeInvalidListEntriesFromVeranstaltungenSet(
+            Set<Veranstaltung> veranstaltungenInWrapper) {
+        for (Veranstaltung v : veranstaltungenInWrapper) {
+            if (v.getVeranstaltungsformen() != null) {
+                v.getVeranstaltungsformen().removeIf(vf -> vf.getForm() == null);
+                v.getVeranstaltungsformen().removeIf(vf -> vf.getForm().equals(""));
+            }
+            if (v.getZusatzfelder() != null) {
+                v.getZusatzfelder().removeIf(vf -> vf.getTitel() == null || vf.getInhalt() == null);
+                v.getZusatzfelder()
+                        .removeIf(zf -> zf.getTitel().equals("") || zf.getInhalt().equals(""));
+            }
+        }
     }
 
     private static Set<Veranstaltung> getVeranstaltungenAsSet(ModulWrapper modulWrapper) {
