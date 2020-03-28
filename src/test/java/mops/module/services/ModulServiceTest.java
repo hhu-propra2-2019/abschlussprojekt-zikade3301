@@ -1,7 +1,6 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,6 +36,11 @@ public class ModulServiceTest {
     private Modul modulforTagging;
     private Veranstaltung veranstaltungForTagging;
 
+    private Modul modulSichtbarkeitTrue;
+    private Modul modulSichtbarkeitFalse;
+    private Modul modulSichtbarkeitNull;
+
+
 
     private String modul1;
     private String modul2;
@@ -56,6 +60,21 @@ public class ModulServiceTest {
 
         modulforTagging = ModulFaker.generateFakeModul();
         modulforTagging.setId(3301L);
+
+        modulSichtbarkeitTrue = ModulFaker.generateFakeModul();
+        modulSichtbarkeitTrue.setId(3302L);
+        modulSichtbarkeitTrue.setSichtbar(true);
+        modulSnapshotRepository.save(modulSichtbarkeitTrue);
+
+        modulSichtbarkeitFalse = ModulFaker.generateFakeModul();
+        modulSichtbarkeitFalse.setId(3303L);
+        modulSichtbarkeitFalse.setSichtbar(false);
+        modulSnapshotRepository.save(modulSichtbarkeitFalse);
+
+        modulSichtbarkeitNull = ModulFaker.generateFakeModul();
+        modulSichtbarkeitNull.setId(3304L);
+        modulSichtbarkeitNull.setSichtbar(null);
+        modulSnapshotRepository.save(modulSichtbarkeitNull);
 
         veranstaltungForTagging = modulforTagging
                 .getVeranstaltungen()
@@ -190,5 +209,41 @@ public class ModulServiceTest {
         );
 
         assertThat(veranstaltungForTagging.getSemester()).doesNotContain("SoSe1998");
+    }
+
+    @Test
+    public void changeSichtbarkeitFromTrue() {
+
+        when(modulSnapshotRepository.findById(modulSichtbarkeitTrue.getId())).thenReturn(
+                Optional.ofNullable(modulSichtbarkeitTrue)
+        );
+
+        modulService.changeVisibility(3302L);
+
+        assertThat(modulSichtbarkeitTrue.getSichtbar()).isEqualTo(false);
+    }
+
+    @Test
+    public void changeSichtbarkeitFromFalse() {
+
+        when(modulSnapshotRepository.findById(modulSichtbarkeitFalse.getId())).thenReturn(
+                Optional.ofNullable(modulSichtbarkeitFalse)
+        );
+
+        modulService.changeVisibility(3303L);
+
+        assertThat(modulSichtbarkeitFalse.getSichtbar()).isEqualTo(true);
+    }
+
+    @Test
+    public void changeSichtbarkeitFromNull() {
+
+        when(modulSnapshotRepository.findById(modulSichtbarkeitNull.getId())).thenReturn(
+                Optional.ofNullable(modulSichtbarkeitNull)
+        );
+
+        modulService.changeVisibility(3304L);
+
+        assertThat(modulSichtbarkeitNull.getSichtbar()).isEqualTo(true);
     }
 }
