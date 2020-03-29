@@ -1,5 +1,5 @@
 - Alle Module außer Rechnerarchitektur und Angewandte Mathematik haben nur eine Veranstaltung.
-  D.h. es muss dann bei <titelDeutsch> in Modul das gleiche wie bei <titel> in <veranstaltung> stehen und
+  D.h. es muss dann bei <titelDeutsch> in Modul das gleiche wie bei <titel> in Veranstaltung und
   bei <gesamtLeistungspunkte> in Modul das gleiche wie bei <leistungspunkte> in Veranstaltung stehen.
 
 - Markdown Support haben:
@@ -7,9 +7,45 @@
   2. bei <zusatzfeld> das Feld <inhalt>
   3. bei <veranstaltungsform> das Feld <form>, wenn das Feld <semesterWochenStunden> nicht den Wert 0 hat
 
-- Im Feld <modulkategorie> die Zahl des Kapitels angeben. (z.B. 7 für 7.62)
+- Im Feld <modulkategorie> die Zahl des Kapitels als Integer angeben. (z.B. 7 für 7.62)
+
+- Das Feld <sprache> nur angeben, wenn es explizit genannt wurde (häufig wird die Sprache nur in
+  "Lehrveranstaltungen" erwähnt), ansonsten Feld leer lassen.
+
+- Im Feld <gesamtLeistungspunkte> die Leistungspunkte des gesamten Moduls als String angeben. (z.B. '5 LP ab PO 2015, alte PO 7,5 LP')
 
 - In den Feldern <veranstaltungsform> steht der Inhalt von "Lehrveranstaltungen" im alten Modulhandbuch.
-  Bei <form> steht der Inhalt, z.B. Vorlesung „Modellierung metabolischer Netzwerke“.
+  Bei <form> steht der Inhalt, z.B. 'Vorlesung „Modellierung metabolischer Netzwerke“'. Wenn zu einer
+  <veranstaltungsform> im alten Modulhandbuch SWS dabeistehen, steht bei <semesterWochenStunden> dieser Wert als Integer.
+  Wenn keine SWS dabeistehen, bei <semesterWochenStunden> 0 eintragen. Dann hat <form> auch Markdown-Support.
+  Aber am besten Markdown nur verwenden, wenn es keine Vorlesungsformen mit SWS in dem Modul gibt.
 
-- Im Tag <gesamtLeistungspunkte> die Leistungspunkte des gesamten Moduls als String angeben. (z.B. 5 LP ab PO 2015, alte PO 7,5 LP)
+- Wenn Felder uneinheitlich benannt sind, aber ein Standardfeld meinen, im Standardfeld eintragen (z.B. Kreditpunkte
+  statt Leistungspunkte oder englische statt deutsche Namen). Wenn das Feld gar nicht existiert, Zusatzfeld verwenden.
+
+- Für Aufzählung in Bulletpoints in den Feldern mit Markdown Support '* ' vor den Inhalt schreiben. Wenn erst Text und
+  dann Bulletpoints kommen, eine Freizeile lassen, aber wenn im Feld ausschließlich Bulletpoints stehen, keine Freizeile lassen.
+
+  z.B:
+    <inhalte>
+        * eins
+        * zwei
+    </inhalbe>
+
+    <inhalte>
+        text
+
+        * eins
+        * zwei
+    </inhalbe>
+
+- Für Unter-Bulletpoints innerhalb eines Bulletpoints zwei Leerzeichen am Zeilenanfang des Unterpunktes lassen.
+
+  z.B:
+    <inhalte>
+        * oberpunkt
+          * unterpunktebene1a
+            * unterpunktebene2a
+            * unterpunktebene2b
+          * unterpunktebene1b
+    </inhalte>
