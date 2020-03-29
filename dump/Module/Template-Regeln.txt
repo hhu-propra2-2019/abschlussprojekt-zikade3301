@@ -1,0 +1,15 @@
+- Alle Module außer Rechnerarchitektur und Angewandte Mathematik haben nur eine Veranstaltung.
+  D.h. es muss dann bei <titelDeutsch> in Modul das gleiche wie bei <titel> in <veranstaltung> stehen und
+  bei <gesamtLeistungspunkte> in Modul das gleiche wie bei <leistungspunkte> in Veranstaltung stehen.
+
+- Markdown Support haben:
+  1. die Felder <inhalte>, <lernergebnisse>, <literatur>, <verwendbarkeit>, <voraussetzungenBestehen>, <voraussetzungenTeilnahme>
+  2. bei <zusatzfeld> das Feld <inhalt>
+  3. bei <veranstaltungsform> das Feld <form>, wenn das Feld <semesterWochenStunden> nicht den Wert 0 hat
+
+- Im Feld <modulkategorie> die Zahl des Kapitels angeben. (z.B. 7 für 7.62)
+
+- In den Feldern <veranstaltungsform> steht der Inhalt von "Lehrveranstaltungen" im alten Modulhandbuch.
+  Bei <form> steht der Inhalt, z.B. Vorlesung „Modellierung metabolischer Netzwerke“.
+
+- Im Tag <gesamtLeistungspunkte> die Leistungspunkte des gesamten Moduls als String angeben. (z.B. 5 LP ab PO 2015, alte PO 7,5 LP)
