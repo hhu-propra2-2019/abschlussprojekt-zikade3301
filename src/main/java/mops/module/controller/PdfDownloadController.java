@@ -37,7 +37,7 @@ public class PdfDownloadController {
 
         try {
             pdfDocument.writeTo(response.getOutputStream());
-            response.getOutputStream().flush();
+            response.flushBuffer();
             pdfDocument.close();
         } catch (IOException ex) {
             ex.printStackTrace();
