@@ -17,12 +17,12 @@ import org.springframework.web.context.annotation.SessionScope;
 public class ArchUnitTests {
 
     @ArchTest
-    static final ArchRule testsAreAnnotatedWithActiveProfileDev = classes()
+    static final ArchRule testsAreAnnotatedWithActiveProfileTest = classes()
             .that()
             .haveNameMatching(".*Test")
             .should()
             .beAnnotatedWith(ActiveProfiles.class)
-            .andShould(new RuleTesting("dev", "Test-Annotation misses @ActiveProfiles(\"dev\")!"));
+            .andShould(new RuleTesting("test", "Test-Annotation misses @ActiveProfiles(\"test\")!"));
 
     public static class RuleTesting extends ArchCondition<JavaClass> {
 
