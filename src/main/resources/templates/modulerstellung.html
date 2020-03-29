@@ -374,9 +374,8 @@
                                                 <span style="font-size: x-large; margin-bottom: 2rem">
                                                     Die Veranstaltung beinhaltet:
                                                 </span>
-<!--                                                TODO: Freifeld variabel machen statt fest als 6.-->
-                                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}"
-                                                     th:unless="${j.index == 5}">
+<!--                                                TODO: als Textarea-->
+                                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
                                                         <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
@@ -400,20 +399,6 @@
                                                             SWS
                                                         </label>
                                                 </div>
-
-                                                <div class="form-check mb-2" style="display: flex">
-                                                    <input class="form-control ml-1"
-                                                           style=" border-bottom: 1px solid white;
-                                                           max-width: 26rem;
-                                                           height: 5rem;
-                                                           background: transparent;
-                                                           font-size: small;
-                                                           color: white;"
-                                                           type="text"
-                                                           value="0"
-                                                           th:field = "*{veranstaltungsformen[__${i.index}__][__${5}__].form}">
-                                                </div>
-
                                             </div>
 
                                             <div style="margin-top: 3rem; display: grid;">

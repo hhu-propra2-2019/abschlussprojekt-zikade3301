@@ -78,17 +78,9 @@
             <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: right">
                 <span style="font-weight: bold; padding-left: 1rem">Lehrformen:</span>
                 <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}" style="list-style-type: none; padding: inherit">
+                    <!--MIT SWS TAG OHNE MARKDOWN SUPPORT WENN != 0 SWS-->
                     <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
-                        th:if="${veranstaltungsform.semesterWochenStunden == 0}">
-                        <span th:utext="${@htmlService.markdownToHtml(veranstaltungsform.getForm())}">
-                            Veranstaltungsform
-                        </span>
-                    </li>
-                </ul>
-
-                <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}" style="list-style-type: none; padding: inherit">
-                    <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
-                        th:unless="${veranstaltungsform.form.isEmpty()}">
+                        th:if="${veranstaltungsform.semesterWochenStunden != 0}">
                         <span style="width: min-content" class="badge badge-secondary mr-2"
                               th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}">
                             SWS
@@ -97,6 +89,15 @@
                             Veranstaltungsform
                         </span>
                     </li>
+
+                    <!--ALS FREITEXT MIT MARKDOWN SUPPORT WENN 0 SWS-->
+                    <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
+                        th:if="${veranstaltungsform.semesterWochenStunden == 0}">
+                        <span th:utext="${@htmlService.markdownToHtml(veranstaltungsform.getForm())}">
+                            Veranstaltungsform
+                        </span>
+                    </li>
+
                 </ul>
 
             </div>
