@@ -2,9 +2,9 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import lombok.RequiredArgsConstructor;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/module")
+@RequiredArgsConstructor
 public class SemesterTagController {
 
-
-    @Autowired
-    private ModulService modulService;
+    private final ModulService modulService;
 
     /**
      * Controller, der das Request für die Erstellung eines SemesterTags entgegennimmt.
@@ -55,7 +54,7 @@ public class SemesterTagController {
      *
      * @param tagToDelete              Der SemesterTag, der gelöscht werden soll
      * @param idVeranstaltungTagDelete ID der Veranstaltung, die das Tag beinhaltet
-     * @param idModulTagDelte          ID des Moduls, das die Veranstaltung beinhaltet
+     * @param idModulTagDelete          ID des Moduls, das die Veranstaltung beinhaltet
      * @param model                    Model für die HTML-Datei.
      * @param token                    Der Token von keycloak für die Berechtigung.
      * @return View Modulbeauftragter
@@ -65,7 +64,7 @@ public class SemesterTagController {
     public String removeSemesterTagToVeranstaltung(
             @RequestParam(name = "tagToDelete", required = true) String tagToDelete,
             @RequestParam(name = "idVeranstaltungTagDelete") String idVeranstaltungTagDelete,
-            @RequestParam(name = "idModulTagDelte") String idModulTagDelte,
+            @RequestParam(name = "idModulTagDelete") String idModulTagDelete,
             Model model,
             KeycloakAuthenticationToken token) {
 
@@ -74,7 +73,7 @@ public class SemesterTagController {
         modulService.deleteTagVeranstaltungSemester(
                 tagToDelete,
                 Long.parseLong(idVeranstaltungTagDelete),
-                Long.parseLong(idModulTagDelte)
+                Long.parseLong(idModulTagDelete)
         );
         return "redirect:/module/modulbeauftragter";
     }

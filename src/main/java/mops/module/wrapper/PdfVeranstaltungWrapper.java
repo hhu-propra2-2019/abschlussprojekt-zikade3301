@@ -3,7 +3,6 @@ package mops.module.wrapper;
 import static mops.module.wrapper.PdfModulWrapper.getSafeString;
 import static mops.module.wrapper.PdfModulWrapper.safeAppend;
 
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;

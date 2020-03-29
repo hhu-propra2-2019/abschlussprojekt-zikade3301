@@ -23,7 +23,7 @@ public class AntragService {
      * Erstellt einen Änderungsantrag aus einem Modul heraus.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
-     * @return
+     * @return Änderungsantrag
      */
     Antrag modulToAntrag(Modul modul) {
         String jsonObject = JsonService.modulToJsonObject(modul);
