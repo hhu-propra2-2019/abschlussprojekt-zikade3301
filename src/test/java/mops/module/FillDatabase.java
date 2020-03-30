@@ -22,7 +22,7 @@ import mops.module.database.Veranstaltungsbeschreibung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,10 +35,10 @@ public class FillDatabase {
     @Autowired
     AntragService antragService;
 
-    @Ignore
+    @Disabled
     @Test
     public void fill() {
-        Path path = Paths.get("./dump/Module/module1");
+        Path path = Paths.get("./dump/Module");
         List<Path> folders = getFolders(path);
         List<List<Path>> files = folders.stream().map(this::getFiles).collect(Collectors.toList());
         files.stream().flatMap(x -> x.stream()).forEach(this::addToDatabase);
