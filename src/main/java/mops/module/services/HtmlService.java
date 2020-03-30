@@ -27,7 +27,7 @@ public class HtmlService {
      */
     public static String markdownToHtml(String markdown) {
         MutableDataHolder markdownOptions = new MutableDataSet();
-        markdownOptions.setFrom(ParserEmulationProfile.MARKDOWN);
+        markdownOptions.setFrom(ParserEmulationProfile.COMMONMARK);
         Parser parser = Parser.builder(markdownOptions).build();
         Node document = parser.parse(markdown);
 

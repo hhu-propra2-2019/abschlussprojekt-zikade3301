@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.database.Veranstaltung;
@@ -21,15 +22,23 @@ import mops.module.database.Veranstaltungsbeschreibung;
 import mops.module.database.Veranstaltungsform;
 import mops.module.database.Zusatzfeld;
 import mops.module.services.AntragService;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-public class FillDatabse {
+@ActiveProfiles("dev")
+@SpringBootTest
+public class FillDatabase {
 
+    @Autowired
+    AntragService antragService;
+
+    @Ignore
     @Test
     public void fill() {
-        Path path = Paths.get("./dump/Module");
+        Path path = Paths.get("./dump/Module/module1");
         List<Path> folders = getFolders(path);
         List<List<Path>> files = folders.stream().map(this::getFiles).collect(Collectors.toList());
         files.stream().flatMap(x -> x.stream()).forEach(this::addToDatabase);
@@ -39,11 +48,13 @@ public class FillDatabse {
         String template = loadModulTemplate(path);
         String localTemplate = splitTag(template, "modul");
         Modul modul = buildModul(localTemplate);
-
+        Antrag antrag = antragService.addModulCreationAntrag(modul, "Initiale Erstellung");
+        antragService.approveModulCreationAntrag(antrag);
     }
 
     private Modul buildModul(String template) {
         Modul modul = new Modul();
+        modul.setStudiengang(splitTag(template, "studiengang"));
         modul.setTitelDeutsch(splitTag(template, "titelDeutsch"));
         modul.setTitelEnglisch(splitTag(template, "titelEnglisch"));
         modul.setModulkategorie(Modulkategorie.values()[Integer.parseInt(splitTag(template, "modulkategorie"))-1]);
@@ -55,7 +66,7 @@ public class FillDatabse {
     }
 
     private Set<Veranstaltung> buildVeranstaltungen(String template) {
-        Set<Veranstaltung> veranstaltungen=new HashSet<>();
+        Set<Veranstaltung> veranstaltungen= new HashSet<>();
         List<String> templates = splitTags(template, "veranstaltung");
         templates.stream().map(this::buildVeranstaltung).forEach(veranstaltungen::add);
 
@@ -63,7 +74,7 @@ public class FillDatabse {
     }
 
     private Veranstaltung buildVeranstaltung(String template) {
-        Veranstaltung veranstaltung=new Veranstaltung();
+        Veranstaltung veranstaltung= new Veranstaltung();
         veranstaltung.setTitel(splitTag(template, "titel"));
         veranstaltung.setLeistungspunkte(splitTag(template, "leistungspunkte"));
         veranstaltung.setVeranstaltungsformen(buildVeranstaltungsformen(splitTag(template, "veranstaltungsformen")));
@@ -90,7 +101,7 @@ public class FillDatabse {
 
     private Veranstaltungsbeschreibung buildVeranstaltungsbeschreibung(String template) {
         Veranstaltungsbeschreibung veranstaltungsbeschreibung = new Veranstaltungsbeschreibung();
-        veranstaltungsbeschreibung.setInhalte(splitTag(template, "inhalt"));
+        veranstaltungsbeschreibung.setInhalte(splitTag(template, "inhalte"));
         veranstaltungsbeschreibung.setLernergebnisse(splitTag(template, "lernergebnisse"));
         veranstaltungsbeschreibung.setLiteratur(splitTag(template, "literatur"));
         veranstaltungsbeschreibung.setVerwendbarkeit(splitTag(template, "verwendbarkeit"));
