@@ -76,8 +76,13 @@ public class ModulService {
         return false;
     }
 
+    /**Diese Methode wendet Änderungen in Form eines Antrages auf ein Modul an.
+     *
+     * @param modul auf das die Änderungen aus dem Antrag angewendet werden sollen.
+     * @param antrag der die Änderungen beinhaltet.
+     */
 
-    static void applyAntragOnModul(Modul modul, Antrag antrag) {
+    public static void applyAntragOnModul(Modul modul, Antrag antrag) {
         Modul modulChanges = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
 
         for (Field field : modul.getClass().getDeclaredFields()) {
@@ -145,7 +150,7 @@ public class ModulService {
     }
 
     /**
-     * Löscht ein gewünschtes SemesterTag einer Veranstlatung.
+     * Löscht ein gewünschtes SemesterTag einer Veranstaltung.
      *
      * @param semesterTag     Der SemesterTag, der gelöscht werden soll
      * @param veranstaltungId ID der Veranstaltung, die das Tag beinhaltet
@@ -247,6 +252,24 @@ public class ModulService {
         secondYear = secondYear.length() > 2
                 ? secondYear.substring(secondYear.length() - 2) : secondYear;
         return firstYear + "-" + secondYear;
+    }
+
+    /**Kopiert ein Modul.
+     *
+     * @param oldModul Das zu kopierende Modul.
+     * @param newModul Die Kopie.
+     */
+
+    public static void copyModul(Modul oldModul, Modul newModul) {
+
+        for (Field field : oldModul.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                field.set(newModul, field.get(oldModul));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
