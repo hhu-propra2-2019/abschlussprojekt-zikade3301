@@ -263,7 +263,6 @@
                                                            border-radius: unset;
                                                            color: white;"
                                            class="form-control"
-                                           aria-label="XXXXXX"
                                            aria-describedby="basic-addon2"
                                            th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}"
                                            th:if ="${antrag.veranstaltungen[__${i.index}__].leistungspunkte == altesModul.veranstaltungen[__${i.index}__].leistungspunkte}">
@@ -275,7 +274,6 @@
                                                            border-radius: unset;
                                                            color: red;"
                                            class="form-control"
-                                           aria-label="XXXXXX"
                                            aria-describedby="basic-addon2"
                                            th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}"
                                            th:unless ="${antrag.veranstaltungen[__${i.index}__].leistungspunkte == altesModul.veranstaltungen[__${i.index}__].leistungspunkte}">
@@ -472,7 +470,6 @@
                                         </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
-                                              aria-label="XXYXXY"
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
@@ -481,7 +478,6 @@
                                               th:if ="${antrag.veranstaltungen[__${i.index}__].beschreibung.verwendbarkeit == altesModul.veranstaltungen[__${i.index}__].beschreibung.verwendbarkeit}"></textarea>
 
                                     <textarea class="form-control col-12 pl-0"
-                                              aria-label="XXYXXY"
                                               style="background: transparent;
                                                                border-radius: unset;
                                                                margin-bottom: 3rem;
