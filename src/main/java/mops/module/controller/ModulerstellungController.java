@@ -123,9 +123,7 @@ public class ModulerstellungController {
                 antragService.approveModulModificationAntrag(antrag);
                 return "modulbeauftragter";
             }
-        } //else {
-        //return "error"; //TODO: Fehlerseite wenn Antrag ohne Änderungen abgeschickt wurde
-        //}
+        }
 
         return "modulbeauftragter";
 
