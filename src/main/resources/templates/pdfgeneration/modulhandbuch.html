@@ -11,7 +11,7 @@
             font-size: 12px;
         }
 
-        a:link {
+        .dont-show-as-link a:link {
             text-decoration: none;
             color: black;
         }
@@ -170,9 +170,9 @@
 
 <!-- =========== Inhaltsverzeichnis =========== -->
 
-<div id="table-of-contents">
+<div id="table-of-contents" class="dont-show-as-link">
     <h1>Inhaltsverzeichnis</h1>
-    <ul style="list-style-type: none" id="testnumber">
+    <ul style="list-style-type: none">
         <li style="font-weight: bold;">
             <a href="#studienverlaufsplan">0. Studienverlaufspläne</a>
         </li>
@@ -400,11 +400,11 @@
     </h2>
     <div th:switch="${c.ordinal()}">
         <div th:case="2">
-            <p>Die Module im Bereich „Nebenfach" sind abhängig vom gewählten Nebenfach (siehe Webseiten der Informatik: Nebenfach). Folgende Fächer stehen zur Auswahl: Biologie, Physik, Chemie, Mathematik und Psychologie (begrenzt auf 5 Plätze pro Studienjahr; Beginn immer im Wintersemester). Die Module, die im jeweiligen Nebenfach belegt werden können, werden vom Prüfungsausschuss auf der Webseite des Fachs bekannt gegeben. Andere Nebenfächer können auf schriftlichen Antrag vom Prüfungsausschuss genehmigt werden, sofern ein ausreichender Bezug zur Informatik vorhanden ist.
+            <p>Die Module im Bereich „Nebenfach" sind abhängig vom gewählten Nebenfach (siehe Webseiten der Informatik: <a href="https://www.cs.hhu.de/studium-lehre-informatik/studierende/nebenfaecher.html">Nebenfach</a>). Folgende Fächer stehen zur Auswahl: Biologie, Physik, Chemie, Mathematik und Psychologie (begrenzt auf 5 Plätze pro Studienjahr; Beginn immer im Wintersemester). Die Module, die im jeweiligen Nebenfach belegt werden können, werden vom Prüfungsausschuss auf der Webseite des Fachs bekannt gegeben. Andere Nebenfächer können auf schriftlichen Antrag vom Prüfungsausschuss genehmigt werden, sofern ein ausreichender Bezug zur Informatik vorhanden ist.
                 Die Festlegung des Nebenfaches erfolgt bei der Studierenden- und Prüfungsverwaltung in der Regel im dritten Semester, auf jeden Fall vor Ablegung der ersten Teilprüfung im Nebenfach. Ein Wechsel des Nebenfaches ist auf Antrag zulässig, solange keine Fachprüfung im Nebenfach endgültig nicht bestanden ist.
                 Im gewählten Nebenfach sind 30 LP zu erbringen, die sich je nach Nebenfach unter Umständen auf mehr als drei Module verteilen.
             </p>
-            <p>Informationen zur Schwerpunktbildung im Nebenfach und in der Informatik finden Sie auf folgender Webseite: Schwerpunkte</p>
+            <p>Informationen zur Schwerpunktbildung im Nebenfach und in der Informatik finden Sie auf folgender Webseite: <a href="https://www.cs.hhu.de/studium-lehre-informatik/studierende.html">Schwerpunkte</a></p>
         </div>
         <div th:case="4">
             <p>Zwecks verbesserter Studierbarkeit des Studiengangs und zur Erhöhung der Wahlmöglichkeiten der Studenten werden im Bachelor-Studiengang Informatik Module in unterschiedlichen Größen angeboten. Module müssen so kombiniert werden, dass die Gesamtsumme der LP den Erfordernissen der Prüfungsordnung entspricht. Für den Wahlpflichtbereich können Module frei kombiniert werden. Die Zusammensetzung des Schwerpunktfaches muss mit dem Mentor und Betreuer der Bachelor-Arbeit im Schwerpunkt besprochen werden (siehe Formular „Schwerpunktwahl”).</p>
