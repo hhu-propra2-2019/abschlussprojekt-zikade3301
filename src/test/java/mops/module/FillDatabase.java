@@ -162,7 +162,7 @@ public class FillDatabase {
             return "";
         }
         int finalIndent = indent;
-        template = template.lines()
+        template = Arrays.stream(template.split("\n"))
                 .map(line -> {
                     if (line.length() > finalIndent) {
                         return line.substring(finalIndent);
@@ -176,7 +176,7 @@ public class FillDatabase {
 
     private String loadModulTemplate(Path path) {
         try {
-            return Files.readString(path);
+            return new String(Files.readAllBytes(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
