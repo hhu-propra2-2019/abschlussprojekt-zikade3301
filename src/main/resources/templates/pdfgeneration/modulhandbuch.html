@@ -173,18 +173,12 @@
 <div id="table-of-contents" class="dont-show-as-link">
     <h1>Inhaltsverzeichnis</h1>
     <ul style="list-style-type: none">
-        <li style="font-weight: bold;">
-            <a href="#studienverlaufsplan">0. Studienverlaufspläne</a>
-        </li>
+        <li style="font-weight: bold;"><a href="#studienverlaufsplan">0. Studienverlaufspläne</a></li>
         <div th:each="c : ${categories}">
-            <li style="font-weight: bold;">
-                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a>
-            </li>
+            <li style="font-weight: bold;"><a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a></li>
             <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
-                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a></li>
         </div>
-    </ul>
-    </li>
     </ul>
 </div>
 
