@@ -78,19 +78,28 @@
             <div class="mt-2 col-lg-4 col-md-4 col-sm-12" style="float: right">
                 <span style="font-weight: bold; padding-left: 1rem">Lehrformen:</span>
                 <ul th:each="veranstaltung : ${modul.getVeranstaltungen()}" style="list-style-type: none; padding: inherit">
+                    <!--MIT SWS TAG OHNE MARKDOWN SUPPORT WENN != 0 SWS-->
                     <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
-                        th:unless="${veranstaltungsform.form.isEmpty()}">
+                        th:if="${veranstaltungsform.semesterWochenStunden != 0}">
                         <span style="width: min-content" class="badge badge-secondary mr-2"
-                              th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}"
-                              th:unless="${veranstaltungsform.semesterWochenStunden == 0}">
+                              th:text="${veranstaltungsform.getSemesterWochenStunden() + ' SWS'}">
                             SWS
                         </span>
-                        <span
-                              th:text="${veranstaltungsform.getForm()}">
+                        <span th:text="${veranstaltungsform.getForm()}">
                             Veranstaltungsform
                         </span>
                     </li>
+
+                    <!--ALS FREITEXT MIT MARKDOWN SUPPORT WENN 0 SWS-->
+                    <li th:each="veranstaltungsform : ${veranstaltung.getVeranstaltungsformen()}"
+                        th:if="${veranstaltungsform.semesterWochenStunden == 0}">
+                        <span th:utext="${@htmlService.markdownToHtml(veranstaltungsform.getForm())}">
+                            Veranstaltungsform
+                        </span>
+                    </li>
+
                 </ul>
+
             </div>
         </div>
         <hr class="my-4" style="background-color: white">
@@ -124,7 +133,7 @@
                     <br>
                     <div>
                         <span class="card-text"
-                              th:text="${veranstaltung.getBeschreibung().getInhalte()}">
+                              th:utext="${@htmlService.markdownToHtml(veranstaltung.getBeschreibung().getInhalte())}">
                         Veranstaltungsinhalt
                         </span>
                         <br>
@@ -137,7 +146,7 @@
                     </span>
                     <br>
                     <span class="card-text"
-                              th:text="${veranstaltung.getBeschreibung().getLernergebnisse()}">
+                          th:utext="${@htmlService.markdownToHtml(veranstaltung.getBeschreibung().getLernergebnisse())}">
                             Lernergebnisse
                     </span>
                 </div>
@@ -155,7 +164,7 @@
                         <span class="card-subtitle" style="font-weight: bold">Verwendbarkeit</span>
                         <br>
                         <span class="card-text"
-                                  th:text="${veranstaltung.getBeschreibung().getVerwendbarkeit()}">
+                              th:utext="${@htmlService.markdownToHtml(veranstaltung.getBeschreibung().getVerwendbarkeit())}">
                                 Verwendbarkeit
                         </span>
                     </div>
@@ -173,7 +182,7 @@
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen zum Bestehen</span>
                         <br>
                         <span class="card-text"
-                              th:text="${veranstaltung.getBeschreibung().getVoraussetzungenBestehen()}">
+                              th:utext="${@htmlService.markdownToHtml(veranstaltung.getBeschreibung().getVoraussetzungenBestehen())}">
                                 VoraussetzungenBestehen
                         </span>
                     </div>
@@ -181,7 +190,7 @@
                         <span class="card-subtitle" style="font-weight: bold">Voraussetzungen für eine Teilnahme</span>
                         <br>
                         <span class="card-text"
-                                  th:text="${veranstaltung.getVoraussetzungenTeilnahme()}">
+                              th:utext="${@htmlService.markdownToHtml(veranstaltung.getVoraussetzungenTeilnahme())}">
                                 VoraussetzungenTeilnahme
                         </span>
                     </div>
@@ -192,7 +201,7 @@
                         <span class="card-subtitle" style="font-weight: bold">Literatur</span>
                         <br>
                         <span class="card-text"
-                              th:text="${veranstaltung.getBeschreibung().getLiteratur()}">
+                              th:utext="${@htmlService.markdownToHtml(veranstaltung.getBeschreibung().getLiteratur())}">
                             Literatur
                         </span>
 
@@ -207,7 +216,7 @@
                         </span>
                         <br>
                         <span class="card-text"
-                              th:text="${zusatzfeld.getInhalt()}">
+                              th:utext="${@htmlService.markdownToHtml(zusatzfeld.getInhalt())}">
                             ZusatzfeldInhalt
                         </span>
                     </div>
