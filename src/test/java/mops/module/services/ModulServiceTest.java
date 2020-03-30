@@ -1,11 +1,13 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -246,4 +248,24 @@ public class ModulServiceTest {
 
         assertThat(modulSichtbarkeitNull.getSichtbar()).isEqualTo(true);
     }
+
+    @Test
+    public void getAllSichtbareModuleTest() {
+        Modul sichtbar = ModulFaker.generateFakeModul();
+        sichtbar.setSichtbar(true);
+        Modul sichtbar2 = ModulFaker.generateFakeModul();
+        sichtbar2.setSichtbar(true);
+        Modul nichtSichtbar = ModulFaker.generateFakeModul();
+        nichtSichtbar.setSichtbar(false);
+
+        List<Modul> ModulList = new ArrayList<>();
+        ModulList.add(sichtbar);
+        ModulList.add(sichtbar2);
+        ModulList.add(nichtSichtbar);
+
+        when(modulService.getAllModule()).thenReturn(ModulList);
+        List<Modul> result = modulService.getAllSichtbareModule();
+        assertEquals(2, result.size());
+    }
+
 }
