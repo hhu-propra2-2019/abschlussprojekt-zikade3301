@@ -509,7 +509,7 @@
                                 <div class="form-check mb-2" style="display: flex"
                                      th:each="veranstaltungsform,j : *{veranstaltungsformen[__${(i.index)}__]}">
                                     <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
-                                    <input class="form-control ml-1"
+                                    <textarea class="form-control ml-1"
                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -520,7 +520,7 @@
                                            th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                            th:if ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].form == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].form}"></textarea>
 
-                                    <input class="form-control ml-1"
+                                    <textarea class="form-control ml-1"
                                            style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
                                                            background: transparent;
@@ -542,7 +542,7 @@
                                            min="0"
                                            required
                                            th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"
-                                           th:if ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"></textarea>
+                                           th:if ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}">
 
 
                                     <input class="form-control ml-1"
@@ -555,7 +555,7 @@
                                            min="0"
                                            required
                                            th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"
-                                           th:unless ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"></textarea>
+                                           th:unless ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}">
                                     <label style="font-size: larger; margin-left: 0.5rem">
                                         SWS
                                     </label>
