@@ -150,7 +150,6 @@ public class ModulWrapperService {
             List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
             zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
-            System.out.println("-------------------" + zusatzfelder[i].size());
             sortZusatzfeldListById(zusatzfelder[i]);
             while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
                 zusatzfelder[i].add(new Zusatzfeld());
@@ -158,42 +157,17 @@ public class ModulWrapperService {
         }
     }
 
-    //Einfach rauslöschen aller leeren Felder ?
-    // Wenn ein neues veranstaltungsformfeld hinzugefügt wird beim bearbeiten, hat es noch keine ID,
-    //Würde jetzt also wieder rausgelöscht werden, oder?
-
-    //Bei zwei neu angeegten und einem veränderten landet nur ein neues und das veränderte bei der Annahme
-
-
-    //IDEE neu hinzugefügte veranstaltungsformen haben keine id. müssen aber auch nicht sortiert werden weil sie
-    //auf jedenfall neu sein. Die, die eine Idee haben sollten sortiert werden.
-
-    //Fragen:
-    // Was ist wenn man den INput aus einem bestehenden Form rauslöscht?
-
-        //    veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId,
-        //    Comparator.nullsLast(Comparator.naturalOrder())));
-
     private static void sortVernstaltungListById(
             List<Veranstaltung> veranstaltungen) {
         veranstaltungen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltung::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
-//        veranstaltungen.removeAll(Collections.singleton(null));
-//        veranstaltungen.removeIf(x -> x.getId()==null);
-//        veranstaltungen.sort(Comparator.comparing(Veranstaltung::getId));
     }
 
     private static void sortVernstaltungsformListById(
             List<Veranstaltungsform> veranstaltungsformen) {
         veranstaltungsformen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltungsform::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
-//        veranstaltungsformen.removeAll(Collections.singleton(null));
-//        veranstaltungsformen.removeIf(x -> x.getId()==null);
-//        veranstaltungsformen.sort(Comparator.comparing(Veranstaltungsform::getId));
     }
 
     private static void  sortZusatzfeldListById(List<Zusatzfeld> zusatzfelder) {
         zusatzfelder.sort(Comparator.nullsLast(Comparator.comparing(Zusatzfeld::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
-//        zusatzfelder.removeAll(Collections.singleton(null));
-//        zusatzfelder.removeIf(x -> x.getId()==null);
-//        zusatzfelder.sort(Comparator.comparing(Zusatzfeld::getId));
     }
 }
