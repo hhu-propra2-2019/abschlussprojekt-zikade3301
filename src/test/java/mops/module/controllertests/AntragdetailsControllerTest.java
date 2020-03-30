@@ -14,6 +14,7 @@ import mops.module.database.Modul;
 import mops.module.generator.ModulFaker;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ class AntragdetailsControllerTest {
 
     @MockBean
     private AntragService antragService;
+    @MockBean
+    private ModulService modulService;
 
     @BeforeEach
     void setUp() {
@@ -45,16 +48,20 @@ class AntragdetailsControllerTest {
                 .apply(springSecurity())
                 .build();
 
-        Modul neuesModul = ModulFaker.generateFakeModul();
+        Modul modulAusAntrag = ModulFaker.generateFakeModul();
+
+        Modul altesModul = modulAusAntrag;
 
         Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
+        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modulAusAntrag));
 
         when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
+        when(modulService.getModulById(neuerAntrag.getModulId())).thenReturn(altesModul);
+
     }
 
     @Test
-    void testCreationAntragdetailsViewName() throws Exception {
+    void testkreationsAntragsDetailsViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
@@ -64,7 +71,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testCreationAntragdetailsAccessForAdministrator() throws Exception {
+    void testkreationsAntragsDetailsAccessForAdministrator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
@@ -74,7 +81,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testCreationAntragdetailsNoAccessForOrganisator() throws Exception {
+    void testkreationsAntragsDetailsNoAccessForOrganisator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -87,7 +94,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testCreationAntragdetailsNoAccessForStudent() throws Exception {
+    void testkreationsAntragsDetailsNoAccessForStudent() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("student"));
@@ -100,7 +107,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testCreationAntragdetailsNoAccessIfNotLoggedIn() throws Exception {
+    void testkreationsAntragsDetailsNoAccessIfNotLoggedIn() throws Exception {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
@@ -109,62 +116,61 @@ class AntragdetailsControllerTest {
                 });
     }
 
-    //TODO Methode modifikationsAntragsdetails in AntragdetailsController ruft modulService(getModulById()) auf.
-    // Das muss für Tests auch gemockt werden
     @Test
-    void testModificationAntragdetailsViewName() throws Exception {
+    void testmodifikationsAntragsdetailsViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
+        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                 .andExpect(view().name("antragdetails"));
     }
 
     @Test
-    void testModificationAntragdetailsAccessForAdministrator() throws Exception {
+    void testmodifikationsAntragsdetailsAccessForAdministrator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
+        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testModificationAntragdetailsNoAccessForOrganisator() throws Exception {
+    void testmodifikationsAntragsdetailsNoAccessForOrganisator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
 
     @Test
-    void testModificationAntragdetailsNoAccessForStudent() throws Exception {
+    void testmodifikationsAntragsdetailsNoAccessForStudent() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("student"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
 
     @Test
-    void testModificationAntragdetailsNoAccessIfNotLoggedIn() throws Exception {
+    void testmodifikationsAntragsdetailssNoAccessIfNotLoggedIn() throws Exception {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/modifikationsAntragsdetails/3302"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
+
 
 }

@@ -190,4 +190,22 @@ public class ModulService {
         return firstYear + "-" + secondYear;
     }
 
+    /**Kopiert ein Modul.
+     *
+     * @param modulAlt Das zu kopierende Modul.
+     * @param modulNeu Die Kopie.
+     */
+
+    public static void kopiereModul(Modul modulAlt, Modul modulNeu) {
+
+        for (Field field : modulAlt.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                field.set(modulNeu, field.get(modulAlt));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

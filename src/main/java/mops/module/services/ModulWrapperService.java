@@ -29,6 +29,7 @@ public class ModulWrapperService {
      */
     public static Modul readModulFromWrapper(ModulWrapper modulWrapper) {
         Set<Veranstaltung> veranstaltungenInWrapper = getVeranstaltungenAsSet(modulWrapper);
+        removeInvalidListEntriesFromVeranstaltungenSet(veranstaltungenInWrapper);
         Modul modul = modulWrapper.getModul();
         modul.setVeranstaltungen(veranstaltungenInWrapper);
         modul.refreshMapping();
@@ -134,12 +135,9 @@ public class ModulWrapperService {
 
     private static void fillUpWithEmptyVeranstaltungsformen(
             List<Veranstaltungsform>[] veranstaltungsformen, List<Veranstaltung> veranstaltungen) {
-//        System.out.println("Veranstaltungsanzahl "+ veranstaltungen.size());
         for (int i = 0; i < veranstaltungen.size(); i++) {
 
             veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
-
-//            System.out.println("in Veranstaltungsformen" + veranstaltungsformen[i].get(0).getId());
 
             sortVernstaltungsformListById(veranstaltungsformen[i]);
             while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
@@ -152,6 +150,7 @@ public class ModulWrapperService {
             List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
             zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
+            System.out.println("-------------------" + zusatzfelder[i].size());
             sortZusatzfeldListById(zusatzfelder[i]);
             while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
                 zusatzfelder[i].add(new Zusatzfeld());
