@@ -136,9 +136,8 @@ public class ModulWrapperService {
     private static void fillUpWithEmptyVeranstaltungsformen(
             List<Veranstaltungsform>[] veranstaltungsformen, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
-
-            veranstaltungsformen[i] = new LinkedList<>(veranstaltungen.get(i).getVeranstaltungsformen());
-
+            veranstaltungsformen[i] = new LinkedList<>(
+                    veranstaltungen.get(i).getVeranstaltungsformen());
             sortVernstaltungsformListById(veranstaltungsformen[i]);
             while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
                 veranstaltungsformen[i].add(new Veranstaltungsform());
@@ -159,15 +158,24 @@ public class ModulWrapperService {
 
     private static void sortVernstaltungListById(
             List<Veranstaltung> veranstaltungen) {
-        veranstaltungen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltung::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+        veranstaltungen.sort(Comparator.nullsLast(
+                Comparator.comparing(
+                        Veranstaltung::getId, Comparator.nullsLast(
+                                Comparator.naturalOrder()))));
     }
 
     private static void sortVernstaltungsformListById(
             List<Veranstaltungsform> veranstaltungsformen) {
-        veranstaltungsformen.sort(Comparator.nullsLast(Comparator.comparing(Veranstaltungsform::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+        veranstaltungsformen.sort(Comparator.nullsLast(
+                Comparator.comparing(
+                        Veranstaltungsform::getId, Comparator.nullsLast(
+                                Comparator.naturalOrder()))));
     }
 
     private static void  sortZusatzfeldListById(List<Zusatzfeld> zusatzfelder) {
-        zusatzfelder.sort(Comparator.nullsLast(Comparator.comparing(Zusatzfeld::getId, Comparator.nullsLast(Comparator.naturalOrder()))));
+        zusatzfelder.sort(Comparator.nullsLast(
+                Comparator.comparing(
+                        Zusatzfeld::getId, Comparator.nullsLast(
+                                Comparator.naturalOrder()))));
     }
 }
