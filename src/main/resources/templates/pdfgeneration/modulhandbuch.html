@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Modulhandbuch</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            overflow: hidden;
+            word-wrap: break-word;
+            font-size: 12px;
+        }
+
+        a:link {
+            text-decoration: none;
+            color: black;
+        }
+
+        #frontpage {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        #frontpage-lower-part {
+            display: block;
+            page-break-after: always;
+            margin-top: 85%;
+            line-height: 0.5em;
+        }
+
+        @page {
+            size: A4;
+            @bottom-center {
+                content: "- " counter(page) " -";
+                font-family: 'Helvetica', sans-serif;
+                font-size: 11px;
+            }
+        }
+
+        @page :first {
+            @bottom-center {
+                content: "";
+            }
+        }
+
+        #table-of-contents a::after {
+            content: leader('.') target-counter(attr(href), page);
+        }
+
+        #table-of-contents {
+            line-height: 2em;
+            display: block;
+            page-break-after: always;
+        }
+
+        .blank-page {
+            visibility: hidden;
+            page-break-after: always;
+            content: ".";
+        }
+        
+        #studienverlaufsplan table {
+            table-layout: fixed;
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        #studienverlaufsplan th,
+        #studienverlaufsplan td {
+            word-wrap: break-word;
+            padding: 4px;
+            text-align: center;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        #studienverlaufsplan .color0 {
+            background-color: #c5d8f0;
+        }
+
+        #studienverlaufsplan .color1 {
+            background-color: #8db3e2;
+        }
+
+        #studienverlaufsplan .color2 {
+            background-color: #558ed5;
+        }
+
+        #studienverlaufsplan .semester-color {
+            background-color: #94b2d6;
+        }
+
+
+        #studienverlaufsplan .down-arrow::after {
+            content: " v";
+        }
+
+        #studienverlaufsplan .down-arrow {
+            color: #ff0000;
+        }
+
+        #studienverlaufsplan .table-header {
+            background-color: #dbe5f1;
+            color: black;
+            font-size: medium;
+        }
+
+        #studienverlaufsplan .table-footer {
+            background-color: #17375e;
+            color: white;
+            font-size: medium;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- =========== Vorderseite =========== -->
+
+<div id="frontpage">
+    <div id="frontpage-upper-part">
+        <h1>Modulhandbuch</h1>
+        <h2>für den</h2>
+        <h2>Bachelor- und Master-Studiengang Informatik</h2>
+    </div>
+    <div id="frontpage-lower-part">
+        <h2>Institut für Informatik</h2>
+        <h2>der Mathematisch-Naturwissenschaftliche Fakultät</h2>
+        <h2>der Heinrich-Heine-Universität</h2>
+        <br/>
+        <h2>Herausgegeben vom</h2>
+        <h2>Ausschuss für die Bachelor- und Master-Prüfung</h2>
+        <h2>im Fach Informatik</h2>
+    </div>
+</div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page0</div>
+
+<!-- =========== Vorwort =========== -->
+
+<div>
+    <h1>Vorwort</h1>
+    <p>Das Modulhandbuch soll eine Orientierung über den grundständigen Bachelor-Studiengang Informatik und
+        den konsekutiven Master-Studiengang Informatik liefern. Insbesondere soll es die Wahl der Lehrveranstaltungen
+        erleichtern und die Organisation des Studiums unterstützen.
+    </p>
+    <p>Das Modulhandbuch führt die gängigen Lehrveranstaltungen auf. Es ist jedoch keine vollständige, abschließende
+        oder endgültige Auflistung. Vielmehr wird das Modulhandbuch kontinuierlich aktualisiert und gibt so
+        die Entwicklung in Forschung und Lehre am Institut für Informatik wieder.
+    </p>
+    <p>Beachten Sie jedoch, dass in allen Fragen zum Studium sowie zum Prüfungswesen die jeweiligen Bachelor-
+        oder Master-Prüfungsordnungen des Fachs Informatik maßgeblich sind.
+    </p>
+    <p>Düsseldorf, im <span th:text="${currentSemester}">Sommer 2020</span>
+    </p>
+    <p>Der Ausschuss für die Bachelor- und Master-Prüfung im Fach Informatik
+    </p>
+</div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page1</div>
+
+<!-- =========== Inhaltsverzeichnis =========== -->
+
+<div id="table-of-contents">
+    <h1>Inhaltsverzeichnis</h1>
+    <ul style="list-style-type: none" id="testnumber">
+        <li style="font-weight: bold;">
+            <a href="#studienverlaufsplan">0. Studienverlaufspläne</a>
+        </li>
+        <div th:each="c : ${categories}">
+            <li style="font-weight: bold;">
+                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a>
+            </li>
+            <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
+                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+        </div>
+    </ul>
+    </li>
+    </ul>
+</div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page2</div>
+
+<!-- =========== Studienverlaufsplan =========== -->
+
+<div id="studienverlaufsplan">
+
+    <h2>0. Studienverlaufspläne</h2>
+    <h3>Bachelor-Studiengang (Beginn im Wintersemester)</h3>
+
+    <!-- Tabelle 1   -->
+
+    <table>
+
+        <!--    Oberste Zeile    -->
+
+        <tr class="table-header">
+            <th>
+                Semester
+            </th>
+            <th colspan="5">
+                Lehrveranstaltungen mit zugehörigen Leistungspunkten
+            </th>
+        </tr>
+
+        <!--    Inhalt    -->
+
+        <tr>
+            <td class="semester-color">1</td>
+            <td class="color0">Programmierung (10)</td>
+            <td class="color0">Algorithmen und Datenstrukturen (10)</td>
+            <td class="color1">Linearen Algebra (10)</td>
+            <td class="color1"></td>
+            <td class="color1">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Rechnerarchitektur (9) BV+PÜ (4)</td>
+            <td class="color0">Professionelle Software-entwicklung (Programmier-praktikum I) (8)</td>
+            <td class="color0">Einf. Rechnernetze, Datnbanken und Betriebssysteme (5)</td>
+            <td class="color1">Analysis 1 (10)</td>
+            <td class="color1">32 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">3</td>
+            <td class="color0">Softwareentwick-lung im Team (Programmier-praktikum II) (8)</td>
+            <td class="color1">Analysis 2 (10)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">28 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">4</td>
+            <td class="color0" rowspan="2">Theoretische Informatik (10)</td>
+            <td class="color1">Angewandte Mathematik (10): Numerik oder Stochastik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Wahlbereich (10)</td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">30 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">5</td>
+            <td class="color0" rowspan="2">Wahlbereich (20)</td>
+            <td class="color1">Angewandte Mathematik (10): Stochastik oder Numerik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">28 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">6</td>
+            <td class="color0">Bachelorarbeit (15)</td>
+            <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <!--    Unterste Zeile    -->
+
+        <tr>
+            <td class="semester-color"></td>
+            <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
+        </tr>
+    </table>
+
+    <h3>Bachelor-Studiengang (Beginn im Sommersemester)</h3>
+
+    <!--  Tabelle 2  -->
+
+    <table>
+
+        <!--    Oberste Zeile    -->
+
+        <tr class="table-header">
+            <th>
+                Semester
+            </th>
+            <th colspan="5">
+                Lehrveranstaltungen mit zugehörigen Leistungspunkten
+            </th>
+        </tr>
+
+        <!--    Inhalt    -->
+
+        <tr>
+            <td class="semester-color">1</td>
+            <td class="color0">Rechnerarchitektur (9) V+Ü (5)</td>
+            <td class="color0">Einf. Rechnernetze, Datnbanken und Betriebssysteme (5)</td>
+            <td class="color1">Linearen Algebra (10)</td>
+            <td class="color1">Analysis 1 (10)</td>
+            <td class="color1">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Programmierung (10)</td>
+            <td class="color0">Algorithmen und Datenstrukturen (10)</td>
+            <td class="color1">Analysis 2 (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">3</td>
+            <td class="color0" rowspan="2">Professionelle Software-entwicklung (Programmier-praktikum I) (8)</td>
+            <td class="color1">Angewandte Mathematik (10): Numerik oder Stochastik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Rechnerarchitektur (9) BV+PÜ (4)</td>
+            <td class="color0" rowspan="2">Theoretische Informatik (10)</td>
+            <td class="color0" rowspan="2">32 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color" rowspan="2">4</td>
+            <td class="color0" rowspan="2">Softwareentwick-lung im Team (Programmier-praktikum II) (8)</td>
+            <td class="color1">Angewandte Mathematik (10): Stochastik oder Numerik <span class="down-arrow">oder</span>
+            </td>
+            <td class="color0" rowspan="2">Wahlbereich (10)</td>
+            <td class="color0" rowspan="2"></td>
+            <td class="color0" rowspan="2">28 LP</td>
+        </tr>
+        <tr>
+            <td class="color2">Nebenfach (10)</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Wahlbereich (20)</td>
+            <td class="color0"></td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <tr>
+            <td class="semester-color">2</td>
+            <td class="color0">Bachelorarbeit (15)</td>
+            <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
+            <td class="color1">Nebenfach (10)</td>
+            <td class="color0"></td>
+            <td class="color0">30 LP</td>
+        </tr>
+
+        <!--    Unterste Zeile    -->
+
+        <tr>
+            <td class="semester-color"></td>
+            <th class="table-footer" colspan="5">Gesamtleistungspunkte: 180 LP</th>
+        </tr>
+    </table>
+</div>
+
+<!-- =========== Leereseite =========== -->
+
+<div class="blank-page">page3</div>
+
+<!-- =========== Module nach Kategorien =========== -->
+
+<div th:each="c : ${categories}">
+    <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
+    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toPdfReadableGerman()}">Pflichtmodule der Informatik
+        (1.–4. Fachsemester)</h2>
+    <h2 th:text="${c.toPdfReadableEnglish()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
+    <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
+        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}"
+            style="text-indent: 3%">1.4
+            Rechnerarchitektur</h3>
+        <h3 th:text="${m.titelEnglisch}" style="text-indent: 3%">Computer Architecture</h3>
+        <h3>Studiengang</h3>
+        <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
+        <div th:each="v, vitemStat : ${m.veranstaltungen}">
+            <h3 th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '.' + ${vitemStat.index + 1} + ' ' + ${v.titel}"
+                th:if="${#lists.size(m.veranstaltungen) > 1}">Rechnerarchitektur</h3>
+            <h3>Lehrveranstaltungen</h3>
+            <div>
+                <ul th:remove="all-but-first">
+                    <li th:each="lv : ${v.lehrveranstaltungenEnumeration}"
+                        th:text="${lv}">Vorlesung „Rechnerarchitektur“, 2 SWS
+                    </li>
+                    <li>Übung, 1 SWS (Vorlesung und Übung 5 LP)</li>
+                </ul>
+            </div>
+            <div th:each="freeText : ${v.lehrveranstaltungenFreeText}">
+                <div th:utext="${freeText}">Vorlesung „Rechnerarchitektur“, 2 SWS</div>
+            </div>
+            <h3>Inhalte</h3>
+            <div th:utext="${v.inhalte}">Die Vorlesung „Rechnerarchitektur“ sowie die dazugehörige Übung (5 LP)
+                behandelt den Aufbau einesRechners. Dabei wird insbesondere auf folgende Themengebiete eingegangen:
+            </div>
+            <h3>Lernergebnisse/Kompetenzen</h3>
+            <div th:utext="${v.lernergebnisse}">Nach erfolgreicher Teilnahme an den Veranstaltungen dieses Moduls können
+                die Studierenden
+            </div>
+            <h3>Literatur</h3>
+            <div th:utext="${v.literatur}">Die primären Lehrbücher zu den verschiedenen Bestandteilen dieses Moduls
+                sind:
+            </div>
+            <h3>Verwendbarkeit des Moduls</h3>
+            <div th:utext="${v.verwendbarkeit}">Pflichtbereich</div>
+            <h3>Teilnahmevoraussetzungen</h3>
+            <div th:utext="${v.teilnahmevoraussetzungen}">Keine</div>
+            <h3>Voraussetzungen für die Vergabe von Leistungspunkten</h3>
+            <div th:utext="${v.voraussetzungenBestehen}"></div>
+            <h3>Häufigkeit des Angebots, modulare Schiene</h3>
+            <div th:text="${v.haeufigkeit}"></div>
+            <div th:each="z : ${v.zusatzfelder}">
+                <h3 th:text="${z.titel}">Zusatztitel</h3>
+                <div th:utext="${z.inhalt}">Zusatzinhalt</div>
+            </div>
+        </div>
+        <h3>Modulbeauftragte und hauptamtliche Lehrende</h3>
+        <div th:text="${m.modulbeauftragte}">Prof. Dr. Stefan Conrad, Prof. Dr. Martin Mauve</div>
+    </div>
+</div>
+</body>
+</html>

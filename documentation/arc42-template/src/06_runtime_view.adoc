@@ -1,0 +1,69 @@
+[[section-runtime-view]]
+== Laufzeitsicht
+
+
+
+=== _<Bezeichnung Laufzeitszenario 1>_
+
+*  <hier Laufzeitdiagramm oder Ablaufbeschreibung einfügen>
+*  <hier Besonderheiten bei dem Zusammenspiel der Bausteine in diesem Szenario erläutern>
+
+== Laufzeitszenario Suche
+
+ Der Nutzer gibt in der Haupseite einen oder mehrere Suchbegriffe ein.
+ Das löst eine GET-Anfrage aus, die von dem SearchController entgegengenommen wird.
+ Dieser ruft die search Methode im SuchService auf.
+ Die Methode durchsucht mit einer Hibernate Search Query die Datenbank innerhalb der relevanten Felder und gibt dann eine nach Relevanz sortierte Liste zurück.
+ Der Nutzer wird auf die searchresults Seite weitergeleitet und bekommt die Liste als Links zu den Moduldetails angezeigt.
+
+== Laufzeitszenario PDF-Download
+
+ Der Nutzer klickt in der Hauptseite auf den PDF-Knopf neben der Suchleiste.
+ Dies löst eine GET-Request aus, die vom PdfDownloadController entgegengenommen wird.
+ Dieser ruft über den ModulService alle zur Zeit sichtbaren Module ab und gibt diese an den PdfService weiter.
+ Der PdfService wandelt die Module nun mit Hilfe von Thymeleaf in ein formatiertes HTML-Dokument um, indem auch schon das Inhaltsverzeichnis automatisch generiert wurde.
+ Das HTML-Dokument wird anschließend mit Hilfe der flexmark-Bibliothek in ein PDF-Dokument umgewandelt und als ByteStrom an den Controller zurückgegeben, welcher dem Nutzer dann dieses PDF-Dokument zum Download zur Verfügung stellt.
+
+== Laufzeitszenario REST-API
+
+ Der API-Nutzer stellt eine HTTP GET Request an /module/api und spezifiziert die Suchanfrage im Parameter query.
+ GraphQL prüft die Anfrage und ruft (bei valider Request) mit Hilfe des ModulServices die angeforderten Daten ab.
+ Diese werden in JSON-Form dem Nutzer zurückgegeben.
+
+== Laufzeitszenario Anträge für Erstellung
+
+Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und klickt auf "Modul hinzufügen".
+Er wählt die Anzahl der Veranstaltungen aus, die das Modul haben soll.
+Es öffnet sich ein Formular mit den entsprechenden Eingabefeldern und aufklappbaren Veranstaltungs-Formularen.
+Die eingegebenen Formulardaten werden an den ModulerstellungController als POST-Request gesendet und werden mit Hilfe des AntragService als Antrag in der Datenbank gespeichert, bzw. im Fall dass es sich beim Nutzer um einen Administrator handelt direkt automatisch genehmigt und das Modul als sichtbares Modul in der Datenbank hinzugefügt.
+
+== Laufzeitszenario Anträge für Bearbeitung
+
+Ein Organisator oder Administrator klickt auf den "Module bearbeiten"-Reiter und wählt in der nach Modulkategorien gruppierten Ansicht aller sichtbaren Module ein Modul zur Bearbeitung aus.
+Es wird ein GET-Request mit einer Pfad-Variable mit der ID des entsprechenden Moduls an den ModulerstellungController gesendet.
+Es öffnet sich ein Formular mit durch die aktuellen Informationen in der Datenbank vorausgefüllten Eingabefeldern und ebenfalls vorausgefüllten aufklappbaren Veranstaltungs-Formularen.
+Die eingegebenen Formulardaten werden an den ModulerstellungController als POST-Request gesendet und werden mit Hilfe des AntragService als Antrag in der Datenbank gespeichert, bzw. im Fall dass es sich beim Nutzer um einen Administrator handelt, direkt automatisch genehmigt und das Modul wird in der Datenbank geupdatet.
+
+=== _<Bezeichnung Laufzeitszenario n>_
+
+...
+....
+
+== Laufzeitszenario Beabeitung von Anträgen
+
+Ein Administrator klickt auf den "Anträge"- Reiter in der Navigationsbar. Dies löst eine GET-Anfrage aus, die von dem AdministratorController entgegengenommen wird. Mit Hilfe des Antrags Services
+werden der View alle offenen und nach Datum geordneten Anträge in Form einer Liste angezeigt.
+Aus dieser Liste wählt sich der Administrator den gewünschten zu bearbeitenden Antrag und löst eine Request-Anfrage aus, die von dem AntragdetailsController je nach Art des Antrages, Modifikations- oder Kreationsantrag,
+entgegengenommen wird.
+
+=== Erstellung (Kreation)
+Handelt es sich um einen Kreationsantrag, wird der View mit Hilfe des JsonServices das Modul aus dem Antrag ,verpackt in einem ModulWrapper, übergeben.
+Mit Hilfe von Thymeleaf wird dem Administrator nun das ausgefüllte Modul angezeigt. Ihm ist es möglich einzelne Felder zu verändern oder löschen.
+Anschließen wird per Klick auf den Button "Antrag annehmen" eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitt wird.
+Das Modul, inklusiver aller Änderungen, wird aus dem AntragWrapper Objekt entpackt und anschließend in den ursprünglichen Antrag gesetzt.
+Dieser und das beinhaltete Modul werden dann mit Hilfe des Antrag Services in der Datenbank abgespeichert und der Administrator
+wird auf die Übersichtseite der Anträge ( administrator.html) redirected.
+
+
+=== Bearbeitung (Modifikation)
+

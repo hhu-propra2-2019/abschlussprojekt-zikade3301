@@ -24,7 +24,61 @@
 
 - mehr Modellierung der Daten-Objekte
 - Struktur der Anwendung an der Tafel ausgearbeitet
-- Service zum Ändern der Module hinzugefügt
-- Repository-Klassen für CRUD-Operationen hinzugefügt
+- Service zum Ändern der Module hinzugefügt (auf Feature-Branch)
+- Repository-Klassen für CRUD-Operationen hinzugefügt (auf Feature-Branch)
 
-== Montag, 09.03.10
+== Montag, 09.03.20
+
+- Dokumentation für Woche 1 vervollständigt
+- README abgeändert
+- Services und Repositories aus Database-Branch entfernt (in eigenen Branch), damit dieser in den Master gemerget werden kann
+- Test für IndexController
+    * PMD entfernt, da es einen Haufen "unsinnige" Fehlermeldungen geliefert hat (zB Konstruktor für Testklasse erforderlich)
+    Nutzen nun nur noch Checkstyle und SpotBugs
+- Spring Profiles: application-dev.properties erstellt
+
+
+== Dienstag, 10.03.20
+
+- Dokumentation zu Postgres-eigener Volltextsuche durchgearbeitet, klingt vielversprechend
+- index.html überarbeitet
+- Klasse für Keycloak-Accounts hinzugefügt
+- Controller und html-Datei für Ansicht von Modulbeauftragten hinzugefügt
+
+== Mittwoch, 11.03.20
+
+- Modulhandbuch sollte nun im MultiUser-Betrieb funktionieren
+- Versuch, Postgres-eigene Volltextsuche einzubinden. Unbefriedigend, da Suche nach Substrings keine Ergebnisse liefert.
+(Bsp: "Osterhase" als Feld, Suchanfrage "Oster" liefert keine Ergebnisse.) Liegt an der Art, wie Tokens für die Suche generiert
+werden: Dictionary für zusammengesetzte Worte müsste anscheinend selbst erstellt werden und auch dann würden Suchanfragen wie
+"Algo" oder "Alg" keine Ergebinsse liefern, auch wenn ein Feld "Algorithmen" enthält. Suchen daher nach anderer Möglichkeit
+(Stichwort: Lucene)
+
+== Donnerstag, 12.03.20
+
+- Versuch, HibernateSearch mit Lucene für die Volltextsuche zu integrieren
+
+== Freitag, 13.03.20
+
+- einfache SQL-Query für Suche eingefügt - benötigt fertige Datenstruktur, um sie sinnvoll zu implementieren
+- Suche in der index.html und im indexController eingepflegt
+
+== Montag, 16.03.20
+
+- Einrichtung von Keycloak mit Client ID und Secret, anschließend implementieren der neuen Rolle "sekretariat" und
+überarbeiten aller betrofenen Klassen.
+- Bearbeitung der Organisator View für die Anlegung und Bearbeitung von Modulen
+
+== Dienstag, 17.03.20
+
+- reviewen des Branches mops_services mit dem Großteil der Datenbank Logik
+- anschließend gemeinsames refactorn
+
+== Mittwoch, 18.03.20
+- erstellen eines Mappers für das Logout von Keycloak
+- erstellen einer Query für die Filterung nach dem Semester
+
+== Donnerstag 19.03.20
+
+- arbeiten an der Schnittstelle zwischen Datenbank und Frontend - Einfügen von Thymeleaf in die Views und bearbeiten der jeweiligen Controller
+- erstellen einer View für die Suche mit zugehörigem Controller und Controllertest

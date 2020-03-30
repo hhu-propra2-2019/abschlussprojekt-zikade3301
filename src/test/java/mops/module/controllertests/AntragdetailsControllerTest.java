@@ -137,7 +137,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testmodifikationsAntragsdetailsNoAccessForOrganisator() throws Exception {
+    void testmodifikationsAntragsdetailsNoAccessForOrganisator() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -150,7 +150,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testmodifikationsAntragsdetailsNoAccessForStudent() throws Exception {
+    void testmodifikationsAntragsdetailsNoAccessForStudent() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("student"));
@@ -163,7 +163,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testmodifikationsAntragsdetailssNoAccessIfNotLoggedIn() throws Exception {
+    void testmodifikationsAntragsdetailssNoAccessIfNotLoggedIn() {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
@@ -171,6 +171,5 @@ class AntragdetailsControllerTest {
                             .andExpect(status().isOk());
                 });
     }
-
 
 }

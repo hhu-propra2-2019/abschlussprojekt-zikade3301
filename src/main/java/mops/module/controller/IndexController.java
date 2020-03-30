@@ -5,7 +5,6 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Modulkategorie;
-import mops.module.services.AntragService;
 import mops.module.services.ModulService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -25,7 +24,6 @@ import org.springframework.web.context.annotation.SessionScope;
 public class IndexController {
 
     private final ModulService modulService;
-    private final AntragService antragService;
 
     private static final int NUMBER_OF_PAST_SEMESTERS = 1;
     private static final int NUMBER_OF_NEXT_SEMESTERS = 4;
@@ -37,7 +35,7 @@ public class IndexController {
      * @param model Model für die HTML-Datei.
      * @return View Index
      */
-    @GetMapping("/")
+    @GetMapping("")
     public String index(KeycloakAuthenticationToken token, Model model) {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));

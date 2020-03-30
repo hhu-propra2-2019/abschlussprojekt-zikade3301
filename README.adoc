@@ -21,3 +21,88 @@ Der Nutzer kann mit einer Volltextsuche und Filterfunktion seine Module finden u
 damit er sie später als PDF herunterladen kann.
 Es gibt eine dynamische Semesterübersicht, die anzeigt welche Module in dem ausgewählten Semester verfügbar sind.
 
+== PDF
+
+Das Modulhandbuch kann mit dem folgenden Request als PDF-Datei direkt aufgerufen werden.
+
+.Request
+----
+/module/pdf
+----
+
+== API
+
+Mithilfe von GraphQL wird eine dynamische API zur Verfügung gestellt, die per GET-Request über /module/api aufrufbar ist und Module im JSON-Format zurückgibt.
+
+Über /module/graphiql kann die API mit Autovervollständigung ausprobiert werden, um geeignete Requests zu bauen.
+
+=== Beispielrequests
+
+==== Ausgabe aller deutschen Modultitel mit zugehöriger ID
+
+.Request
+[source]
+----
+/module/api?query={allModule{titelDeutsch id}}
+----
+.Response
+[source,json]
+----
+{
+  "data": {
+    "allModule": [
+      {
+        "titelDeutsch": "Machine Learning",
+        "id": "1"
+      },
+      {
+        "titelDeutsch": "Betriebssysteme",
+        "id": "2"
+      }
+    ]
+  }
+}
+----
+
+==== Ausgabe weiterer Modulinformationen von Modul 2
+
+.Request
+[source]
+----
+/module/api?query=
+{
+  modulById(id: 2) {
+    titelDeutsch
+    titelEnglisch
+    veranstaltungen {
+      titel
+      beschreibung {
+        inhalte
+      }
+    }
+    modulkategorie
+  }
+}
+----
+.Response
+[source,json]
+----
+{
+  "data": {
+    "modulById": {
+      "titelDeutsch": "Betriebssysteme",
+      "titelEnglisch": "Operating systems",
+      "veranstaltungen": [
+        {
+          "titel": "Vorlesung Betriebssysteme",
+          "beschreibung": {
+            "inhalte": "Inhalte"
+          }
+        }
+      ],
+      "modulkategorie": "WAHLPFLICHT_BA"
+    }
+  }
+}
+----
+

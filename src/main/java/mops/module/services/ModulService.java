@@ -106,8 +106,18 @@ public class ModulService {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Gibt alle sichtbaren Module, die ungleich null sind, zurück.
+     *
+     * @return alle sichtbaren Module, die ungleich null sind
+     */
     public List<Modul> getAllSichtbareModule() {
-        return getAllModule().stream().filter(Modul::getSichtbar).collect(Collectors.toList());
+        return getAllModule()
+                .stream()
+                .filter(m -> m.getSichtbar() != null)
+                .filter(Modul::getSichtbar)
+                .collect(Collectors.toList());
     }
 
     public List<Modul> getModuleBySemester(String semester) {
@@ -140,6 +150,38 @@ public class ModulService {
         modulSnapshotRepository.save(getModulById(modulId));
     }
 
+
+    /**
+     * Löscht ein gewünschtes SemesterTag einer Veranstaltung.
+     *
+     * @param semesterTag     Der SemesterTag, der gelöscht werden soll
+     * @param veranstaltungId ID der Veranstaltung, die das Tag beinhaltet
+     * @param modulId         ID des Moduls, das die Veranstaltung beinhaltet
+     */
+    public void deleteTagVeranstaltungSemester(
+            String semesterTag,
+            Long veranstaltungId,
+            Long modulId) {
+
+        Veranstaltung veranstaltung = getModulById(modulId)
+                .getVeranstaltungen()
+                .stream()
+                .filter(v -> v.getId().equals(veranstaltungId)).findFirst().orElse(null);
+        if (veranstaltung == null) {
+            throw new IllegalArgumentException("Ungültige ID der Veranstaltung!");
+        }
+
+        Set<String> semesterNew = veranstaltung
+                .getSemester()
+                .stream()
+                .filter(s -> !s.equals(semesterTag))
+                .collect(Collectors.toSet());
+
+        veranstaltung.setSemester(semesterNew);
+
+        modulSnapshotRepository.save(getModulById(modulId));
+    }
+
     /**
      * Gibt die letzten x und die y darauffolgenden Semester als Liste von Strings zurück.
      *
@@ -164,16 +206,40 @@ public class ModulService {
      * @return Formatierter Semester-String
      */
     public static String getSemesterFromDate(LocalDateTime when) {
+        return getSemesterFromDate(when, false);
+    }
+
+    /**
+     * Gibt das zugehörige Semester mit entsprechender Formatierung zum Datum zurück.
+     *
+     * @param when         Datum
+     * @param formalFormat bool, ob Semester knapp (z.B. WiSe2019-20)
+     *                     oder formal (z.B. Winter 2019) ausgegeben werden soll
+     * @return Formatierter Semester-String
+     */
+    public static String getSemesterFromDate(LocalDateTime when, boolean formalFormat) {
         int currentYear = when.getYear();
         LocalDateTime ssStart = LocalDateTime.of(currentYear, 4, 1, 0, 0);
         LocalDateTime wsStart = LocalDateTime.of(currentYear, 10, 1, 0, 0);
 
         if (when.isBefore(ssStart)) {
-            return "WiSe" + getWinterSemesterYear(currentYear - 1);
+            if (formalFormat) {
+                return "Winter " + (currentYear - 1);
+            } else {
+                return "WiSe" + getWinterSemesterYear(currentYear - 1);
+            }
         } else if (when.isAfter(wsStart)) {
-            return "WiSe" + getWinterSemesterYear(currentYear);
+            if (formalFormat) {
+                return "Winter " + currentYear;
+            } else {
+                return "WiSe" + getWinterSemesterYear(currentYear);
+            }
         } else {
-            return "SoSe" + currentYear;
+            if (formalFormat) {
+                return "Sommer " + currentYear;
+            } else {
+                return "SoSe" + currentYear;
+            }
         }
     }
 
@@ -206,6 +272,24 @@ public class ModulService {
                 e.printStackTrace();
             }
         }
+    }
+
+
+    /**
+     * Ändert die Sichtbarkeit eines Moduls.
+     *
+     * @param modulId Id des Moduls, dessen Sichtbarkeit sich ändern soll
+     */
+    public void changeVisibility(long modulId) {
+
+        Boolean status = getModulById(modulId).getSichtbar();
+
+        if (status == null || !status) {
+            getModulById(modulId).setSichtbar(true);
+        } else {
+            getModulById(modulId).setSichtbar(false);
+        }
+        modulSnapshotRepository.save(getModulById(modulId));
     }
 
 }

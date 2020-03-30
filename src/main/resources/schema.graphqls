@@ -1,0 +1,55 @@
+type Query {
+  modulById(id: ID!): Modul
+  allModule: [Modul]
+}
+
+type Modul {
+  id: ID
+  titelDeutsch: String
+  titelEnglisch: String
+  veranstaltungen: [Veranstaltung]
+  modulbeauftragte: String
+  gesamtLeistungspunkte: String
+  studiengang: String
+  modulkategorie: Modulkategorie
+  sichtbar: Boolean
+  datumErstellung: LocalDateTime
+  datumAenderung: LocalDateTime
+}
+
+scalar LocalDateTime
+
+scalar Modulkategorie
+
+type Veranstaltung {
+  id: ID
+  titel: String
+  leistungspunkte: String
+  veranstaltungsformen: [Veranstaltungsform]
+  beschreibung: Veranstaltungsbeschreibung
+  voraussetzungenTeilnahme: String
+  semester: [String]
+  zusatzfelder: [Zusatzfeld]
+}
+
+type Veranstaltungsform {
+  id: ID
+  form: String
+  semesterWochenStunden: Int
+}
+
+type Zusatzfeld {
+  id: ID
+  titel: String
+  inhalt: String
+}
+
+type Veranstaltungsbeschreibung {
+  inhalte: String
+  lernergebnisse: String
+  literatur: String
+  verwendbarkeit: String
+  voraussetzungenBestehen: String
+  haeufigkeit: String
+  sprache: String
+}

@@ -1,0 +1,18 @@
+[[section-technical-risks]]
+== Risiken und technische Schulden
+
+ Deadline::
+ _Dieses Projekt ist das erste Großprojekt von fast allen Gruppenmitglieder, deshalb ist die mögliche Fehleinschätzung
+ der Rescource Zeit sehr groß._
+
+ Zu große, langlebige Branches::
+ _Oft haben wir versäumt, große Features in kleinen kurzlebigen Branches abzuarbeiten, die dann schnell gereviewt und
+ gemergt werden können. Stattdessen hatten wir gerade zum Ende der Bearbeitungszeit hin das Problem, dass wir eine Vielzahl  
+ überdimensionierte Branches hatten, deren Mergen problematisch und zeitintensiv wurde._
+
+ Erfahrung::
+ _Die geringe Erfahrung mit manchen Technologien wie z.B. Tests mit Junit 5 oder Controllertests mit MockMVC.
+ Das Einbinden mancher Bibliotheken und deren Methoden war eine Herausforderung._
+
+ Testbarkeit::
+ _Einige Methoden der PDF-Generierung waren kaum bis garnicht testbar und erschwerten somit die Qualitätskontrolle unserer Anwendung._
