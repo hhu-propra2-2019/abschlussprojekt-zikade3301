@@ -4,15 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -21,6 +18,9 @@ import mops.module.database.Veranstaltungsbeschreibung;
 import mops.module.generator.ModulFaker;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
+import org.assertj.core.util.Lists;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -323,9 +323,14 @@ public class ModulServiceDatabaseTest {
         LinkedList<Modul> versionen =
                 antragService.getAllVersionsOfModulOldestFirst(modul4.getId());
 
-        assertThat(versionen.get(0).getTitelDeutsch()).isEqualTo("initialer Titel");
-        assertThat(versionen.get(1).getTitelDeutsch()).isEqualTo("zweiter Titel");
-        assertThat(versionen.get(2).getTitelDeutsch()).isEqualTo("dritter Titel");
+        ArrayList<String> actualTitles = Lists.newArrayList(
+                versionen.get(0).getTitelDeutsch(),
+                versionen.get(1).getTitelDeutsch(),
+                versionen.get(2).getTitelDeutsch());
+        ArrayList<String> expectedTitles = Lists.newArrayList(
+                "initialer Titel", "zweiter Titel", "dritter Titel");
+
+        MatcherAssert.assertThat(actualTitles, Matchers.equalTo(expectedTitles));
     }
 
     @Test
@@ -350,15 +355,17 @@ public class ModulServiceDatabaseTest {
         LinkedList<Modul> versionen = antragService.getAllVersionsOfModulOldestFirst(
                 modul4.getId());
 
-        String titel1 = versionen.get(0).getVeranstaltungen()
-                .stream().findFirst().orElse(null).getTitel();
-        String titel2 = versionen.get(1).getVeranstaltungen()
-                .stream().findFirst().orElse(null).getTitel();
-        String titel3 = versionen.get(2).getVeranstaltungen()
-                .stream().findFirst().orElse(null).getTitel();
-        assertThat(titel1).isEqualTo("initialer Titel");
-        assertThat(titel2).isEqualTo("zweiter Titel");
-        assertThat(titel3).isEqualTo("dritter Titel");
+        ArrayList<String> actualTitles = Lists.newArrayList(
+                versionen.get(0).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel(),
+                versionen.get(1).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel(),
+                versionen.get(2).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel());
+        ArrayList<String> expectedTitles = Lists.newArrayList(
+                "Titel 1", "Titel 2", "Titel 3");
+
+        MatcherAssert.assertThat(actualTitles, Matchers.equalTo(expectedTitles));
     }
 
 }
