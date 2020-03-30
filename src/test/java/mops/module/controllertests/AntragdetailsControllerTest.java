@@ -50,13 +50,11 @@ class AntragdetailsControllerTest {
 
         Modul modulAusAntrag = ModulFaker.generateFakeModul();
 
-        Modul altesModul = modulAusAntrag;
-
         Antrag neuerAntrag = new Antrag();
         neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modulAusAntrag));
 
         when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
-        when(modulService.getModulById(neuerAntrag.getModulId())).thenReturn(altesModul);
+        when(modulService.getModulById(neuerAntrag.getModulId())).thenReturn(modulAusAntrag);
 
     }
 
@@ -81,7 +79,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testkreationsAntragsDetailsNoAccessForOrganisator() throws Exception {
+    void testkreationsAntragsDetailsNoAccessForOrganisator() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -94,10 +92,10 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testkreationsAntragsDetailsNoAccessForStudent() throws Exception {
+    void testkreationsAntragsDetailsNoAccessForStudent() {
         SecurityContextHolder
                 .getContext()
-                .setAuthentication(generateAuthenticationToken("student"));
+                .setAuthentication(generateAuthenticationToken("studentin"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
@@ -107,7 +105,7 @@ class AntragdetailsControllerTest {
     }
 
     @Test
-    void testkreationsAntragsDetailsNoAccessIfNotLoggedIn() throws Exception {
+    void testkreationsAntragsDetailsNoAccessIfNotLoggedIn() {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
