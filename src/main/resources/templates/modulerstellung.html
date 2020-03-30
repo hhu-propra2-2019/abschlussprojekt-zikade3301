@@ -401,7 +401,8 @@
                                                     Die Veranstaltung beinhaltet:
                                                 </span>
                                                 <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
-                                                        <input class="form-control ml-1"
+                                                    <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
+                                                    <input class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
                                                            max-width: 15rem;
@@ -433,6 +434,7 @@
                                                 </span>
                                                 <div class="col-12" style="padding: 0;">
                                                     <div class="col-6" style="float:left" th:each="zusatzfeld, k : *{zusatzfelder[__${(i.index)}__]}">
+                                                        <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].id}">
                                                         <div class="form-check mb-2"
                                                              style="padding: 0;
                                                              margin:0.3rem;

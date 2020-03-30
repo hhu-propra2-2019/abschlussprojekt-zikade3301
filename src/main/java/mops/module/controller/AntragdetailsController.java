@@ -4,6 +4,7 @@ package mops.module.controller;
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
 import java.lang.reflect.Field;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
