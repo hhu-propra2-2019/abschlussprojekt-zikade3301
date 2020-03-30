@@ -320,7 +320,7 @@
         <div class="collapse" th:id="${category}">
             <div class="card card-body pt-0" style="border: none">
                 <ul style="font-size: large; list-style-type: none">
-                    <li th:each="modul : ${allModules}">
+                    <li th:each="modul : ${allVisibleModules}">
                         <div th:if="${modul.getModulkategorie()} == ${category}">
                             <span style="width: min-content"
                                   class="badge badge-dark mr-2"
