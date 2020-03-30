@@ -112,7 +112,7 @@
             font-size: medium;
         }
 
-        #kapitel {
+        .kapitel {
             page-break-before: always;
         }
 
@@ -382,11 +382,22 @@
 
 <!-- =========== Module nach Kategorien =========== -->
 
-<div th:each="c : ${categories}" id="kapitel">
+<div th:each="c : ${categories}" class="kapitel">
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
-    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toPdfReadableGerman()}">Pflichtmodule der Informatik
-        (1.–4. Fachsemester)</h2>
-    <h2 th:text="${c.toPdfReadableEnglish()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
+    <h2 th:id="${c.toReadable()}">
+        <table style="width: 100%">
+            <col width="4%">
+            <col width="96%">
+            <tr>
+                <td th:text="${c.ordinal()+1} + '.'"></td>
+                <td th:text="${c.toPdfReadableGerman()}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td th:text="${c.toPdfReadableEnglish()}"></td>
+            </tr>
+        </table>
+    </h2>
     <div th:switch="${c.ordinal()}">
         <div th:case="2">
             <p>Die Module im Bereich „Nebenfach" sind abhängig vom gewählten Nebenfach (siehe Webseiten der Informatik: Nebenfach). Folgende Fächer stehen zur Auswahl: Biologie, Physik, Chemie, Mathematik und Psychologie (begrenzt auf 5 Plätze pro Studienjahr; Beginn immer im Wintersemester). Die Module, die im jeweiligen Nebenfach belegt werden können, werden vom Prüfungsausschuss auf der Webseite des Fachs bekannt gegeben. Andere Nebenfächer können auf schriftlichen Antrag vom Prüfungsausschuss genehmigt werden, sofern ein ausreichender Bezug zur Informatik vorhanden ist.
@@ -418,8 +429,20 @@
         <div th:case="*"></div>
     </div>
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
-        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}">1.4 Rechnerarchitektur</h3>
-        <h3 th:text="${m.titelEnglisch}" style="text-indent: 3%">Computer Architecture</h3>
+        <h3 th:id="${m.getId()}">
+            <table style="width: 100%">
+                <col width="4%">
+                <col width="96%">
+                <tr>
+                    <td th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1}"></td>
+                    <td th:text="${m.titelDeutsch}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td th:text="${m.titelEnglisch}"></td>
+                </tr>
+            </table>
+        </h3>
         <h3>Studiengang</h3>
         <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
         <div th:each="v, vitemStat : ${m.veranstaltungen}">
