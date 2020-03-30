@@ -309,15 +309,15 @@ public class ModulServiceDatabaseTest {
     void getAllVersionsOfModulOldestFirstTestModulTitel() {
         Modul modul1 = ModulFaker.generateFakeModul();
         modul1.setTitelDeutsch("initialer Titel");
-        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Antragsteller1");
         Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
 
         modul2.setTitelDeutsch("zweiter Titel");
-        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Beispielantragsteller");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Antragsteller2");
         Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
 
         modul3.setTitelDeutsch("dritter Titel");
-        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Beispielantragsteller");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Antragsteller3");
         Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
 
         LinkedList<Modul> versionen =
@@ -335,25 +335,16 @@ public class ModulServiceDatabaseTest {
                 .stream().findFirst().orElse(null);
         modul1.getVeranstaltungen().removeIf(v -> v != veranstaltungInModul);
 
-        Veranstaltung veranstaltung1 = modul1.getVeranstaltungen().stream()
-                .findFirst().orElse(null);
-        veranstaltung1.setTitel("initialer Titel");
-        Antrag antrag1 = antragService.addModulCreationAntrag(modul1,
-                "Beispielantragsteller1");
+        modul1.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 1");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Antragsteller1");
         Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
 
-        Veranstaltung veranstaltung2 = modul2.getVeranstaltungen().stream()
-                .findFirst().orElse(null);
-        veranstaltung2.setTitel("zweiter Titel");
-        Antrag antrag2 = antragService.addModulModificationAntrag(modul2,
-                "Beispielantragsteller");
+        modul2.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 2");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Antragsteller2");
         Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
 
-        Veranstaltung veranstaltung3 = modul3.getVeranstaltungen().stream()
-                .findFirst().orElse(null);
-        veranstaltung3.setTitel("dritter Titel");
-        Antrag antrag3 = antragService.addModulModificationAntrag(modul3,
-                "Beispielantragsteller");
+        modul3.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 3");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Antragsteller3");
         Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
 
         LinkedList<Modul> versionen = antragService.getAllVersionsOfModulOldestFirst(
