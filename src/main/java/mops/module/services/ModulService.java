@@ -101,7 +101,6 @@ public class ModulService {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Gibt alle sichtbaren Module, die ungleich null sind, zurück.
      *
@@ -144,7 +143,6 @@ public class ModulService {
 
         modulSnapshotRepository.save(getModulById(modulId));
     }
-
 
     /**
      * Löscht ein gewünschtes SemesterTag einer Veranstlatung.

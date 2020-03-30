@@ -40,7 +40,7 @@ public class IndexController {
         if (token != null) {
             model.addAttribute("account", createAccountFromPrincipal(token));
         }
-        model.addAttribute("allModules", modulService.getAllModule());
+        model.addAttribute("allModules", modulService.getAllSichtbareModule());
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("nextSemesters",
                 ModulService.getPastAndNextSemesters(LocalDateTime.now(),

@@ -146,7 +146,7 @@
                 <div class="modal-body">
                     <div class="accordion mt-3" id="accordion">
                     <ul style="font-size: large; list-style-type: none">
-                        <li th:each="modul : ${allModules}">
+                        <li th:each="modul : ${allVisibleModules}">
                             <a data-toggle="collapse"
                                th:href="'#modul'+${modul.getId()}"
                                aria-expanded="true"
