@@ -258,16 +258,16 @@ public class ModulService {
 
     /**Kopiert ein Modul.
      *
-     * @param modulAlt Das zu kopierende Modul.
-     * @param modulNeu Die Kopie.
+     * @param oldModul Das zu kopierende Modul.
+     * @param newModul Die Kopie.
      */
 
-    public static void kopiereModul(Modul modulAlt, Modul modulNeu) {
+    public static void copyModul(Modul oldModul, Modul newModul) {
 
-        for (Field field : modulAlt.getClass().getDeclaredFields()) {
+        for (Field field : oldModul.getClass().getDeclaredFields()) {
             field.setAccessible(true);
             try {
-                field.set(modulNeu, field.get(modulAlt));
+                field.set(newModul, field.get(oldModul));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }

@@ -3,8 +3,6 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.lang.reflect.Field;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
@@ -79,7 +77,7 @@ public class AntragdetailsController {
         Antrag antrag =  antragService.getAntragById(id);
         Modul modulAlt = modulService.getModulById(antrag.getModulId());
         Modul modulNeu = new Modul();
-        ModulService.kopiereModul(modulAlt, modulNeu);
+        ModulService.copyModul(modulAlt, modulNeu);
 
         ModulService.applyAntragOnModul(modulNeu,antrag);
 

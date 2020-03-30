@@ -153,7 +153,7 @@ public class ModulServiceTest {
     public void testKopiereModul() {
         Modul modulAlt = JsonService.jsonObjectToModul(modul1);
         Modul modulNeu = new Modul();
-        modulService.kopiereModul(modulAlt,modulNeu);
+        modulService.copyModul(modulAlt,modulNeu);
 
         Modul diffs = modulService.calculateModulDiffs(modulAlt, modulNeu);
         assertThat(diffs).isNull();
