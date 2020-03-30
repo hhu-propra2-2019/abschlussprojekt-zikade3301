@@ -1,14 +1,10 @@
 package mops.module.services;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Veranstaltung;
 import mops.module.database.Veranstaltungsform;
@@ -123,7 +119,7 @@ public class ModulWrapperService {
     public static ModulWrapper initializePrefilledWrapper(Modul modul) {
 
         List<Veranstaltung> veranstaltungen = new LinkedList<>(modul.getVeranstaltungen());
-        sortVernstaltungListById(veranstaltungen);
+        sortVeranstaltungenListById(veranstaltungen);
         List<Veranstaltungsform>[] veranstaltungsformen = new List[veranstaltungen.size()];
         List<Zusatzfeld>[] zusatzfelder = new List[veranstaltungen.size()];
 
@@ -138,7 +134,7 @@ public class ModulWrapperService {
         for (int i = 0; i < veranstaltungen.size(); i++) {
             veranstaltungsformen[i] = new LinkedList<>(
                     veranstaltungen.get(i).getVeranstaltungsformen());
-            sortVernstaltungsformListById(veranstaltungsformen[i]);
+            sortVeranstaltungsformenListById(veranstaltungsformen[i]);
             while (veranstaltungsformen[i].size() < VERANSTALTUNGSFORMEN_PRO_VERANSTALTUNG) {
                 veranstaltungsformen[i].add(new Veranstaltungsform());
             }
@@ -149,14 +145,14 @@ public class ModulWrapperService {
             List<Zusatzfeld>[] zusatzfelder, List<Veranstaltung> veranstaltungen) {
         for (int i = 0; i < veranstaltungen.size(); i++) {
             zusatzfelder[i] = new LinkedList<>(veranstaltungen.get(i).getZusatzfelder());
-            sortZusatzfeldListById(zusatzfelder[i]);
+            sortZusatzfelderListById(zusatzfelder[i]);
             while (zusatzfelder[i].size() < ZUSATZFELDER_PRO_VERANSTALTUNG) {
                 zusatzfelder[i].add(new Zusatzfeld());
             }
         }
     }
 
-    private static void sortVernstaltungListById(
+    private static void sortVeranstaltungenListById(
             List<Veranstaltung> veranstaltungen) {
         veranstaltungen.sort(Comparator.nullsLast(
                 Comparator.comparing(
@@ -164,7 +160,7 @@ public class ModulWrapperService {
                                 Comparator.naturalOrder()))));
     }
 
-    private static void sortVernstaltungsformListById(
+    private static void sortVeranstaltungsformenListById(
             List<Veranstaltungsform> veranstaltungsformen) {
         veranstaltungsformen.sort(Comparator.nullsLast(
                 Comparator.comparing(
@@ -172,7 +168,7 @@ public class ModulWrapperService {
                                 Comparator.naturalOrder()))));
     }
 
-    private static void  sortZusatzfeldListById(List<Zusatzfeld> zusatzfelder) {
+    private static void sortZusatzfelderListById(List<Zusatzfeld> zusatzfelder) {
         zusatzfelder.sort(Comparator.nullsLast(
                 Comparator.comparing(
                         Zusatzfeld::getId, Comparator.nullsLast(
