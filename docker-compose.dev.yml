@@ -1,3 +1,7 @@
+# Um das zum laufen zu bringen:
+## Im terminal docker-compose -f docker-compose.dev.yml up
+## Oder über Intellij direkt laufen lassen
+
 version: "3.1"
 services:
   database:
