@@ -53,35 +53,36 @@ public class FillDatabse {
     }
 
     private String removeEmptyLines(String template) {
-        template = template.substring(template.indexOf("\n") + "\n".length(), template.length() - 1);  // Remove Begin & Ending "\n"
-        String p1 = "[^ ]";
+        template = template.substring(template.indexOf("\n") + "\n".length(), template.length());  // Remove Begin & Ending "\n"
+        return removeIndent(template);
+    }
+
+    private String removeIndent(String template) {
+        String p1 = "[^ \n]";
         Pattern pattern = Pattern.compile(p1);
         Matcher matcher = pattern.matcher(template);
         int indent = 0;
         if (matcher.find()) {
             indent = matcher.start();
-            template = removeIndent(template, indent);
-            template = template.substring(0, template.length() - 1);
+        } else {
+            return "";
         }
-
-        return template;
-    }
-
-    private String removeIndent(String template, int indent) {
-        return template.lines()
+        int finalIndent = indent;
+        template = template.lines()
                 .map(line -> {
-                    if (line.length() > indent) {
-                        return line.substring(indent);
+                    if (line.length() > finalIndent) {
+                        return line.substring(finalIndent);
                     }
                     return line;
                 })
                 .map(line -> line + "\n")
                 .collect(Collectors.joining());
+        return template.substring(0, template.length() - 1);
     }
 
     private Set<Veranstaltung> buildVeranstaltungen(String template) {
         Set<Veranstaltung> veranstaltungen;
-        //String[] templates = splitTags(template, "veranstaltung");
+        String[] templates = splitTags(template, "veranstaltung");
         // TODO: Find Veranstaltung tag and for each single Veranstaltung.
         //       Call buildVeranstaltung(template).
 
@@ -89,8 +90,13 @@ public class FillDatabse {
     }
 
     private String[] splitTags(String template, String tag) {
-        String[] templates = template.split("</" + tag + ">");
-//        Arrays.stream(templates).map(x-> x.replaceAll("<" + tag + ">", "")).forEach(x -> System.out.println(x+"*end*"));
+        template="\n"+ template;
+        String[] templates = template.split("\n<" + tag + ">\n");
+        Arrays.stream(templates)
+                .skip(1)
+                .map(t -> "<" + tag + ">\n"+t)
+                .map(t -> splitTag(t, tag))
+                .forEach(x -> System.out.println(x));
         return templates;
     }
 
