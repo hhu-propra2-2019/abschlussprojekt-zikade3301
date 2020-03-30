@@ -50,7 +50,7 @@
 <main th:fragment="bodycontent">
 
     <!-- Modal -->
-    <form action="#" th:action="@{/module/modulerstellung}" method="post" th:object="${modulWrapper}">
+    <form action="#" th:action = "@{${'/module/' + ((modulId == null) ? 'modulerstellung' : 'modulbearbeitung')}}" method="post" th:object="${modulWrapper}">
         <input type="hidden" name="modulId" th:value="${modulId}">
         <div class="modal"
              id="formularModal"

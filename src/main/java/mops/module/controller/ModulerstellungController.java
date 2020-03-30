@@ -79,36 +79,12 @@ public class ModulerstellungController {
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
 
-        //Erstellung
-        if (modulId.equals("")) {
+        Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
 
-            Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
-
-            Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
-            if (token.getAccount().getRoles().contains("sekretariat")) {
-                antragService.approveModulCreationAntrag(antrag);
-            }
-            return "modulbeauftragter";
+        Antrag antrag = antragService.addModulCreationAntrag(modul, antragsteller);
+        if (token.getAccount().getRoles().contains("sekretariat")) {
+            antragService.approveModulCreationAntrag(antrag);
         }
-
-        //Bearbeitung
-        Long modulIdLong = Long.parseLong(modulId);
-        Modul altesModul = modulService.getModulById(modulIdLong);
-        Modul neuesModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
-
-        neuesModul.setId(modulIdLong);
-        neuesModul.refreshMapping();
-        Modul diffModul = ModulService.calculateModulDiffs(altesModul, neuesModul);
-
-        if (diffModul != null) {
-            Antrag antrag = antragService.addModulModificationAntrag(neuesModul, antragsteller);
-            if (token.getAccount().getRoles().contains("sekretariat")) {
-                antragService.approveModulModificationAntrag(antrag);
-                return "modulbeauftragter";
-            }
-        } //else {
-        //return "error"; //TODO: Fehlerseite wenn Antrag ohne Änderungen abgeschickt wurde
-        //}
 
         return "modulbeauftragter";
 
@@ -130,6 +106,8 @@ public class ModulerstellungController {
 
         String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
         model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("allModules", modulService.getAllModule());
 
         Long modulIdLong = Long.parseLong(modulId);
         Modul altesModul = modulService.getModulById(modulIdLong);

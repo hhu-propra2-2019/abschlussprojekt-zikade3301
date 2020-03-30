@@ -34,7 +34,6 @@ public class ModulbeauftragterController {
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
-        model.addAttribute("allCategories", Modulkategorie.values());
         return "modulbeauftragter";
     }
 }
