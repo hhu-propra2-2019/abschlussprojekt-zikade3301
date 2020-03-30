@@ -30,6 +30,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("dev")
 @SpringBootTest
+@Disabled
 public class FillDatabase {
 
     @Autowired
