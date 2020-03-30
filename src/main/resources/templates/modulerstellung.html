@@ -377,8 +377,6 @@
                                                 </span>
                                                 <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
                                                     <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
-                                                    <input class="form-control ml-1"
-                                                <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
                                                         <textarea class="form-control ml-1"
                                                                th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}"
                                                                style=" border-bottom: 1px solid white;
