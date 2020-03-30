@@ -74,7 +74,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         String[] allProfiles = environment.getActiveProfiles();
         if (allProfiles.length != 0) {
             String activeProfile = allProfiles[0];
-            if (activeProfile.trim().equalsIgnoreCase("dev")) {
+            if (activeProfile.trim().equalsIgnoreCase("test")) {
                 http.csrf().disable();
             }
         }

@@ -21,6 +21,15 @@ Der Nutzer kann mit einer Volltextsuche und Filterfunktion seine Module finden u
 damit er sie später als PDF herunterladen kann.
 Es gibt eine dynamische Semesterübersicht, die anzeigt welche Module in dem ausgewählten Semester verfügbar sind.
 
+== PDF
+
+Das Modulhandbuch kann mit dem folgenden Request als PDF-Datei direkt aufgerufen werden.
+
+.Request
+----
+/module/pdf
+----
+
 == API
 
 Mithilfe von GraphQL wird eine dynamische API zur Verfügung gestellt, die per GET-Request über /module/api aufrufbar ist und Module im JSON-Format zurückgibt.

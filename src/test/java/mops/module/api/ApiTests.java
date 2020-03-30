@@ -34,7 +34,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class ApiTests {
     GraphQlProvider mockedGraphQlProvider;
     String testmodul1;
