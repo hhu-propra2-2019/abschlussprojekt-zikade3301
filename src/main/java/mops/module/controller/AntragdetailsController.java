@@ -8,6 +8,7 @@ import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import mops.module.services.ModulWrapperService;
 import mops.module.wrapper.ModulWrapper;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -27,29 +28,66 @@ import org.springframework.web.context.annotation.SessionScope;
 public class AntragdetailsController {
 
     private final AntragService antragService;
+    private final ModulService modulService;
 
-    /** Antragdetails Mapping.
+    /** Mappen eines Creationantrages.
      *
      * @param id Id des Antrags.
      * @param token Der Token von keycloak für die Berechtigung.
      * @param model Modell für die HTML Datei.
      * @return View antragdetails.
      */
-
-    @RequestMapping(value = "/antragdetails/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/kreationsAntragsDetails/{id}", method = RequestMethod.GET)
     @Secured("ROLE_sekretariat")
-    public String antragdetails(
+    public String kreationsAntragsDetails(
             @PathVariable long id,
             KeycloakAuthenticationToken token,
             Model model) {
 
-        Modul modul = JsonService.jsonObjectToModul(
-                antragService.getAntragById(id).getJsonModulAenderung());
-        ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
+        Antrag antrag =  antragService.getAntragById(id);
 
-        model.addAttribute("antragId", id);
+        Modul modulAusAntrag = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
+        ModulWrapper modulAntragWrapper = ModulWrapperService
+                .initializePrefilledWrapper(modulAusAntrag);
+
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("antrag", modulWrapper);
+        model.addAttribute("antragId", id);
+        model.addAttribute("altesModul", modulAntragWrapper);
+        model.addAttribute("antrag", modulAntragWrapper);
+
+        return "antragdetails";
+    }
+
+    /** Mappen eines Modificationatrages.
+     * Es werden die Änderungen aus dem Antrag auf eine Kopie des Moduls angewandt
+     * um auf der HTML Seite unterschiede kenntlich machen zu können.
+     *
+     * @param id Id des Antrags.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @param model Modell für die HTML Datei.
+     * @return View antragdetails.
+     */
+    @RequestMapping(value = "/modifikationsAntragsdetails/{id}", method = RequestMethod.GET)
+    @Secured("ROLE_sekretariat")
+    public String modifikationsAntragsdetails(
+            @PathVariable long id,
+            KeycloakAuthenticationToken token,
+            Model model) {
+
+        Antrag antrag =  antragService.getAntragById(id);
+        Modul modulAlt = modulService.getModulById(antrag.getModulId());
+        Modul modulNeu = new Modul();
+        ModulService.copyModul(modulAlt, modulNeu);
+
+        ModulService.applyAntragOnModul(modulNeu,antrag);
+
+        ModulWrapper modulAltWrapper = ModulWrapperService.initializePrefilledWrapper(modulAlt);
+        ModulWrapper modulNeuWrapper = ModulWrapperService.initializePrefilledWrapper(modulNeu);
+
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("antragId", id);
+        model.addAttribute("altesModul", modulAltWrapper);
+        model.addAttribute("antrag", modulNeuWrapper);
 
         return "antragdetails";
     }
@@ -73,9 +111,17 @@ public class AntragdetailsController {
 
         Modul modul = ModulWrapperService.readModulFromWrapper(antragAngenommen);
 
-        Antrag antrag = antragService.getAntragById(id);
-        antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
-        antragService.approveModulCreationAntrag(antrag);
+        if (modul.getId() == null) {
+            Antrag antrag = antragService.getAntragById(id);
+            antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
+            antragService.approveModulCreationAntrag(antrag);
+        } else {
+            Antrag antrag = antragService.getAntragById(id);
+
+            antrag.setJsonModulAenderung(JsonService.modulToJsonObject(modul));
+
+            antragService.approveModulModificationAntrag(antrag);
+        }
 
         model.addAttribute("account",createAccountFromPrincipal(token));
         return "redirect:/module/administrator";

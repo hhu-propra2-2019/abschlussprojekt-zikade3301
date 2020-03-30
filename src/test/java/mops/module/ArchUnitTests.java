@@ -22,7 +22,8 @@ public class ArchUnitTests {
             .haveNameMatching(".*Test")
             .should()
             .beAnnotatedWith(ActiveProfiles.class)
-            .andShould(new RuleTesting("test", "Test-Annotation misses @ActiveProfiles(\"test\")!"));
+            .andShould(new RuleTesting("test",
+                    "Test-Annotation misses @ActiveProfiles(\"test\")!"));
 
     public static class RuleTesting extends ArchCondition<JavaClass> {
 

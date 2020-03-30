@@ -14,6 +14,7 @@ import mops.module.database.Modul;
 import mops.module.generator.ModulFaker;
 import mops.module.services.AntragService;
 import mops.module.services.JsonService;
+import mops.module.services.ModulService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ class AntragdetailsControllerTest {
 
     @MockBean
     private AntragService antragService;
+    @MockBean
+    private ModulService modulService;
 
     @BeforeEach
     void setUp() {
@@ -45,73 +48,124 @@ class AntragdetailsControllerTest {
                 .apply(springSecurity())
                 .build();
 
-        Modul neuesModul = ModulFaker.generateFakeModul();
+        Modul modulAusAntrag = ModulFaker.generateFakeModul();
 
         Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
+        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(modulAusAntrag));
 
         when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
+        when(modulService.getModulById(neuerAntrag.getModulId())).thenReturn(modulAusAntrag);
+
     }
 
     @Test
-    void testAntragdetailsViewName() throws Exception {
+    void testkreationsAntragsDetailsViewName() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        mvc.perform(get("/module/antragdetails/3301"))
+        mvc.perform(get("/module/kreationsAntragsDetails/3301"))
                 .andExpect(view().name("antragdetails"));
     }
 
     @Test
-    void testAntragdetailsAccessForAdministrator() throws Exception {
+    void testkreationsAntragsDetailsAccessForAdministrator() throws Exception {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("sekretariat"));
 
-        Modul neuesModul = ModulFaker.generateFakeModul();
-
-        Antrag neuerAntrag = new Antrag();
-        neuerAntrag.setJsonModulAenderung(JsonService.modulToJsonObject(neuesModul));
-
-        when(antragService.getAntragById((long) 3301)).thenReturn(neuerAntrag);
-
-        mvc.perform(get("/module/antragdetails/3301"))
+        mvc.perform(get("/module/kreationsAntragsDetails/3301"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void testAntragdetailsNoAccessForOrganisator() {
+    void testkreationsAntragsDetailsNoAccessForOrganisator() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/antragdetails/3301"))
+                    mvc.perform(get("/module/kreationsAntragsDetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
 
     @Test
-    void testAntragdetailsNoAccessForStudent() {
+    void testkreationsAntragsDetailsNoAccessForStudent() {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("studentin"));
+
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/kreationsAntragsDetails/3301"))
+                            .andExpect(status().isOk());
+                });
+    }
+
+    @Test
+    void testkreationsAntragsDetailsNoAccessIfNotLoggedIn() {
+
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/kreationsAntragsDetails/3301"))
+                            .andExpect(status().isOk());
+                });
+    }
+
+    @Test
+    void testmodifikationsAntragsdetailsViewName() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
+
+        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                .andExpect(view().name("antragdetails"));
+    }
+
+    @Test
+    void testmodifikationsAntragsdetailsAccessForAdministrator() throws Exception {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("sekretariat"));
+
+        mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testmodifikationsAntragsdetailsNoAccessForOrganisator() {
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(generateAuthenticationToken("orga"));
+
+        assertThrows(java.lang.AssertionError.class,
+                () -> {
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
+                            .andExpect(status().isOk());
+                });
+    }
+
+    @Test
+    void testmodifikationsAntragsdetailsNoAccessForStudent() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("student"));
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/antragdetails/3301"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
 
     @Test
-    void testAntragdetailsNoAccessIfNotLoggedIn() {
+    void testmodifikationsAntragsdetailssNoAccessIfNotLoggedIn() {
 
         assertThrows(java.lang.AssertionError.class,
                 () -> {
-                    mvc.perform(get("/module/antragdetails/3301"))
+                    mvc.perform(get("/module/modifikationsAntragsdetails/3301"))
                             .andExpect(status().isOk());
                 });
     }
