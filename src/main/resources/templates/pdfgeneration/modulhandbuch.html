@@ -11,7 +11,7 @@
             font-size: 12px;
         }
 
-        a:link {
+        .dont-show-as-link a:link {
             text-decoration: none;
             color: black;
         }
@@ -112,6 +112,10 @@
             font-size: medium;
         }
 
+        .kapitel {
+            page-break-before: always;
+        }
+
     </style>
 </head>
 <body>
@@ -166,21 +170,15 @@
 
 <!-- =========== Inhaltsverzeichnis =========== -->
 
-<div id="table-of-contents">
+<div id="table-of-contents" class="dont-show-as-link">
     <h1>Inhaltsverzeichnis</h1>
-    <ul style="list-style-type: none" id="testnumber">
-        <li style="font-weight: bold;">
-            <a href="#studienverlaufsplan">0. Studienverlaufspläne</a>
-        </li>
+    <ul style="list-style-type: none">
+        <li style="font-weight: bold;"><a href="#studienverlaufsplan">0. Studienverlaufspläne</a></li>
         <div th:each="c : ${categories}">
-            <li style="font-weight: bold;">
-                <a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a>
-            </li>
+            <li style="font-weight: bold;"><a th:href="'#'+${c.toReadable()}" th:text="${c.ordinal()+1} + '.          ' + ${c.toPdfReadableGerman()}"></a></li>
             <li th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}"><a th:href="'#'+${m.id}"
-                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a>
+                                                                                               th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '          ' + ${m.titelDeutsch}"></a></li>
         </div>
-    </ul>
-    </li>
     </ul>
 </div>
 
@@ -378,16 +376,67 @@
 
 <!-- =========== Module nach Kategorien =========== -->
 
-<div th:each="c : ${categories}">
+<div th:each="c : ${categories}" class="kapitel">
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
-    <h2 th:id="${c.toReadable()}" th:text="${c.ordinal()+1} + '. ' + ${c.toPdfReadableGerman()}">Pflichtmodule der Informatik
-        (1.–4. Fachsemester)</h2>
-    <h2 th:text="${c.toPdfReadableEnglish()}" style="text-indent: 3%">Compulsory Modules in Computer Science</h2>
+    <h2 th:id="${c.toReadable()}">
+        <table style="width: 100%">
+            <col width="4%">
+            <col width="96%">
+            <tr>
+                <td th:text="${c.ordinal()+1} + '.'"></td>
+                <td th:text="${c.toPdfReadableGerman()}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td th:text="${c.toPdfReadableEnglish()}"></td>
+            </tr>
+        </table>
+    </h2>
+    <div th:switch="${c.ordinal()}">
+        <div th:case="2">
+            <p>Die Module im Bereich „Nebenfach" sind abhängig vom gewählten Nebenfach (siehe Webseiten der Informatik: <a href="https://www.cs.hhu.de/studium-lehre-informatik/studierende/nebenfaecher.html">Nebenfach</a>). Folgende Fächer stehen zur Auswahl: Biologie, Physik, Chemie, Mathematik und Psychologie (begrenzt auf 5 Plätze pro Studienjahr; Beginn immer im Wintersemester). Die Module, die im jeweiligen Nebenfach belegt werden können, werden vom Prüfungsausschuss auf der Webseite des Fachs bekannt gegeben. Andere Nebenfächer können auf schriftlichen Antrag vom Prüfungsausschuss genehmigt werden, sofern ein ausreichender Bezug zur Informatik vorhanden ist.
+                Die Festlegung des Nebenfaches erfolgt bei der Studierenden- und Prüfungsverwaltung in der Regel im dritten Semester, auf jeden Fall vor Ablegung der ersten Teilprüfung im Nebenfach. Ein Wechsel des Nebenfaches ist auf Antrag zulässig, solange keine Fachprüfung im Nebenfach endgültig nicht bestanden ist.
+                Im gewählten Nebenfach sind 30 LP zu erbringen, die sich je nach Nebenfach unter Umständen auf mehr als drei Module verteilen.
+            </p>
+            <p>Informationen zur Schwerpunktbildung im Nebenfach und in der Informatik finden Sie auf folgender Webseite: <a href="https://www.cs.hhu.de/studium-lehre-informatik/studierende.html">Schwerpunkte</a></p>
+        </div>
+        <div th:case="4">
+            <p>Zwecks verbesserter Studierbarkeit des Studiengangs und zur Erhöhung der Wahlmöglichkeiten der Studenten werden im Bachelor-Studiengang Informatik Module in unterschiedlichen Größen angeboten. Module müssen so kombiniert werden, dass die Gesamtsumme der LP den Erfordernissen der Prüfungsordnung entspricht. Für den Wahlpflichtbereich können Module frei kombiniert werden. Die Zusammensetzung des Schwerpunktfaches muss mit dem Mentor und Betreuer der Bachelor-Arbeit im Schwerpunkt besprochen werden (siehe Formular „Schwerpunktwahl”).</p>
+            <p>Prinzipiell ist die Unterrichtssprache Deutsch, Englischkenntnisse werden aber als Voraussetzung zum Studium verlangt. Dies ist in den jeweiligen Studienordnungen in Sektion 3, Punkt 2 dokumentiert: "Es wird darauf hingewiesen, dass das Informatikstudium Kenntnisse der englischen Sprache erfordert."
+                Die Literatur für einige Veranstaltungen ist öfters (gezwungenermaßen) auf Englisch. Dies kann besonders für Seminare im Master-Studiengang erforderlich sein. Folien und Skripte von Vorlesungen sind auch manchmal auf Englisch verfasst.
+            </p>
+            <p>Die schriftlichen Abschlussarbeiten müssen in deutscher oder englischer Sprache verfasst werden PO BSc, 16(1), "Die Bachelor-Arbeit kann auf Deutsch oder Englisch angefertigt werden.”).</p>
+            <p>Formale Voraussetzung für die Teilnahme an Wahlpflicht-Lehrveranstaltungen für den Wahlpflicht- oder Schwerpunktbereich im Bachelor-Studiengang Informatik ist der erfolgreiche Abschluss der Module „Programmierung” und „Rechnerarchitektur”.</p>
+            <p>Ein Modul für den Bachelor-Studiengang kann nur dann für die Individuelle Ergänzung im Master-Studiengang Informatik verwendet werden, wenn es nicht bereits für ein vorangegangenes Bachelor-Studium verwendet wurde.</p>
+        </div>
+        <div th:case="6">
+            <p>Im Master-Studiengang Informatik werden für die Wahlpflichtbereiche „Praktische oder Technische Informatik“, „Theoretische Informatik“, „Individuelle Vertiefung“, und „Schwerpunkt“ Lehreinheiten (Module) unterschiedlicher Größe angeboten. Die Anzahl der Leistungspunkte der Module wurde zum Wintersemester 2015/2016 angepasst. Diese Umstellung erfolgte im Rahmen der Anpassung der Studienordnung für den Master-Studiengang Informatik an die Rahmenstudienordnung für Master-Studiengänge der Mathematisch-Naturwissenschaftlichen Fakultät.</p>
+            <p>Der Studierende legt zur Prüfungsanmeldung fest, welchem Wahlpflichtbereich er das Modul zuordnen möchte. Die zur Auswahl stehenden Wahlpflichtbereiche eines Moduls sind unter „Verwendbarkeit des Moduls“ aufgeführt.</p>
+            <p>Die Auswahl der Module für den Wahlpflichtbereich „Schwerpunkt“ muss mit dem Mentor und Betreuer der Master-Arbeit abgesprochen werden (siehe Formular „Schwerpunktwahl”).</p>
+            <p>Der Schwerpunktbereich „Bioinformatik“ steht sowohl Studierenden offen, die bereits Vorkenntnisse in Bioinformatik mitbringen, als auch solchen, die Informatik im Bachelor-Studium mit einem anderen Schwerpunkt als Bioinformatik studiert haben. Daher wird die Lehrveranstaltung „Algorithmen in der Bioinformatik“ aus dem Bachelor-Studiengang auch für Master-Studierende ohne Vorkenntnisse in Bioinformatik angeboten. Eine Differenzierung zwischen Master- und Bachelor-Studierenden wird über eine gesonderte Seminaraufgabe vorgenommen.</p>
+            <p>Die Unterrichtssprache ist entweder Deutsch oder Englisch. Werden in den Modulbeschreibungen keine Angaben zur Unterrichtssprache gemacht, so ist die Unterrichtssprache Deutsch. Für ein erfolgreiches Studium sind Englischkenntnisse jedoch unumgänglich. Auch wenn Veranstaltungen in deutscher Sprache gehalten werden, sind die verwendeten schriftlichen Materialien häufig in englischer Sprache verfasst.</p>
+            <p>Mündliche Prüfungen werden in deutscher oder englischer Sprache durchgeführt. Englisch kann jedoch nur dann als Prüfungssprache gewählt werden, wenn alle an der Prüfung beteiligten Personen einverstanden sind.</p>
+            <p>Die schriftlichen Abschlussarbeiten werden in deutscher oder englischer Sprache verfasst.</p>
+            <p>Anmerkung: Der Prüfungsausschuss hat am 28.01.2008 folgende Regelung für Studierende des Bachelor-Studiengangs Informatik, die Module aus dem Master-Programm als Zusatzfach belegen wollen, beschlossen:</p>
+            <p>Formale Voraussetzung für die Teilnahme an Lehrveranstaltungen zu Modulen, die nur für den Master-Studiengang angeboten werden, ist für Bachelor-Studierende der erfolgreiche Abschluss der Module „Programmierung”, „Rechnerarchitektur”, „Algorithmen und Datenstrukturen” sowie „Theoretische Informatik”.</p>
+        </div>
+        <div th:case="*"></div>
+    </div>
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
-        <h3 th:id="${m.getId()}" th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1} + ' ' + ${m.titelDeutsch}"
-            style="text-indent: 3%">1.4
-            Rechnerarchitektur</h3>
-        <h3 th:text="${m.titelEnglisch}" style="text-indent: 3%">Computer Architecture</h3>
+        <h3 th:id="${m.getId()}">
+            <table style="width: 100%">
+                <col width="4%">
+                <col width="96%">
+                <tr>
+                    <td th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1}"></td>
+                    <td th:text="${m.titelDeutsch}"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td th:text="${m.titelEnglisch}"></td>
+                </tr>
+            </table>
+        </h3>
         <h3>Studiengang</h3>
         <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
         <div th:each="v, vitemStat : ${m.veranstaltungen}">

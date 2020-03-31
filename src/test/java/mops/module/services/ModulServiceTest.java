@@ -1,11 +1,13 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -150,6 +152,16 @@ public class ModulServiceTest {
     }
 
     @Test
+    public void testKopiereModul() {
+        Modul modulAlt = JsonService.jsonObjectToModul(modul1);
+        Modul modulNeu = new Modul();
+        modulService.copyModul(modulAlt,modulNeu);
+
+        Modul diffs = modulService.calculateModulDiffs(modulAlt, modulNeu);
+        assertThat(diffs).isNull();
+    }
+
+    @Test
     public void getWinterSemesterYearTest() {
         String actual = ModulService.getWinterSemesterYear(2019);
         assertThat(actual).isEqualTo("2019-20");
@@ -246,4 +258,22 @@ public class ModulServiceTest {
 
         assertThat(modulSichtbarkeitNull.getSichtbar()).isEqualTo(true);
     }
+
+    @Test
+    public void getAllSichtbareModuleTest() {
+        Modul sichtbar = ModulFaker.generateFakeModul();
+        sichtbar.setSichtbar(true);
+
+        List<Modul> ModulList = new ArrayList<>();
+
+        ModulList.add(modulSichtbarkeitTrue);
+        ModulList.add(sichtbar);
+        ModulList.add(modulSichtbarkeitFalse);
+
+        when(modulService.getAllModule()).thenReturn(ModulList);
+        List<Modul> result = modulService.getAllSichtbareModule();
+        assertThat(result).doesNotContain(modulSichtbarkeitFalse);
+    }
+
 }
+
