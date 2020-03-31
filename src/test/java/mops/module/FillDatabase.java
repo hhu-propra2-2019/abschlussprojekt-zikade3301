@@ -163,7 +163,7 @@ public class FillDatabase {
             return "";
         }
         int finalIndent = indent;
-        template = Arrays.stream(template.split("\n"))
+        template = Arrays.stream(template.split("\\r?\\n"))
                 .map(line -> {
                     if (line.length() > finalIndent) {
                         return line.substring(finalIndent);
