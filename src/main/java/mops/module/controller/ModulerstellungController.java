@@ -69,7 +69,26 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulerstellung")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String addModulCreationAntrag(@RequestParam(name = "modulId") String modulId,
+    public String modulCreationAntragPreview(@RequestParam(name = "modulId") String modulId,
+                                         ModulWrapper modulWrapper,
+                                         Model model,
+                                         KeycloakAuthenticationToken token) {
+
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("allModules", modulService.getAllModule());
+
+        Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
+        model.addAttribute("modul", modul);
+        model.addAttribute("modulWrapper", modulWrapper);
+        model.addAttribute("modulId", modulId);
+        return "modulpreview";
+
+    }
+
+    @PostMapping("/modulerstellung_confirmation")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
+    public String modulCreationAntragConfirm(@RequestParam(name = "modulId") String modulId,
                                          ModulWrapper modulWrapper,
                                          Model model,
                                          KeycloakAuthenticationToken token) {
@@ -87,6 +106,26 @@ public class ModulerstellungController {
         }
 
         return "modulbeauftragter";
+
+    }
+
+    @PostMapping("/modulerstellung_back_to_edit")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
+    public String modulCreationAntragBackToEdit(@RequestParam(name = "modulId") String modulId,
+                                                     ModulWrapper modulWrapper,
+                                                     Model model,
+                                                     KeycloakAuthenticationToken token) {
+
+        Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
+
+        ModulWrapper refilledModulWrapper =
+                ModulWrapperService.initializePrefilledWrapper(modul);
+
+        model.addAttribute("modulWrapper", refilledModulWrapper);
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("modulId", null);
+
+        return "modulerstellung";
 
     }
 
