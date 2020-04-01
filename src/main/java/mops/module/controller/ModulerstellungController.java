@@ -61,13 +61,14 @@ public class ModulerstellungController {
     }
 
     /**
-     * Post-Mapping für die Formulardaten für die Erstellung eines Modulantrags.
+     * Post-Mapping für das Anzeigen einer Vorschau für die eingegebenen Daten bei der der
+     * Erstellung eines Moduls.
      * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
      * @param model Model für die HTML-Datei.
      * @param token Keycloak-Token.
-     * @return View für die Modulerstellung.
+     * @return View für die Modulvorschau.
      */
-    @PostMapping("/modulerstellung")
+    @PostMapping("/modulerstellung_preview")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String modulCreationAntragPreview(@RequestParam(name = "modulId") String modulId,
                                          ModulWrapper modulWrapper,
@@ -86,6 +87,14 @@ public class ModulerstellungController {
 
     }
 
+    /**
+     * Post-Mapping für das Abschicken der eingegebenen Daten und Erstellung eines entsprechenden
+     * Antrags bei der der Erstellung eines Moduls.
+     * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return Zurückleitung auf den "Module bearbeiten"-Reiter.
+     */
     @PostMapping("/modulerstellung_confirmation")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String modulCreationAntragConfirm(@RequestParam(name = "modulId") String modulId,
@@ -109,6 +118,14 @@ public class ModulerstellungController {
 
     }
 
+    /**
+     * Post-Mapping für das Zurückkehren aus der Vorschau zum Formular mit den eingegebenen Daten
+     * bei der der Erstellung eines Moduls.
+     * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return View für die Modulerstellung.
+     */
     @PostMapping("/modulerstellung_back_to_edit")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String modulCreationAntragBackToEdit(@RequestParam(name = "modulId") String modulId,
@@ -130,18 +147,47 @@ public class ModulerstellungController {
     }
 
     /**
-     * Post-Mapping für die Formulardaten für die Erstellung eines Modulantrags.
+     * Post-Mapping für das Anzeigen einer Vorschau für die eingegebenen Daten bei der der
+     * Bearbeitung eines Moduls.
      * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
      * @param model Model für die HTML-Datei.
      * @param token Keycloak-Token.
-     * @return View für die Modulerstellung.
+     * @return View für die Modulvorschau.
      */
-    @PostMapping("/modulbearbeitung")
+    @PostMapping("/modulbearbeitung_preview")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String addModulModificationAntrag(@RequestParam(name = "modulId") String modulId,
+    public String modulModificationAntragPreview(@RequestParam(name = "modulId") String modulId,
                                          ModulWrapper modulWrapper,
                                          Model model,
                                          KeycloakAuthenticationToken token) {
+
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allCategories", Modulkategorie.values());
+        model.addAttribute("allModules", modulService.getAllModule());
+
+        Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
+        model.addAttribute("modul", modul);
+        model.addAttribute("modulWrapper", modulWrapper);
+        model.addAttribute("modulId", modulId);
+        return "modulpreview";
+
+    }
+
+    /**
+     * Post-Mapping für das Abschicken der eingegebenen Daten und Erstellung eines entsprechenden
+     * Antrags bei der der Bearbeitung eines Moduls.
+     * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return Zurückleitung auf den "Module bearbeiten"-Reiter.
+     */
+    @PostMapping("/modulbearbeitung_confirmation")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
+    public String modulModificationAntragConfirmation(
+            @RequestParam(name = "modulId") String modulId,
+            ModulWrapper modulWrapper,
+            Model model,
+            KeycloakAuthenticationToken token) {
 
         String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
         model.addAttribute("account", createAccountFromPrincipal(token));
@@ -168,7 +214,33 @@ public class ModulerstellungController {
 
     }
 
+    /**
+     * Post-Mapping für das Zurückkehren aus der Vorschau zum Formular mit den eingegebenen Daten
+     * bei der der Bearbeitung eines Moduls.
+     * @param modulWrapper Wrapper für ein Modul und seine Unter-Objekte
+     * @param model Model für die HTML-Datei.
+     * @param token Keycloak-Token.
+     * @return View für die Modulbearbeitung.
+     */
+    @PostMapping("/modulbearbeitung_back_to_edit")
+    @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
+    public String modulModificationAntragBackToEdit(@RequestParam(name = "modulId") String modulId,
+                                                      ModulWrapper modulWrapper,
+                                                      Model model,
+                                                      KeycloakAuthenticationToken token) {
 
+        Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
+
+        ModulWrapper refilledModulWrapper =
+                ModulWrapperService.initializePrefilledWrapper(modul);
+
+        model.addAttribute("modulWrapper", refilledModulWrapper);
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("modulId", modulId);
+
+        return "modulerstellung";
+
+    }
 
     /**
      * Mapping für das Generieren eines Modulbearbeitungsformulars für die eingegebene Modul-Id.

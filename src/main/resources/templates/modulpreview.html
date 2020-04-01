@@ -224,7 +224,7 @@
             </div>
             <hr class="my-4" style="background-color: white">
 
-            <form action="#" th:action = "@{'/module/modulerstellung_back_to_edit'}" method="post" th:object="${modulWrapper}">
+            <form  th:action="@{${'/module/' + ((modulId == null || modulId.equals('')) ? 'modulerstellung_back_to_edit' : 'modulbearbeitung_back_to_edit')}}" method="post" th:object="${modulWrapper}">
                 <input type="hidden" name="modulId" th:value="${modulId}">
                 <input type="hidden" th:field="*{modul.titelDeutsch}">
                 <input type="hidden" th:field="*{modul.titelEnglisch}">
@@ -255,47 +255,15 @@
                         <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].inhalt}">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mr-1" style="float: right">
-                    Zurück zur Bearbeitung
-                </button>
-            </form>
-
-            <form action="#" th:action = "@{'/module/modulerstellung_confirmation'}" method="post" th:object="${modulWrapper}">
-                <input type="hidden" name="modulId" th:value="${modulId}">
-                <input type="hidden" th:field="*{modul.titelDeutsch}">
-                <input type="hidden" th:field="*{modul.titelEnglisch}">
-                <input type="hidden" th:field="*{modul.studiengang}">
-                <input type="hidden" th:field="*{modul.modulbeauftragte}">
-                <input type="hidden" th:field="*{modul.gesamtLeistungspunkte}">
-                <input type="hidden" th:field="*{modul.modulkategorie}">
-                <div th:each="veranstaltung, i : *{veranstaltungen}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].id}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].titel}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.sprache}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.inhalte}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.lernergebnisse}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.literatur}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.verwendbarkeit}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].beschreibung.voraussetzungenBestehen}">
-                    <input type="hidden" th:field = "*{veranstaltungen[__${i.index}__].voraussetzungenTeilnahme}">
-                    <div th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
-                        <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
-                        <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].form}">
-                        <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}">
-                    </div>
-                    <div th:each="zusatzfeld, k : *{zusatzfelder[__${(i.index)}__]}">
-                        <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].id}">
-                        <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].titel}">
-                        <input type ="hidden" th:field = "*{zusatzfelder[__${i.index}__][__${k.index}__].inhalt}">
-                    </div>
+                <div style="float: right;">
+                    <button type="submit" class="btn btn-primary mr-1" >
+                        Zurück zur Bearbeitung
+                    </button>
+                    <button th:formaction="${'/module/' + ((modulId == null || modulId.equals('')) ? 'modulerstellung_confirmation' : 'modulbearbeitung_confirmation')}" type="submit" class="btn btn-primary mr-1">
+                        Antrag bestätigen
+                    </button>
                 </div>
-                <button type="submit" class="btn btn-primary mr-1" style="float: right">
-                    Beantragung bestätigen
-                </button>
             </form>
-
 
         </div>
     </div>
