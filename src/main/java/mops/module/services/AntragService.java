@@ -182,14 +182,15 @@ public class AntragService {
             throw new IllegalArgumentException(
                     "Versionierung nicht möglich, da Modul-Id nicht existiert");
         }
-        List<Antrag> relevantApprovedAntraege = getAlleAntraege().stream()
+        List<Antrag> relevantAntraege = getAlleAntraege().stream()
+                .filter(a -> a.getModulId() != null)
                 .filter(a -> a.getModulId().equals(id))
                 .collect(Collectors.toList());
-        if (relevantApprovedAntraege.size() < 1) {
+        if (relevantAntraege.size() < 1) {
             throw new IllegalArgumentException(
                     "Initialer Antrag des Moduls in Versionierung nicht gefunden");
         }
-        return relevantApprovedAntraege;
+        return relevantAntraege;
     }
 
 }
