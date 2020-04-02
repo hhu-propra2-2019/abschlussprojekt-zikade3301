@@ -193,8 +193,26 @@ public class ModulService {
      * @param semesters Semester, die sortiert und gefiltert werden sollen
      * @return Gefilterte und sortierte Liste von Semestern
      */
-    public static List<String> filterSemesters(Collection<String> semesters) {
-        List<String> intersectSemesters = getPastAndNextSemestersForSearch();
+    public static List<String> filterSemestersForSearch(Collection<String> semesters) {
+        return filterSemesters(semesters, LocalDateTime.now(),
+                NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH);
+    }
+
+    /**
+     * Sortiert die übergebenen Semester und gibt nur diese zurück,
+     * die im angegebenen Rahmen liegen.
+     * @param semesters Semester, die sortiert und gefiltert werden sollen
+     * @param when Zeitpunkt, auf den sich die Filterung bezieht
+     * @param pastCount Anzahl der Semester vor when, die im Zeitrahmen liegen sollen
+     * @param nextCount Anzahl der Semester nach when, die im Zeitrahmen liegen sollen
+     *                  (inklusive dem aktuellen Semester)
+     * @return Gefilterte und sortierte Liste von Semestern
+     */
+    public static List<String> filterSemesters(Collection<String> semesters,
+                                                        LocalDateTime when,
+                                                        int pastCount,
+                                                        int nextCount) {
+        List<String> intersectSemesters = getPastAndNextSemesters(when, pastCount, nextCount);
         return intersectSemesters
                 .stream()
                 .filter(semesters::contains)
