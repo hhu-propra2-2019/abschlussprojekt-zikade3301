@@ -10,8 +10,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -191,6 +193,15 @@ public class ModulServiceTest {
     }
 
     @Test
+    public void filterSemestersTest() {
+        Set<String> toBeFiltered = new HashSet<>(Arrays.asList("WiSe2018-19", "SoSe2021"));
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 3, 22, 17, 6);
+        List<String> actual = ModulService.filterSemesters(toBeFiltered, localDateTime, 1, 4);
+        List<String> expected = Arrays.asList("SoSe2021");
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
     public void addSemesterTag() {
 
         when(modulSnapshotRepository.findById(modulforTagging.getId())).thenReturn(
@@ -264,13 +275,13 @@ public class ModulServiceTest {
         Modul sichtbar = ModulFaker.generateFakeModul();
         sichtbar.setSichtbar(true);
 
-        List<Modul> ModulList = new ArrayList<>();
+        List<Modul> modulList = new ArrayList<>();
 
-        ModulList.add(modulSichtbarkeitTrue);
-        ModulList.add(sichtbar);
-        ModulList.add(modulSichtbarkeitFalse);
+        modulList.add(modulSichtbarkeitTrue);
+        modulList.add(sichtbar);
+        modulList.add(modulSichtbarkeitFalse);
 
-        when(modulService.getAllModule()).thenReturn(ModulList);
+        when(modulService.getAllModule()).thenReturn(modulList);
         List<Modul> result = modulService.getAllSichtbareModule();
         assertThat(result).doesNotContain(modulSichtbarkeitFalse);
     }

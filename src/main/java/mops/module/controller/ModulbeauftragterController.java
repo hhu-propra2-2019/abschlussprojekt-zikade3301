@@ -5,6 +5,7 @@ import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipa
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Antrag;
@@ -54,6 +55,10 @@ public class ModulbeauftragterController {
         }
         model.addAttribute("allVersions", allVersions);
         model.addAttribute("allAntraege", allAntraege);
+
+        List<String> semesterWahl = ModulService.getPastAndNextSemestersForTagging();
+        model.addAttribute("allSemesters", semesterWahl);
+
         return "modulbeauftragter";
     }
 }

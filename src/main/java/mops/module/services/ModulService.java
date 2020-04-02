@@ -3,6 +3,7 @@ package mops.module.services;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,6 +22,12 @@ public class ModulService {
 
     private final AntragRepository antragRepository;
     private final ModulSnapshotRepository modulSnapshotRepository;
+
+    private static final int NUMBER_OF_PAST_SEMESTERS_SEARCH = 1;
+    private static final int NUMBER_OF_NEXT_SEMESTERS_SEARCH = 4;
+
+    private static final int NUMBER_OF_PAST_SEMESTERS_ADD_TAGS = 0;
+    private static final int NUMBER_OF_NEXT_SEMESTERS_ADD_TAGS = 4;
 
 
     /**
@@ -178,6 +185,60 @@ public class ModulService {
         veranstaltung.setSemester(semesterNew);
 
         modulSnapshotRepository.save(getModulById(modulId));
+    }
+
+    /**
+     * Sortiert die übergebenen Semester und gibt nur diese zurück,
+     * die auch in der Semestersuche auswählbar sind.
+     * @param semesters Semester, die sortiert und gefiltert werden sollen
+     * @return Gefilterte und sortierte Liste von Semestern
+     */
+    public static List<String> filterSemestersForSearch(Collection<String> semesters) {
+        return filterSemesters(semesters, LocalDateTime.now(),
+                NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH);
+    }
+
+    /**
+     * Sortiert die übergebenen Semester und gibt nur diese zurück,
+     * die im angegebenen Rahmen liegen.
+     * @param semesters Semester, die sortiert und gefiltert werden sollen
+     * @param when Zeitpunkt, auf den sich die Filterung bezieht
+     * @param pastCount Anzahl der Semester vor when, die im Zeitrahmen liegen sollen
+     * @param nextCount Anzahl der Semester nach when, die im Zeitrahmen liegen sollen
+     *                  (inklusive dem aktuellen Semester)
+     * @return Gefilterte und sortierte Liste von Semestern
+     */
+    public static List<String> filterSemesters(Collection<String> semesters,
+                                                        LocalDateTime when,
+                                                        int pastCount,
+                                                        int nextCount) {
+        List<String> intersectSemesters = getPastAndNextSemesters(when, pastCount, nextCount);
+        return intersectSemesters
+                .stream()
+                .filter(semesters::contains)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Ruft getPastAndNextSemesters mit now und den voreingestellten Konstanten
+     * für das Taggen von Semestern auf.
+     * @return Liste von Semestern
+     */
+    public static List<String> getPastAndNextSemestersForTagging() {
+        return getPastAndNextSemesters(LocalDateTime.now(),
+                NUMBER_OF_PAST_SEMESTERS_ADD_TAGS,
+                NUMBER_OF_NEXT_SEMESTERS_ADD_TAGS);
+    }
+
+    /**
+     * Ruft getPastAndNextSemesters mit now und den voreingestellten Konstanten
+     * für die Suche nach Semestern auf.
+     * @return Liste von Semestern
+     */
+    public static List<String> getPastAndNextSemestersForSearch() {
+        return getPastAndNextSemesters(LocalDateTime.now(),
+                NUMBER_OF_PAST_SEMESTERS_SEARCH,
+                NUMBER_OF_NEXT_SEMESTERS_SEARCH);
     }
 
     /**
