@@ -26,7 +26,7 @@ public class ModulService {
     private static final int NUMBER_OF_PAST_SEMESTERS_SEARCH = 1;
     private static final int NUMBER_OF_NEXT_SEMESTERS_SEARCH = 4;
 
-    private static final int NUMBER_OF_PAST_SEMESTERS_ADD_TAGS = 3;
+    private static final int NUMBER_OF_PAST_SEMESTERS_ADD_TAGS = 0;
     private static final int NUMBER_OF_NEXT_SEMESTERS_ADD_TAGS = 4;
 
 
