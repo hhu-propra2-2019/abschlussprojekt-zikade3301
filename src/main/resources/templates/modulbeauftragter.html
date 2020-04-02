@@ -184,7 +184,12 @@
                                     <div class="col-3">
                                         <form action="#" th:action="@{/module/semesterTag/create}" method="post" style="display: flex">
                                             <div style="display:flex">
-                                                <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
+                                                <select name="inputTag"
+                                                        class="form-control"
+                                                        id="inputTag" required>
+                                                    <option selected hidden value="">Semester hinzufügen</option>
+                                                    <option th:each="semester : ${allSemesters}" th:value="${semester}" th:text="${semester}"></option>
+                                                </select>
                                                 <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
                                                 <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
                                                 <button class="btn btn-primary"
