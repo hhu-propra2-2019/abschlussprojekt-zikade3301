@@ -25,8 +25,8 @@ public class IndexController {
 
     private final ModulService modulService;
 
-    private static final int NUMBER_OF_PAST_SEMESTERS = 1;
-    private static final int NUMBER_OF_NEXT_SEMESTERS = 4;
+    private static final int NUMBER_OF_PAST_SEMESTERS_SEARCH = 1;
+    private static final int NUMBER_OF_NEXT_SEMESTERS_SEARCH = 4;
 
     /**
      * Index string.
@@ -44,7 +44,7 @@ public class IndexController {
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("nextSemesters",
                 ModulService.getPastAndNextSemesters(LocalDateTime.now(),
-                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
+                        NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH));
         return "index";
     }
 
@@ -88,7 +88,7 @@ public class IndexController {
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("nextSemesters",
                 ModulService.getPastAndNextSemesters(LocalDateTime.now(),
-                        NUMBER_OF_PAST_SEMESTERS, NUMBER_OF_NEXT_SEMESTERS));
+                        NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH));
         return "index";
     }
 

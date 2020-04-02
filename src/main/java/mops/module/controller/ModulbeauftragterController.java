@@ -24,6 +24,9 @@ public class ModulbeauftragterController {
 
     private final ModulService modulService;
 
+    private static final int NUMBER_OF_PAST_SEMESTERS_ADD_TAGS = 0;
+    private static final int NUMBER_OF_NEXT_SEMESTERS_ADD_TAGS = 4;
+
     /**
      * Get-Mapping für die "Module bearbeiten"-Seite für die Organisatoren und das Sekretariat.
      * @param model Model für die HTML-Datei.
@@ -39,7 +42,8 @@ public class ModulbeauftragterController {
         model.addAttribute("allVisibleModules", modulService.getAllSichtbareModule());
 
         List<String> semesterWahl = ModulService.getPastAndNextSemesters(
-                LocalDateTime.now(), 0, 4);
+                LocalDateTime.now(),
+                NUMBER_OF_PAST_SEMESTERS_ADD_TAGS, NUMBER_OF_NEXT_SEMESTERS_ADD_TAGS);
         model.addAttribute("allSemesters", semesterWahl);
 
         return "modulbeauftragter";
