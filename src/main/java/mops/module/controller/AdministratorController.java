@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,7 +30,6 @@ public class AdministratorController {
      * @param model Modell für die HTML Datei.
      * @return View administrator
      */
-
     @GetMapping("/administrator")
     @Secured("ROLE_sekretariat")
     public String administrator(KeycloakAuthenticationToken token, Model model) {
@@ -62,6 +62,24 @@ public class AdministratorController {
         model.addAttribute("account", createAccountFromPrincipal(token));
 
         return "moduldetails";
+    }
+
+
+
+    @PostMapping("/modulversion")
+    @Secured("ROLE_sekretariat")
+    public String deleteAntrag(
+            @RequestParam(name = "modul") Long modulId,
+            KeycloakAuthenticationToken token,
+            Model model) {
+
+
+
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
+
+        return "administrator";
     }
 
 }
