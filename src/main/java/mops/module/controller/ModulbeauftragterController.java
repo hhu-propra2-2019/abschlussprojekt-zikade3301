@@ -2,10 +2,12 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
+import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
 import mops.module.services.AntragService;
@@ -36,17 +38,22 @@ public class ModulbeauftragterController {
     @GetMapping("/modulbeauftragter")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String module(KeycloakAuthenticationToken token, Model model) {
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allVisibleModules", modulService.getAllSichtbareModule());
         ArrayList<LinkedList<Modul>> allVersions = new ArrayList<>();
+        ArrayList<LinkedList<Antrag>> allAntraege = new ArrayList<>();
         for (Modul modul :  modulService.getAllSichtbareModule()) {
             if (modul.getId() != null) {
                 allVersions.add(antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
+                allAntraege.add(
+                        antragService.getAllApprovedAntraegeForModulOldestFirst(modul.getId()));
             }
         }
         model.addAttribute("allVersions", allVersions);
+        model.addAttribute("allAntraege", allAntraege);
         return "modulbeauftragter";
     }
 }

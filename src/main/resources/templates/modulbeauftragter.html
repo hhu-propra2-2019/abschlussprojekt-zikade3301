@@ -70,12 +70,25 @@
                                 <div th:id="'modul'+ ${modul.getId()}"
                                      class="collapse"
                                      data-parent="#accordionVersions">
-                                    <div th:if="${modul.getId() != null}">
-                                        <ul th:each="version, i : ${allVersions.get(__${j.index}__)}" style="display: flex">
-                                            <li class="col-9" style="display: flex;">
-                                                <span th:text="${(i.index+1) + '. '}"></span>
-                                                <span th:text="${version.getTitelDeutsch()}">Version</span>
-                                                <span th:if="${version == modul}" th:text="${' (Aktuelle Version)'}"></span>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Version</th>
+                                            <th>Titel</th>
+                                            <th>Antragsteller</th>
+                                            <th>Datum Genehmigung</th>
+                                            <th></th>
+                                            <th>Details</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="version, i : ${allVersions.get(__${j.index}__)}">
+                                            <td th:text="${(i.index+1) + '. '}"></td>
+                                            <td th:text="${version.getTitelDeutsch()}"></td>
+                                            <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getAntragsteller()}"></td>
+                                            <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getDatumGenehmigung().format(formatter)}"></td>
+                                            <td th:text="${'(Aktuelle Version)'}"></td>
+                                            <td>
                                                 <form action="#" th:action="@{'/module/modulversion'}" method="get">
                                                     <input type="hidden" name="modul" th:value="${modul.getId()}">
                                                     <input type="hidden" name="version" th:value="${i.index}">
@@ -83,9 +96,10 @@
                                                         Version anzeigen
                                                     </button>
                                                 </form>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </li>
                         </ul>
