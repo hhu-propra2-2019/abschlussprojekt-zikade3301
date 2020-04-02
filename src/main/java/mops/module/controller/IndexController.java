@@ -2,7 +2,6 @@ package mops.module.controller;
 
 import static mops.module.keycloak.KeycloakMopsAccount.createAccountFromPrincipal;
 
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import mops.module.database.Modulkategorie;
 import mops.module.services.ModulService;
@@ -25,9 +24,6 @@ public class IndexController {
 
     private final ModulService modulService;
 
-    private static final int NUMBER_OF_PAST_SEMESTERS_SEARCH = 1;
-    private static final int NUMBER_OF_NEXT_SEMESTERS_SEARCH = 4;
-
     /**
      * Index string.
      *
@@ -42,9 +38,7 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getAllSichtbareModule());
         model.addAttribute("allCategories", Modulkategorie.values());
-        model.addAttribute("nextSemesters",
-                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
-                        NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH));
+        model.addAttribute("nextSemesters", ModulService.getPastAndNextSemestersForSearch());
         return "index";
     }
 
@@ -86,9 +80,7 @@ public class IndexController {
         }
         model.addAttribute("allModules", modulService.getModuleBySemester(semester));
         model.addAttribute("allCategories", Modulkategorie.values());
-        model.addAttribute("nextSemesters",
-                ModulService.getPastAndNextSemesters(LocalDateTime.now(),
-                        NUMBER_OF_PAST_SEMESTERS_SEARCH, NUMBER_OF_NEXT_SEMESTERS_SEARCH));
+        model.addAttribute("nextSemesters", ModulService.getPastAndNextSemestersForSearch());
         return "index";
     }
 
