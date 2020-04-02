@@ -165,7 +165,7 @@
                                         <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
                                             <form style="margin-left: 2px" action="#" th:action="@{/module/semesterTag/delete}" method="post">
                                             <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltungTagDelete" name="idVeranstaltungTagDelete">
-                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModulTagDelte" name="idModulTagDelte">
+                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModulTagDelete" name="idModulTagDelete">
                                                 <span style="width: min-content; display: flex"
                                                       class="badge badge-danger mr-2">
                                                     <span th:text="${semesterTags}">Semester</span>
