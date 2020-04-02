@@ -65,7 +65,14 @@ public class AdministratorController {
     }
 
 
-
+    /**
+     * Post-Mapping für das Löschen/Ablehnen von Anträgen.
+     *
+     * @param antragID ID des Antrags, der entfernt werden soll
+     * @param model Modell für die HTML-Datei.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @return View für die Administratoransicht
+     */
     @PostMapping("/deleteAntrag")
     @Secured("ROLE_sekretariat")
     public String deleteAntrag(
