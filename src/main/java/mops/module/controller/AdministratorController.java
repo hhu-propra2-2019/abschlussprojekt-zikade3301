@@ -66,14 +66,14 @@ public class AdministratorController {
 
 
 
-    @PostMapping("/modulversion")
+    @PostMapping("/deleteAntrag")
     @Secured("ROLE_sekretariat")
     public String deleteAntrag(
-            @RequestParam(name = "modul") Long modulId,
+            @RequestParam(name = "antragID") Long antragID,
             KeycloakAuthenticationToken token,
             Model model) {
 
-
+        antragService.deleteAntrag(antragID);
 
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         model.addAttribute("account", createAccountFromPrincipal(token));

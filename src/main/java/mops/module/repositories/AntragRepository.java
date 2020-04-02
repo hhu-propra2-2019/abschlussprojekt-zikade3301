@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AntragRepository extends CrudRepository<Antrag, Long> {
     List<Antrag> findByModulId(Long modulid);
+    void deleteById(Long id);
 }

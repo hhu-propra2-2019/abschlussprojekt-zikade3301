@@ -200,4 +200,8 @@ public class AntragService {
         return relevantAntraege;
     }
 
+    public void deleteAntrag(Long id) {
+        antragRepository.deleteById(id);
+    }
+
 }

@@ -65,8 +65,8 @@
                     </span>
                 </td>
                 <td class="col-4">
-                    <form action="#" th:action="@{'/module/deleteAntrag'}" method="get">
-                        <input type="hidden" name="modul" th:value="${antrag.getId()}">
+                    <form action="#" th:action="@{'/module/deleteAntrag'}" method="post">
+                        <input type="hidden" name="antragID" th:value="${antrag.getId()}">
                         <button type="submit" class="btn btn-primary mx-1">
                             Ablehnen
                         </button>
