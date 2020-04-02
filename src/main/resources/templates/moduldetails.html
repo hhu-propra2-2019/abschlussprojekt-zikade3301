@@ -120,7 +120,7 @@
                           th:text="${veranstaltung.getLeistungspunkte()}">
                         CP
                     </span>
-                    <span th:each="semester : ${veranstaltung.getSemester()}" style="float:right">
+                    <span th:each="semester : ${@modulService.filterSemestersForSearch(veranstaltung.getSemester())}" style="float:right">
                         <span class="card-text badge badge-danger"
                               style="margin-right: 1rem; font-size: medium"
                               th:text="${semester}">

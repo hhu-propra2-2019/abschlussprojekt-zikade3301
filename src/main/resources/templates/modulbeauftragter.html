@@ -43,6 +43,75 @@
 
 <main th:fragment="bodycontent">
 
+
+    <!-- Modal, um alle Versionen eines Moduls einzusehen -->
+    <div class="modal fade" id="ModalVersions" tabindex="-1" role="dialog" aria-labelledby="ModalVersionsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalVersionsLabel">Vergangene Versionen anzeigen</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion mt-3" id="accordionVersions">
+                        <ul style="font-size: large; list-style-type: none">
+                            <li th:each="modul, j : ${allVisibleModules}">
+                                <a data-toggle="collapse"
+                                   th:href="'#modul'+${modul.getId()}"
+                                   aria-expanded="true"
+                                   th:aria-controls="'modul'+ ${modul.getId()}">
+                                <span style="color: dodgerblue"
+                                      th:text="${modul.getTitelDeutsch()}">
+                                    Modulname
+                                </span>
+                                </a>
+                                <div th:id="'modul'+ ${modul.getId()}"
+                                     class="collapse"
+                                     data-parent="#accordionVersions">
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Version</th>
+                                            <th>Titel</th>
+                                            <th>Antragsteller</th>
+                                            <th>Datum Genehmigung</th>
+                                            <th></th>
+                                            <th>Details</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="version, i : ${allVersions.get(__${j.index}__)}">
+                                            <td th:text="${(i.index+1) + '. '}"></td>
+                                            <td th:text="${version.getTitelDeutsch()}"></td>
+                                            <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getAntragsteller()}"></td>
+                                            <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getDatumGenehmigung().format(formatter)}"></td>
+                                            <td th:if="${version == modul}" th:text="${'(Aktuelle Version)'}"></td>
+                                            <td th:unless="${version == modul}"></td>
+                                            <td>
+                                                <form action="#" th:action="@{'/module/modulversion'}" method="get">
+                                                    <input type="hidden" name="modul" th:value="${modul.getId()}">
+                                                    <input type="hidden" name="version" th:value="${i.index}">
+                                                    <button type="submit" class="btn btn-primary mx-1">
+                                                        Version anzeigen
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Modal, um die Sichtbarkeit von Modulen zu bearbeiten -->
     <div class="modal fade" id="ModalVisibility" tabindex="-1" role="dialog" aria-labelledby="ModalVisibilityLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -165,7 +234,7 @@
                                         <span th:each="semesterTags : ${veranstaltungen.getSemester()}">
                                             <form style="margin-left: 2px" action="#" th:action="@{/module/semesterTag/delete}" method="post">
                                             <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltungTagDelete" name="idVeranstaltungTagDelete">
-                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModulTagDelte" name="idModulTagDelte">
+                                            <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModulTagDelete" name="idModulTagDelete">
                                                 <span style="width: min-content; display: flex"
                                                       class="badge badge-danger mr-2">
                                                     <span th:text="${semesterTags}">Semester</span>
@@ -184,7 +253,12 @@
                                     <div class="col-3">
                                         <form action="#" th:action="@{/module/semesterTag/create}" method="post" style="display: flex">
                                             <div style="display:flex">
-                                                <input name="inputTag" id="inputTag" type="text" class="form-control" placeholder="Semester hinzufügen">
+                                                <select name="inputTag"
+                                                        class="form-control"
+                                                        id="inputTag" required>
+                                                    <option selected hidden value="">Semester hinzufügen</option>
+                                                    <option th:each="semester : ${allSemesters}" th:value="${semester}" th:text="${semester}"></option>
+                                                </select>
                                                 <input type="hidden" th:value="${veranstaltungen.getId()}" id="idVeranstaltung" name="idVeranstaltung">
                                                 <input type="hidden" th:value="${veranstaltungen.getModul().getId()}" id="idModul" name="idModul">
                                                 <button class="btn btn-primary"
@@ -294,6 +368,20 @@
                 </div>
             </div>
         </div>
+
+
+        <div th:if="${account}"  class="mt-3 mb-2 col-sm-12 col-md-4 col-lg-3">
+            <div th:each="role: ${account.getRoles()}">
+                <div th:switch="${role}">
+                    <div th:case="'sekretariat'" style="display: grid;">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalVersions">
+                            Versionenverwaltung
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
