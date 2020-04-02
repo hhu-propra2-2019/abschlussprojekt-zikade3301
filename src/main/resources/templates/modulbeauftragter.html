@@ -87,7 +87,8 @@
                                             <td th:text="${version.getTitelDeutsch()}"></td>
                                             <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getAntragsteller()}"></td>
                                             <td th:text="${allAntraege.get(__${j.index}__).get(__${i.index}__).getDatumGenehmigung().format(formatter)}"></td>
-                                            <td th:text="${'(Aktuelle Version)'}"></td>
+                                            <td th:if="${version == modul}" th:text="${'(Aktuelle Version)'}"></td>
+                                            <td th:unless="${version == modul}"></td>
                                             <td>
                                                 <form action="#" th:action="@{'/module/modulversion'}" method="get">
                                                     <input type="hidden" name="modul" th:value="${modul.getId()}">
