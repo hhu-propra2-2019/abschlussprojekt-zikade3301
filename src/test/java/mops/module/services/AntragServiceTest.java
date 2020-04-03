@@ -35,7 +35,7 @@ public class AntragServiceTest {
 
     @BeforeEach
     void setUp() {
-
+        modulSnapshotRepository.deleteAll();
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
 
         testmodul = ModulFaker.generateFakeModul();
