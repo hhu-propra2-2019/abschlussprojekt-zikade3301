@@ -38,50 +38,50 @@
 </header>
 <main th:fragment="bodycontent">
 
-        <table class="col-12">
-            <thead>
-            <tr>
-                <th>Antragsdatum</th>
-                <th>Antragssteller</th>
-                <th>Details</th>
-                <th style="float: right">Antrag ablehnen</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${allAntraege.size() == 0}">
-                <td>Es liegen keine Anträge vor!</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr th:each="antrag : ${allAntraege}">
-                <td th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
-                <td>
-                    <span th:text="${antrag.getAntragsteller()}">Beauftragter</span>
-                </td>
-                <th>
-                    <span th:if="${antrag.getModulId() == null}">
-                        <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}">
-                            Zum Antrag
-                        </a>
-                    </span>
-                    <span th:unless="${antrag.getModulId() == null}">
-                        <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}">
-                            Zum Antrag
-                        </a>
-                    </span>
-                </th>
-                <td style="float: right">
-                    <form action="#" th:action="@{'/module/deleteAntrag'}" method="post" th:id="'formID'+${antrag.getId()}">
-                        <input type="hidden" name="antragID" th:value="${antrag.getId()}">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#ModalDelete'+${antrag.getId()}">
-                            Ablehnen
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <table class="col-12">
+        <thead>
+        <tr>
+            <th>Antragsdatum</th>
+            <th>Antragssteller</th>
+            <th>Details</th>
+            <th style="float: right">Antrag ablehnen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${allAntraege.size() == 0}">
+            <td>Es liegen keine Anträge vor!</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr th:each="antrag : ${allAntraege}">
+            <td th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
+            <td>
+                <span th:text="${antrag.getAntragsteller()}">Beauftragter</span>
+            </td>
+            <th>
+                <span th:if="${antrag.getModulId() == null}">
+                    <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}">
+                        Zum Antrag
+                    </a>
+                </span>
+                <span th:unless="${antrag.getModulId() == null}">
+                    <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}">
+                        Zum Antrag
+                    </a>
+                </span>
+            </th>
+            <td style="float: right">
+                <form action="#" th:action="@{'/module/deleteAntrag'}" method="post" th:id="'formID'+${antrag.getId()}">
+                    <input type="hidden" name="antragID" th:value="${antrag.getId()}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#ModalDelete'+${antrag.getId()}">
+                        Ablehnen
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- Modal für die sichere Bestätigung einer Antragsablehnung -->
     <div class="modal fade"
@@ -114,7 +114,6 @@
             </div>
         </div>
     </div>
-
 </main>
 </body>
 </html>
