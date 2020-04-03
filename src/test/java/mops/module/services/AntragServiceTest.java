@@ -25,7 +25,7 @@ public class AntragServiceTest {
 
     private AntragService antragService;
 
-    @Autowired
+//    @Autowired
     private AntragRepository antragRepository;
 
 //    @MockBean
@@ -38,6 +38,7 @@ public class AntragServiceTest {
     @BeforeEach
     void setUp() {
         modulSnapshotRepository = mock(ModulSnapshotRepository.class);
+        antragRepository = mock(AntragRepository.class);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
         modulSnapshotRepository.deleteAll();
         antragRepository.deleteAll();
