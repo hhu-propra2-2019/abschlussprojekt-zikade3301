@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
 import mops.module.database.Antrag;
@@ -10,6 +11,7 @@ import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,7 +28,8 @@ public class AntragServiceTest {
     @Autowired
     private AntragRepository antragRepository;
 
-    private ModulSnapshotRepository modulSnapshotRepository;
+//    @MockBean
+//    private ModulSnapshotRepository modulSnapshotRepository;
 
     private Modul testmodul;
     private Antrag antragToDelete;
@@ -34,6 +37,7 @@ public class AntragServiceTest {
 
     @BeforeEach
     void setUp() {
+        ModulSnapshotRepository modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
         modulSnapshotRepository.deleteAll();
         antragRepository.deleteAll();
