@@ -38,33 +38,34 @@
 </header>
 <main th:fragment="bodycontent">
 
-
-        <table>
-            <thead class="col-12">
-            <tr class="col-12">
-                <th class="col-4">Antragsdatum</th>
-                <th class="col-4">Antragssteller</th>
-                <th class="col-4">Antrag ablehnen</th>
+        <table class="col-12">
+            <thead>
+            <tr>
+                <th>Antragsdatum</th>
+                <th>Antragssteller</th>
+                <th>Details</th>
+                <th style="float: right">Antrag ablehnen</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="antrag : ${allAntraege}" class="col-12">
-                <td class="col-4" th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
-                <td class="col-4">
+            <tr th:each="antrag : ${allAntraege}">
+                <td th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
+                <td>
+                    <span th:text="${antrag.getAntragsteller()}">Beauftragter</span>
+                </td>
+                <th>
                     <span th:if="${antrag.getModulId() == null}">
-                        <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}"
-                           th:text="${antrag.getAntragsteller()}">
-                            Antragsteller
+                        <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}">
+                            Zum Antrag
                         </a>
                     </span>
                     <span th:unless="${antrag.getModulId() == null}">
-                        <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}"
-                           th:text="${antrag.getAntragsteller()}">
-                            Antragsteller
+                        <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}">
+                            Zum Antrag
                         </a>
                     </span>
-                </td>
-                <td class="col-4">
+                </th>
+                <td style="float: right">
                     <form action="#" th:action="@{'/module/deleteAntrag'}" method="post">
                         <input type="hidden" name="antragID" th:value="${antrag.getId()}">
                         <button type="submit" class="btn btn-primary mx-1">
@@ -75,35 +76,6 @@
             </tr>
             </tbody>
         </table>
-
-
-<!--        <p style="margin-bottom: 0;">-->
-<!--            <a class="btn btn-primary"-->
-<!--               style="font-weight: bold;-->
-<!--               font-size: larger;-->
-<!--               border:none;-->
-<!--               background-color: transparent;-->
-<!--               color: dodgerblue"-->
-<!--               data-toggle="collapse"-->
-<!--               th:href="'#' + ${antrag}"-->
-<!--               role="button"-->
-<!--               aria-expanded="false"-->
-<!--               th:attr="aria-controls=${antrag}">-->
-
-<!--                <span th:if="${antrag.getModulId() == null}">-->
-<!--                    <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}"-->
-<!--                       th:text="${antrag.getAntragsteller()}">-->
-<!--                        Antragsteller-->
-<!--                    </a>-->
-<!--                </span>-->
-<!--                <span th:unless="${antrag.getModulId() == null}">-->
-<!--                    <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}"-->
-<!--                       th:text="${antrag.getAntragsteller()}">-->
-<!--                        Antragsteller-->
-<!--                    </a>-->
-<!--                </span>-->
-<!--            </a>-->
-<!--        </p>-->
 
 </main>
 </body>

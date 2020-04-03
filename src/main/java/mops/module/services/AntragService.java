@@ -202,5 +202,4 @@ public class AntragService {
     public void deleteAntrag(Long id) {
         antragRepository.deleteById(id);
     }
-
 }
