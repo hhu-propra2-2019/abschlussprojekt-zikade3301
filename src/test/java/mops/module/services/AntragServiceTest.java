@@ -38,6 +38,7 @@ public class AntragServiceTest {
 
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
         modulSnapshotRepository.deleteAll();
+        antragRepository.deleteAll();
 
         testmodul = ModulFaker.generateFakeModul();
         antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
