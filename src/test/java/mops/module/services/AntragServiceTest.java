@@ -23,23 +23,23 @@ public class AntragServiceTest {
 
     private AntragService antragService;
 
-//    @Autowired
-//    private AntragRepository antragRepository;
+    @Autowired
+    private AntragRepository antragRepository;
 
-//    @MockBean
-//    private ModulSnapshotRepository modulSnapshotRepository;
-//
-//    private Modul testmodul;
-//    private Antrag antragToDelete;
-//    private List<Antrag> antraege;
+    @Autowired
+    private ModulSnapshotRepository modulSnapshotRepository;
+
+    private Modul testmodul;
+    private Antrag antragToDelete;
+    private List<Antrag> antraege;
 
     @BeforeEach
     void setUp() {
 
-//        antragService = new AntragService(antragRepository, modulSnapshotRepository);
+        antragService = new AntragService(antragRepository, modulSnapshotRepository);
 
-//        testmodul = ModulFaker.generateFakeModul();
-//        antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
+        testmodul = ModulFaker.generateFakeModul();
+        antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
     }
 
     @Test
@@ -47,18 +47,18 @@ public class AntragServiceTest {
 
         System.out.println("Test");
 
-//        antraege = antragService.getAlleAntraege();
-//
-//        assertThat(antraege.size()).isEqualTo(1);
+        antraege = antragService.getAlleAntraege();
+
+        assertThat(antraege.size()).isEqualTo(1);
     }
 
-//    @Test
-//    public void deleteAntragTest() {
-//
-//        antragService.deleteAntrag(antragToDelete.getId());
-//        antraege = antragService.getAlleAntraege();
-//
-//        assertThat(antraege.size()).isEqualTo(0);
-//    }
+    @Test
+    public void deleteAntragTest() {
+
+        antragService.deleteAntrag(antragToDelete.getId());
+        antraege = antragService.getAlleAntraege();
+
+        assertThat(antraege.size()).isEqualTo(0);
+    }
 
 }
