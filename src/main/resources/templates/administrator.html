@@ -48,6 +48,12 @@
             </tr>
             </thead>
             <tbody>
+            <tr th:if="${allAntraege.size() == 0}">
+                <td>Es liegen keine Anträge vor!</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             <tr th:each="antrag : ${allAntraege}">
                 <td th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
                 <td>
@@ -77,10 +83,7 @@
             </tbody>
         </table>
 
-
-
-
-    <!-- Modal -->
+    <!-- Modal für die sichere Bestätigung einer Antragsablehnung -->
     <div class="modal fade"
          th:id="'ModalDelete'+${antrag.getId()}"
          tabindex="-1"
