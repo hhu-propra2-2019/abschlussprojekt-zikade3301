@@ -44,6 +44,7 @@
             <th>Antragsdatum</th>
             <th>Antragssteller</th>
             <th>Details</th>
+            <th>Modul</th>
             <th style="float: right">Antrag ablehnen</th>
         </tr>
         </thead>
@@ -71,6 +72,11 @@
                     </a>
                 </span>
             </th>
+            <td>
+                <span th:text="${@jsonService.jsonObjectToModul(
+                    antrag.getJsonModulAenderung()).getTitelDeutsch()}">
+                </span>
+            </td>
             <td style="float: right">
                 <form action="#" th:action="@{'/module/deleteAntrag'}" method="post" th:id="'formID'+${antrag.getId()}">
                     <input type="hidden" name="antragID" th:value="${antrag.getId()}">
@@ -94,7 +100,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span>Modul von</span>
+                        <span>Antrag von</span>
                         <span th:text="${antrag.getAntragsteller()}">Antragssteller</span>
                         <span>ablehnen.</span>
                     </h4>
