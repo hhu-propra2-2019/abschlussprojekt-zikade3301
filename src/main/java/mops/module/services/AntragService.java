@@ -2,6 +2,7 @@ package mops.module.services;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -23,7 +24,7 @@ public class AntragService {
      * Erstellt einen Änderungsantrag aus einem Modul heraus.
      *
      * @param modul Modul auf welches der Antrag angewendet wird
-     * @return
+     * @return Änderungsantrag
      */
     Antrag modulToAntrag(Modul modul) {
         String jsonObject = JsonService.modulToJsonObject(modul);
@@ -106,6 +107,7 @@ public class AntragService {
     public Modul approveModulCreationAntrag(Antrag antrag) {
         Modul modulFromJson = JsonService.jsonObjectToModul(antrag.getJsonModulAenderung());
         modulFromJson.refreshMapping();
+        modulFromJson.setSichtbar(true);
 
         modulFromJson.setSichtbar(true);
         Modul modul = modulSnapshotRepository.save(modulFromJson);
@@ -140,4 +142,54 @@ public class AntragService {
     public Antrag getAntragById(Long id) {
         return antragRepository.findById(id).orElse(null);
     }
+
+    /**
+     * Gibt alle Versionen für das Modul mit der angebenen id als Liste aus.
+     * @param id Die id eines in der Datenbank existierenden (d.h. genehmigten) Moduls.
+     * @return Eine Liste aller Versionen des Moduls, wobei der erste Listeneintrag das Modul
+     *         im initialen Erstellungsantrag ist und der letzte Listeneintrag das Modul im
+     *         aktuellen Status ist. Da der Sichtbarkeitsstatus nicht über Anträge funktioniert,
+     *         ist die Sichtbarkeit aller Versionen immer null.
+     */
+    public LinkedList<Modul> getAllVersionsOfModulOldestFirst(Long id) {
+        List<Antrag> relevantApprovedAntraege = getAllApprovedAntraegeForModulOldestFirst(id);
+        LinkedList<Modul> modulVersions = new LinkedList<>();
+        for (int i = 1; i < relevantApprovedAntraege.size(); i++) {
+            //initiale Version (Creation-Antrag)
+            Modul versionI = JsonService.jsonObjectToModul(
+                    relevantApprovedAntraege.get(0).getJsonModulAenderung());
+            //für Schleifendurchgang i jeweils alle Modification-Antraege bis zum i-ten anwenden
+            for (int j = 0; j < i; j++) {
+                ModulService.applyAntragOnModul(versionI, relevantApprovedAntraege.get(j));
+            }
+            modulVersions.add(versionI);
+        }
+        //aktuelle Version
+        Modul currentModul = modulSnapshotRepository.findById(id).orElse(null);
+        modulVersions.add(currentModul);
+        return modulVersions;
+    }
+
+    private List<Antrag> getAllApprovedAntraegeForModulOldestFirst(Long id) {
+        return getAllAntraegeForModul(id).stream()
+                .filter(a -> a.getDatumGenehmigung() != null)
+                .sorted(Comparator.comparing(Antrag::getDatumGenehmigung))
+                .collect(Collectors.toList());
+    }
+
+    private List<Antrag> getAllAntraegeForModul(Long id) {
+        if (!modulSnapshotRepository.findById(id).isPresent()) {
+            throw new IllegalArgumentException(
+                    "Versionierung nicht möglich, da Modul-Id nicht existiert");
+        }
+        List<Antrag> relevantApprovedAntraege = getAlleAntraege().stream()
+                .filter(a -> a.getModulId().equals(id))
+                .collect(Collectors.toList());
+        if (relevantApprovedAntraege.size() < 1) {
+            throw new IllegalArgumentException(
+                    "Initialer Antrag des Moduls in Versionierung nicht gefunden");
+        }
+        return relevantApprovedAntraege;
+    }
+
 }

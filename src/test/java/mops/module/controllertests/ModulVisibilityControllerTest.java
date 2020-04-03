@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 class ModulVisibilityControllerTest {
 
@@ -63,7 +63,7 @@ class ModulVisibilityControllerTest {
     }
 
     @Test
-    void changeModulVisibilityNoAccessIfNotLoggedIn() throws Exception {
+    void changeModulVisibilityNoAccessIfNotLoggedIn() {
 
         assertThrows(AssertionError.class,
                 () -> {
@@ -75,7 +75,7 @@ class ModulVisibilityControllerTest {
     }
 
     @Test
-    void changeModulVisibilityAccessForOrganizers() throws Exception {
+    void changeModulVisibilityAccessForOrganizers() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));
@@ -90,7 +90,7 @@ class ModulVisibilityControllerTest {
     }
 
     @Test
-    void changeModulVisibilityNoAccessForStudents() throws Exception {
+    void changeModulVisibilityNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));

@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class ModulServiceTest {
     private ModulService modulService;
 
@@ -150,6 +150,16 @@ public class ModulServiceTest {
     }
 
     @Test
+    public void testKopiereModul() {
+        Modul modulAlt = JsonService.jsonObjectToModul(modul1);
+        Modul modulNeu = new Modul();
+        modulService.copyModul(modulAlt,modulNeu);
+
+        Modul diffs = modulService.calculateModulDiffs(modulAlt, modulNeu);
+        assertThat(diffs).isNull();
+    }
+
+    @Test
     public void getWinterSemesterYearTest() {
         String actual = ModulService.getWinterSemesterYear(2019);
         assertThat(actual).isEqualTo("2019-20");
@@ -247,3 +257,4 @@ public class ModulServiceTest {
         assertThat(modulSichtbarkeitNull.getSichtbar()).isEqualTo(true);
     }
 }
+

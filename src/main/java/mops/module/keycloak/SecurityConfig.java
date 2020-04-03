@@ -7,7 +7,6 @@ import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticatio
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.keycloak.representations.AccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -75,7 +74,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         String[] allProfiles = environment.getActiveProfiles();
         if (allProfiles.length != 0) {
             String activeProfile = allProfiles[0];
-            if (activeProfile.trim().equalsIgnoreCase("dev")) {
+            if (activeProfile.trim().equalsIgnoreCase("test")) {
                 http.csrf().disable();
             }
         }

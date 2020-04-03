@@ -27,7 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 class IndexControllerTest {
 

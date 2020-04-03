@@ -23,7 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 class ModulerstellungControllerTest {
 
@@ -80,7 +80,7 @@ class ModulerstellungControllerTest {
     }
 
     @Test
-    void testGetModulerstellungNoAccessIfNotLoggedIn() throws Exception {
+    void testGetModulerstellungNoAccessIfNotLoggedIn() {
         assertThrows(AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/modulerstellung?veranstaltungsanzahl=1"))
@@ -89,7 +89,7 @@ class ModulerstellungControllerTest {
     }
 
     @Test
-    void testGetModulerstellungNoAccessForStudents() throws Exception {
+    void testGetModulerstellungNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));

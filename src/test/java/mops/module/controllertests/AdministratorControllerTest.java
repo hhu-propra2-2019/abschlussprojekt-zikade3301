@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 class AdministratorControllerTest {
 
     @Autowired
@@ -60,7 +60,7 @@ class AdministratorControllerTest {
     }
 
     @Test
-    void testAdministratorNoAccessIfNotLoggedIn() throws Exception {
+    void testAdministratorNoAccessIfNotLoggedIn() {
         assertThrows(java.lang.AssertionError.class,
                 () -> {
                     mvc.perform(get("/module/administrator")).andExpect(view().name(expect));
@@ -68,7 +68,7 @@ class AdministratorControllerTest {
     }
 
     @Test
-    void testAdministratorNoAccessForStudents() throws Exception {
+    void testAdministratorNoAccessForStudents() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("studentin"));
@@ -80,7 +80,7 @@ class AdministratorControllerTest {
     }
 
     @Test
-    void testAdministratorNoAccessForOrganisator() throws Exception {
+    void testAdministratorNoAccessForOrganisator() {
         SecurityContextHolder
                 .getContext()
                 .setAuthentication(generateAuthenticationToken("orga"));

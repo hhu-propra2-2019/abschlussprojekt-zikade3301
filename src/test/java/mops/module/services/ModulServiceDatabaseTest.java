@@ -2,15 +2,14 @@ package mops.module.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import mops.module.database.Antrag;
 import mops.module.database.Modul;
 import mops.module.database.Modulkategorie;
@@ -19,6 +18,9 @@ import mops.module.database.Veranstaltungsbeschreibung;
 import mops.module.generator.ModulFaker;
 import mops.module.repositories.AntragRepository;
 import mops.module.repositories.ModulSnapshotRepository;
+import org.assertj.core.util.Lists;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class ModulServiceDatabaseTest {
     private ModulService modulService;
     private AntragService antragService;
@@ -268,4 +270,102 @@ public class ModulServiceDatabaseTest {
                 antraege.get(0).getJsonModulAenderung());
 
     }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestThrowsExceptionWhenInvalidId() {
+        modulSnapshotRepository.deleteAll();
+        antragRepository.deleteAll();
+        Modul modul = ModulFaker.generateFakeModul();
+        modul.setId(3301L);
+
+        assertThrows(Exception.class,
+                () -> antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestThrowsExceptionWhenAntragMissing() {
+        modulSnapshotRepository.deleteAll();
+        antragRepository.deleteAll();
+        Modul modul = modulSnapshotRepository.save(ModulFaker.generateFakeModul());
+
+        assertThrows(Exception.class,
+                () -> antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestWhenNoPreviousVersions() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        modul1.setTitelDeutsch("initialer Titel");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Beispielantragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        LinkedList<Modul> versionen =
+                antragService.getAllVersionsOfModulOldestFirst(modul2.getId());
+
+        assertThat(versionen.get(0).getTitelDeutsch()).isEqualTo("initialer Titel");
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestModulTitel() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        modul1.setTitelDeutsch("initialer Titel");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Antragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        modul2.setTitelDeutsch("zweiter Titel");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Antragsteller2");
+        Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
+
+        modul3.setTitelDeutsch("dritter Titel");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Antragsteller3");
+        Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
+
+        LinkedList<Modul> versionen =
+                antragService.getAllVersionsOfModulOldestFirst(modul4.getId());
+
+        ArrayList<String> actualTitles = Lists.newArrayList(
+                versionen.get(0).getTitelDeutsch(),
+                versionen.get(1).getTitelDeutsch(),
+                versionen.get(2).getTitelDeutsch());
+        ArrayList<String> expectedTitles = Lists.newArrayList(
+                "initialer Titel", "zweiter Titel", "dritter Titel");
+
+        MatcherAssert.assertThat(actualTitles, Matchers.equalTo(expectedTitles));
+    }
+
+    @Test
+    void getAllVersionsOfModulOldestFirstTestVeranstaltungTitel() {
+        Modul modul1 = ModulFaker.generateFakeModul();
+        Veranstaltung veranstaltungInModul = modul1.getVeranstaltungen()
+                .stream().findFirst().orElse(null);
+        modul1.getVeranstaltungen().removeIf(v -> v != veranstaltungInModul);
+
+        modul1.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 1");
+        Antrag antrag1 = antragService.addModulCreationAntrag(modul1, "Antragsteller1");
+        Modul modul2 = antragService.approveModulCreationAntrag(antrag1);
+
+        modul2.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 2");
+        Antrag antrag2 = antragService.addModulModificationAntrag(modul2, "Antragsteller2");
+        Modul modul3 = antragService.approveModulModificationAntrag(antrag2);
+
+        modul3.getVeranstaltungen().stream().findFirst().orElse(null).setTitel("Titel 3");
+        Antrag antrag3 = antragService.addModulModificationAntrag(modul3, "Antragsteller3");
+        Modul modul4 = antragService.approveModulModificationAntrag(antrag3);
+
+        LinkedList<Modul> versionen = antragService.getAllVersionsOfModulOldestFirst(
+                modul4.getId());
+
+        ArrayList<String> actualTitles = Lists.newArrayList(
+                versionen.get(0).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel(),
+                versionen.get(1).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel(),
+                versionen.get(2).getVeranstaltungen()
+                        .stream().findFirst().orElse(null).getTitel());
+        ArrayList<String> expectedTitles = Lists.newArrayList(
+                "Titel 1", "Titel 2", "Titel 3");
+
+        MatcherAssert.assertThat(actualTitles, Matchers.equalTo(expectedTitles));
+    }
+
 }

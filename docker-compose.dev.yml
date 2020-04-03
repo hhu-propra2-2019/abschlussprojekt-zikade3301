@@ -1,0 +1,18 @@
+# Um das zum laufen zu bringen:
+## Im terminal docker-compose -f docker-compose.dev.yml up
+## Oder über Intellij direkt laufen lassen
+
+version: "3.1"
+services:
+  database:
+    image: postgres
+    volumes:
+      - database-data-dev:/var/lib/postgresql/data/
+    ports:
+      - "3301:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=zikade3301
+      - POSTGRES_DB=Modulhandbuch
+volumes:
+  database-data-dev:

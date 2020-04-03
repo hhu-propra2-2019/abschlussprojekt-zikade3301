@@ -8,7 +8,7 @@ import mops.module.database.Veranstaltung;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 public class JsonServiceTest {
 
     @Test
