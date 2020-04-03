@@ -39,7 +39,7 @@ public class AntragServiceTest {
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
 //
         testmodul = ModulFaker.generateFakeModul();
-//        antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
+        antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
     }
 
     @Test
