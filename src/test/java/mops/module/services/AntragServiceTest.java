@@ -29,7 +29,7 @@ public class AntragServiceTest {
     private AntragRepository antragRepository;
 
 //    @MockBean
-//    private ModulSnapshotRepository modulSnapshotRepository;
+    private ModulSnapshotRepository modulSnapshotRepository;
 
     private Modul testmodul;
     private Antrag antragToDelete;
@@ -37,7 +37,7 @@ public class AntragServiceTest {
 
     @BeforeEach
     void setUp() {
-        ModulSnapshotRepository modulSnapshotRepository = mock(ModulSnapshotRepository.class);
+        modulSnapshotRepository = mock(ModulSnapshotRepository.class);
         antragService = new AntragService(antragRepository, modulSnapshotRepository);
         modulSnapshotRepository.deleteAll();
         antragRepository.deleteAll();
@@ -48,8 +48,6 @@ public class AntragServiceTest {
 
     @Test
     public void stillInDbIfNotDeleted() {
-
-        System.out.println("Test");
 
         antraege = antragService.getAlleAntraege();
 
