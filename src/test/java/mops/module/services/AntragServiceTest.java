@@ -26,7 +26,7 @@ public class AntragServiceTest {
     @Autowired
     private AntragRepository antragRepository;
 
-    @Autowired
+    @MockBean
     private ModulSnapshotRepository modulSnapshotRepository;
 
     private Modul testmodul;
