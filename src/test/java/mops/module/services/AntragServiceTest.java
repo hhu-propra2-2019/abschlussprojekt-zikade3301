@@ -26,19 +26,19 @@ public class AntragServiceTest {
 //    @Autowired
 //    private AntragRepository antragRepository;
 
-    @MockBean
-    private ModulSnapshotRepository modulSnapshotRepository;
-
-    private Modul testmodul;
-    private Antrag antragToDelete;
-    private List<Antrag> antraege;
+//    @MockBean
+//    private ModulSnapshotRepository modulSnapshotRepository;
+//
+//    private Modul testmodul;
+//    private Antrag antragToDelete;
+//    private List<Antrag> antraege;
 
     @BeforeEach
     void setUp() {
 
 //        antragService = new AntragService(antragRepository, modulSnapshotRepository);
 
-        testmodul = ModulFaker.generateFakeModul();
+//        testmodul = ModulFaker.generateFakeModul();
 //        antragToDelete = antragService.addModulCreationAntrag(testmodul, "Testmethod");
     }
 
