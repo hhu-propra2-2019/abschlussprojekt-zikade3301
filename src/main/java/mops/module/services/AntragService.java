@@ -32,7 +32,6 @@ public class AntragService {
         antrag.setJsonModulAenderung(jsonObject);
         antrag.setModulId(modul.getId());
         return antrag;
-
     }
 
     /**
