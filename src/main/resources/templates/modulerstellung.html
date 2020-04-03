@@ -449,10 +449,15 @@
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
                         <button th:if="${modulId == null}"  type="submit" class="btn btn-primary mr-1" style="float: right">
-                            Modulerstellung beantragen
+
+                            <span>Modulerstellung</span>
+                            <span th:if="${account.getRoles().contains('sekretariat')}" th:text=" bestätigen"></span>
+                            <span th:unless="${account.getRoles().contains('sekretariat')}" th:text=" beantragen"></span>
                         </button>
                         <button th:unless="${modulId == null}" type="submit" class="btn btn-primary mr-1" style="float: right">
-                            Moduländerung beantragen
+                            <span>Moduländerung</span>
+                            <span th:if="${account.getRoles().contains('sekretariat')}" th:text=" bestätigen"></span>
+                            <span th:unless="${account.getRoles().contains('sekretariat')}" th:text=" beantragen"></span>
                         </button>
                         <button type="button" class="btn btn-secondary mr-1" style="float: right">
                             <a href="/module/modulbeauftragter" style="color: white; text-decoration: none;">
