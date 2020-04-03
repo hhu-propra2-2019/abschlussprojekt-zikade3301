@@ -66,9 +66,9 @@
                     </span>
                 </th>
                 <td style="float: right">
-                    <form action="#" th:action="@{'/module/deleteAntrag'}" method="post">
+                    <form action="#" th:action="@{'/module/deleteAntrag'}" method="post" th:id="'formID'+${antrag.getId()}">
                         <input type="hidden" name="antragID" th:value="${antrag.getId()}">
-                        <button type="submit" class="btn btn-primary mx-1">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#ModalDelete'+${antrag.getId()}">
                             Ablehnen
                         </button>
                     </form>
@@ -76,6 +76,41 @@
             </tr>
             </tbody>
         </table>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade"
+         th:id="'ModalDelete'+${antrag.getId()}"
+         tabindex="-1"
+         role="dialog"
+         aria-hidden="true"
+         th:each="antrag : ${allAntraege}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Modul von</span>
+                        <span th:text="${antrag.getAntragsteller()}">Antragssteller</span>
+                        <span>ablehnen.</span>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Möchten Sie den Antrag wirklich ablehnen/löschen?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="submit" th:form="'formID'+${antrag.getId()}" class="btn btn-primary mx-1">
+                        Fortfahren
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 </body>
