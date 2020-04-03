@@ -32,7 +32,6 @@ public class AntragService {
         antrag.setJsonModulAenderung(jsonObject);
         antrag.setModulId(modul.getId());
         return antrag;
-
     }
 
     /**
@@ -200,4 +199,7 @@ public class AntragService {
         return relevantAntraege;
     }
 
+    public void deleteAntrag(Long id) {
+        antragRepository.deleteById(id);
+    }
 }
