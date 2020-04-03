@@ -23,11 +23,11 @@ public class AntragServiceTest {
 
     private AntragService antragService;
 
-    @Autowired
-    private AntragRepository antragRepository;
+//    @Autowired
+//    private AntragRepository antragRepository;
 
-//    @MockBean
-//    private ModulSnapshotRepository modulSnapshotRepository;
+    @MockBean
+    private ModulSnapshotRepository modulSnapshotRepository;
 
     private Modul testmodul;
     private Antrag antragToDelete;
