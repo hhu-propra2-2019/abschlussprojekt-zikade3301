@@ -36,7 +36,6 @@ public class Modul {
 
     //Beim Löschen von Modul werden alle Veranstaltungen mitgelöscht, daher ist CascadeType.ALL
     //und FetchType.EAGER gewünscht
-    //TODO: orphan removal wurde entfernt, Lösung für Löschen veralteter Veranstaltungen finden
     @IndexedEmbedded
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "modul")
     private Set<Veranstaltung> veranstaltungen;
