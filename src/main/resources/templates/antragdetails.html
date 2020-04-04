@@ -43,8 +43,8 @@
 
 
         <!-- AUSWAHL DES TITELS -->
-        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">                 <!-- hier fehlt for -->
-            <label class="col-1">Titel</label>
+        <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
+            <label class="col-1">Titel<span style="color: red;">*</span></label>
 
             <input type="text"
                    style="border: none;
@@ -95,7 +95,7 @@
 
         <!-- AUSWAHL Studiengang -->
         <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
-            <label th:for="studiengang" class="col-2">Studiengang</label>
+            <label th:for="studiengang" class="col-2">Studiengang<span style="color: red;">*</span></label>
             <input type="text"
                    style="color: lightslategrey;
                                        border: none;
@@ -120,12 +120,12 @@
                    th:unless="${antrag.modul.studiengang == altesModul.modul.studiengang}">        </div>
 
         <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
-            <label th:for="modulbeauftragte">Modulbeauftragte</label>
+            <label th:for="modulbeauftragte">Modulbeauftragte<span style="color: red;">*</span></label>
             <input type="text"
                    style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
                    class="form-control"
                    th:id="modulbeauftragte"
-                   placeholder="Modulbeauftragte der Veranstaltung" required
+                   placeholder="Modulbeauftragte der Veranstaltung (mehrere durch Kommata trennen)" required
                    th:field ="*{modul.modulbeauftragte}"
                    th:if="${antrag.modul.modulbeauftragte == altesModul.modul.modulbeauftragte}">
 
@@ -133,7 +133,7 @@
                    style="color: red; float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
                    class="form-control"
                    th:id="modulbeauftragte"
-                   placeholder="Modulbeauftragte der Veranstaltung" required
+                   placeholder="Modulbeauftragte der Veranstaltung (mehrere durch Kommata trennen)" required
                    th:field ="*{modul.modulbeauftragte}"
                    th:unless="${antrag.modul.modulbeauftragte == altesModul.modul.modulbeauftragte}">
 
@@ -143,20 +143,20 @@
         <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE-->
         <div style="display: inline-flex;">
             <div class="mt-3 mb-3 col-4" style="float: left">
-                <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>         <!-- Als Text oder als number? -->
+                <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte<span style="color: red;">*</span></label>
                 <input type="text"
                        style="float: right"
                        class="form-control col-md-4 col-sm-4"
                        id="gesamtLeistungspunkte"
-                       placeholder="CP" required th:field="*{modul.gesamtLeistungspunkte}">
+                       placeholder="z.B: 10 LP" required th:field="*{modul.gesamtLeistungspunkte}">
             </div>
             <div class="mt-3 mb-3 col-8" style="float: left">
-                <label for="modulkategorie">Modulkategorie</label>
+                <label for="modulkategorie">Modulkategorie<span style="color: red;">*</span></label>
                 <select
                         style="float: right"
                         class="form-control col-md-8 col-sm-8"
                         id="modulkategorie" required th:field="*{modul.modulkategorie}">
-                    <option selected hidden value="">Modulkategorie Wählen</option>
+                    <option selected hidden value="">Modulkategorie wählen</option>
                     <option value="PFLICHT_INFO">Informatik Pflichtmodul</option>
                     <option value="PFLICHT_MATHE">Mathematik Pflichtmodul</option>
                     <option value="NEBENFACH">Nebenfach</option>
@@ -233,7 +233,7 @@
                                            th:field = "*{veranstaltungen[__${i.index}__].titel}"
                                            th:unless ="${antrag.veranstaltungen[__${i.index}__].titel == altesModul.veranstaltungen[__${i.index}__].titel}">
 
-                                    <div style="color: white; font-size: small;">Veranstaltungstitel</div>
+                                    <div style="color: white; font-size: small;">Veranstaltungstitel<span style="color: red;">*</span></div>
                                 </div>
 
                                 <div class="input-group mb-3 col-3" style="display: block">
@@ -260,7 +260,7 @@
                                            th:unless ="${antrag.veranstaltungen[__${i.index}__].leistungspunkte == altesModul.veranstaltungen[__${i.index}__].leistungspunkte}">
 
 
-                                    <div style="color: white; font-size: small;">Leistungspunkte</div>
+                                    <div style="color: white; font-size: small;">Leistungspunkte<span style="color: red;">*</span></div>
                                 </div>
                             </div>
 
@@ -291,7 +291,7 @@
                                            aria-describedby="basic-addon1"
                                            th:field = "*{veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}"
                                            th:unless ="${antrag.veranstaltungen[__${i.index}__].beschreibung.haeufigkeit == altesModul.veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}">
-                                    <div style="color: white; font-size: small;">Häufigkeit</div>
+                                    <div style="color: white; font-size: small;">Häufigkeit<span style="color: red;">*</span></div>
                                 </div>
                                 <div class="input-group mb-3 col-4 pl-0" style="display: block">
                                     <input type="text"
@@ -331,7 +331,7 @@
                                           color: white;
                                           font-size: larger;
                                           border: none;" >
-                                        Veranstaltungsinhalte
+                                        Veranstaltungsinhalte<span style="color: red;">*</span>
                                     </span>
                                 </div>
                                 <textarea class="form-control col-12 pl-0"
@@ -362,7 +362,7 @@
                                           color: white;
                                           font-size: larger;
                                           border: none;">
-                                        Lernergebnisse
+                                        Lernergebnisse<span style="color: red;">*</span>
                                     </span>
                                 </div>
                                 <textarea class="form-control col-12 pl-0"
@@ -390,7 +390,7 @@
                                               color: white;
                                               font-size: larger;
                                               border: none;">
-                                            Literatur
+                                            Literatur<span style="color: red;">*</span>
                                         </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
@@ -416,7 +416,7 @@
                                               color: white;
                                               font-size: larger;
                                               border: none;">
-                                            Voraussetzungen für eine Teilnahme
+                                            Voraussetzungen für eine Teilnahme<span style="color: red;">*</span>
                                         </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
@@ -445,7 +445,7 @@
                                               color: white;
                                               font-size: larger;
                                               border: none;">
-                                            Verwendbarkeit
+                                            Verwendbarkeit<span style="color: red;">*</span>
                                         </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
@@ -473,7 +473,7 @@
                                               color: white;
                                               font-size: larger;
                                               border: none;">
-                                            Voraussetzungen zum Bestehen
+                                            Voraussetzungen zum Bestehen<span style="color: red;">*</span>
                                         </span>
                                     </div>
                                     <textarea class="form-control col-12 pl-0"
@@ -550,7 +550,7 @@
                                            th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}"
                                            th:unless ="${antrag.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden == altesModul.veranstaltungsformen[__${i.index}__][__${j.index}__].semesterWochenStunden}">
                                     <label style="font-size: larger; margin-left: 0.5rem">
-                                        SWS
+                                        SWS <small>(wenn keine Angabe, 0 angeben)</small>
                                     </label>
                                 </div>
                             </div>
@@ -627,6 +627,7 @@
 
         <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
         <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
+            <div>Benötigte Felder<span style="color: red;">*</span></div>
             <button type="submit" class="btn btn-primary mr-1" style="float: right">Antrag annehmen</button>
             <button type="button" class="btn btn-secondary mr-1" style="float: right">
                 <a href="/module/administrator" style="color: white; text-decoration: none;">
