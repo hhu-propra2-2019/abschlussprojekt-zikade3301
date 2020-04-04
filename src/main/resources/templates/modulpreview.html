@@ -57,9 +57,9 @@
         <button form="buttonForm" type="submit" class="btn btn-secondary mr-1">
             Zurück zur Bearbeitung
         </button>
-        <button form="buttonForm" th:formaction="${'/module/' + ((modulId == null || modulId.equals('')) ? 'modulerstellung_confirmation' : 'modulbearbeitung_confirmation')}" type="submit" class="btn btn-success mr-1">
-            <span th:if="${(modulId == null || modulId.equals(''))}" th:text="Erstellung"></span>
-            <span th:unless="${(modulId == null || modulId.equals(''))}" th:text="Änderung"></span>
+        <button form="buttonForm" th:formaction="${'/module/' + ((modul.getId() == null || modul.getId().equals('')) ? 'modulerstellung_confirmation' : 'modulbearbeitung_confirmation')}" type="submit" class="btn btn-success mr-1">
+            <span th:if="${modul.getId() == null || modul.getId().equals('')}" th:text="Erstellung"></span>
+            <span th:unless="${modul.getId() == null || modul.getId().equals('')}" th:text="Änderung"></span>
             <span th:if="${account.getRoles().contains('sekretariat')}" th:text=" bestätigen"></span>
             <span th:unless="${account.getRoles().contains('sekretariat')}" th:text=" beantragen"></span>
         </button>
@@ -239,8 +239,8 @@
             </div>
             <hr class="my-4" style="background-color: white">
 
-            <form id="buttonForm" th:action="@{${'/module/' + ((modulId == null || modulId.equals('')) ? 'modulerstellung_back_to_edit' : 'modulbearbeitung_back_to_edit')}}" method="post" th:object="${modulWrapper}">
-                <input type="hidden" name="modulId" th:value="${modulId}">
+            <form id="buttonForm" th:action="@{${'/module/' + (modulWrapper.getModul().getId() == null || modulWrapper.getModul().getId().equals('') ? 'modulerstellung_back_to_edit' : 'modulbearbeitung_back_to_edit')}}" method="post" th:object="${modulWrapper}">
+                <input type="hidden" th:field="*{modul.id}">
                 <input type="hidden" th:field="*{modul.titelDeutsch}">
                 <input type="hidden" th:field="*{modul.titelEnglisch}">
                 <input type="hidden" th:field="*{modul.studiengang}">

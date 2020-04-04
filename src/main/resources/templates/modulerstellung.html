@@ -50,8 +50,8 @@
 <main th:fragment="bodycontent">
 
     <!-- Modal -->
-    <form action="#" th:action = "@{${'/module/' + ((modulId == null) ? 'modulerstellung_preview' : 'modulbearbeitung_preview')}}" method="post" th:object="${modulWrapper}">
-        <input type="hidden" name="modulId" th:value="${modulId}">
+    <form action="#" th:action = "@{${'/module/' + (modulWrapper.modul.getId() == null ? 'modulerstellung_preview' : 'modulbearbeitung_preview')}}" method="post" th:object="${modulWrapper}">
+        <input type="hidden" th:field="*{modul.id}">
         <div class="modal"
              id="formularModal"
              tabindex="-1"
@@ -67,8 +67,8 @@
                 <div class="modal-content" style="height: 100%;">
 
                     <div class="modal-header">
-                        <h3 th:if="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
-                        <h3 th:unless="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Moduländerung beantragen</h3>
+                        <h3 th:if="*{modul.getId() == null}" class="modal-title" th:id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
+                        <h3 th:unless="*{modul.getId() == null}" class="modal-title" th:id="exampleModalCenterTitle">Moduländerung beantragen</h3>
                     </div>
                     <div class="modal-body" style="padding: 0">
                         <div style="padding: 1rem; display: inline;">

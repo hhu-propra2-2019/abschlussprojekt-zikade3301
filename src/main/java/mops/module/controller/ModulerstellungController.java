@@ -53,7 +53,6 @@ public class ModulerstellungController {
 
         model.addAttribute("modulWrapper", modulWrapper);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("modulId", null);
 
         return "modulerstellung";
     }
@@ -76,7 +75,6 @@ public class ModulerstellungController {
         ModulWrapper modulWrapper = ModulWrapperService.initializePrefilledWrapper(modul);
 
         model.addAttribute("modulWrapper", modulWrapper);
-        model.addAttribute("modulId", id);
 
         return "modulerstellung";
     }
@@ -91,10 +89,9 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulerstellung_preview")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String modulCreationAntragPreview(@RequestParam(name = "modulId") String modulId,
-                                         ModulWrapper modulWrapper,
-                                         Model model,
-                                         KeycloakAuthenticationToken token) {
+    public String modulCreationAntragPreview(ModulWrapper modulWrapper,
+                                             Model model,
+                                             KeycloakAuthenticationToken token) {
 
         model.addAttribute("account", createAccountFromPrincipal(token));
         model.addAttribute("allCategories", Modulkategorie.values());
@@ -103,7 +100,6 @@ public class ModulerstellungController {
         Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
         model.addAttribute("modul", modul);
         model.addAttribute("modulWrapper", modulWrapper);
-        model.addAttribute("modulId", modulId);
         return "modulpreview";
 
     }
@@ -118,10 +114,9 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulerstellung_confirmation")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String modulCreationAntragConfirm(@RequestParam(name = "modulId") String modulId,
-                                         ModulWrapper modulWrapper,
-                                         Model model,
-                                         KeycloakAuthenticationToken token) {
+    public String modulCreationAntragConfirm(ModulWrapper modulWrapper,
+                                             Model model,
+                                             KeycloakAuthenticationToken token) {
 
         String antragsteller = ((KeycloakPrincipal)token.getPrincipal()).getName();
         model.addAttribute("account", createAccountFromPrincipal(token));
@@ -149,10 +144,9 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulerstellung_back_to_edit")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String modulCreationAntragBackToEdit(@RequestParam(name = "modulId") String modulId,
-                                                     ModulWrapper modulWrapper,
-                                                     Model model,
-                                                     KeycloakAuthenticationToken token) {
+    public String modulCreationAntragBackToEdit(ModulWrapper modulWrapper,
+                                                Model model,
+                                                KeycloakAuthenticationToken token) {
 
         Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
 
@@ -161,7 +155,6 @@ public class ModulerstellungController {
 
         model.addAttribute("modulWrapper", refilledModulWrapper);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("modulId", null);
 
         return "modulerstellung";
 
@@ -177,7 +170,7 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulbearbeitung_preview")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String modulModificationAntragPreview(@RequestParam(name = "modulId") String modulId,
+    public String modulModificationAntragPreview(//@RequestParam(name = "modulId") String modulId,
                                          ModulWrapper modulWrapper,
                                          Model model,
                                          KeycloakAuthenticationToken token) {
@@ -189,7 +182,6 @@ public class ModulerstellungController {
         Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
         model.addAttribute("modul", modul);
         model.addAttribute("modulWrapper", modulWrapper);
-        model.addAttribute("modulId", modulId);
         return "modulpreview";
 
     }
@@ -205,7 +197,6 @@ public class ModulerstellungController {
     @PostMapping("/modulbearbeitung_confirmation")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
     public String modulModificationAntragConfirmation(
-            @RequestParam(name = "modulId") String modulId,
             ModulWrapper modulWrapper,
             Model model,
             KeycloakAuthenticationToken token) {
@@ -215,11 +206,10 @@ public class ModulerstellungController {
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
 
-        Long modulIdLong = Long.parseLong(modulId);
-        Modul altesModul = modulService.getModulById(modulIdLong);
         Modul neuesModul = ModulWrapperService.readModulFromWrapper(modulWrapper);
+        Long modulIdLong = modulWrapper.getModul().getId();
+        Modul altesModul = modulService.getModulById(modulIdLong);
 
-        neuesModul.setId(modulIdLong);
         neuesModul.refreshMapping();
         Modul diffModul = ModulService.calculateModulDiffs(altesModul, neuesModul);
 
@@ -245,10 +235,9 @@ public class ModulerstellungController {
      */
     @PostMapping("/modulbearbeitung_back_to_edit")
     @RolesAllowed({"ROLE_orga", "ROLE_sekretariat"})
-    public String modulModificationAntragBackToEdit(@RequestParam(name = "modulId") String modulId,
-                                                      ModulWrapper modulWrapper,
-                                                      Model model,
-                                                      KeycloakAuthenticationToken token) {
+    public String modulModificationAntragBackToEdit(ModulWrapper modulWrapper,
+                                                    Model model,
+                                                    KeycloakAuthenticationToken token) {
 
         Modul modul = ModulWrapperService.readModulFromWrapper(modulWrapper);
 
@@ -257,7 +246,6 @@ public class ModulerstellungController {
 
         model.addAttribute("modulWrapper", refilledModulWrapper);
         model.addAttribute("account", createAccountFromPrincipal(token));
-        model.addAttribute("modulId", modulId);
 
         return "modulerstellung";
 
