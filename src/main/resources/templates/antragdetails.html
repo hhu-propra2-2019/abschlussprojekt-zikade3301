@@ -213,7 +213,7 @@
                                                            font-size: larger;
                                                            border: none;
                                                            border-bottom: 1px solid white;
-                                                           border-radius: unset;"
+                                                           border-radius: unset;" required
                                            aria-label="Veranstaltungstitel"
                                            aria-describedby="basic-addon1"
                                            th:field = "*{veranstaltungen[__${i.index}__].titel}"
@@ -227,7 +227,7 @@
                                                            font-size: larger;
                                                            border: none;
                                                            border-bottom: 1px solid white;
-                                                           border-radius: unset;"
+                                                           border-radius: unset;" required
                                            aria-label="Veranstaltungstitel"
                                            aria-describedby="basic-addon1"
                                            th:field = "*{veranstaltungen[__${i.index}__].titel}"
@@ -242,7 +242,7 @@
                                                            border: none;
                                                            border-bottom: 1px solid white;
                                                            border-radius: unset;
-                                                           color: white;"
+                                                           color: white;" required
                                            class="form-control"
                                            aria-describedby="basic-addon2"
                                            th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}"
@@ -253,7 +253,7 @@
                                                            border: none;
                                                            border-bottom: 1px solid white;
                                                            border-radius: unset;
-                                                           color: red;"
+                                                           color: red;" required
                                            class="form-control"
                                            aria-describedby="basic-addon2"
                                            th:field = "*{veranstaltungen[__${i.index}__].leistungspunkte}"
@@ -273,7 +273,7 @@
                                                                font-size: larger;
                                                                border: none;
                                                                border-bottom: 1px solid white;
-                                                               border-radius: unset;"
+                                                               border-radius: unset;" required
                                            aria-label="haeufigkeit"
                                            aria-describedby="basic-addon1"
                                            th:field = "*{veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}"
@@ -286,7 +286,7 @@
                                                                font-size: larger;
                                                                border: none;
                                                                border-bottom: 1px solid white;
-                                                               border-radius: unset;"
+                                                               border-radius: unset;" required
                                            aria-label="haeufigkeit"
                                            aria-describedby="basic-addon1"
                                            th:field = "*{veranstaltungen[__${i.index}__].beschreibung.haeufigkeit}"
@@ -339,7 +339,7 @@
                                                            border-radius: unset;
                                                            margin-bottom: 1rem;
                                                            height: 10rem;
-                                                           color: white;"
+                                                           color: white;" required
                                           th:field = "*{veranstaltungen[__${i.index}__].beschreibung.inhalte}"
                                           th:if ="${antrag.veranstaltungen[__${i.index}__].beschreibung.inhalte == altesModul.veranstaltungen[__${i.index}__].beschreibung.inhalte}"></textarea>
 
@@ -349,7 +349,7 @@
                                                            border-radius: unset;
                                                            margin-bottom: 1rem;
                                                            height: 10rem;
-                                                           color: red;"
+                                                           color: red;" required
                                           th:field = "*{veranstaltungen[__${i.index}__].beschreibung.inhalte}"
                                           th:unless ="${antrag.veranstaltungen[__${i.index}__].beschreibung.inhalte == altesModul.veranstaltungen[__${i.index}__].beschreibung.inhalte}"></textarea>
 
