@@ -174,3 +174,13 @@ Hier wird nun die Methode "changeVisibility" des ModulService aufgerufen und die
 Innerhalb dieser Methode wird nun der aktuelle Sichtbarkeitsstatus über die ModulID gesucht und in der Boolean-Variable "status" gespeichert; es folgt
 eine If-Abfrage, die den neuen Wert des Status' auf true setzt, wenn zuvor "null" oder "false" gesetzt war und andererseits auf false setzt. Anschließend wird das
 Modul gespeichert und es erfolgt ein Redirect auf "/module/modulbeauftragter" durch den Controller._
+
+== Modulversionen anzeigen Blackbox
+
+Modulversionen anzeigen im Detail::
+
+_Um die verschiedenen Versionen eines Moduls einzusehen, kann der Nutzer mit Administrator-Rolle im Reiter "Module bearbeiten" auf den Button "Versionenverwaltung" klicken, anschließend öffnet sich ein Bootstrap-Modal, das eine Liste aller aktuellen Modulversionen anzeigt.
+Beim Anklicken eines der Module klappt eine Tabelle aus, in der alle Versionen des entsprechenden Moduls aufgelistet sind. Hierfür wird die Methode getAllVersionsOfModulOldestFirst() in AntragService verwendet, welche eine Liste aller Versionen eines Moduls als Modul-Objekte zu einer gegebenen ID ausgibt.
+In dieser Methode wird dazu mithilfe von Hilfsfunktionen zunächst der erste genehmigte Antrag herausgesucht (Erstellungsantrag), und anschließend für jeden genehmigten Änderungsantrag in einer Schleife die nach Genehmigung dieses Antrags bestehende Version der Versionen-Liste angehängt, sodass schließlich eine Liste von Modulen zurückgegebenen wird, bei der der erste Eintrag die initial erstellte Version ist und der letzte Eintrag die aktuelle Version des Moduls ist.
+Im Controller werden diese //TODO
+_
