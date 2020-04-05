@@ -38,6 +38,17 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
 == PDF Download
 
+== Annehmen von Anträgen
+
+Schnittstelle(n)::
+
+ _Die Schnittstellen liegen hier in der View des Administrators. Nur von dieser Seite aus können nach Authentifizierung des Nutzers Anträge bearbeitet und angenommen werden.
+ Es kann sich um das Annehmen von Modifikations Anträgen, also einer Bearbeitung eines bereits bestehenden Moduls oder um Kreations Anträge, also das neu erstellen eines Moduls, handeln._
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Anträge sollen zu jeder Zeit annehmbar sein. Der Administrator hat die Möglichkeit Bestandteile zu bearbeiten_
+
  Schnittstelle::
  _Das komplette Modulhandbuch wird auf der Hauptseite zum Download angeboten._
 
