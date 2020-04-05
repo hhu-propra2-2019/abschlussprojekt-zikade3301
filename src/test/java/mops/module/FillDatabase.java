@@ -148,7 +148,7 @@ public class FillDatabase {
     }
 
     private String removeEmptyLines(String template) {
-        template = template.substring(template.indexOf("\n") + "\n".length());  // Remove Begin & Ending "\n"
+        template = template.substring(template.indexOf("\n") + "\n".length(), template.length());  // Remove Begin & Ending "\n"
         return removeIndent(template);
     }
 
