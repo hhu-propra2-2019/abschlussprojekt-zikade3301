@@ -16,7 +16,7 @@
  Bibiliotheken die besten für das jeweilige Problem sind, hat viel Zeit gekostet._
 
  Testbarkeit::
- _Einige Methoden der PDF-Generierung waren kaum bis garnicht testbar und erschwerten somit die Qualitätskontrolle unserer Anwendung._
+ _Einige Methoden der PDF-Generierung waren kaum bis gar nicht testbar und erschwerten somit die Qualitätskontrolle unserer Anwendung._
 
  SessionScope::
  _Die Controller-Klassen sind mit `@SessionScope` annotiert, obwohl wir uns zu 90% sicher sind, dass jeweils eine Instanz für die gesamte Anwendung ausreichen würde.

@@ -2,13 +2,13 @@
 == Entwurfsentscheidungen
 
 Die Grundidee war für uns, dass im Frontend auf unsere Services zugegriffen wird. Die Services
-stellen dann Anfragen an die Datenbank; Daten, die durch diese Anfragen aus der Datenbank kommen werden dann zum Frontend
+stellen dann Anfragen an die Datenbank. Daten, die durch diese Anfragen aus der Datenbank kommen werden dann zum Frontend
 durchgereicht.
-Gemeint ist die Controller bekommen Aufrufe durch z.B. Buttons und geben das an die Services weiter.
-Die Service sind in userer Anwendung die Schnittstelle zum Frotend und zu den normalen Java Klassen.
-Die Klassen werden auf Wunsch der Services bearbeitet z.B. ein Antrag erstellt.
-Zum Speichern und der laden dieser Klassen werden die Repositorys verwendet. Sie sind die Schnittstelle zur Datenbank, eine
+Die Controller bekommen also Aufrufe durch z.B. Buttons und geben diese an die Services weiter.
+Die Services sind in unserer Anwendung die Schnittstelle zum Frontend und zu den normalen Java Klassen.
+Die Klassen werden auf Wunsch der Services bearbeitet. Beispielsweise durch die Erstellung eines Antrags.
+Zum Speichern und Laden dieser Klassen werden die Repositories verwendet. Sie sind die Schnittstelle zur Datenbank, eine
 Ausnahme ist hier Hibernate Search. Hibernate Search durchsucht und holt Listen aus der Datenbank.
-Die Daten die aus der Datenbank geladen werden, gehen wieder über die Services an die Controller und werden dann auf den
+Daten, die aus der Datenbank geladen werden, gehen wieder über die Services an die Controller und werden dann auf den
 entsprechenden Seiten sichtbar, oder stehen anderen Anwendungen zur Verfügung.
 
