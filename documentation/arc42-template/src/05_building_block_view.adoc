@@ -36,6 +36,17 @@ _Die Suche soll dem Nutzer eine Möglichkeit geben, durch das Eingeben von Stich
 
  _Anträge sollen zu jeder Zeit erstellbar sein und gespeichert werden._
 
+== Löschen von Anträgen
+
+Schnittstelle(n)::
+
+ _Die Schnittstellen liegen hier in der Admin View. Nur von hier können nach Authentifizierung des Nutzers Anträge gelöscht werden._
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Anträge sollen löschbar sein, was einem Ablehnen gleichkommt._
+
+
 == PDF Download
 
 == Annehmen von Anträgen
@@ -222,6 +233,15 @@ Diese Methode überträgt die Änderungen aus dem Antrag auf das alte Modul, wel
 auch den Antrag mit Hilfe des antragRepositorys in der Datenbank.
 
 Anschließend wird der Nutzer aus die administrator.html, also die Übersicht aller offenen Anträge, redirected.
+
+== Löschen von Anträgen Blackbox
+
+Löschen von Anträgen im Detail::
+_Für das Löschen von Anträgen findet die Rolle "Sekretariat" in der Auflistung aller Anträge den Button "Ablehnen". Durch das Klicken auf diesen Button wird ein Post-Request an "/module/deleteAntrag" gesendet.
+Das Formular, das hier übergeben wird, beinhaltet die AntragsID und wird dem Request über einen HTML-Tag in Kombination mit Thymeleaf mitgegeben, das durch "type=hidden" dem User verborgen ist. Im Controller wird der Request von der Methode "deleteAntrag" entgegengenommen.
+Hier wird die AntragsID über @RequestParam in der lokalen Variable "antragID" gespeichert. Nun wird die Methode deleteAntrag(antragID) innerhalb des Antragservice aufgerufen.
+In dieser erfolgt lediglich der Aufruf der gleichnamigen antragRepository-Funktion. Diese ist selbst nur eine Erweiterung des CrudRepositorys, das einen einzelnen Eintrag anhand der zugehörigen ID löscht.
+Abschließend wird die View "administrator" zurückgegeben, wobei dem Modell der KeycloakAccount, eine Liste aller Anträge und ein DateTimeFormatter hinzugefügt werden._
 
 == Semestertags bearbeiten Blackbox
 

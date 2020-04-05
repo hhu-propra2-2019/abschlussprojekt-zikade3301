@@ -50,8 +50,8 @@
 <main th:fragment="bodycontent">
 
     <!-- Modal -->
-    <form action="#" th:action = "@{${'/module/' + ((modulId == null) ? 'modulerstellung' : 'modulbearbeitung')}}" method="post" th:object="${modulWrapper}">
-        <input type="hidden" name="modulId" th:value="${modulId}">
+    <form action="#" th:action = "@{${'/module/' + (modulWrapper.modul.getId() == null ? 'modulerstellung_preview' : 'modulbearbeitung_preview')}}" method="post" th:object="${modulWrapper}">
+        <input type="hidden" th:field="*{modul.id}">
         <div class="modal"
              id="formularModal"
              tabindex="-1"
@@ -67,21 +67,21 @@
                 <div class="modal-content" style="height: 100%;">
 
                     <div class="modal-header">
-                        <h3 th:if="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
-                        <h3 th:unless="${modulId == null}" class="modal-title" th:id="exampleModalCenterTitle">Moduländerung beantragen</h3>
+                        <h3 th:if="*{modul.getId() == null}" class="modal-title" th:id="exampleModalCenterTitle">Modulerstellung beantragen</h3>
+                        <h3 th:unless="*{modul.getId() == null}" class="modal-title" th:id="exampleModalCenterTitle">Moduländerung beantragen</h3>
+                        <h4>Hinweis: Die mit <span style="color: lightgreen; background-color: lightslategrey;">&nbsp;md&nbsp;</span> markierten Felder unterstützen auch Eingaben im <a href="http://de.wikipedia.org/wiki/Markdown">Markdown</a>-Format</h4>
                     </div>
                     <div class="modal-body" style="padding: 0">
                         <div style="padding: 1rem; display: inline;">
 
                             <!-- AUSWAHL DES TITELS -->
                             <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
-                                <label for="titelDeutsch" class="col-1">Titel</label>
+                                <label for="titelDeutsch" class="col-1">Titel<span style="color: red;">*</span></label>
                                 <input type="text"
                                        th:field="*{modul.titelDeutsch}"
                                        style="border: none;
                                        border-bottom: 1px solid dimgray;
-                                       border-radius: inherit;
-                                       color: lightslategrey"
+                                       border-radius: inherit;"
                                        name="titelDeutsch"
                                        class="form-control col-5"
                                        id="titelDeutsch"
@@ -91,8 +91,7 @@
                                        th:field="*{modul.titelEnglisch}"
                                        style="border: none;
                                        border-bottom: 1px solid dimgray;
-                                       border-radius: inherit;
-                                       color: lightslategrey"
+                                       border-radius: inherit;"
                                        name="titelEnglisch"
                                        class="form-control col-5"
                                        id="titelEnglisch"
@@ -102,11 +101,10 @@
 
                             <!-- AUSWAHL Studiengang -->
                             <div class="mt-3 mb-3" style="display: flex; padding-right: 1rem;">
-                                <label for="studiengang" class="col-2">Studiengang</label>
+                                <label for="studiengang" class="col-2">Studiengang<span style="color: red;">*</span></label>
                                 <input type="text"
                                        th:field="*{modul.studiengang}"
-                                       style="color: lightslategrey;
-                                       border: none;
+                                       style="border: none;
                                        border-bottom: 1px solid dimgray;
                                        border-radius: inherit;"
                                        name="studiengang"
@@ -117,37 +115,36 @@
                             <br>
 
                             <div class="mt-3 mb-3 col-12" style="display: flex; padding-right: 1rem;">
-                                <label for="modulbeauftragte">Modulbeauftragte</label>
+                                <label for="modulbeauftragte">Modulbeauftragte<span style="color: red;">*</span></label>
                                 <input type="text"
                                        th:field="*{modul.modulbeauftragte}"
                                        style="float: right; border: none; border-bottom: 1px solid dimgray; border-radius: inherit;"
                                        name="modulbeauftragte"
                                        class="form-control"
                                        id="modulbeauftragte"
-                                       placeholder="Modulbeauftragte der Veranstaltung" required>
+                                       placeholder="Modulbeauftragte der Veranstaltung (mehrere durch Kommata trennen)" required>
                             </div>
 
                             <!-- AUSWAHL LEISTUNGSPUNKTE UND MODULKATEGORIE -->
                             <div style="display: inline-flex;">
-                                <div class="mt-3 mb-3 col-4" style="float: left">
-                                    <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte</label>
+                                <div class="mt-3 mb-3 col-5" style="float: left">
+                                    <label for="gesamtLeistungspunkte" class="col-md-8 col-sm-8 pl-0">Leistungspunkte<span style="color: red;">*</span></label>
                                     <input type="text"
                                            th:field="*{modul.gesamtLeistungspunkte}"
-                                           style="float: right;
-                                           color: lightslategrey"
+                                           style="float: right;"
                                            name="gesamtLeistungspunkte"
                                            class="form-control col-md-4 col-sm-4"
                                            id="gesamtLeistungspunkte"
-                                           placeholder="CP" required>
+                                           placeholder="z.B: 10 LP" required>
                                 </div>
-                                <div class="mt-3 mb-3 col-8" style="float: left">
-                                    <label for="modulkategorie">Modulkategorie</label>
+                                <div class="mt-3 mb-3 col-7" style="float: left">
+                                    <label for="modulkategorie">Modulkategorie<span style="color: red;">*</span></label>
                                     <select name="modulkategorie"
                                             th:field="*{modul.modulkategorie}"
                                             style="float: right"
                                             class="form-control col-md-8 col-sm-8"
                                             id="modulkategorie" required>
-                                        <option selected hidden value="">Modulkategorie Wählen</option>
+                                        <option selected hidden value="">Modulkategorie wählen</option>
                                         <option value="PFLICHT_INFO">Informatik Pflichtmodul</option>
                                         <option value="PFLICHT_MATHE">Mathematik Pflichtmodul</option>
                                         <option value="NEBENFACH">Nebenfach</option>
@@ -210,7 +207,7 @@
                                                            border-radius: unset;"
                                                            aria-label="Veranstaltungstitel"
                                                            aria-describedby="basic-addon1" required>
-                                                    <div style="color: white; font-size: small;">Veranstaltungstitel</div>
+                                                    <div style="color: white; font-size: small;">Veranstaltungstitel<span style="color: red;">*</span></div>
                                                 </div>
 
                                                 <div class="input-group mb-3 col-3" style="display: block">
@@ -223,7 +220,7 @@
                                                            color: white;"
                                                            class="form-control"
                                                            aria-describedby="basic-addon2" required>
-                                                    <div style="color: white; font-size: small;">Leistungspunkte</div>
+                                                    <div style="color: white; font-size: small;">Leistungspunkte<span style="color: red;">*</span></div>
                                                 </div>
                                             </div>
 
@@ -240,7 +237,7 @@
                                                            border-radius: unset;"
                                                            aria-label="haeufigkeit"
                                                            aria-describedby="basic-addon1" required>
-                                                    <div style="color: white; font-size: small;">Häufigkeit</div>
+                                                    <div style="color: white; font-size: small;">Häufigkeit<span style="color: red;">*</span></div>
                                                 </div>
                                                 <div class="input-group mb-3 col-4 pl-0" style="display: block">
                                                     <input type="text"
@@ -253,7 +250,7 @@
                                                            border-bottom: 1px solid white;
                                                            border-radius: unset;"
                                                            aria-label="sprache"
-                                                           aria-describedby="basic-addon1" required>
+                                                           aria-describedby="basic-addon1">
                                                     <div style="color: white; font-size: small;">Sprache</div>
                                                 </div>
                                             </div>
@@ -265,7 +262,7 @@
                                                           color: white;
                                                           font-size: larger;
                                                           border: none;">
-                                                        Veranstaltungsinhalte
+                                                        Veranstaltungsinhalte<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
@@ -284,7 +281,7 @@
                                                           color: white;
                                                           font-size: larger;
                                                           border: none;">
-                                                        Lernergebnisse
+                                                        Lernergebnisse<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                     </span>
                                                 </div>
                                                 <textarea class="form-control col-12 pl-0"
@@ -303,7 +300,7 @@
                                                               color: white;
                                                               font-size: larger;
                                                               border: none;">
-                                                            Literatur
+                                                            Literatur<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
@@ -321,7 +318,7 @@
                                                               color: white;
                                                               font-size: larger;
                                                               border: none;">
-                                                            Voraussetzungen für eine Teilnahme
+                                                            Voraussetzungen für eine Teilnahme<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
@@ -341,7 +338,7 @@
                                                               color: white;
                                                               font-size: larger;
                                                               border: none;">
-                                                            Verwendbarkeit
+                                                            Verwendbarkeit<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
@@ -359,7 +356,7 @@
                                                               color: white;
                                                               font-size: larger;
                                                               border: none;">
-                                                            Voraussetzungen zum Bestehen
+                                                            Voraussetzungen zum Bestehen<span style="color: red;">*</span><span style="color: lightgreen;">&nbsp;&#7504;&#7496;</span>
                                                         </span>
                                                     </div>
                                                     <textarea class="form-control col-12 pl-0"
@@ -373,7 +370,7 @@
 
                                             <div>
                                                 <span style="font-size: x-large; margin-bottom: 2rem">
-                                                    Die Veranstaltung beinhaltet:
+                                                    Die Veranstaltung beinhaltet:<span style="color: lightgreen;">&#7504;&#7496;</span>
                                                 </span>
                                                 <div class="form-check mb-2" style="display: flex"  th:each="veranstaltungsform, j : *{veranstaltungsformen[__${(i.index)}__]}">
                                                     <input type ="hidden" th:field = "*{veranstaltungsformen[__${i.index}__][__${j.index}__].id}">
@@ -395,16 +392,17 @@
                                                            color: white;"
                                                                type="number"
                                                                value=""
+                                                               required
                                                                min="0">
                                                         <label style="font-size: larger; margin-left: 0.5rem">
-                                                            SWS
+                                                            SWS <small>(wenn keine Angabe, 0 angeben)</small>
                                                         </label>
                                                 </div>
                                             </div>
 
                                             <div style="margin-top: 3rem; display: grid;">
                                                 <span class="col-12" style="font-size: x-large">
-                                                    Weitere Informationen:
+                                                    Weitere Informationen:<span style="color: lightgreen;">&#7504;&#7496;</span>
                                                 </span>
                                                 <div class="col-12" style="padding: 0;">
                                                     <div class="col-6" style="float:left" th:each="zusatzfeld, k : *{zusatzfelder[__${(i.index)}__]}">
@@ -448,11 +446,9 @@
 
                     <!-- BUTTON, UM FORMULAR ABZUSCHICKEN ODER ZURÜCKZUKEHREN -->
                     <div style="border-top: 1px solid #dee2e6; padding: 1rem;">
-                        <button th:if="${modulId == null}"  type="submit" class="btn btn-primary mr-1" style="float: right">
-                            Modulerstellung beantragen
-                        </button>
-                        <button th:unless="${modulId == null}" type="submit" class="btn btn-primary mr-1" style="float: right">
-                            Moduländerung beantragen
+                        <div>Benötigte Felder<span style="color: red;">*</span></div>
+                        <button type="submit" class="btn btn-primary mr-1" style="float: right">
+                            Zur Vorschau
                         </button>
                         <button type="button" class="btn btn-secondary mr-1" style="float: right">
                             <a href="/module/modulbeauftragter" style="color: white; text-decoration: none;">

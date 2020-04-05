@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,7 +30,6 @@ public class AdministratorController {
      * @param model Modell für die HTML Datei.
      * @return View administrator
      */
-
     @GetMapping("/administrator")
     @Secured("ROLE_sekretariat")
     public String administrator(KeycloakAuthenticationToken token, Model model) {
@@ -62,6 +62,31 @@ public class AdministratorController {
         model.addAttribute("account", createAccountFromPrincipal(token));
 
         return "moduldetails";
+    }
+
+
+    /**
+     * Post-Mapping für das Löschen/Ablehnen von Anträgen.
+     *
+     * @param antragID ID des Antrags, der entfernt werden soll
+     * @param model Modell für die HTML-Datei.
+     * @param token Der Token von keycloak für die Berechtigung.
+     * @return View für die Administratoransicht
+     */
+    @PostMapping("/deleteAntrag")
+    @Secured("ROLE_sekretariat")
+    public String deleteAntrag(
+            @RequestParam(name = "antragID") Long antragID,
+            KeycloakAuthenticationToken token,
+            Model model) {
+
+        antragService.deleteAntrag(antragID);
+
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        model.addAttribute("account", createAccountFromPrincipal(token));
+        model.addAttribute("allAntraege", antragService.getAlleOffenenAntraegeGeordnetDatum());
+
+        return "administrator";
     }
 
 }
