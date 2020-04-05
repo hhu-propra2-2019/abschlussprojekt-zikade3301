@@ -44,16 +44,11 @@ public class ModulbeauftragterController {
         model.addAttribute("allCategories", Modulkategorie.values());
         model.addAttribute("allModules", modulService.getAllModule());
         model.addAttribute("allVisibleModules", modulService.getAllSichtbareModule());
-        ArrayList<LinkedList<Modul>> allVersions = new ArrayList<>();
-        ArrayList<LinkedList<Antrag>> allAntraege = new ArrayList<>();
-        for (Modul modul :  modulService.getAllSichtbareModule()) {
-            if (modul.getId() != null) {
-                allVersions.add(antragService.getAllVersionsOfModulOldestFirst(modul.getId()));
-                allAntraege.add(
-                        antragService.getAllApprovedAntraegeForModulOldestFirst(modul.getId()));
-            }
-        }
+        ArrayList<LinkedList<Modul>> allVersions =
+                antragService.getAllVersionsListFor(modulService.getAllSichtbareModule());
         model.addAttribute("allVersions", allVersions);
+        ArrayList<LinkedList<Antrag>> allAntraege =
+                antragService.getAllAntraegeListFor(modulService.getAllSichtbareModule());
         model.addAttribute("allAntraege", allAntraege);
 
         List<String> semesterWahl = ModulService.getPastAndNextSemestersForTagging();
