@@ -30,11 +30,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("dev")
 @SpringBootTest
+@Disabled
 public class FillDatabase {
 
     @Autowired
     AntragService antragService;
 
+    @Disabled
     @Test
     public void fill() {
         Path path = Paths.get("./dump/Module");
@@ -146,7 +148,7 @@ public class FillDatabase {
     }
 
     private String removeEmptyLines(String template) {
-        template = template.substring(template.indexOf("\n") + "\n".length(), template.length());  // Remove Begin & Ending "\n"
+        template = template.substring(template.indexOf("\n") + "\n".length());  // Remove Begin & Ending "\n"
         return removeIndent(template);
     }
 
