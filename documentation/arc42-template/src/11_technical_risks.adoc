@@ -17,3 +17,7 @@
 
  Testbarkeit::
  _Einige Methoden der PDF-Generierung waren kaum bis garnicht testbar und erschwerten somit die Qualitätskontrolle unserer Anwendung._
+
+ SessionScope::
+ _Die Controller-Klassen sind mit `@SessionScope` annotiert, obwohl wir uns zu 90% sicher sind, dass jeweils eine Instanz für die gesamte Anwendung ausreichen würde.
+ Da wir uns aber nicht genug mit KeyCloak auskennen, konnten wir keine Garantie dafür übernehmen._
