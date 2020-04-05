@@ -18,7 +18,6 @@ public class Veranstaltungsform {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10000)
     private String form;
 
     private int semesterWochenStunden;
