@@ -73,6 +73,14 @@
                     </div>
                 </div>
             </li>
+            <!-- Dieses Item ist leider notwendig, da Keycloak nach einem Login solange keinen Account darstellt,-->
+            <!-- wie man nicht versucht, auf eine mit @Secured-geschützte Seite zu gelangen. Wir sind zudem die -->
+            <!-- einzige Gruppe, bei der dieses Problem auftreten dürfte, da nur wir eine Seite für auch nicht- -->
+            <!-- eingeloggte User anbieten, sodass Controller ohne @Secured existieren und das beschriebene Problem-->
+            <!-- auftreten kann.-->
+            <li th:unless="${account}">
+                <a href="/module/modulbeauftragter">Modulbeauftragte & Admin</a>
+            </li>
         </ul>
     </nav>
 </header>
