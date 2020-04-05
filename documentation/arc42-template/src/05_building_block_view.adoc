@@ -5,14 +5,6 @@ Dieser Abschnitt beschreibt die Aufteilung der Anwendung
 
 === Whitebox Gesamtsystem
 
-_**<Übersichtsdiagramm>**_
-
-Begründung:: _<Erläuternder Text>_
-
-Enthaltene Bausteine:: _<Beschreibung der enthaltenen Bausteine (Blackboxen)>_
-
-Wichtige Schnittstellen:: _<Beschreibung wichtiger Schnittstellen>_
-
 === Volltextsuche
 
  Zweck/Verantwortung::
