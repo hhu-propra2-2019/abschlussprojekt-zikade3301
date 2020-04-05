@@ -29,7 +29,6 @@ public class Veranstaltungsbeschreibung {
     @Column(length = 10000)
     private String voraussetzungenBestehen;
 
-    @Column(length = 10000)
     private String haeufigkeit;
 
     @Field
