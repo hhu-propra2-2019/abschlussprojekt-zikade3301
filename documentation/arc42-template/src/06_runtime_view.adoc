@@ -48,11 +48,6 @@ Die eingegebenen Formulardaten werden an den ModulerstellungController als POST-
 Der Nutzer kann entweder zurück zur Bearbeitung gehen, sodass er die eingegebenen Daten abändern kann, oder er kann den Antrag bestätigen und abschicken.
 In diesem Fall werden die eingegebenen Daten mit Hilfe des AntragService als Antrag in der Datenbank gespeichert, bzw. im Fall dass es sich beim Nutzer um einen Administrator handelt, direkt automatisch genehmigt und das Modul wird in der Datenbank geupdatet.
 
-=== _<Bezeichnung Laufzeitszenario n>_
-
-...
-....
-
 == Laufzeitszenario Beabeitung von Anträgen
 
 Ein Administrator klickt auf den "Anträge"- Reiter in der Navigationsbar. Dies löst eine GET-Anfrage aus, die von dem AdministratorController entgegengenommen wird. Mit Hilfe des Antrags Services
@@ -60,14 +55,21 @@ werden der View alle offenen und nach Datum geordneten Anträge in Form einer Li
 Aus dieser Liste wählt sich der Administrator den gewünschten zu bearbeitenden Antrag und löst eine Request-Anfrage aus, die von dem AntragdetailsController je nach Art des Antrages, Modifikations- oder Kreationsantrag,
 entgegengenommen wird.
 
-=== Laufzeitszenario Annahme einer Erstellung (Kreation)
+=== Erstellung (Kreation)
 Handelt es sich um einen Kreationsantrag, wird der View mit Hilfe des JsonServices das Modul aus dem Antrag ,verpackt in einem ModulWrapper, übergeben.
 Mit Hilfe von Thymeleaf wird dem Administrator nun das ausgefüllte Modul angezeigt. Ihm ist es möglich einzelne Felder zu verändern oder löschen.
-Anschließen wird per Klick auf den Button "Antrag annehmen" eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitt wird.
+Anschließen wird per Klick auf den Button "Antrag annehmen" eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitet wird.
 Das Modul, inklusiver aller Änderungen, wird aus dem AntragWrapper Objekt entpackt und anschließend in den ursprünglichen Antrag gesetzt.
 Dieser und das beinhaltete Modul werden dann mit Hilfe des Antrag Services in der Datenbank abgespeichert und der Administrator
 wird auf die Übersichtseite der Anträge ( administrator.html) redirected.
 
 
 === Bearbeitung (Modifikation)
-
+Handelt es sich um einen Modifikationsantrag werden der View zwei Module, jeweils eingepackt in einen Modulwrapper, übergeben.
+Ein Modul ist das alte, vor den Änderungen die von einem Modulbeaufragten beantragt wurden, und eines das neue, also das Modul wie es nach
+den Änderungen aussehen würde. Mit Hilfe von Thymeleaf wir dem Administrator nun das ausgefüllte  neue Modul angezeigt. Unterschiede zwischen dem alten und neuen
+werden farblich makiert. Dem Administrator ist es nun noch Möglich Änderungen vorzunehmen und den Antrag anschließend mit "Antrag annehmen" anzunehmen.
+Hiermit wird eine Post-Anfrage ausgelöst, welche vom AntragdetailsController verarbeitet wird.
+Das Modul, inklusiver aller Änderungen, wird aus dem AntragWrapper Objekt entpackt und anschließend in den ursprünglichen Antrag gesetzt.
+Dieser und das beinhaltete Modul werden dann mit Hilfe des Antrag Services in der Datenbank abgespeichert und der Administrator
+wird auf die Übersichtseite der Anträge ( administrator.html) redirected.

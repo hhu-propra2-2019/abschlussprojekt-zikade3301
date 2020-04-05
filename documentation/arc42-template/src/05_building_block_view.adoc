@@ -162,7 +162,7 @@ Anschließend werden mithilfe von calculateModulDiffs() aus ModulService die bei
 Wenn in diesem Differenzmodul Änderungen festgestellt wurden, wird der Änderungsantrag in der Datenbank gespeichert und ist ab diesem Zeitpunkt als offener Antrag für Administratoren einsehbar.
 Es wird geprüft, ob es sich beim Nutzer um einen Administrator handelt und in diesem Fall der Antrag direkt genehmigt und das Modul in der Datenbank geupdatet._
 
-== Annahme von Anträgen Blackbox
+== Bearbeitung von Anträgen Blackbox
 
 *Reiter Anträge -> AdministratorController* ::
 Durch drücken auf den Reiter "Anträge", angemeldet mit der Rolle "Sekretariat"
