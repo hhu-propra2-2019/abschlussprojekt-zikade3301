@@ -217,7 +217,7 @@
             <td class="color0">Programmierung (10)</td>
             <td class="color0">Algorithmen und Datenstrukturen (10)</td>
             <td class="color1">Linearen Algebra (10)</td>
-            <td class="color1"></td>
+            <td class="color0"></td>
             <td class="color1">30 LP</td>
         </tr>
 
@@ -234,7 +234,7 @@
             <td class="semester-color">3</td>
             <td class="color0">Softwareentwick-lung im Team (Programmier-praktikum II) (8)</td>
             <td class="color1">Analysis 2 (10)</td>
-            <td class="color1">Nebenfach (10)</td>
+            <td class="color2">Nebenfach (10)</td>
             <td class="color0"></td>
             <td class="color0">28 LP</td>
         </tr>
@@ -259,7 +259,7 @@
             </td>
             <td class="color0" rowspan="2"></td>
             <td class="color0" rowspan="2"></td>
-            <td class="color0" rowspan="2">28 LP</td>
+            <td class="color0" rowspan="2">30 LP</td>
         </tr>
         <tr>
             <td class="color2">Nebenfach (10)</td>
@@ -269,7 +269,7 @@
             <td class="semester-color">6</td>
             <td class="color0">Bachelorarbeit (15)</td>
             <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
-            <td class="color1">Nebenfach (10)</td>
+            <td class="color2">Nebenfach (10)</td>
             <td class="color0"></td>
             <td class="color0">30 LP</td>
         </tr>
@@ -348,19 +348,19 @@
         </tr>
 
         <tr>
-            <td class="semester-color">2</td>
+            <td class="semester-color">5</td>
             <td class="color0">Wahlbereich (20)</td>
             <td class="color0"></td>
-            <td class="color1">Nebenfach (10)</td>
+            <td class="color2">Nebenfach (10)</td>
             <td class="color0"></td>
             <td class="color0">30 LP</td>
         </tr>
 
         <tr>
-            <td class="semester-color">2</td>
+            <td class="semester-color">6</td>
             <td class="color0">Bachelorarbeit (15)</td>
             <td class="color0">Praxis und Berufs-orientierung (5LP)</td>
-            <td class="color1">Nebenfach (10)</td>
+            <td class="color2">Nebenfach (10)</td>
             <td class="color0"></td>
             <td class="color0">30 LP</td>
         </tr>
@@ -495,9 +495,14 @@
         </h3>
         <h3>Studiengang</h3>
         <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
+        <h3>Leistungspunkte</h3>
+        <div th:text="${m.gesamtLeistungspunkte}">10 LP</div>
         <div th:each="v, vitemStat : ${m.veranstaltungen}">
             <h3 th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '.' + ${vitemStat.index + 1} + ' ' + ${v.titel}"
                 th:if="${#lists.size(m.veranstaltungen) > 1}">Rechnerarchitektur</h3>
+            <h3 th:if="${#lists.size(m.veranstaltungen) > 1}">Leistungspunkte</h3>
+            <div th:text="${v.leistungspunkte}"
+                 th:if="${#lists.size(m.veranstaltungen) > 1}">10 LP</div>
             <h3>Lehrveranstaltungen</h3>
             <div>
                 <ul th:remove="all-but-first">
