@@ -108,4 +108,4 @@ Mithilfe von GraphQL wird eine dynamische API zur Verfügung gestellt, die per G
 
 == Anmerkung
 
-Zum Einfügen der Daten aus dem alten Modulhandbuch muss docker-compose.yml gestartet werden und anschließend einmalig die Datei data.sql in src/main/resources/sql ausgeführt werden.
+Zum Einfügen der Daten aus dem alten Modulhandbuch wird beim ersten Starten der docker-compose.yml die data.sql in src/main/resources/sql ausgeführt.
