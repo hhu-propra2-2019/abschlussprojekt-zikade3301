@@ -3,7 +3,7 @@
 
 Dieser Abschnitt stellt die wichtigsten Ziele und Lösungsansätze gegenüber.
 
-== Ziele und Lösungen
+=== Ziele und Lösungen
 
 [cols="1,2" options="header"]
 
