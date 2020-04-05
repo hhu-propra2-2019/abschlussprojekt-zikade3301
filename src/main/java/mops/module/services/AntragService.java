@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +33,6 @@ public class AntragService {
         antrag.setJsonModulAenderung(jsonObject);
         antrag.setModulId(modul.getId());
         return antrag;
-
     }
 
     /**
@@ -148,8 +148,8 @@ public class AntragService {
      * @param id Die id eines in der Datenbank existierenden (d.h. genehmigten) Moduls.
      * @return Eine Liste aller Versionen des Moduls, wobei der erste Listeneintrag das Modul
      *         im initialen Erstellungsantrag ist und der letzte Listeneintrag das Modul im
-     *         aktuellen Status ist. Da der Sichtbarkeitsstatus nicht über Anträge funktioniert,
-     *         ist die Sichtbarkeit aller Versionen immer null.
+     *         aktuellen Status ist. Da Sichtbarkeitsstatus und Semester nicht über Anträge
+     *         geändert werden, sind diese Informationen nicht enthalten.
      */
     public LinkedList<Modul> getAllVersionsOfModulOldestFirst(Long id) {
         List<Antrag> relevantApprovedAntraege = getAllApprovedAntraegeForModulOldestFirst(id);
@@ -170,11 +170,18 @@ public class AntragService {
         return modulVersions;
     }
 
-    private List<Antrag> getAllApprovedAntraegeForModulOldestFirst(Long id) {
+    /**
+     * Gibt alle genehmigten Anträge für das Modul mit der angebenen id als Liste aus.
+     * @param id Die id eines in der Datenbank existierenden (d.h. genehmigten) Moduls.
+     * @return Eine Liste aller genehmigten Anträge zum Modul, wobei der erste Listeneintrag
+     *         der initiale Erstellungsantrag ist. Da Sichtbarkeitsstatus und Semester nicht
+     *         über Anträge geändert werden, sind diese Informationen nicht enthalten.
+     */
+    public LinkedList<Antrag> getAllApprovedAntraegeForModulOldestFirst(Long id) {
         return getAllAntraegeForModul(id).stream()
                 .filter(a -> a.getDatumGenehmigung() != null)
                 .sorted(Comparator.comparing(Antrag::getDatumGenehmigung))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     private List<Antrag> getAllAntraegeForModul(Long id) {
@@ -182,14 +189,50 @@ public class AntragService {
             throw new IllegalArgumentException(
                     "Versionierung nicht möglich, da Modul-Id nicht existiert");
         }
-        List<Antrag> relevantApprovedAntraege = getAlleAntraege().stream()
+        List<Antrag> relevantAntraege = getAlleAntraege().stream()
+                .filter(a -> a.getModulId() != null)
                 .filter(a -> a.getModulId().equals(id))
                 .collect(Collectors.toList());
-        if (relevantApprovedAntraege.size() < 1) {
+        if (relevantAntraege.size() < 1) {
             throw new IllegalArgumentException(
                     "Initialer Antrag des Moduls in Versionierung nicht gefunden");
         }
-        return relevantApprovedAntraege;
+        return relevantAntraege;
     }
 
+    public void deleteAntrag(Long id) {
+        antragRepository.deleteById(id);
+    }
+
+    /**
+     * Gibt für die Liste von Modulen eine Liste von Unterlisten aus, wobei die Unterlisten
+     * jeweils alle genehmigten Versionen des Moduls als Liste sind.
+     * @param module Liste von existierenden (d.h. in Datenbank vorhandenen) Modulen
+     * @return ArrayList von LinkedLists mit den entsprechenden Versionen
+     */
+    public ArrayList<LinkedList<Modul>> getAllVersionsListFor(List<Modul> module) {
+        ArrayList<LinkedList<Modul>> allVersions = new ArrayList<>();
+        for (Modul modul :  module) {
+            if (modul.getId() != null) {
+                allVersions.add(getAllVersionsOfModulOldestFirst(modul.getId()));
+            }
+        }
+        return allVersions;
+    }
+
+    /**
+     * Gibt für die Liste von Modulen eine Liste von Unterlisten aus, wobei die Unterlisten
+     * jeweils alle genehmigten Antraege zu dem Modul als Liste sind.
+     * @param module Liste von existierenden (d.h. in Datenbank vorhandenen) Modulen
+     * @return ArrayList von LinkedLists mit den entsprechenden Anträgen
+     */
+    public ArrayList<LinkedList<Antrag>> getAllAntraegeListFor(List<Modul> module) {
+        ArrayList<LinkedList<Antrag>> allAntraege = new ArrayList<>();
+        for (Modul modul :  module) {
+            if (modul.getId() != null) {
+                allAntraege.add(getAllApprovedAntraegeForModulOldestFirst(modul.getId()));
+            }
+        }
+        return allAntraege;
+    }
 }

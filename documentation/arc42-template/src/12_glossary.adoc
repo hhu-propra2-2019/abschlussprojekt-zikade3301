@@ -8,10 +8,4 @@
 |Begriff
 |Definition
 
-|_<Begriff-1>_
-|_<Definition-1>_
-
-
-|_<Begriff-2_
-|_<Definition-2>_
 |===

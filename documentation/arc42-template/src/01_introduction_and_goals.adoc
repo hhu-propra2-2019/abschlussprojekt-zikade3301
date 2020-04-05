@@ -7,7 +7,7 @@
 - Das Einfügen, Ändern und Löschen von Modulen ist einfach gestaltet
 - Klare Rollenaufteilung mit jeweiligen Befugnissen
 - Die Modulübersicht ist als PDF-Datei exportierbar
-- Außerdem kann eine Ansicht der Module, die in einem Semester angeboten werden, generiert werden
+- Außerdem kann eine Ansicht der Module, die in einem Semester angeboten werden, angezeigt werden
 - Ziel ist nicht ein vollständiges Belegungssystem, sondern die Darstellung aktueller Informationen zu angebotenen Modulen
 
 
@@ -38,7 +38,7 @@ Das Handbuch soll für das Belegungssystem eine REST Schnittstelle anbieten, üb
 |Qualitätsziele |Motivation und Erläuterung
 |_Gute User Experience_ | _Für alle teilnehmenden Rollen soll die Nutzung der Anwendung einfach und verständlich sein_
 | _Sicherheit_ | _Die eingepflegten Daten sind nur von authorisierten Nutzern einzusehen_
-| _Dynamisch_| __
+| _Dynamisch_| _Das Gesamte Modulhandbuch passt sich den eingetragenen Daten an_
 
 |===
 

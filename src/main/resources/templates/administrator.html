@@ -5,8 +5,6 @@
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
     <title>index</title>
     <th:block th:fragment="headcontent">
-
-        <!-- Links, Skripts, Styles hier einfügen! -->
         <link th:href="@{main.css}" href="../static/main.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
                 integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -40,36 +38,88 @@
 </header>
 <main th:fragment="bodycontent">
 
-    <div th:each="antrag : ${allAntraege}">
-        <p style="margin-bottom: 0;">
-            <a class="btn btn-primary"
-               style="font-weight: bold;
-               font-size: larger;
-               border:none;
-               background-color: transparent;
-               color: dodgerblue"
-               data-toggle="collapse"
-               th:href="'#' + ${antrag}"
-               role="button"
-               aria-expanded="false"
-               th:attr="aria-controls=${antrag}">
-                <span style="width: min-content"
-                      class="badge badge-dark mr-2"
-                      th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</span>
+    <table class="col-12">
+        <thead>
+        <tr>
+            <th>Antragsdatum</th>
+            <th>Antragssteller</th>
+            <th>Details</th>
+            <th>Modul</th>
+            <th style="float: right">Antrag ablehnen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${allAntraege.size() == 0}">
+            <td>Es liegen keine Anträge vor!</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr th:each="antrag : ${allAntraege}">
+            <td th:text="${antrag.getDatumErstellung().format(formatter)}">Erstellungsdatum</td>
+            <td>
+                <span th:text="${antrag.getAntragsteller()}">Beauftragter</span>
+            </td>
+            <th>
                 <span th:if="${antrag.getModulId() == null}">
-                    <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}"
-                       th:text="${antrag.getAntragsteller()}">
-                        Antragsteller
+                    <a th:href="@{'/module/kreationsAntragsDetails/' + ${antrag.getId()}}">
+                        Zum Antrag
                     </a>
                 </span>
                 <span th:unless="${antrag.getModulId() == null}">
-                    <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}"
-                       th:text="${antrag.getAntragsteller()}">
-                        Antragsteller
+                    <a th:href="@{'/module/modifikationsAntragsdetails/' + ${antrag.getId()}}">
+                        Zum Antrag
                     </a>
                 </span>
-            </a>
-        </p>
+            </th>
+            <td>
+                <span th:text="${@jsonService.jsonObjectToModul(
+                    antrag.getJsonModulAenderung()).getTitelDeutsch()}">
+                </span>
+            </td>
+            <td style="float: right">
+                <form action="#" th:action="@{'/module/deleteAntrag'}" method="post" th:id="'formID'+${antrag.getId()}">
+                    <input type="hidden" name="antragID" th:value="${antrag.getId()}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#ModalDelete'+${antrag.getId()}">
+                        Ablehnen
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal für die sichere Bestätigung einer Antragsablehnung -->
+    <div class="modal fade"
+         th:id="'ModalDelete'+${antrag.getId()}"
+         tabindex="-1"
+         role="dialog"
+         aria-hidden="true"
+         th:each="antrag : ${allAntraege}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>Antrag von</span>
+                        <span th:text="${antrag.getAntragsteller()}">Antragssteller</span>
+                        <span>ablehnen.</span>
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Möchten Sie den Antrag wirklich ablehnen/löschen?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                    <button type="submit" th:form="'formID'+${antrag.getId()}" class="btn btn-primary mx-1">
+                        Fortfahren
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 </body>
