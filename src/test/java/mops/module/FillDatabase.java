@@ -31,12 +31,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("dev")
 @SpringBootTest
-
+@Disabled
 public class FillDatabase {
 
     @Autowired
     AntragService antragService;
 
+    @Disabled
     @Test
     public void fill() {
         Path path = Paths.get("./dump/Module");
