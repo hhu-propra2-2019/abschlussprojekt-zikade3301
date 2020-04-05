@@ -39,9 +39,9 @@
 | _Kodierrichtlinien für Java_ | Geprüft mit Hilfe von CheckStyle
 | _Continous Integration (CI)_ | Lässt alle Tests mithilfe von GitHub Actions durchlaufen und blockiert somit den Merge von fehlerhaftem Code
 | _Sprache (Deutsch vs. Englisch)_ |
-*Benennung von Klassen und Kommentierung durch Javadoc und Datenbank Entitäten auf Deutsch
-Package Namen auf Englisch*
+Benennung von Klassen, Kommentierung durch Javadoc und Datenbank Entitäten auf Deutsch.
+Package Namen und Methoden auf Englisch bis auf Begriffe die sich auf Entitäten beziehen.
 
-Hintergrund: Das System soll an einer deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden.
+Hintergrund: Das System soll an einer deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden sollen.
 
 |===
