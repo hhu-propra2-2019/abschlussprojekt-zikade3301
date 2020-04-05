@@ -19,11 +19,11 @@
 
 |===
 |Randbedingung |Erläuterung, Hintergrund
-| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed ElHori, Roman Janke, Elias Kempkens,  Michael Lau, Michael Motzko
+| _Team_ | Ann Christin Bodewig-Lenden, Iven Buchholz, Ahmed El Hori, Roman Janke, Elias Kempkens,  Michael Lau, Michael Motzko
 | _Zeitplan_ | Beginn der Planung und Entwicklung am 02.03.2020. Vorzeigbare Version bis zum 27.03.2020.
 | _Vorgehensmodell_ |Zur Dokumentation der Architektur kommt arc42 zum Einsatz
-| _Konfigurations- und Versionsverwaltung_ | gradle, Github
-| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj und Mockito
+| _Konfigurations- und Versionsverwaltung_ | Gradle, Github
+| _Testwerkzeuge und -prozesse_ | JUnit 5 in Verbindung mit Assertj, Mockito und zum Testen der Datenbankfunktion wurde eine H2-Datenbank verwendet
 
 |===
 
@@ -39,9 +39,9 @@
 | _Kodierrichtlinien für Java_ | Geprüft mit Hilfe von CheckStyle
 | _Continous Integration (CI)_ | Lässt alle Tests mithilfe von GitHub Actions durchlaufen und blockiert somit den Merge von fehlerhaftem Code
 | _Sprache (Deutsch vs. Englisch)_ |
-*Benennung von Klassen und Kommentierung durch Javadoc und Datenbank Entitäten auf Deutsch
-Package Namen auf Englisch*
+Benennung von Klassen, Kommentierung durch Javadoc und Datenbank Entitäten auf Deutsch.
+Package Namen und Methoden auf Englisch bis auf Begriffe, die sich auf Entitäten beziehen.
 
-Hintergrund: Das System soll an einer deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden.
+Hintergrund: Das System soll an einer deutschen Hochschule verwendet werden, weshalb Missverständnisse in der Verwendung von Klassen durch Übersetzungen vermieden werden sollen.
 
 |===
