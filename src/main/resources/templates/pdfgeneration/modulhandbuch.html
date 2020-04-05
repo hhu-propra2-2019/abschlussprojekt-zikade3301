@@ -495,9 +495,14 @@
         </h3>
         <h3>Studiengang</h3>
         <div th:text="${m.studiengang}">Bachelor-Studiengang Informatik</div>
+        <h3>Leistungspunkte</h3>
+        <div th:text="${m.gesamtLeistungspunkte}">10 LP</div>
         <div th:each="v, vitemStat : ${m.veranstaltungen}">
             <h3 th:text="${c.ordinal() + 1} + '.' + ${itemStat.index + 1} + '.' + ${vitemStat.index + 1} + ' ' + ${v.titel}"
                 th:if="${#lists.size(m.veranstaltungen) > 1}">Rechnerarchitektur</h3>
+            <h3 th:if="${#lists.size(m.veranstaltungen) > 1}">Leistungspunkte</h3>
+            <div th:text="${v.leistungspunkte}"
+                 th:if="${#lists.size(m.veranstaltungen) > 1}">10 LP</div>
             <h3>Lehrveranstaltungen</h3>
             <div>
                 <ul th:remove="all-but-first">

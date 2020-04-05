@@ -34,6 +34,10 @@ public class PdfModulWrapper {
         return getSafeString(modul.getStudiengang());
     }
 
+    public String getGesamtLeistungspunkte() {
+        return getSafeString(modul.getGesamtLeistungspunkte());
+    }
+
     public String getModulbeauftragte() {
         return getSafeString(modul.getModulbeauftragte());
     }
