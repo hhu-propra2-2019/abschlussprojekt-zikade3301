@@ -72,6 +72,18 @@ Qualitäts-/Leistungsmerkmale::
 
  _Semestertags sollen nur von der Rolle Administrator gesetzt oder entfernt werden können._
 
+== Modulversionen anzeigen
+
+Schnittstelle::
+_Die Schnittstelle für den Nutzer ist die View zur Bearbeitung von Modulen ("/Modulbeauftragter").
+Für Nutzer mit der Rolle "Administrator" wird ein Button mit dem Label "Versionenverwaltung" eingeblendet, der beim Anklicken ein Bootstrap-Modal öffnet.
+In diesem werden alle Module aufgelistet und zeigen durch Anklicken eine Liste aller Versionen dieses Moduls sowie einen jeweiligen Link zur Moduldetails-Seite für das Modul in dieser Version an._
+
+Qualitäts-/Leistungsmerkmale::
+
+ _Nur der Adminstrator darf alle Versionen der Module einsehen. Dadurch kann der Administrator immer zurückverfolgen, welche Änderungen an einem Modul über die Zeit vorgenommen wurden.
+Durch Anzeigen des Antragstellers und des zu dem jeweiligen Zeitpunkt bestehenden Modultitels sollen wichtige Aspekte der Historie auf einen Blick sichtbar sein, ohne die einzelnen Moduldetail-Seiten der jeweiligen Versionen immer öffnen zu müssen._
+
 == Volltextsuche Blackbox
 
  Suche im Detail::
@@ -182,5 +194,5 @@ Modulversionen anzeigen im Detail::
 _Um die verschiedenen Versionen eines Moduls einzusehen, kann der Nutzer mit Administrator-Rolle im Reiter "Module bearbeiten" auf den Button "Versionenverwaltung" klicken, anschließend öffnet sich ein Bootstrap-Modal, das eine Liste aller aktuellen Modulversionen anzeigt.
 Beim Anklicken eines der Module klappt eine Tabelle aus, in der alle Versionen des entsprechenden Moduls aufgelistet sind. Hierfür wird die Methode getAllVersionsOfModulOldestFirst() in AntragService verwendet, welche eine Liste aller Versionen eines Moduls als Modul-Objekte zu einer gegebenen ID ausgibt.
 In dieser Methode wird dazu mithilfe von Hilfsfunktionen zunächst der erste genehmigte Antrag herausgesucht (Erstellungsantrag), und anschließend für jeden genehmigten Änderungsantrag in einer Schleife die nach Genehmigung dieses Antrags bestehende Version der Versionen-Liste angehängt, sodass schließlich eine Liste von Modulen zurückgegebenen wird, bei der der erste Eintrag die initial erstellte Version ist und der letzte Eintrag die aktuelle Version des Moduls ist.
-Im Controller werden diese //TODO
-_
+Im ModulbeauftragterController werden diese Listen für jedes der angezeigten Module erzeugt und wiederum in eine Liste verpackt und neben der Modulliste und der Liste der betroffenen Anträge in jeweils gleicher Reihenfolge an die view weitergegeben, sodass schließlich im Versionen-Modal Informationen aus der Versionen-Liste und der zugehörigen Antrags-Liste zum Anzeigen von Informationen in der Tabelle verwendet werden können.
+Beim Anklicken der jeweiligen Version wird per GET-Request an den AdministratorController die entsprechende Modul-ID und der Versionsindex übergeben, sodass die Modulversion über AntragService herausgesucht und mit Hilfe der Moduldetails-View in dem entsprechenden genehmigten Zwischenstand angezeigt wird._
