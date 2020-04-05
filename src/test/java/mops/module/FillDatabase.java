@@ -1,6 +1,7 @@
 package mops.module;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -177,7 +178,7 @@ public class FillDatabase {
 
     private String loadModulTemplate(Path path) {
         try {
-            return new String(Files.readAllBytes(path));
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
