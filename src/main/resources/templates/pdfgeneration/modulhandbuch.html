@@ -436,8 +436,8 @@
     <h2 th:text="'Kapitel ' + ${c.ordinal()+1}">Kapitel 1</h2>
     <h2 th:id="${c.toReadable()}">
         <table style="width: 100%">
-            <col width="4%">
-            <col width="96%">
+            <col width="6%">
+            <col width="94%">
             <tr>
                 <td th:text="${c.ordinal()+1} + '.'"></td>
                 <td th:text="${c.toPdfReadableGerman()}"></td>
@@ -481,8 +481,8 @@
     <div th:each="m, itemStat : ${pdfService.filterModuleAfterKategorie(module, c)}" th:id="${'modul' + m.id}">
         <h3 th:id="${m.getId()}">
             <table style="width: 100%">
-                <col width="4%">
-                <col width="96%">
+                <col width="6%">
+                <col width="94%">
                 <tr>
                     <td th:text="${c.ordinal()+1} + '.' + ${itemStat.index + 1}"></td>
                     <td th:text="${m.titelDeutsch}"></td>
