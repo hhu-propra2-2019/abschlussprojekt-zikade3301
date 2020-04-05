@@ -115,8 +115,9 @@ public class FillDatabase {
 
     private Set<Zusatzfeld> buildZusatzfelder(String template) {
         Set<Zusatzfeld> zusatzfelder= new HashSet<>();
-        List<String> templates = splitTags(template, "zusatzfelder");
-        templates.stream().map(this::buildZusatzfeld).forEach(zusatzfelder::add);
+        List<String> templates = splitTags(template, "zusatzfeld");
+        templates.stream().map(this::buildZusatzfeld)
+                .filter(Objects::nonNull).forEach(zusatzfelder::add);
         return zusatzfelder;
 
     }
@@ -125,6 +126,9 @@ public class FillDatabase {
         Zusatzfeld zusatzfeld=new Zusatzfeld();
         zusatzfeld.setTitel(splitTag(template, "titel"));
         zusatzfeld.setInhalt(splitTag(template, "inhalt"));
+        if (zusatzfeld.getTitel().isEmpty() || zusatzfeld.getInhalt().isEmpty()) {
+            return null;
+        }
         return zusatzfeld;
     }
 
