@@ -1,6 +1,7 @@
 package mops.module.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -201,5 +202,37 @@ public class AntragService {
 
     public void deleteAntrag(Long id) {
         antragRepository.deleteById(id);
+    }
+
+    /**
+     * Gibt für die Liste von Modulen eine Liste von Unterlisten aus, wobei die Unterlisten
+     * jeweils alle genehmigten Versionen des Moduls als Liste sind.
+     * @param module Liste von existierenden (d.h. in Datenbank vorhandenen) Modulen
+     * @return ArrayList von LinkedLists mit den entsprechenden Versionen
+     */
+    public ArrayList<LinkedList<Modul>> getAllVersionsListFor(List<Modul> module) {
+        ArrayList<LinkedList<Modul>> allVersions = new ArrayList<>();
+        for (Modul modul :  module) {
+            if (modul.getId() != null) {
+                allVersions.add(getAllVersionsOfModulOldestFirst(modul.getId()));
+            }
+        }
+        return allVersions;
+    }
+
+    /**
+     * Gibt für die Liste von Modulen eine Liste von Unterlisten aus, wobei die Unterlisten
+     * jeweils alle genehmigten Antraege zu dem Modul als Liste sind.
+     * @param module Liste von existierenden (d.h. in Datenbank vorhandenen) Modulen
+     * @return ArrayList von LinkedLists mit den entsprechenden Anträgen
+     */
+    public ArrayList<LinkedList<Antrag>> getAllAntraegeListFor(List<Modul> module) {
+        ArrayList<LinkedList<Antrag>> allAntraege = new ArrayList<>();
+        for (Modul modul :  module) {
+            if (modul.getId() != null) {
+                allAntraege.add(getAllApprovedAntraegeForModulOldestFirst(modul.getId()));
+            }
+        }
+        return allAntraege;
     }
 }
