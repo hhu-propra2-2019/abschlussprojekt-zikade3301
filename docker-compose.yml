@@ -4,6 +4,7 @@ services:
     image: postgres
     volumes:
       - database-data:/var/lib/postgresql/data/
+      - ./src/main/resources/sql/data.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=zikade3301
@@ -15,6 +16,8 @@ services:
       - database
     ports:
       - "8080:8080"
+    environment:
+      - TZ=Europe/Berlin
 
 volumes:
   database-data:
